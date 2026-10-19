@@ -25,7 +25,7 @@
   /* Helper to generate reliable inline SVG product images as fallback/crisp imagery */
   function createProductSVG(title, category, colorHex) {
     const safeTitle = (title || 'Sanitary Component').replace(/"/g, '&quot;');
-    const accent = colorHex || '#F00078';
+    const accent = colorHex || '#0284C7';
     return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
       <defs>
         <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -294,7 +294,7 @@
       wallThickness: '1.5 mm / 1.65 mm',
       length: '1.5D or 2.0D radius',
       mtc: 'Available with dispatch',
-      image: createProductSVG('SS Sanitary 90° Bend', 'Fittings', '#F00078'),
+      image: createProductSVG('SS Sanitary 90° Bend', 'Fittings', '#0284C7'),
       overview: 'Hygienic 90-degree pipe bends manufactured with true-circular cross sections and uniform wall thickness to ensure unhindered laminar flow and thorough Clean-In-Place (CIP) drainage.',
       applications: ['Process piping direction change', 'Dairy reception lines', 'Liquid vaccine manufacturing']
     },
@@ -360,7 +360,7 @@
       wallThickness: '1.6 mm',
       length: 'Standard',
       mtc: 'Available upon order',
-      image: createProductSVG('SS Concentric Reducer', 'Fittings', '#F00078'),
+      image: createProductSVG('SS Concentric Reducer', 'Fittings', '#0284C7'),
       overview: 'Concentric reducers provide linear, symmetrical fluid velocity transitions between differing pipe diameters along the vertical or center line.',
       applications: ['Vertical pipe size reductions', 'Pump inlet and discharge sizing', 'Filtration skid connections']
     },
@@ -492,7 +492,7 @@
       wallThickness: 'Pressure rating: PN10 (10 Bar)',
       length: 'Compact wafer or clamp body',
       mtc: 'Pressure test & MTC supplied',
-      image: createProductSVG('SS Sanitary Butterfly Valve', 'Valves', '#F00078'),
+      image: createProductSVG('SS Sanitary Butterfly Valve', 'Valves', '#0284C7'),
       overview: 'Reliable, compact sanitary butterfly valve featuring a polished stainless steel disc, food-grade EPDM/Silicone seat, and multi-position stainless handle for precise manual on/off flow throttling.',
       applications: ['Fermenter outlet isolation', 'Water treatment distribution', 'Bulk liquid storage tanks']
     },
@@ -536,7 +536,7 @@
       wallThickness: '1000 WOG rating',
       length: 'Direct mount actuator pad',
       mtc: 'Hydrostatic and air test certified',
-      image: createProductSVG('SS 3-Piece Ball Valve', 'Valves', '#F00078'),
+      image: createProductSVG('SS 3-Piece Ball Valve', 'Valves', '#0284C7'),
       overview: 'Full-bore sanitary ball valve featuring cavity-filled PTFE seats to eliminate stagnant fluid entrapment around the ball sphere. Swing-out three-piece body facilitates quick inline maintenance.',
       applications: ['Viscous food processing', 'Sauce & puree pipelines', 'Brewery brewhouse piping']
     },
@@ -1026,8 +1026,936 @@
   let crmData = loadCRMData();
 
   /* --------------------------------------------------------------------------
-     4. APPLICATION STATE & ROUTER
+     4. MULTI-LANGUAGE TRANSLATION SYSTEM & APPLICATION STATE
      -------------------------------------------------------------------------- */
+  const SUPPORTED_LANGUAGES = [
+    { code: 'en', name: 'English (Global)', nativeName: 'English', flag: '🌐', short: 'EN' },
+    { code: 'hi', name: 'Hindi (India)', nativeName: 'हिंदी', flag: '🇮🇳', short: 'HI' },
+    { code: 'gu', name: 'Gujarati (India)', nativeName: 'ગુજરાતી', flag: '🇮🇳', short: 'GU' },
+    { code: 'ar', name: 'Arabic (Middle East)', nativeName: 'العربية', flag: '🇦🇪', short: 'AR', rtl: true },
+    { code: 'de', name: 'German (Europe)', nativeName: 'Deutsch', flag: '🇩🇪', short: 'DE' },
+    { code: 'fr', name: 'French (Global)', nativeName: 'Français', flag: '🇫🇷', short: 'FR' },
+    { code: 'es', name: 'Spanish (LatAm/Europe)', nativeName: 'Español', flag: '🇪🇸', short: 'ES' },
+    { code: 'ru', name: 'Russian (Eurasia)', nativeName: 'Русский', flag: '🇷🇺', short: 'RU' }
+  ];
+
+  const TRANSLATIONS = {
+    en: {
+      top_tagline: 'Stainless Steel Sanitary Pipes, Fittings &amp; Valves',
+      top_locations: 'Mumbai &bull; Domestic &amp; Global Supply',
+      top_whatsapp: 'WhatsApp Desk',
+      btn_get_quote: 'Get a Quote',
+      nav_home: 'Home',
+      nav_about: 'About Us',
+      nav_products: 'Products',
+      nav_industries: 'Industries',
+      nav_quality: 'Quality &amp; Docs',
+      nav_resources: 'Resources',
+      nav_blog: 'Blog',
+      nav_contact: 'Contact Us',
+      nav_crm: 'CRM Portal',
+      btn_request_quote: 'Request a Quote',
+      mega_pipes: 'Pipes &amp; Tubing',
+      mega_fittings: 'Fittings &amp; Components',
+      mega_valves: 'Valves &amp; Assemblies',
+      mega_focus: 'Monopoly Focus',
+      mega_certified: 'Hygienic Process Certified',
+      mega_desc: 'Available in SS 304 &amp; SS 316L with EP/MP finishes. Fast quotations &amp; MTC documentation.',
+      ind_pharma: 'Pharmaceutical Processing',
+      ind_biotech: 'Biotechnology &amp; High Purity',
+      ind_dairy: 'Dairy Processing',
+      ind_food: 'Food &amp; Beverage',
+      ind_brew: 'Breweries &amp; Distilleries',
+      ind_water: 'Ultra-Pure Water &amp; WFI',
+      ind_chemical: 'Specialty Chemical &amp; Personal Care',
+      hero_eyebrow: 'The Quality Maker',
+      hero_title: 'Stainless Steel Sanitary Pipes, Fittings &amp; Valves',
+      hero_subtitle: 'Engineered for Hygienic Process Applications',
+      hero_desc: 'Explore stainless steel sanitary products in SS 304 and SS 316L, with available surface finishes and configurations suited to pharmaceutical, dairy, food &amp; beverage, and high-purity process industries.',
+      badge_premium: 'Premium<br>SS 304 / 316L',
+      badge_stock: 'Ready<br>Stock Range',
+      badge_supply: 'Global &amp; Pan<br>India Supply',
+      badge_mtc: 'MTC &amp; Technical<br>Assistance',
+      btn_explore: 'Explore Products',
+      btn_quote: 'Request a Quote',
+      hero_tagline_1: 'Hygienic.',
+      hero_tagline_2: 'Reliable.',
+      hero_tagline_3: 'Global.',
+      sec_range_eyebrow: 'Our Product Range',
+      sec_range_title: 'Premium Stainless Steel Solutions',
+      btn_view_all: 'View All Products',
+      link_view_products: 'View Products',
+      sec_featured_eyebrow: 'Monopoly &amp; Priority Range',
+      sec_featured_title: 'Priority Stainless Steel Sanitary Products',
+      sec_featured_desc: 'Precision components across SS 304 &amp; SS 316L for high-cleanliness applications.',
+      btn_browse_catalogue: 'Browse Complete 20+ Catalogue',
+      label_roughness: 'Roughness:',
+      label_standard: 'Standard:',
+      btn_view_details: 'View Details',
+      btn_get_quote_card: 'Get a Quote',
+      btn_view_all_catalogue: 'View All 20+ Industrial Products in Catalogue',
+      sec_industries_eyebrow: 'Industries We Serve',
+      sec_industries_title: 'Trusted Across Multiple Process Industries',
+      btn_view_all_industries: 'View All Industries',
+      sec_why_eyebrow: 'Why Choose Lotus Tubes',
+      sec_why_title: 'Quality. Stock. Service. Always.',
+      sec_why_desc: 'Dedicated supplier of hygienic stainless steel components, engineered for integrity and traceability.',
+      why_1_title: 'Material Integrity',
+      why_1_desc: 'Complete stock across SS 304 and molybdenum-rich SS 316L, conforming to strict chemical composition thresholds.',
+      why_2_title: 'Finish &amp; Precision',
+      why_2_desc: 'Available Electro-Polished (EP) with Ra &le; 0.38 &mu;m and Mechanical Polished (MP) finishes tailored for CIP cleanliness.',
+      why_3_title: 'Traceability &amp; MTC',
+      why_3_desc: 'Complete EN 10204 3.1 Material Test Certificates confirming mechanical, chemical, and roughness properties upon request.',
+      why_4_title: 'Ready Stock Availability',
+      why_4_desc: 'Broad domestic stockholding of sanitary bends, tees, clamps, gaskets, and pipes ready for immediate dispatch.',
+      why_5_title: 'Quotation Assistance',
+      why_5_desc: 'Fast technical response via mail and dedicated WhatsApp Business desk with full BOQ item breakdown.',
+      why_6_title: 'Global Sourcing Support',
+      why_6_desc: 'Supplying process plants, distributors, and skid fabricators across India, Europe, UAE, USA, and Southeast Asia.',
+      why_video_title: 'Watch Sourcing &amp; Quality Inspection Overview',
+      why_video_desc: 'See our multi-stage electro-polishing verification, surface Ra testing, and packaging protocol.',
+      btn_video_demo: 'Explore Quality Demo',
+      sec_about_eyebrow: 'About Lotus Tubes',
+      sec_about_title: 'Your Trusted Partner in Stainless Steel Solutions',
+      sec_about_desc: 'Lotus Tubes (a venture of Lotus Impex, Mumbai) is a dedicated supplier and stockist of high-quality stainless steel sanitary pipes, pipe fittings, and valves. Catering to pharmaceutical, dairy, food &amp; beverage, breweries, water treatment, and chemical industries across India and worldwide.',
+      stat_pharma: 'High-Purity Pharma Grade',
+      stat_finishes: 'Precision Surface Finishes',
+      stat_compliance: 'A270 / A269 Compliance',
+      stat_traceability: 'MTC Traceability Support',
+      btn_know_more: 'Know More About Us',
+      banner_quote_title: 'Looking for a Custom Quote?',
+      banner_quote_desc: 'Share your required sizes, material grades (SS 304/316L), and delivery timeline.',
+      banner_docs_title: 'Need Technical Documents?',
+      banner_docs_desc: 'MTC &bull; Product Catalogues &bull; Dimensional Charts &bull; Surface Finish Guides',
+      banner_docs_btn: 'Download',
+      footer_desc: 'Lotus Tubes is a trusted supplier of premium stainless steel sanitary pipes, fittings, and valves in SS 304 and SS 316L. Supporting hygienic process applications across dairy, pharmaceutical, food, brewery, and water purification sectors worldwide.',
+      footer_col_products: 'Sanitary Products',
+      footer_col_industries: 'Industries Served',
+      footer_col_info: 'Information &amp; Portal',
+      footer_col_office: 'Supply &amp; Office Desk',
+      label_office: 'Registered Office:',
+      label_direct_sales: 'Direct Sales:',
+      footer_timing: 'Working Hours: Mon - Sat: 9:30 AM - 7:00 PM IST',
+      footer_rights: 'All rights reserved. Stainless Steel Sanitary Solutions.'
+    },
+
+    hi: {
+      top_tagline: 'स्टेनलेस स्टील सैनिटरी पाइप्स, फिटिंग्स और वाल्व्स',
+      top_locations: 'मुंबई &bull; घरेलू और वैश्विक आपूर्ति',
+      top_whatsapp: 'व्हाट्सएप सहायता',
+      btn_get_quote: 'कोटेशन प्राप्त करें',
+      nav_home: 'होम',
+      nav_about: 'हमारे बारे में',
+      nav_products: 'उत्पाद',
+      nav_industries: 'उद्योग',
+      nav_quality: 'गुणवत्ता और दस्तावेज़',
+      nav_resources: 'संसाधन',
+      nav_blog: 'तकनीकी ब्लॉग',
+      nav_contact: 'संपर्क करें',
+      nav_crm: 'सीआरएम पोर्टल',
+      btn_request_quote: 'कोटेशन का अनुरोध करें',
+      mega_pipes: 'सैनिटरी पाइप और ट्यूबिंग',
+      mega_fittings: 'सैनिटरी फिटिंग्स और घटक',
+      mega_valves: 'वाल्व्स और असेंबली',
+      mega_focus: 'विशेष फोकस',
+      mega_certified: 'स्वच्छ प्रक्रिया प्रमाणित',
+      mega_desc: 'SS 304 और SS 316L में EP/MP फिनिश के साथ उपलब्ध। त्वरित कोटेशन और MTC दस्तावेज़ीकरण।',
+      ind_pharma: 'फार्मास्युटिकल प्रसंस्करण',
+      ind_biotech: 'बायोटेक्नोलॉजी और उच्च शुद्धता',
+      ind_dairy: 'डेयरी प्रसंस्करण',
+      ind_food: 'खाद्य और पेय उद्योग',
+      ind_brew: 'ब्रूअरीज और डिस्टिलरी',
+      ind_water: 'अल्ट्रा-प्योर वॉटर और WFI',
+      ind_chemical: 'विशेष रसायन और कॉस्मेटिक्स',
+      hero_eyebrow: 'गुणवत्ता के निर्माता',
+      hero_title: 'स्टेनलेस स्टील सैनिटरी पाइप्स, फिटिंग्स और वाल्व्स',
+      hero_subtitle: 'स्वच्छ प्रक्रिया अनुप्रयोगों के लिए निर्मित',
+      hero_desc: 'फार्मास्युटिकल, डेयरी, खाद्य और पेय, तथा उच्च शुद्धता प्रक्रिया उद्योगों के लिए SS 304 और SS 316L में सैनिटरी उत्पादों की विस्तृत श्रृंखला।',
+      badge_premium: 'प्रीमियम<br>SS 304 / 316L',
+      badge_stock: 'तैयार<br>स्टॉक रेंज',
+      badge_supply: 'वैश्विक और अखिल<br>भारतीय आपूर्ति',
+      badge_mtc: 'MTC और तकनीकी<br>सहायता',
+      btn_explore: 'उत्पाद देखें',
+      btn_quote: 'कोटेशन मांगें',
+      hero_tagline_1: 'स्वच्छ।',
+      hero_tagline_2: 'विश्वसनीय।',
+      hero_tagline_3: 'वैश्विक।',
+      sec_range_eyebrow: 'हमारी उत्पाद श्रृंखला',
+      sec_range_title: 'प्रीमियम स्टेनलेस स्टील समाधान',
+      btn_view_all: 'सभी उत्पाद देखें',
+      link_view_products: 'उत्पाद देखें',
+      sec_featured_eyebrow: 'प्राथमिकता औद्योगिक रेंज',
+      sec_featured_title: 'प्रमुख स्टेनलेस स्टील सैनिटरी उत्पाद',
+      sec_featured_desc: 'उच्च स्वच्छता अनुप्रयोगों के लिए SS 304 और SS 316L में उपलब्ध शुद्ध घटक।',
+      btn_browse_catalogue: 'पूर्ण 20+ उत्पाद कैटलॉग ब्राउज़ करें',
+      label_roughness: 'खुरदरापन (Ra):',
+      label_standard: 'मानक:',
+      btn_view_details: 'विवरण देखें',
+      btn_get_quote_card: 'कोटेशन लें',
+      btn_view_all_catalogue: 'कैटलॉग में सभी 20+ उत्पाद देखें',
+      sec_industries_eyebrow: 'उद्योग जिनकी हम सेवा करते हैं',
+      sec_industries_title: 'प्रमुख प्रक्रिया उद्योगों में विश्वसनीय',
+      btn_view_all_industries: 'सभी उद्योग देखें',
+      sec_why_eyebrow: 'लोटस ट्यूब्स क्यों चुनें',
+      sec_why_title: 'गुणवत्ता। स्टॉक। सेवा। सदैव।',
+      sec_why_desc: 'विश्वसनीयता और ट्रेसबिलिटी के साथ स्वच्छ स्टेनलेस स्टील घटकों का समर्पित आपूर्तिकर्ता।',
+      why_1_title: 'सामग्री अखंडता',
+      why_1_desc: 'SS 304 और मोलिब्डेनम युक्त SS 316L का पूरा स्टॉक, सख्त रासायनिक मानकों के अनुरूप।',
+      why_2_title: 'फिनिश और शुद्धता',
+      why_2_desc: 'CIP स्वच्छता के लिए Ra &le; 0.38 &mu;m इलेक्ट्रो-पॉलिश (EP) और मैकेनिकल पॉलिश (MP) फिनिश उपलब्ध।',
+      why_3_title: 'ट्रेसबिलिटी और MTC',
+      why_3_desc: 'मांग पर रासायनिक, यांत्रिक और Ra गुणों की पुष्टि करने वाले EN 10204 3.1 परीक्षण प्रमाण पत्र।',
+      why_4_title: 'तत्काल स्टॉक उपलब्धता',
+      why_4_desc: 'सैनिटरी बेंड्स, टीज, क्लैंप्स, गास्केट और पाइप का व्यापक स्टॉक तत्काल डिलीवरी के लिए तैयार।',
+      why_5_title: 'त्वरित कोटेशन सहायता',
+      why_5_desc: 'ईमेल और व्हाट्सएप बिजनेस डेस्क के माध्यम से तुरंत विस्तृत तकनीकी कोटेशन सहायता।',
+      why_6_title: 'वैश्विक सोर्सिंग सपोर्ट',
+      why_6_desc: 'भारत, यूरोप, यूएई, अमेरिका और दक्षिण पूर्व एशिया में संयंत्रों और निर्माताओं को आपूर्ति।',
+      why_video_title: 'गुणवत्ता निरीक्षण और सोर्सिंग का अवलोकन देखें',
+      why_video_desc: 'हमारा मल्टी-स्टेज इलेक्ट्रो-पॉलिश सत्यापन, सतह Ra परीक्षण और पैकेजिंग प्रोटोकॉल देखें।',
+      btn_video_demo: 'गुणवत्ता डेमो देखें',
+      sec_about_eyebrow: 'लोटस ट्यूब्स के बारे में',
+      sec_about_title: 'स्टेनलेस स्टील समाधानों में आपका विश्वसनीय साथी',
+      sec_about_desc: 'लोटस ट्यूब्स (लोटस इम्पेक्स, मुंबई का उद्यम) उच्च गुणवत्ता वाले स्टेनलेस स्टील सैनिटरी पाइप, फिटिंग्स और वाल्व्स का समर्पित आपूर्तिकर्ता और स्टॉकिस्ट है।',
+      stat_pharma: 'उच्च शुद्धता फार्मा ग्रेड',
+      stat_finishes: 'सटीक सतह फिनिशिंग',
+      stat_compliance: 'A270 / A269 मानक अनुपालन',
+      stat_traceability: 'MTC ट्रेसबिलिटी सहायता',
+      btn_know_more: 'हमारे बारे में और जानें',
+      banner_quote_title: 'कस्टम कोटेशन चाहिए?',
+      banner_quote_desc: 'अपने आकार विनिर्देश, ग्रेड (SS 304/316L) और समयसीमा साझा करें।',
+      banner_docs_title: 'तकनीकी दस्तावेज़ चाहिए?',
+      banner_docs_desc: 'MTC &bull; उत्पाद कैटलॉग &bull; आयामी चार्ट &bull; सतह फिनिश गाइड',
+      banner_docs_btn: 'डाउनलोड करें',
+      footer_desc: 'लोटस ट्यूब्स SS 304 और SS 316L में प्रीमियम स्टेनलेस स्टील सैनिटरी पाइप, फिटिंग्स और वाल्व का विश्वसनीय आपूर्तिकर्ता है।',
+      footer_col_products: 'सैनिटरी उत्पाद',
+      footer_col_industries: 'उद्योग सेवाएं',
+      footer_col_info: 'जानकारी और पोर्टल',
+      footer_col_office: 'सप्लाई और ऑफिस डेस्क',
+      label_office: 'पंजीकृत कार्यालय:',
+      label_direct_sales: 'सीधी बिक्री:',
+      footer_timing: 'कार्य समय: सोम - शनि: 9:30 AM - 7:00 PM IST',
+      footer_rights: 'सर्वाधिकार सुरक्षित। स्टेनलेस स्टील सैनिटरी समाधान।'
+    },
+
+    gu: {
+      top_tagline: 'સ્ટેનલેસ સ્ટીલ સેનિટરી પાઇપ્સ, ફીટીંગ્સ અને વાલ્વ્સ',
+      top_locations: 'મુંબઈ &bull; સ્થાનિક અને વૈશ્વિક સપ્લાય',
+      top_whatsapp: 'વોટ્સએપ ડેસ્ક',
+      btn_get_quote: 'ભાવ મેળવો',
+      nav_home: 'હોમ',
+      nav_about: 'અમારા વિશે',
+      nav_products: 'પ્રોડક્ટ્સ',
+      nav_industries: 'ઉદ્યોગો',
+      nav_quality: 'ક્વોલિટી &amp; દસ્તાવેજો',
+      nav_resources: 'રિસોર્સિસ',
+      nav_blog: 'બ્લોગ',
+      nav_contact: 'સંપર્ક કરો',
+      nav_crm: 'સીઆરએમ પોર્ટલ',
+      btn_request_quote: 'ભાવ જાણવા વિનંતી કરો',
+      mega_pipes: 'પાઇપ્સ અને ટ્યુબિંગ',
+      mega_fittings: 'ફીટીંગ્સ અને કમ્પોનન્ટ્સ',
+      mega_valves: 'વાલ્વ્સ અને એસેમ્બલીઝ',
+      mega_focus: 'મુખ્ય ફોકસ',
+      mega_certified: 'હાઇજીનિક પ્રોસેસ સર્ટિફાઇડ',
+      mega_desc: 'SS 304 &amp; SS 316L માં EP/MP ફિનિશ સાથે હાજર સ્ટોક. ઝડપી ક્વોટેશન &amp; MTC દસ્તાવેજો.',
+      ind_pharma: 'ફાર્માસ્યુટિકલ પ્રોસેસિંગ',
+      ind_biotech: 'બાયોટેકનોલોજી &amp; હાઇ પ્યોરિટી',
+      ind_dairy: 'ડેરી પ્રોસેસિંગ',
+      ind_food: 'ફૂડ અને બેવરેજ',
+      ind_brew: 'બ્રુઅરીઝ અને ડિસ્ટિલરીઝ',
+      ind_water: 'અલ્ટ્રા-પ્યોર વોટર &amp; WFI',
+      ind_chemical: 'સ્પેશિયાલિટી કેમિકલ &amp; કોસ્મેટિક્સ',
+      hero_eyebrow: 'ગુણવત્તાના નિર્માતા',
+      hero_title: 'સ્ટેનલેસ સ્ટીલ સેનિટરી પાઇપ્સ, ફીટીંગ્સ અને વાલ્વ્સ',
+      hero_subtitle: 'હાઇજીનિક પ્રોસેસિંગ એપ્લિકેશન્સ માટે ખાસ તૈયાર',
+      hero_desc: 'ફાર્માસ્યુટિકલ, ડેરી, ફૂડ અને બેવરેજ ઉદ્યોગો માટે SS 304 અને SS 316L માં ઉચ્ચ ગુણવત્તાવાળા સેનિટરી પ્રોડક્ટ્સ.',
+      badge_premium: 'પ્રીમિયમ<br>SS 304 / 316L',
+      badge_stock: 'હાજર<br>સ્ટોક રેન્જ',
+      badge_supply: 'ગ્લોબલ &amp; સમગ્ર<br>ભારતમાં સપ્લાય',
+      badge_mtc: 'MTC &amp; ટેકનિકલ<br>સહાયતા',
+      btn_explore: 'પ્રોડક્ટ્સ જુઓ',
+      btn_quote: 'ભાવ મેળવો',
+      hero_tagline_1: 'હાઇજીનિક.',
+      hero_tagline_2: 'વિશ્વસનીય.',
+      hero_tagline_3: 'વૈશ્વિક.',
+      sec_range_eyebrow: 'અમારી પ્રોડક્ટ રેન્જ',
+      sec_range_title: 'પ્રીમિયમ સ્ટેનલેસ સ્ટીલ સોલ્યુશન્સ',
+      btn_view_all: 'બધી પ્રોડક્ટ્સ જુઓ',
+      link_view_products: 'પ્રોડક્ટ્સ જુઓ',
+      sec_featured_eyebrow: 'ચકાસાયેલ ઔદ્યોગિક ઇન્વેન્ટરી',
+      sec_featured_title: 'મુખ્ય સેનિટરી કમ્પોનન્ટ્સ',
+      sec_featured_desc: 'ઇલેક્ટ્રો પોલિશ્ડ (EP) અને મિકેનિકલ પોલિશ્ડ (MP) ફિનિશમાં તાત્કાલિક ઉપલબ્ધ સ્ટોક.',
+      btn_browse_catalogue: 'સંપૂર્ણ 20+ પ્રોડક્ટ કેટલોગ જુઓ',
+      label_roughness: 'સપાટી ફિનિશ (Ra):',
+      label_standard: 'માનક:',
+      btn_view_details: 'વિગત જુઓ',
+      btn_get_quote_card: 'ભાવ મેળવો',
+      btn_view_all_catalogue: 'કેટલોગમાં બધી 20+ પ્રોડક્ટ્સ જુઓ',
+      sec_industries_eyebrow: 'અમે સેવા આપીએ છીએ તે ઉદ્યોગો',
+      sec_industries_title: 'વિવિધ પ્રોસેસ ઉદ્યોગોમાં વિશ્વસનીય',
+      btn_view_all_industries: 'બધા ઉદ્યોગો જુઓ',
+      sec_why_eyebrow: 'લોટસ ટ્યુબ્સ શા માટે પસંદ કરવું',
+      sec_why_title: 'ગુણવત્તા. સ્ટોક. સર્વિસ. હંમેશા.',
+      sec_why_desc: 'હાઇજીનિક સ્ટેનલેસ સ્ટીલ કમ્પોનન્ટ્સ માટે સમર્પિત સપ્લાય પાર્ટનર.',
+      why_1_title: 'મટિરિયલ પ્રમાણિકતા',
+      why_1_desc: 'SS 304 અને SS 316L નો સંપૂર્ણ સ્ટોક, સખત કેમિકલ ધોરણો મુજબ.',
+      why_2_title: 'ફિનિશ &amp; સચોટતા',
+      why_2_desc: 'Ra &le; 0.38 &mu;m ઇલેક્ટ્રો-પોલિશ્ડ અને મિકેનિકલ પોલિશ્ડ ફિનિશ.',
+      why_3_title: 'ટ્રેસેબિલિટી &amp; MTC',
+      why_3_desc: 'ઓર્ડર સાથે EN 10204 3.1 મટિરિયલ ટેસ્ટ સર્ટિફિકેટ ઉપલબ્ધ.',
+      why_4_title: 'હાજર સ્ટોક ઉપલબ્ધતા',
+      why_4_desc: 'સેનિટરી બેન્ડ્સ, ટીઝ, ક્લેમ્પ્સ, ગાસ્કેટ અને પાઇપ્સ તાત્કાલિક ડિસ્પેચ માટે તૈયાર.',
+      why_5_title: 'ઝડપી ક્વોટેશન સહાય',
+      why_5_desc: 'ઇમેઇલ અને વોટ્સએપ બિઝનેસ ડેસ્ક દ્વારા ઝડપી વિગતવાર ભાવ સહાય.',
+      why_6_title: 'ગ્લોબલ સોર્સિંગ સપોર્ટ',
+      why_6_desc: 'ભારત, યુરોપ, યુએઈ અને એશિયામાં ફેબ્રિકેટર્સ અને પ્રોસેસ પ્લાન્ટ્સને સપ્લાય.',
+      why_video_title: 'ક્વોલિટી ઇન્સ્પેક્શન ડેમો જુઓ',
+      why_video_desc: 'અમારું મલ્ટી-સ્ટેજ ઇલેક્ટ્રો-પોલિશિંગ વેરિફિકેશન અને પેકેજિંગ પ્રોટોકોલ જુઓ.',
+      btn_video_demo: 'ક્વોલિટી ડેમો જુઓ',
+      sec_about_eyebrow: 'લોટસ ટ્યુબ્સ વિશે',
+      sec_about_title: 'સ્ટેનલેસ સ્ટીલ સોલ્યુશન્સમાં આપનો વિશ્વસનીય ભાગીદાર',
+      sec_about_desc: 'લોટસ ટ્યુબ્સ (લોટસ ઇમ્પેક્સ, મુંબઈનું સાહસ) ઉચ્ચ ગુણવત્તાવાળા સ્ટેનલેસ સ્ટીલ સેનિટરી પાઇપ, ફીટીંગ્સ અને વાલ્વના વિશ્વસનીય સપ્લાયર છે.',
+      stat_pharma: 'હાઇ-પ્યોરિટી ફાર્મા ગ્રેડ',
+      stat_finishes: 'ચોક્કસ સરફેસ ફિનિશિંગ',
+      stat_compliance: 'A270 / A269 ધોરણો',
+      stat_traceability: 'MTC ટ્રેસેબિલિટી સપોર્ટ',
+      btn_know_more: 'અમારા વિશે વધુ જાણો',
+      banner_quote_title: 'કસ્ટમ ક્વોટેશન જોઈએ છે?',
+      banner_quote_desc: 'તમારી જરૂરિયાતો મોકલો. અમારું સેલ્સ ડેસ્ક ઝડપી પ્રતિસાદ આપશે.',
+      banner_docs_title: 'ટેકનિકલ દસ્તાવેજો જોઈએ છે?',
+      banner_docs_desc: 'MTC &bull; પ્રોડક્ટ કેટલોગ &bull; પરિમાણ ચાર્ટ &bull; ફિનિશ ગાઇડ્સ',
+      banner_docs_btn: 'ડાઉનલોડ કરો',
+      footer_desc: 'લોટસ ટ્યુબ્સ SS 304 અને SS 316L માં પ્રીમિયમ સ્ટેનલેસ સ્ટીલ સેનિટરી પાઇપ્સ, ફીટીંગ્સ અને વાલ્વ્સનું વિશ્વસનીય સપ્લાયર છે.',
+      footer_col_products: 'સેનિટરી પ્રોડક્ટ્સ',
+      footer_col_industries: 'ઉદ્યોગ સેવાઓ',
+      footer_col_info: 'માહિતી &amp; પોર્ટલ',
+      footer_col_office: 'સપ્લાય અને ઓફિસ ડેસ્ક',
+      label_office: 'રજિસ્ટર્ડ ઓફિસ:',
+      label_direct_sales: 'ડાયરેક્ટ સેલ્સ:',
+      footer_timing: 'કાર્યકારી સમય: સોમ - શનિ: 9:30 AM - 7:00 PM IST',
+      footer_rights: 'સર્વાધિકાર સુરક્ષિત. સ્ટેનલેસ સ્ટીલ સેનિટરી સોલ્યુશન્સ.'
+    },
+
+    ar: {
+      top_tagline: 'أنابيب وتركيبات وصمامات صحية من الفولاذ المقاوم للصدأ',
+      top_locations: 'مومباي &bull; توريد محلي وعالمي',
+      top_whatsapp: 'مكتب واتساب',
+      btn_get_quote: 'طلب تسعيرة',
+      nav_home: 'الرئيسية',
+      nav_about: 'من نحن',
+      nav_products: 'المنتجات',
+      nav_industries: 'الصناعات',
+      nav_quality: 'الجودة والشهادات',
+      nav_resources: 'الموارد الفنية',
+      nav_blog: 'المدونة الهندسية',
+      nav_contact: 'اتصل بنا',
+      nav_crm: 'بوابة CRM',
+      btn_request_quote: 'طلب عرض أسعار',
+      mega_pipes: 'الأنابيب والمواسير الصحية',
+      mega_fittings: 'التركيبات والتوصيلات',
+      mega_valves: 'الصمامات والمحابس',
+      mega_focus: 'تركيز حصري',
+      mega_certified: 'معتمد للعمليات الصحية',
+      mega_desc: 'متوفر في SS 304 و SS 316L بتشطيبات EP/MP مع شهادات MTC الفورية.',
+      ind_pharma: 'الصناعات الدوائية',
+      ind_biotech: 'التكنولوجيا الحيوية والنقاء الفائق',
+      ind_dairy: 'صناعة ومعالجة الألبان',
+      ind_food: 'الأغذية والمشروبات',
+      ind_brew: 'مصانع الجعة والعصائر',
+      ind_water: 'معالجة المياه النقية و WFI',
+      ind_chemical: 'الكيماويات ومستحضرات التجميل',
+      hero_eyebrow: 'صانع الجودة والتميز',
+      hero_title: 'أنابيب وتركيبات وصمامات صحية من الستانلس ستيل',
+      hero_subtitle: 'مصممة خصيصاً لتطبيقات المعالجة الصحية فائقة النقاء',
+      hero_desc: 'استكشف منتجات الستانلس ستيل الصحية في SS 304 و SS 316L لتطبيقات الصناعات الدوائية والألبان والأغذية مع تشطيب صقل كهربائي فائق النعومة.',
+      badge_premium: 'ستانلس ستيل ممتاز<br>SS 304 / 316L',
+      badge_stock: 'مخزون جاهز<br>للتسليم الفوري',
+      badge_supply: 'توريد محلي<br>وعالمي شامل',
+      badge_mtc: 'شهادات MTC<br>ودعم فني',
+      btn_explore: 'استكشف المنتجات',
+      btn_quote: 'طلب عرض سعر',
+      hero_tagline_1: 'صحي.',
+      hero_tagline_2: 'موثوق.',
+      hero_tagline_3: 'عالمي.',
+      sec_range_eyebrow: 'مجموعة منتجاتنا',
+      sec_range_title: 'حلول الفولاذ المقاوم للصدأ المتميزة',
+      btn_view_all: 'عرض جميع المنتجات',
+      link_view_products: 'عرض المنتجات',
+      sec_featured_eyebrow: 'مخزون صناعي موثوق',
+      sec_featured_title: 'المكونات الصحية المميزة',
+      sec_featured_desc: 'مخزون متوفر بتشطيبات الصقل الكهربائي (EP) والميكانيكي (MP) للتسليم الفوري.',
+      btn_browse_catalogue: 'تصفح الكتالوج الكامل لأكثر من 20 منتجاً',
+      label_roughness: 'الخشونة (Ra):',
+      label_standard: 'المعيار القياسي:',
+      btn_view_details: 'عرض التفاصيل',
+      btn_get_quote_card: 'طلب عرض أسعار',
+      btn_view_all_catalogue: 'عرض جميع المنتجات الصناعية في الكتالوج',
+      sec_industries_eyebrow: 'الصناعات التي نخدمها',
+      sec_industries_title: 'حلول معتمدة عبر مختلف قطاعات المعالجة',
+      btn_view_all_industries: 'عرض كافة القطاعات',
+      sec_why_eyebrow: 'لماذا تختار لوتس تيوبس',
+      sec_why_title: 'الجودة. المخزون. الخدمة. دائماً.',
+      sec_why_desc: 'شريكك المتخصص في توريد مكونات الفولاذ المقاوم للصدأ الصحية المعتمدة دولياً.',
+      why_1_title: 'نزاهة وجودة المواد',
+      why_1_desc: 'مخزون شامل لسبائك SS 304 و SS 316L الغنية بالموليبدينوم والمطابقة لمعايير التحليل الكيميائي.',
+      why_2_title: 'التشطيب والدقة الفائقة',
+      why_2_desc: 'صقل كهربائي مجهري مع خشونة Ra &le; 0.38 &mu;m لضمان سهولة التنظيف والتعقيم CIP.',
+      why_3_title: 'تتبع كامل وشهادات MTC',
+      why_3_desc: 'شهادات اختبار المواد EN 10204 3.1 توضح الخواص الكيميائية والميكانيكية بدقة متناهية.',
+      why_4_title: 'جاهزية المخزون للشحن',
+      why_4_desc: 'مستودعات ضخمة تحتوي على الأكواع، المحابس، الوصلات، الجوانات، والأنابيب للشحن الفوري.',
+      why_5_title: 'دعم سريع لطلبات الأسعار',
+      why_5_desc: 'استجابة هندسية فورية عبر البريد الإلكتروني ومكتب واتساب المخصص للشركات.',
+      why_6_title: 'شحن وتصدير دولي',
+      why_6_desc: 'توريد موثوق للمصانع والمشروعات في الهند والخليج العربي وأوروبا وأمريكا.',
+      why_video_title: 'شاهد استعراض فحص الجودة والمصادر',
+      why_video_desc: 'تعرف على مراحل التحقق من الصقل الكهربائي واختبار الخشونة السطحية وبروتوكول التغليف.',
+      btn_video_demo: 'استعراض جولة الجودة',
+      sec_about_eyebrow: 'عن شركة لوتس تيوبس',
+      sec_about_title: 'شريكك الموثوق في حلول الفولاذ المقاوم للصدأ',
+      sec_about_desc: 'لوتس تيوبس (إحدى شركات لوتس إمبكس، مومباي) مورد ومخزن رائد للأنابيب الصحية والتركيبات والصمامات فائقة الجودة للصناعات الدوائية والغذائية.',
+      stat_pharma: 'درجة نقاء صيدلانية عالية',
+      stat_finishes: 'تشطيب أسطح دقيق للغاية',
+      stat_compliance: 'مطابقة لمعايير A270 / A269',
+      stat_traceability: 'دعم كامل لتتبع شهادات MTC',
+      btn_know_more: 'اعرف المزيد عنا',
+      banner_quote_title: 'هل تبحث عن عرض سعر مخصص؟',
+      banner_quote_desc: 'أرسل جدول الكميات والمواصفات وسيقوم فريق المبيعات الفني بالرد خلال ساعتين.',
+      banner_docs_title: 'هل تحتاج مستندات فنية؟',
+      banner_docs_desc: 'MTC &bull; كتالوجات المنتجات &bull; مخططات الأبعاد &bull; أدلة تشطيب الأسطح',
+      banner_docs_btn: 'تحميل الملفات',
+      footer_desc: 'لوتس تيوبس مورد موثوق لأنابيب وتركيبات الفولاذ المقاوم للصدأ الصحية في SS 304 و SS 316L لخدمة المصانع عالمياً.',
+      footer_col_products: 'المنتجات الصحية',
+      footer_col_industries: 'القطاعات والصناعات',
+      footer_col_info: 'معلومات وبوابات',
+      footer_col_office: 'المكتب والمبيعات',
+      label_office: 'المكتب المسجل:',
+      label_direct_sales: 'المبيعات المباشرة:',
+      footer_timing: 'أوقات العمل: الاثنين - السبت: 9:30 ص - 7:00 م بتوقيت الهند',
+      footer_rights: 'جميع الحقوق محفوظة. حلول الستانلس ستيل الصحية.'
+    },
+
+    de: {
+      top_tagline: 'Edelstahl-Sanitärrohre, Armaturen &amp; Ventile',
+      top_locations: 'Mumbai &bull; Inlands- &amp; Weltweiter Vertrieb',
+      top_whatsapp: 'WhatsApp-Desk',
+      btn_get_quote: 'Angebot anfordern',
+      nav_home: 'Startseite',
+      nav_about: 'Über uns',
+      nav_products: 'Produkte',
+      nav_industries: 'Branchen',
+      nav_quality: 'Qualität &amp; Dokus',
+      nav_resources: 'Ressourcen',
+      nav_blog: 'Blog',
+      nav_contact: 'Kontakt',
+      nav_crm: 'CRM-Portal',
+      btn_request_quote: 'Angebot anfordern',
+      mega_pipes: 'Rohre &amp; Schläuche',
+      mega_fittings: 'Formstücke &amp; Komponenten',
+      mega_valves: 'Ventile &amp; Baugruppen',
+      mega_focus: 'Fokus',
+      mega_certified: 'Für Hygieneprozesse Zertifiziert',
+      mega_desc: 'Lieferbar in SS 304 &amp; SS 316L mit elektropolierter Oberfläche und MTC-Dokumentation.',
+      ind_pharma: 'Pharmazeutische Industrie',
+      ind_biotech: 'Biotechnologie &amp; Reinstmedien',
+      ind_dairy: 'Molkereitechnik',
+      ind_food: 'Lebensmittel &amp; Getränke',
+      ind_brew: 'Brauereien &amp; Brennereien',
+      ind_water: 'Reinstwasser &amp; WFI-Systeme',
+      ind_chemical: 'Feinchemie &amp; Kosmetik',
+      hero_eyebrow: 'Der Qualitätshersteller',
+      hero_title: 'Edelstahl-Sanitärrohre, Armaturen &amp; Ventile',
+      hero_subtitle: 'Entwickelt für hygienische Prozessanwendungen',
+      hero_desc: 'Entdecken Sie Sanitärprodukte aus Edelstahl SS 304 und SS 316L mit elektropolierten Oberflächen für Pharma-, Molkerei- und Lebensmitteltechnik.',
+      badge_premium: 'Premium<br>SS 304 / 316L',
+      badge_stock: 'Sofort<br>Lieferbar',
+      badge_supply: 'Weltweite &amp;<br>Indienweite Lieferung',
+      badge_mtc: 'WZP 3.1 &amp;<br>Support',
+      btn_explore: 'Produkte entdecken',
+      btn_quote: 'Angebot anfordern',
+      hero_tagline_1: 'Hygienisch.',
+      hero_tagline_2: 'Zuverlässig.',
+      hero_tagline_3: 'Global.',
+      sec_range_eyebrow: 'Unser Produktsortiment',
+      sec_range_title: 'Erstklassige Edelstahllösungen',
+      btn_view_all: 'Alle Produkte anzeigen',
+      link_view_products: 'Produkte ansehen',
+      sec_featured_eyebrow: 'Verifizierter Industriebestand',
+      sec_featured_title: 'Ausgewählte Sanitärkomponenten',
+      sec_featured_desc: 'Präzisionskomponenten aus SS 304 &amp; SS 316L für Reinsträume und Sterilprozesse.',
+      btn_browse_catalogue: 'Kompletten Katalog mit 20+ Produkten durchsuchen',
+      label_roughness: 'Rauheit (Ra):',
+      label_standard: 'Norm:',
+      btn_view_details: 'Details anzeigen',
+      btn_get_quote_card: 'Angebot anfordern',
+      btn_view_all_catalogue: 'Alle 20+ Produkte im Katalog ansehen',
+      sec_industries_eyebrow: 'Branchen, die wir beliefern',
+      sec_industries_title: 'Bewährt in anspruchsvollen Prozessindustrien',
+      btn_view_all_industries: 'Alle Branchen anzeigen',
+      sec_why_eyebrow: 'Warum Lotus Tubes',
+      sec_why_title: 'Qualität. Lager. Service. Jederzeit.',
+      sec_why_desc: 'Ihr engagierter Lieferant für hygienische Edelstahlkomponenten mit vollständiger Rückverfolgbarkeit.',
+      why_1_title: 'Materialintegrität',
+      why_1_desc: 'Vollständiges Lagersortiment in SS 304 und SS 316L gemäß strengsten Legierungsvorschriften.',
+      why_2_title: 'Oberfläche &amp; Präzision',
+      why_2_desc: 'Elektropoliert mit Ra &le; 0.38 &mu;m für rückstandsfreie CIP-Reinigung.',
+      why_3_title: 'Rückverfolgbarkeit &amp; MTC',
+      why_3_desc: 'Vollständige EN 10204 3.1 Abnahmeprüfzeugnisse auf Anfrage.',
+      why_4_title: 'Hohe Lagerverfügbarkeit',
+      why_4_desc: 'Umfangreiches Lager an Bögen, T-Stücken, Klemmen und Rohren für Sofortversand.',
+      why_5_title: 'Schnelle Angebotserstellung',
+      why_5_desc: 'Prompte technische Rückmeldung per E-Mail und dediziertem WhatsApp Business Desk.',
+      why_6_title: 'Weltweite Logistik',
+      why_6_desc: 'Belieferung von Anlagenbauern und Verteilern in Europa, UAE, USA und Asien.',
+      why_video_title: 'Qualitätsprüfung und Beschaffungsübersicht',
+      why_video_desc: 'Sehen Sie unser elektropoliertes Prüfverfahren und die Ra-Messprotokolle.',
+      btn_video_demo: 'Qualitäts-Demo ansehen',
+      sec_about_eyebrow: 'Über Lotus Tubes',
+      sec_about_title: 'Ihr Partner für hygienische Edelstahllösungen',
+      sec_about_desc: 'Lotus Tubes ist ein führender Lieferant und Händler von Edelstahl-Sanitärrohren, Formstücken und Ventilen für sterile Anwendungen weltweit.',
+      stat_pharma: 'Pharma-Reinstqualität',
+      stat_finishes: 'Präzisions-Oberflächenfinish',
+      stat_compliance: 'A270 / A269 Konformität',
+      stat_traceability: 'MTC-Rückverfolgbarkeit',
+      btn_know_more: 'Mehr über uns erfahren',
+      banner_quote_title: 'Individuelles Angebot gewünscht?',
+      banner_quote_desc: 'Senden Sie Ihre Stückliste. Unser technischer Vertrieb antwortet innerhalb von 2 Stunden.',
+      banner_docs_title: 'Technische Dokumente benötigt?',
+      banner_docs_desc: 'WZP 3.1 &bull; Produktkataloge &bull; Maßtabellen &bull; Oberflächenleitfäden',
+      banner_docs_btn: 'Herunterladen',
+      footer_desc: 'Lotus Tubes ist ein verlässlicher Partner für hochwertige Sanitärrohre, Armaturen und Ventile aus Edelstahl SS 304 und SS 316L.',
+      footer_col_products: 'Sanitärprodukte',
+      footer_col_industries: 'Belieferte Branchen',
+      footer_col_info: 'Informationen &amp; Portal',
+      footer_col_office: 'Büro &amp; Vertrieb',
+      label_office: 'Hauptsitz:',
+      label_direct_sales: 'Direktvertrieb:',
+      footer_timing: 'Geschäftszeiten: Mo - Sa: 9:30 - 19:00 IST',
+      footer_rights: 'Alle Rechte vorbehalten. Hygienische Edelstahllösungen.'
+    },
+
+    fr: {
+      top_tagline: 'Tubes, Raccords et Vannes Sanitaires en Acier Inoxydable',
+      top_locations: 'Mumbai &bull; Fourniture Locale et Mondiale',
+      top_whatsapp: 'Assistance WhatsApp',
+      btn_get_quote: 'Demander un Devis',
+      nav_home: 'Accueil',
+      nav_about: 'À propos',
+      nav_products: 'Produits',
+      nav_industries: 'Industries',
+      nav_quality: 'Qualité &amp; Docs',
+      nav_resources: 'Ressources',
+      nav_blog: 'Blog',
+      nav_contact: 'Contact',
+      nav_crm: 'Portail CRM',
+      btn_request_quote: 'Demander un Devis',
+      mega_pipes: 'Tubes et Tuyauteries',
+      mega_fittings: 'Raccords Sanitaires',
+      mega_valves: 'Vannes et Robinets',
+      mega_focus: 'Focus Qualité',
+      mega_certified: 'Certifié Procédés Hygiéniques',
+      mega_desc: 'Disponible en SS 304 &amp; SS 316L avec finitions électropolies et certificats MTC 3.1.',
+      ind_pharma: 'Industrie Pharmaceutique',
+      ind_biotech: 'Biotechnologie &amp; Haute Pureté',
+      ind_dairy: 'Transformation Laitière',
+      ind_food: 'Agroalimentaire',
+      ind_brew: 'Brasseries &amp; Boissons',
+      ind_water: 'Eau Ultra-Pure &amp; EPP',
+      ind_chemical: 'Chimie Fine &amp; Cosmétique',
+      hero_eyebrow: "L'Excellence Qualité",
+      hero_title: 'Tubes, Raccords et Vannes Sanitaires en Inox',
+      hero_subtitle: 'Conçus pour les Applications de Procédés Hygiéniques',
+      hero_desc: 'Découvrez nos composants sanitaires en inox SS 304 et SS 316L avec finitions électropolies pour les industries pharmaceutique, laitière et agroalimentaire.',
+      badge_premium: 'Inox Premium<br>SS 304 / 316L',
+      badge_stock: 'Stock Prêt<br>à l\'Expédition',
+      badge_supply: 'Fourniture Mondiale<br>&amp; Inde',
+      badge_mtc: 'Certificats 3.1<br>&amp; Support',
+      btn_explore: 'Explorer les Produits',
+      btn_quote: 'Demander un Devis',
+      hero_tagline_1: 'Hygiénique.',
+      hero_tagline_2: 'Fiable.',
+      hero_tagline_3: 'Mondial.',
+      sec_range_eyebrow: 'Notre Gamme de Produits',
+      sec_range_title: 'Solutions Supérieures en Acier Inoxydable',
+      btn_view_all: 'Voir Tous les Produits',
+      link_view_products: 'Voir les Produits',
+      sec_featured_eyebrow: 'Inventaire Industriel Certifié',
+      sec_featured_title: 'Composants Sanitaires Vedettes',
+      sec_featured_desc: 'Stock immédiat disponible en finitions électropolie (EP) et polie mécaniquement (MP).',
+      btn_browse_catalogue: 'Consulter l\'Ensemble du Catalogue (+20)',
+      label_roughness: 'Rugosité (Ra):',
+      label_standard: 'Norme:',
+      btn_view_details: 'Voir Détails',
+      btn_get_quote_card: 'Demander un Devis',
+      btn_view_all_catalogue: 'Voir tous les produits dans le catalogue',
+      sec_industries_eyebrow: 'Industries que Nous Desservons',
+      sec_industries_title: 'Approuvé dans les Industries de Procédés Sensibles',
+      btn_view_all_industries: 'Voir Toutes les Industries',
+      sec_why_eyebrow: 'Pourquoi Lotus Tubes',
+      sec_why_title: 'Qualité. Stock. Service. Toujours.',
+      sec_why_desc: 'Fournisseur dédié de composants inox sanitaires, conçu pour une traçabilité intégrale.',
+      why_1_title: 'Intégrité des Matériaux',
+      why_1_desc: 'Stock complet en SS 304 et SS 316L répondant aux critères chimiques les plus sévères.',
+      why_2_title: 'Finition &amp; Précision',
+      why_2_desc: 'Finition électropolie avec Ra &le; 0.38 &mu;m pour un nettoyage CIP sans résidu.',
+      why_3_title: 'Traçabilité &amp; MTC',
+      why_3_desc: 'Certificats matière EN 10204 3.1 confirmant les essais mécaniques et de rugosité.',
+      why_4_title: 'Disponibilité Immédiate',
+      why_4_desc: 'Large stock de coudes, tés, colliers, joints et tubes prêt pour expédition urgente.',
+      why_5_title: 'Réponse Rapide aux Devis',
+      why_5_desc: 'Assistance technique rapide par e-mail et bureau WhatsApp dédié.',
+      why_6_title: 'Approvisionnement Mondial',
+      why_6_desc: 'Fourniture de skids et d\'usines en Europe, Moyen-Orient, USA et Asie.',
+      why_video_title: 'Aperçu du Contrôle Qualité et du Sourcing',
+      why_video_desc: 'Découvrez notre protocole d\'électropolissage et de mesure de rugosité Ra.',
+      btn_video_demo: 'Découvrir la Démo Qualité',
+      sec_about_eyebrow: 'À propos de Lotus Tubes',
+      sec_about_title: 'Votre Partenaire de Confiance en Inox Sanitaire',
+      sec_about_desc: 'Lotus Tubes est un fournisseur réputé de tubes sanitaires, raccords et vannes en inox haute pureté pour l\'industrie pharmaceutique et agroalimentaire.',
+      stat_pharma: 'Qualité Pharma Haute Pureté',
+      stat_finishes: 'Finition de Surface Précise',
+      stat_compliance: 'Conforme ASTM A270/A269',
+      stat_traceability: 'Support Traçabilité MTC',
+      btn_know_more: 'En savoir plus sur nous',
+      banner_quote_title: 'Besoin d\'un Devis Personnalisé ?',
+      banner_quote_desc: 'Envoyez votre bordereau quantitatif. Notre bureau d\'études répond sous 2 heures.',
+      banner_docs_title: 'Besoin de Documents Techniques ?',
+      banner_docs_desc: 'MTC &bull; Catalogues Produits &bull; Fiches Dimensionnelles &bull; Guides Ra',
+      banner_docs_btn: 'Télécharger',
+      footer_desc: 'Lotus Tubes est un fournisseur de premier plan en tubes, raccords et vannes sanitaires en inox SS 304 et SS 316L.',
+      footer_col_products: 'Produits Sanitaires',
+      footer_col_industries: 'Industries Desservies',
+      footer_col_info: 'Informations &amp; Portail',
+      footer_col_office: 'Bureau &amp; Expéditions',
+      label_office: 'Siège Social:',
+      label_direct_sales: 'Ventes Directes:',
+      footer_timing: 'Heures de bureau: Lun - Sam: 9:30 - 19:00 IST',
+      footer_rights: 'Tous droits réservés. Solutions Sanitaires en Acier Inoxydable.'
+    },
+
+    es: {
+      top_tagline: 'Tuberías, Conexiones y Válvulas Sanitarias de Acero Inoxidable',
+      top_locations: 'Bombay &bull; Suministro Nacional e Internacional',
+      top_whatsapp: 'Atención WhatsApp',
+      btn_get_quote: 'Cotizar Ahora',
+      nav_home: 'Inicio',
+      nav_about: 'Nosotros',
+      nav_products: 'Productos',
+      nav_industries: 'Industrias',
+      nav_quality: 'Calidad &amp; Docs',
+      nav_resources: 'Recursos',
+      nav_blog: 'Blog',
+      nav_contact: 'Contacto',
+      nav_crm: 'Portal CRM',
+      btn_request_quote: 'Solicitar Cotización',
+      mega_pipes: 'Tuberías Sanitarias',
+      mega_fittings: 'Conexiones y Accesorios',
+      mega_valves: 'Válvulas Higiénicas',
+      mega_focus: 'Enfoque Especial',
+      mega_certified: 'Certificado para Procesos Higiénicos',
+      mega_desc: 'Disponible en SS 304 y SS 316L con acabado EP/MP y certificados MTC 3.1 inmediatos.',
+      ind_pharma: 'Industria Farmacéutica',
+      ind_biotech: 'Biotecnología y Alta Pureza',
+      ind_dairy: 'Procesamiento de Lácteos',
+      ind_food: 'Alimentos y Bebidas',
+      ind_brew: 'Cervecerías y Destilerías',
+      ind_water: 'Agua Ultra Pura y WFI',
+      ind_chemical: 'Química Fina y Cosmética',
+      hero_eyebrow: 'El Creador de Calidad',
+      hero_title: 'Tuberías, Conexiones y Válvulas Sanitarias de Acero Inoxidable',
+      hero_subtitle: 'Diseñadas para Procesos Sanitarios e Higiénicos',
+      hero_desc: 'Explore componentes sanitarios de acero inoxidable en SS 304 y SS 316L con acabado electropulido para industrias farmacéuticas, lácteas y de alimentos.',
+      badge_premium: 'Acero Premium<br>SS 304 / 316L',
+      badge_stock: 'Inventario Listo<br>para Entrega',
+      badge_supply: 'Suministro Global<br>y Toda la India',
+      badge_mtc: 'Certificados MTC<br>y Soporte',
+      btn_explore: 'Explorar Productos',
+      btn_quote: 'Solicitar Cotización',
+      hero_tagline_1: 'Higiénico.',
+      hero_tagline_2: 'Confiable.',
+      hero_tagline_3: 'Global.',
+      sec_range_eyebrow: 'Nuestra Gama de Productos',
+      sec_range_title: 'Soluciones Sanitarias de Acero Inoxidable',
+      btn_view_all: 'Ver Todos los Productos',
+      link_view_products: 'Ver Productos',
+      sec_featured_eyebrow: 'Inventario Industrial Verificado',
+      sec_featured_title: 'Componentes Sanitarios Destacados',
+      sec_featured_desc: 'Disponibilidad inmediata en acabados electropulidos (EP) y pulido mecánico (MP).',
+      btn_browse_catalogue: 'Explorar Catálogo Completo (+20 Productos)',
+      label_roughness: 'Rugosidad (Ra):',
+      label_standard: 'Norma:',
+      btn_view_details: 'Ver Detalles',
+      btn_get_quote_card: 'Pedir Cotización',
+      btn_view_all_catalogue: 'Ver los más de 20 productos en el catálogo',
+      sec_industries_eyebrow: 'Industrias a las que Servimos',
+      sec_industries_title: 'Confiable en Múltiples Procesos Industriales',
+      btn_view_all_industries: 'Ver Todas las Industrias',
+      sec_why_eyebrow: 'Por Qué Elegir Lotus Tubes',
+      sec_why_title: 'Calidad. Existencias. Servicio. Siempre.',
+      sec_why_desc: 'Socio de confianza para plantas de proceso farmacéutico y alimentario de alta exigencia.',
+      why_1_title: 'Integridad del Material',
+      why_1_desc: 'Inventario completo en SS 304 y SS 316L conforme a normas químicas rigurosas.',
+      why_2_title: 'Acabado y Precisión',
+      why_2_desc: 'Acabado electropulido con Ra &le; 0.38 &mu;m para limpieza CIP garantizada.',
+      why_3_title: 'Trazabilidad y MTC',
+      why_3_desc: 'Certificados de calidad EN 10204 3.1 con composición química y ensayos mecánicos.',
+      why_4_title: 'Disponibilidad Inmediata',
+      why_4_desc: 'Stock continuo de codos, tees, clamps, empaques y tubería para despacho rápido.',
+      why_5_title: 'Respuesta Rápida en Cotizaciones',
+      why_5_desc: 'Atención técnica oportuna por correo y escritorio de WhatsApp empresarial.',
+      why_6_title: 'Suministro Internacional',
+      why_6_desc: 'Exportación regular a plantas y distribuidores en Europa, América y Medio Oriente.',
+      why_video_title: 'Resumen de Inspección de Calidad y Abastecimiento',
+      why_video_desc: 'Conozca nuestras pruebas de rugosidad superficial Ra y proceso de empaque.',
+      btn_video_demo: 'Ver Demostración de Calidad',
+      sec_about_eyebrow: 'Sobre Lotus Tubes',
+      sec_about_title: 'Su Socio de Confianza en Tubería Sanitaria',
+      sec_about_desc: 'Lotus Tubes suministra tuberías sanitarias, codos, tees y válvulas de alta calidad para empresas alimentarias y farmacéuticas en todo el mundo.',
+      stat_pharma: 'Grado Farmacéutico de Alta Pureza',
+      stat_finishes: 'Acabados Superficiales de Precisión',
+      stat_compliance: 'Cumplimiento ASTM A270 / A269',
+      stat_traceability: 'Soporte de Trazabilidad MTC',
+      btn_know_more: 'Conozca Más Sobre Nosotros',
+      banner_quote_title: '¿Busca una Cotización Personalizada?',
+      banner_quote_desc: 'Envíe sus especificaciones y nuestro equipo de ingeniería responderá en 2 horas.',
+      banner_docs_title: '¿Necesita Documentos Técnicos?',
+      banner_docs_desc: 'MTC &bull; Catálogos &bull; Tablas Dimensionales &bull; Guías de Acabado',
+      banner_docs_btn: 'Descargar',
+      footer_desc: 'Lotus Tubes es un proveedor confiable de tuberías sanitarias y válvulas en SS 304 y SS 316L.',
+      footer_col_products: 'Productos Sanitarios',
+      footer_col_industries: 'Industrias Atendidas',
+      footer_col_info: 'Información y Portal',
+      footer_col_office: 'Oficina y Ventas',
+      label_office: 'Oficina Registrada:',
+      label_direct_sales: 'Ventas Directas:',
+      footer_timing: 'Horario: Lun - Sáb: 9:30 AM - 7:00 PM IST',
+      footer_rights: 'Todos los derechos reservados. Soluciones Sanitarias de Acero Inoxidable.'
+    },
+
+    ru: {
+      top_tagline: 'Санитарные трубы, фитинги и клапаны из нержавеющей стали',
+      top_locations: 'Мумбаи &bull; Поставки по Индии и миру',
+      top_whatsapp: 'Чат в WhatsApp',
+      btn_get_quote: 'Получить расчет',
+      nav_home: 'Главная',
+      nav_about: 'О компании',
+      nav_products: 'Продукция',
+      nav_industries: 'Отрасли',
+      nav_quality: 'Качество &amp; Документы',
+      nav_resources: 'Ресурсы',
+      nav_blog: 'Блог',
+      nav_contact: 'Контакты',
+      nav_crm: 'CRM-портал',
+      btn_request_quote: 'Запросить КП',
+      mega_pipes: 'Трубы и трубопроводы',
+      mega_fittings: 'Фитинги и компоненты',
+      mega_valves: 'Клапаны и арматура',
+      mega_focus: 'Главный фокус',
+      mega_certified: 'Сертифицировано для чистых сред',
+      mega_desc: 'Сталь SS 304 и SS 316L с электрополировкой (EP/MP) и сертификатами 3.1.',
+      ind_pharma: 'Фармацевтическое производство',
+      ind_biotech: 'Биотехнологии и чистые среды',
+      ind_dairy: 'Молочная промышленность',
+      ind_food: 'Пищевое производство',
+      ind_brew: 'Пивоварение и дистилляция',
+      ind_water: 'Водоподготовка WFI и RO',
+      ind_chemical: 'Тонкая химия и косметика',
+      hero_eyebrow: 'Знак надежного качества',
+      hero_title: 'Санитарные трубы, фитинги и клапаны из нержавеющей стали',
+      hero_subtitle: 'Разработано для гигиенических и стерильных процессов',
+      hero_desc: 'Премиальные трубы и фитинги из нержавеющей стали SS 304 и SS 316L с электрополировкой для фармацевтики, молочной и пищевой промышленности.',
+      badge_premium: 'Премиум сталь<br>SS 304 / 316L',
+      badge_stock: 'Складской запас<br>в наличии',
+      badge_supply: 'Поставки по Индии<br>&amp; по всему миру',
+      badge_mtc: 'Сертификаты 3.1<br>&amp; поддержка',
+      btn_explore: 'Каталог продукции',
+      btn_quote: 'Запросить расчет',
+      hero_tagline_1: 'Гигиенично.',
+      hero_tagline_2: 'Надежно.',
+      hero_tagline_3: 'По всему миру.',
+      sec_range_eyebrow: 'Наш ассортимент',
+      sec_range_title: 'Премиальные решения из нержавеющей стали',
+      btn_view_all: 'Все товары',
+      link_view_products: 'Смотреть продукцию',
+      sec_featured_eyebrow: 'Проверенная номенклатура',
+      sec_featured_title: 'Популярные санитарные компоненты',
+      sec_featured_desc: 'Прецизионные компоненты из стали SS 304 и SS 316L для чистых производств.',
+      btn_browse_catalogue: 'Перейти в полный каталог (20+ товаров)',
+      label_roughness: 'Шероховатость (Ra):',
+      label_standard: 'Стандарт:',
+      btn_view_details: 'Подробнее',
+      btn_get_quote_card: 'Запросить цену',
+      btn_view_all_catalogue: 'Смотреть все 20+ товаров в каталоге',
+      sec_industries_eyebrow: 'Отрасли, которые мы снабжаем',
+      sec_industries_title: 'Надежный выбор для технологических линий',
+      btn_view_all_industries: 'Смотреть все отрасли',
+      sec_why_eyebrow: 'Почему выбирают Lotus Tubes',
+      sec_why_title: 'Качество. Склад. Сервис. Всегда.',
+      sec_why_desc: 'Ваш надежный партнер по поставкам санитарных трубопроводных систем с полной прослеживаемостью.',
+      why_1_title: 'Контроль состава стали',
+      why_1_desc: 'Постоянный складской запас сталей SS 304 и SS 316L с молибденом строго по стандартам.',
+      why_2_title: 'Чистота поверхности',
+      why_2_desc: 'Электрополировка Ra &le; 0.38 &mu;m для безразборной мойки CIP без застойных зон.',
+      why_3_title: 'Сертификаты EN 10204 3.1',
+      why_3_desc: 'Полный пакет документов с механическими и химическими испытаниями плавки.',
+      why_4_title: 'Складское наличие',
+      why_4_desc: 'Широкий запас отводов, тройников, хомутов, прокладок и труб к немедленной отгрузке.',
+      why_5_title: 'Быстрый расчет заявок',
+      why_5_desc: 'Оперативный расчет спецификаций по почте и в корпоративном WhatsApp.',
+      why_6_title: 'Международные поставки',
+      why_6_desc: 'Регулярный экспорт предприятиям Европы, Ближнего Востока и Азии.',
+      why_video_title: 'Обзор контроля качества и входной проверки',
+      why_video_desc: 'Посмотрите проверку шероховатости Ra и процедуру бережной упаковки продукции.',
+      btn_video_demo: 'Смотреть обзор качества',
+      sec_about_eyebrow: 'О компании Lotus Tubes',
+      sec_about_title: 'Ваш надежный партнер в области санитарной нержавеющей стали',
+      sec_about_desc: 'Lotus Tubes поставляет высококачественные трубы, отводы, тройники и клапаны фармацевтическим и пищевым заводам по всему миру.',
+      stat_pharma: 'Высокая фармацевтическая чистота',
+      stat_finishes: 'Прецизионная обработка поверхности',
+      stat_compliance: 'Стандарты ASTM A270 / A269',
+      stat_traceability: 'Полная прослеживаемость MTC',
+      btn_know_more: 'Узнать больше о нас',
+      banner_quote_title: 'Требуется индивидуальный расчет?',
+      banner_quote_desc: 'Отправьте спецификацию или чертежи. Наш инженерный отдел ответит в течение 2 часов.',
+      banner_docs_title: 'Нужна техническая документация?',
+      banner_docs_desc: 'Сертификаты 3.1 &bull; Каталоги &bull; Чертежи &bull; Таблицы шероховатости',
+      banner_docs_btn: 'Скачать',
+      footer_desc: 'Lotus Tubes — надежный поставщик санитарных труб и клапанов из стали SS 304 и SS 316L.',
+      footer_col_products: 'Санитарная продукция',
+      footer_col_industries: 'Отрасли применения',
+      footer_col_info: 'Информация и портал',
+      footer_col_office: 'Офис и поставки',
+      label_office: 'Юридический адрес:',
+      label_direct_sales: 'Отдел продаж:',
+      footer_timing: 'Режим работы: Пн - Сб: 9:30 - 19:00 IST',
+      footer_rights: 'Все права защищены. Санитарные решения из нержавеющей стали.'
+    }
+  };
+
+  function t(key, fallback = '') {
+    const lang = AppState.selectedLanguage || 'en';
+    if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+      return TRANSLATIONS[lang][key];
+    }
+    if (TRANSLATIONS['en'] && TRANSLATIONS['en'][key]) {
+      return TRANSLATIONS['en'][key];
+    }
+    return fallback || key;
+  }
+
+  function applyLanguage(langCode, showNotification = false) {
+    const langObj = SUPPORTED_LANGUAGES.find(l => l.code === langCode) || SUPPORTED_LANGUAGES[0];
+    AppState.selectedLanguage = langObj.code;
+    try {
+      localStorage.setItem('lotus_selected_language', langObj.code);
+    } catch (e) {
+      console.warn('LocalStorage unavailable for language preference.');
+    }
+
+    document.documentElement.lang = langObj.code;
+    if (langObj.rtl) {
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.removeAttribute('dir');
+    }
+
+    // Update top bar button label
+    const currentLangLabel = document.getElementById('current-lang-label');
+    if (currentLangLabel) {
+      currentLangLabel.textContent = `${langObj.short} (${langObj.nativeName})`;
+    }
+
+    // Update active state in desktop dropdown
+    const langDropdown = document.getElementById('lang-dropdown');
+    if (langDropdown) {
+      langDropdown.querySelectorAll('.lang-opt').forEach(opt => {
+        opt.classList.toggle('active', opt.getAttribute('data-lang') === langObj.code);
+      });
+    }
+
+    // Update active state in mobile drawer grid
+    const mobileLangGrid = document.getElementById('mobile-lang-grid');
+    if (mobileLangGrid) {
+      mobileLangGrid.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === langObj.code);
+      });
+    }
+
+    // Translate all static data-i18n elements in DOM
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const val = t(key);
+      if (val) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = val;
+        } else {
+          el.innerHTML = val;
+        }
+      }
+    });
+
+    // Re-render current public route so dynamic templates immediately translate
+    if (AppState.currentRoute !== 'crm') {
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) {
+        switch (AppState.currentRoute) {
+          case 'home':
+            mainContent.innerHTML = renderHomeView();
+            break;
+          case 'products':
+            mainContent.innerHTML = renderProductsView();
+            break;
+          case 'category':
+            mainContent.innerHTML = renderCategoryView(AppState.routeParam);
+            break;
+          case 'product':
+            mainContent.innerHTML = renderProductDetailView(AppState.routeParam);
+            break;
+          case 'industries':
+          case 'industry':
+            mainContent.innerHTML = renderIndustriesView(AppState.routeParam);
+            break;
+          case 'about':
+            mainContent.innerHTML = renderAboutView();
+            break;
+          case 'quality':
+            mainContent.innerHTML = renderQualityView();
+            break;
+          case 'resources':
+            mainContent.innerHTML = renderResourcesView();
+            break;
+          case 'blog':
+            mainContent.innerHTML = renderBlogView(AppState.routeParam);
+            break;
+          case 'contact':
+            mainContent.innerHTML = renderContactView();
+            break;
+          case 'quote':
+            mainContent.innerHTML = renderQuoteView();
+            break;
+          default:
+            mainContent.innerHTML = renderHomeView();
+            break;
+        }
+      }
+    }
+
+    if (showNotification) {
+      showToast(`${langObj.flag} Language switched to: ${langObj.nativeName} (${langObj.name})`, 'success');
+    }
+  }
+
+  function getStoredLanguage() {
+    try {
+      const stored = localStorage.getItem('lotus_selected_language');
+      if (stored && SUPPORTED_LANGUAGES.some(l => l.code === stored)) {
+        return stored;
+      }
+    } catch (e) {}
+    return 'en';
+  }
+
   const AppState = {
     currentRoute: 'home',
     routeParam: null,
@@ -1039,7 +1967,7 @@
       sort: 'featured'
     },
     crmSearch: '',
-    selectedLanguage: 'en',
+    selectedLanguage: getStoredLanguage(),
     modalOpen: false
   };
 
@@ -1070,47 +1998,47 @@
           <div class="hero-grid">
             
             <div class="hero-content">
-              <span class="hero-eyebrow">The Quality Maker</span>
+              <span class="hero-eyebrow">${t('hero_eyebrow', 'The Quality Maker')}</span>
               <h1 class="hero-title">
-                Stainless Steel Sanitary Pipes, Fittings &amp; Valves
+                ${t('hero_title', 'Stainless Steel Sanitary Pipes, Fittings &amp; Valves')}
               </h1>
               <h2 class="hero-subtitle">
-                Engineered for Hygienic Process Applications
+                ${t('hero_subtitle', 'Engineered for Hygienic Process Applications')}
               </h2>
               <p class="hero-description">
-                Explore stainless steel sanitary products in SS 304 and SS 316L, with available surface finishes and configurations suited to pharmaceutical, dairy, food &amp; beverage, and high-purity process industries.
+                ${t('hero_desc', 'Explore stainless steel sanitary products in SS 304 and SS 316L, with available surface finishes and configurations suited to pharmaceutical, dairy, food &amp; beverage, and high-purity process industries.')}
               </p>
 
               <!-- 4 Feature Badges (Matching Reference Layout) -->
               <div class="hero-badges-grid">
                 <div class="hero-badge-item">
                   <span class="hero-badge-icon">💎</span>
-                  <div class="hero-badge-label">Premium<br>SS 304 / 316L</div>
+                  <div class="hero-badge-label">${t('badge_premium', 'Premium<br>SS 304 / 316L')}</div>
                 </div>
                 <div class="hero-badge-item">
                   <span class="hero-badge-icon">📦</span>
-                  <div class="hero-badge-label">Ready<br>Stock Range</div>
+                  <div class="hero-badge-label">${t('badge_stock', 'Ready<br>Stock Range')}</div>
                 </div>
                 <div class="hero-badge-item">
                   <span class="hero-badge-icon">🌐</span>
-                  <div class="hero-badge-label">Global &amp; Pan<br>India Supply</div>
+                  <div class="hero-badge-label">${t('badge_supply', 'Global &amp; Pan<br>India Supply')}</div>
                 </div>
                 <div class="hero-badge-item">
                   <span class="hero-badge-icon">📋</span>
-                  <div class="hero-badge-label">MTC &amp; Technical<br>Assistance</div>
+                  <div class="hero-badge-label">${t('badge_mtc', 'MTC &amp; Technical<br>Assistance')}</div>
                 </div>
               </div>
 
               <!-- Primary CTAs -->
               <div class="hero-actions">
                 <a href="#products" class="btn btn--primary btn--lg">
-                  <span>Explore Products</span> &rarr;
+                  <span>${t('btn_explore', 'Explore Products')}</span> &rarr;
                 </a>
                 <a href="#quote" class="btn btn--outline-dark btn--lg">
-                  Request a Quote &rarr;
+                  ${t('btn_quote', 'Request a Quote')} &rarr;
                 </a>
                 <a href="https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20your%20sanitary%20stainless%20steel%20products." target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp btn--lg">
-                  <span>🟢 WhatsApp Enquiry</span>
+                  <span>🟢 ${t('top_whatsapp', 'WhatsApp Enquiry')}</span>
                 </a>
               </div>
             </div>
@@ -1118,7 +2046,7 @@
             <!-- Hero Visual Media & Tagline -->
             <div class="hero-media">
               <div class="hero-tagline-float">
-                <h3>Hygienic.<br>Reliable.<br>Global.</h3>
+                <h3>${t('hero_tagline_1', 'Hygienic.')}<br>${t('hero_tagline_2', 'Reliable.')}<br>${t('hero_tagline_3', 'Global.')}</h3>
                 <div class="underline-pink"></div>
               </div>
               <div class="hero-visual-card">
@@ -1138,10 +2066,10 @@
         <div class="site-container">
           <div class="section-header">
             <div>
-              <span class="section-eyebrow">Our Product Range</span>
-              <h2 class="section-title">Premium Stainless Steel Solutions</h2>
+              <span class="section-eyebrow">${t('sec_range_eyebrow', 'Our Product Range')}</span>
+              <h2 class="section-title">${t('sec_range_title', 'Premium Stainless Steel Solutions')}</h2>
             </div>
-            <a href="#products" class="btn btn--outline-dark">View All Products &rarr;</a>
+            <a href="#products" class="btn btn--outline-dark">${t('btn_view_all', 'View All Products')} &rarr;</a>
           </div>
 
           <div class="product-range-grid">
@@ -1155,7 +2083,7 @@
                   <p class="range-card__desc">${cat.desc}</p>
                   <div class="range-card__footer">
                     <a href="#category/${cat.slug}" class="range-card__link">
-                      View Products <span>&rarr;</span>
+                      ${t('link_view_products', 'View Products')} <span>&rarr;</span>
                     </a>
                   </div>
                 </div>
@@ -1170,11 +2098,11 @@
         <div class="site-container">
           <div class="section-header">
             <div>
-              <span class="section-eyebrow">Monopoly &amp; Priority Range</span>
-              <h2 class="section-title">Priority Stainless Steel Sanitary Products</h2>
-              <p class="section-subtitle">Precision components across SS 304 &amp; SS 316L for high-cleanliness applications.</p>
+              <span class="section-eyebrow">${t('sec_featured_eyebrow', 'Monopoly &amp; Priority Range')}</span>
+              <h2 class="section-title">${t('sec_featured_title', 'Priority Stainless Steel Sanitary Products')}</h2>
+              <p class="section-subtitle">${t('sec_featured_desc', 'Precision components across SS 304 &amp; SS 316L for high-cleanliness applications.')}</p>
             </div>
-            <a href="#products" class="btn btn--primary">Browse Complete 20+ Catalogue &rarr;</a>
+            <a href="#products" class="btn btn--primary">${t('btn_browse_catalogue', 'Browse Complete 20+ Catalogue')} &rarr;</a>
           </div>
 
           <div class="featured-products-grid">
@@ -1193,12 +2121,12 @@
                     <a href="#product/${prod.slug}">${prod.name}</a>
                   </h3>
                   <p class="product-card__specs">
-                    <strong>Roughness:</strong> ${prod.roughness || 'Hygienic standard'}<br>
-                    <strong>Standard:</strong> ${prod.standard}
+                    <strong>${t('label_roughness', 'Roughness:')}</strong> ${prod.roughness || 'Hygienic standard'}<br>
+                    <strong>${t('label_standard', 'Standard:')}</strong> ${prod.standard}
                   </p>
                   <div class="product-card__actions">
-                    <a href="#product/${prod.slug}" class="btn btn--outline-dark btn--sm">View Details</a>
-                    <button type="button" class="btn btn--primary btn--sm quick-rfq-btn" data-product-id="${prod.id}" data-product-name="${prod.name}">Get a Quote</button>
+                    <a href="#product/${prod.slug}" class="btn btn--outline-dark btn--sm">${t('btn_view_details', 'View Details')}</a>
+                    <button type="button" class="btn btn--primary btn--sm quick-rfq-btn" data-product-id="${prod.id}" data-product-name="${prod.name}">${t('btn_get_quote_card', 'Get a Quote')}</button>
                   </div>
                 </div>
               </article>
@@ -1207,7 +2135,7 @@
 
           <div class="load-more-container mt-3">
             <a href="#products" class="btn btn--outline-dark btn--lg">
-              View All 20+ Industrial Products in Catalogue &rarr;
+              ${t('btn_view_all_catalogue', 'View All 20+ Industrial Products in Catalogue')} &rarr;
             </a>
           </div>
         </div>
@@ -1218,10 +2146,10 @@
         <div class="site-container">
           <div class="section-header">
             <div>
-              <span class="section-eyebrow">Industries We Serve</span>
-              <h2 class="section-title">Trusted Across Multiple Process Industries</h2>
+              <span class="section-eyebrow">${t('sec_industries_eyebrow', 'Industries We Serve')}</span>
+              <h2 class="section-title">${t('sec_industries_title', 'Trusted Across Multiple Process Industries')}</h2>
             </div>
-            <a href="#industries" class="btn btn--outline-dark">View All Industries &rarr;</a>
+            <a href="#industries" class="btn btn--outline-dark">${t('btn_view_all_industries', 'View All Industries')} &rarr;</a>
           </div>
 
           <div class="industries-scroll-grid">
@@ -1244,41 +2172,41 @@
       <section class="why-section" id="section-why" aria-label="Why Lotus Tubes">
         <div class="site-container">
           <div class="section-header section-header--center">
-            <span class="section-eyebrow">Why Choose Lotus Tubes</span>
-            <h2 class="section-title">Quality. Stock. Service. Always.</h2>
-            <p class="section-subtitle">Dedicated supplier of hygienic stainless steel components, engineered for integrity and traceability.</p>
+            <span class="section-eyebrow">${t('sec_why_eyebrow', 'Why Choose Lotus Tubes')}</span>
+            <h2 class="section-title">${t('sec_why_title', 'Quality. Stock. Service. Always.')}</h2>
+            <p class="section-subtitle">${t('sec_why_desc', 'Dedicated supplier of hygienic stainless steel components, engineered for integrity and traceability.')}</p>
           </div>
 
           <div class="why-grid">
             <div class="why-card">
               <div class="why-card__icon">🔬</div>
-              <h3 class="why-card__title">Material Integrity</h3>
-              <p class="why-card__desc">Complete stock across SS 304 and molybdenum-rich SS 316L, conforming to strict chemical composition thresholds.</p>
+              <h3 class="why-card__title">${t('why_1_title', 'Material Integrity')}</h3>
+              <p class="why-card__desc">${t('why_1_desc', 'Complete stock across SS 304 and molybdenum-rich SS 316L, conforming to strict chemical composition thresholds.')}</p>
             </div>
             <div class="why-card">
               <div class="why-card__icon">⚡</div>
-              <h3 class="why-card__title">Finish &amp; Precision</h3>
-              <p class="why-card__desc">Available Electro-Polished (EP) with Ra &le; 0.38 &mu;m and Mechanical Polished (MP) finishes tailored for CIP cleanliness.</p>
+              <h3 class="why-card__title">${t('why_2_title', 'Finish &amp; Precision')}</h3>
+              <p class="why-card__desc">${t('why_2_desc', 'Available Electro-Polished (EP) with Ra &le; 0.38 &mu;m and Mechanical Polished (MP) finishes tailored for CIP cleanliness.')}</p>
             </div>
             <div class="why-card">
               <div class="why-card__icon">📑</div>
-              <h3 class="why-card__title">Traceability &amp; MTC</h3>
-              <p class="why-card__desc">Complete EN 10204 3.1 Material Test Certificates confirming mechanical, chemical, and roughness properties upon request.</p>
+              <h3 class="why-card__title">${t('why_3_title', 'Traceability &amp; MTC')}</h3>
+              <p class="why-card__desc">${t('why_3_desc', 'Complete EN 10204 3.1 Material Test Certificates confirming mechanical, chemical, and roughness properties upon request.')}</p>
             </div>
             <div class="why-card">
               <div class="why-card__icon">📦</div>
-              <h3 class="why-card__title">Ready Stock Availability</h3>
-              <p class="why-card__desc">Broad domestic stockholding of sanitary bends, tees, clamps, gaskets, and pipes ready for immediate dispatch.</p>
+              <h3 class="why-card__title">${t('why_4_title', 'Ready Stock Availability')}</h3>
+              <p class="why-card__desc">${t('why_4_desc', 'Broad domestic stockholding of sanitary bends, tees, clamps, gaskets, and pipes ready for immediate dispatch.')}</p>
             </div>
             <div class="why-card">
               <div class="why-card__icon">🤝</div>
-              <h3 class="why-card__title">Quotation Assistance</h3>
-              <p class="why-card__desc">Fast technical response via mail and dedicated WhatsApp Business desk with full BOQ item breakdown.</p>
+              <h3 class="why-card__title">${t('why_5_title', 'Quotation Assistance')}</h3>
+              <p class="why-card__desc">${t('why_5_desc', 'Fast technical response via mail and dedicated WhatsApp Business desk with full BOQ item breakdown.')}</p>
             </div>
             <div class="why-card">
               <div class="why-card__icon">🌍</div>
-              <h3 class="why-card__title">Global Sourcing Support</h3>
-              <p class="why-card__desc">Supplying process plants, distributors, and skid fabricators across India, Europe, UAE, USA, and Southeast Asia.</p>
+              <h3 class="why-card__title">${t('why_6_title', 'Global Sourcing Support')}</h3>
+              <p class="why-card__desc">${t('why_6_desc', 'Supplying process plants, distributors, and skid fabricators across India, Europe, UAE, USA, and Southeast Asia.')}</p>
             </div>
           </div>
 
@@ -1289,12 +2217,12 @@
                 ▶
               </button>
               <div class="why-video-bar__text">
-                <h4>Watch Sourcing &amp; Quality Inspection Overview</h4>
-                <p>See our multi-stage electro-polishing verification, surface Ra testing, and packaging protocol.</p>
+                <h4>${t('why_video_title', 'Watch Sourcing &amp; Quality Inspection Overview')}</h4>
+                <p>${t('why_video_desc', 'See our multi-stage electro-polishing verification, surface Ra testing, and packaging protocol.')}</p>
               </div>
             </div>
             <button type="button" class="btn btn--outline-light" id="open-process-video-btn">
-              Explore Quality Demo &rarr;
+              ${t('btn_video_demo', 'Explore Quality Demo')} &rarr;
             </button>
           </div>
 
@@ -1314,34 +2242,34 @@
             </div>
 
             <div class="about-preview-content">
-              <span class="section-eyebrow">About Lotus Tubes</span>
-              <h2 class="section-title">Your Trusted Partner in Stainless Steel Solutions</h2>
+              <span class="section-eyebrow">${t('sec_about_eyebrow', 'About Lotus Tubes')}</span>
+              <h2 class="section-title">${t('sec_about_title', 'Your Trusted Partner in Stainless Steel Solutions')}</h2>
               <p>
-                Lotus Tubes (a venture of Lotus Impex, Mumbai) is a dedicated supplier and stockist of high-quality stainless steel sanitary pipes, pipe fittings, and valves. Catering to pharmaceutical, dairy, food &amp; beverage, breweries, water treatment, and chemical industries across India and worldwide.
+                ${t('sec_about_desc', 'Lotus Tubes (a venture of Lotus Impex, Mumbai) is a dedicated supplier and stockist of high-quality stainless steel sanitary pipes, pipe fittings, and valves. Catering to pharmaceutical, dairy, food &amp; beverage, breweries, water treatment, and chemical industries across India and worldwide.')}
               </p>
               
               <!-- Factual Capabilities & Metrics -->
               <div class="stats-counter-grid">
                 <div class="stat-box">
                   <div class="stat-box__number">SS 316L</div>
-                  <div class="stat-box__label">High-Purity Pharma Grade</div>
+                  <div class="stat-box__label">${t('stat_pharma', 'High-Purity Pharma Grade')}</div>
                 </div>
                 <div class="stat-box">
                   <div class="stat-box__number">EP / MP</div>
-                  <div class="stat-box__label">Precision Surface Finishes</div>
+                  <div class="stat-box__label">${t('stat_finishes', 'Precision Surface Finishes')}</div>
                 </div>
                 <div class="stat-box">
                   <div class="stat-box__number">ASTM</div>
-                  <div class="stat-box__label">A270 / A269 Compliance</div>
+                  <div class="stat-box__label">${t('stat_compliance', 'A270 / A269 Compliance')}</div>
                 </div>
                 <div class="stat-box">
                   <div class="stat-box__number">100%</div>
-                  <div class="stat-box__label">MTC Traceability Support</div>
+                  <div class="stat-box__label">${t('stat_traceability', 'MTC Traceability Support')}</div>
                 </div>
               </div>
 
               <a href="#about" class="btn btn--primary btn--lg">
-                <span>Know More About Us</span> &rarr;
+                <span>${t('btn_know_more', 'Know More About Us')}</span> &rarr;
               </a>
             </div>
 
@@ -2138,7 +3066,7 @@
                 <img src="${createProductSVG(post.title, post.category, '#10263D')}" alt="${post.title}" class="range-card__img">
               </div>
               <div class="range-card__body">
-                <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary-pink); text-transform: uppercase; margin-bottom: 6px;">
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; margin-bottom: 6px;">
                   ${post.category} &bull; ${post.readTime}
                 </div>
                 <h3 class="range-card__title">
@@ -2437,7 +3365,7 @@
             <span class="crm-kpi-label">New &amp; Unassigned</span>
             <span class="crm-kpi-icon">⚡</span>
           </div>
-          <div class="crm-kpi-value" style="color: var(--primary-pink);">${newEnquiries}</div>
+          <div class="crm-kpi-value" style="color: var(--primary-blue);">${newEnquiries}</div>
           <div class="crm-kpi-sub">Requires same-day RFQ</div>
         </div>
 
@@ -2522,9 +3450,9 @@
               <text x="385" y="28" font-size="10" font-weight="bold" fill="#10263D" text-anchor="middle">51</text>
 
               <!-- Oct (Current) -->
-              <rect x="445" y="20" width="30" height="130" rx="4" fill="#F00078"/>
-              <text x="460" y="168" font-size="11" font-weight="bold" fill="#F00078" text-anchor="middle">Oct</text>
-              <text x="460" y="14" font-size="11" font-weight="bold" fill="#F00078" text-anchor="middle">58</text>
+              <rect x="445" y="20" width="30" height="130" rx="4" fill="#0284C7"/>
+              <text x="460" y="168" font-size="11" font-weight="bold" fill="#0284C7" text-anchor="middle">Oct</text>
+              <text x="460" y="14" font-size="11" font-weight="bold" fill="#0284C7" text-anchor="middle">58</text>
             </svg>
             <div style="font-size: 0.8rem; color: var(--text-secondary); text-align: right; margin-top: 8px;">
               * Showing RFQs captured through Website, WhatsApp &amp; Direct Sourcing
@@ -2599,7 +3527,7 @@
                   </td>
                   <td>
                     <span>${e.product}</span><br>
-                    <small style="color: var(--primary-pink);">${e.quantity}</small>
+                    <small style="color: var(--primary-blue);">${e.quantity}</small>
                   </td>
                   <td>${e.assignedTo}</td>
                   <td><span class="priority-badge priority--${e.priority.toLowerCase()}">${e.priority}</span></td>
@@ -2682,7 +3610,7 @@
                   </td>
                   <td>
                     <strong>${e.product}</strong><br>
-                    <small style="color: var(--primary-pink);">${e.quantity} (${e.grade})</small>
+                    <small style="color: var(--primary-blue);">${e.quantity} (${e.grade})</small>
                   </td>
                   <td>${e.assignedTo}</td>
                   <td>
@@ -2751,7 +3679,7 @@
                   <td>${c.location}</td>
                   <td><span class="badge badge--steel">${c.industry}</span></td>
                   <td>${c.enquiriesCount} RFQs</td>
-                  <td><strong style="color: var(--primary-pink);">${c.totalBusiness}</strong></td>
+                  <td><strong style="color: var(--primary-blue);">${c.totalBusiness}</strong></td>
                 </tr>
               `).join('')}
             </tbody>
@@ -2829,7 +3757,7 @@
               ${crmData.tasks.map(t => `
                 <tr>
                   <td>
-                    <input type="checkbox" class="crm-task-toggle" data-task-id="${t.id}" ${t.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: var(--primary-pink);">
+                    <input type="checkbox" class="crm-task-toggle" data-task-id="${t.id}" ${t.completed ? 'checked' : ''} style="width: 18px; height: 18px; accent-color: var(--primary-blue);">
                   </td>
                   <td style="${t.completed ? 'text-decoration: line-through; color: var(--text-muted);' : 'font-weight: 600;'}">
                     ${t.title}
@@ -2925,7 +3853,7 @@
                 <strong>38%</strong>
               </div>
               <div style="background: var(--border-light); height: 8px; border-radius: 4px; overflow: hidden;">
-                <div style="background: var(--primary-pink); width: 38%; height: 100%;"></div>
+                <div style="background: var(--primary-blue); width: 38%; height: 100%;"></div>
               </div>
             </div>
             <div>
@@ -3366,28 +4294,59 @@
       });
     }
 
-    // Language Dropdown Simulation
+    // Language Dropdown & Multi-Language Translation System
     const langBtn = document.getElementById('lang-btn');
     const langDropdown = document.getElementById('lang-dropdown');
-    const currentLangLabel = document.getElementById('current-lang-label');
     if (langBtn && langDropdown) {
       langBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        langDropdown.classList.toggle('show');
+        const isOpen = langDropdown.classList.toggle('show');
+        langBtn.classList.toggle('open', isOpen);
+        langBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
-      document.addEventListener('click', () => langDropdown.classList.remove('show'));
+
+      document.addEventListener('click', (e) => {
+        if (!langDropdown.contains(e.target) && !langBtn.contains(e.target)) {
+          langDropdown.classList.remove('show');
+          langBtn.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && langDropdown.classList.contains('show')) {
+          langDropdown.classList.remove('show');
+          langBtn.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
       langDropdown.querySelectorAll('.lang-opt').forEach(opt => {
         opt.addEventListener('click', (e) => {
           e.stopPropagation();
           const lang = opt.getAttribute('data-lang');
-          currentLangLabel.textContent = opt.textContent;
-          langDropdown.querySelectorAll('.lang-opt').forEach(o => o.classList.remove('active'));
-          opt.classList.add('active');
+          applyLanguage(lang, true);
           langDropdown.classList.remove('show');
-          showToast(`Language set to: ${opt.textContent} (Demonstration)`, 'info');
+          langBtn.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', 'false');
         });
       });
     }
+
+    // Mobile Drawer Language Switcher
+    const mobileLangGrid = document.getElementById('mobile-lang-grid');
+    if (mobileLangGrid) {
+      mobileLangGrid.querySelectorAll('.mobile-lang-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const lang = btn.getAttribute('data-lang');
+          applyLanguage(lang, true);
+        });
+      });
+    }
+
+    // Apply stored or default language on initial load
+    applyLanguage(AppState.selectedLanguage, false);
 
     // Global Search Modal Toggle
     const searchModal = document.getElementById('search-modal');
@@ -3426,7 +4385,7 @@
             <div class="search-result-name">${p.name}</div>
             <div class="search-result-category">${p.category} &bull; ${p.material}</div>
           </div>
-          <span style="color: var(--primary-pink); font-weight: 700; font-size: 0.85rem;">View &rarr;</span>
+          <span style="color: var(--primary-blue); font-weight: 700; font-size: 0.85rem;">View &rarr;</span>
         </a>
       `).join('');
     }
