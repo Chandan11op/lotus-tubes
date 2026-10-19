@@ -75,7 +75,7 @@
       name: 'Sanitary Pipes & Tubes',
       desc: 'SS 304 and SS 316L high-purity sanitary tubing with Electro Polished (EP) and Mechanical Polished (MP) finishes conforming to ASTM A270 & A269.',
       icon: '📏',
-      image: createProductSVG('Sanitary Pipes & Tubes', 'Pipes & Tubing', '#F00078'),
+      image: 'assets/images/products/pipes/ss-316l-ep-pipe.svg',
       subcategories: ['EP Sanitary Pipe', 'MP Sanitary Pipe', 'Seamless Tube', 'Welded Tube']
     },
     {
@@ -84,7 +84,7 @@
       name: 'Sanitary Pipe Fittings',
       desc: 'Hygienic 90° and 45° bends, equal tees, reducing tees, concentric & eccentric reducers engineered with smooth internal radiuses for fluid cleanliness.',
       icon: '🔀',
-      image: createProductSVG('Sanitary Pipe Fittings', 'Bends, Tees & Reducers', '#10263D'),
+      image: 'assets/images/products/fittings/ss-sanitary-90-bend.svg',
       subcategories: ['Sanitary Bends', 'Equal Tees', 'Reducing Tees', 'Concentric Reducers', 'Eccentric Reducers']
     },
     {
@@ -93,7 +93,7 @@
       name: 'Tri-Clamp Fittings & Components',
       desc: 'Sanitary Tri-Clamp ferrules, heavy-duty single/double pin clamps, SMS unions, DIN unions, and blind end caps for rapid hygienic disassembly.',
       icon: '🔗',
-      image: createProductSVG('Tri-Clamp Components', 'Ferrules & Clamps', '#F00078'),
+      image: 'assets/images/products/accessories/ss-tri-clamp-clamp.svg',
       subcategories: ['TC Ferrules', 'TC Clamps', 'SMS Unions', 'DIN Unions', 'TC End Caps']
     },
     {
@@ -102,7 +102,7 @@
       name: 'Sanitary Gaskets',
       desc: 'FDA & USP Class VI compliant sealing gaskets in Silicone, EPDM, PTFE, Viton (FKM), and NBR for leak-free hygienic pipe joints.',
       icon: '⭕',
-      image: createProductSVG('Sanitary Gaskets', 'Food-Grade Elastomers', '#0284C7'),
+      image: 'assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
       subcategories: ['Silicone Gaskets', 'EPDM Gaskets', 'PTFE Gaskets', 'Viton Gaskets', 'Manhole Gaskets']
     },
     {
@@ -111,7 +111,7 @@
       name: 'Manual Sanitary Valves',
       desc: 'Hygienic sanitary butterfly valves, multi-position pull/gripper handles, 3-piece ball valves with TC ends, non-return valves, and diaphragm valves.',
       icon: '🚰',
-      image: createProductSVG('Manual Sanitary Valves', 'Butterfly & Diaphragm', '#10B981'),
+      image: 'assets/images/products/valves/ss-sanitary-butterfly-valve.svg',
       subcategories: ['Butterfly Valves', 'Diaphragm Valves', '3-Piece Ball Valves', 'Sampling Valves', 'Check Valves']
     },
     {
@@ -120,7 +120,7 @@
       name: 'Pneumatic & Automated Valves',
       desc: 'Pneumatically actuated sanitary ball valves, automated diaphragm valves with control heads, safety switches, and process automation accessories.',
       icon: '⚡',
-      image: createProductSVG('Pneumatic & Automated Valves', 'Actuation & Automation', '#8B5CF6'),
+      image: 'assets/images/products/valves/pneumatic-sanitary-ball-valve.svg',
       subcategories: ['Pneumatic Diaphragm', 'Pneumatic Ball Valve', 'Control Tops', 'Actuator Accessories']
     },
     {
@@ -129,7 +129,7 @@
       name: 'Tank Cleaning Accessories',
       desc: 'Fixed and 360° rotary spray balls, sanitary manhole covers (round/oval/pressure), CIP tank vent filter housings, and vessel sight glasses.',
       icon: '🚿',
-      image: createProductSVG('Tank Cleaning Accessories', 'Spray Balls & Manholes', '#F59E0B'),
+      image: 'assets/images/products/accessories/ss-sanitary-spray-ball.svg',
       subcategories: ['Rotary Spray Balls', 'Static Spray Balls', 'Pressure Manholes', 'Tank Sight Glass']
     },
     {
@@ -138,7 +138,7 @@
       name: 'Custom Hygienic Assemblies',
       desc: 'Drawing-based sanitary pipe spools, fabricated manifolds, instrument tees, and specialized stainless steel transfer panels.',
       icon: '⚙️',
-      image: createProductSVG('Custom Hygienic Assemblies', 'Spools & Manifolds', '#64748B'),
+      image: 'assets/images/products/accessories/custom-assemblies.svg',
       subcategories: ['Sanitary Spools', 'Custom Manifolds', 'Instrument Connections', 'Transition Fittings']
     }
   ];
@@ -163,7 +163,7 @@
       wallThickness: '1.2 mm, 1.5 mm, 1.65 mm (16G), 2.0 mm',
       length: '6.0 Meters Standard (Custom cut lengths available)',
       mtc: 'EN 10204 3.1 Material Test Certificate supplied',
-      image: createProductSVG('SS 316L EP Sanitary Pipe', 'Pipes & Tubes', '#F00078'),
+      image: 'assets/images/products/pipes/ss-316l-ep-pipe.svg',
       overview: 'SS 316L Electro Polished Sanitary Pipe is the gold standard for high-purity pharmaceutical, biotechnology, and sterile process applications. The electrochemical polishing process removes surface microscopic peaks and crevices, delivering ultra-smooth hygienic contact surfaces that eliminate bacterial harborage, minimize biofilm formation, and resist corrosive cleaning agents.',
       applications: ['Water For Injection (WFI) loops', 'Bio-pharmaceutical bulk manufacturing', 'High-purity sterile liquid transfer', 'Critical cleanroom piping', 'Biotech fermenter piping']
     },
@@ -185,7 +185,7 @@
       wallThickness: '1.2 mm to 2.0 mm',
       length: '6.0 Meters standard',
       mtc: 'Available upon dispatch',
-      image: createProductSVG('SS 304 EP Sanitary Pipe', 'Pipes & Tubes', '#10263D'),
+      image: 'assets/images/products/pipes/ss-304-ep-pipe.svg',
       overview: 'SS 304 EP Sanitary Pipes provide exceptional surface cleanliness and cleanability for food, dairy, and beverage processing systems requiring hygienic standards at cost-efficient operating economics.',
       applications: ['Dairy milk handling lines', 'Brewery cellar piping', 'Beverage and juice blending', 'Pure food ingredient pipelines']
     },
@@ -207,7 +207,7 @@
       wallThickness: '1.5 mm, 1.65 mm, 2.0 mm',
       length: '6.0 Meters',
       mtc: 'Available with chemical & mechanical analysis',
-      image: createProductSVG('SS 316L MP Sanitary Pipe', 'Pipes & Tubes', '#F00078'),
+      image: 'assets/images/products/pipes/ss-316l-mp-pipe.svg',
       overview: 'Precision mechanically polished SS 316L tube designed for sanitary process piping where electro-polishing is not mandatorily specified, delivering superior molybdenum-assisted corrosion resistance.',
       applications: ['Personal care formulations', 'Nutraceuticals transfer', 'Purified water distribution', 'Food sauce and condiment lines']
     },
@@ -229,9 +229,31 @@
       wallThickness: '1.2 mm to 1.65 mm',
       length: '6.0 Meters',
       mtc: 'Supplied with test report',
-      image: createProductSVG('SS 304 MP Sanitary Pipe', 'Pipes & Tubes', '#10263D'),
+      image: 'assets/images/products/pipes/ss-304-mp-pipe.svg',
       overview: 'Standard hygienic stainless steel tube with mirror/satin mechanical polish, widely utilized in food processing facilities and commercial dairy setups across India and international markets.',
       applications: ['Milk pasteurization units', 'Beverage filling lines', 'CIP recovery piping', 'Industrial kitchen process plants']
+    },
+    {
+      id: 'ss-304-seamless-tube',
+      name: 'SS 304 Seamless Sanitary Tube',
+      slug: 'ss-304-seamless-tube',
+      category: 'Sanitary Pipes & Tubes',
+      categorySlug: 'sanitary-pipes',
+      priorityRank: 5,
+      featured: true,
+      material: 'SS 304',
+      finish: 'Electro Polished (EP)',
+      roughness: 'Ra ≤ 0.4 µm Inside',
+      manufacturingType: 'Seamless Cold Drawn',
+      standard: 'ASTM A270 / ASTM A269',
+      connection: 'Plain End / Butt Weld',
+      sizes: '1/2" to 4" OD',
+      wallThickness: '1.2 mm to 2.0 mm',
+      length: '6.0 Meters Standard',
+      mtc: 'EN 10204 3.1 Material Test Certificate supplied',
+      image: 'assets/images/products/pipes/ss-304-seamless-tube.svg',
+      overview: 'SS 304 Seamless Sanitary Tube offers seamless cold-drawn construction for critical hygienic utility and processing lines requiring uniform grain structure, pressure integrity, and zero weld seam.',
+      applications: ['Clean utilities and pure steam distribution', 'High pressure hygienic food lines', 'Dairy processing lines', 'Specialty chemical and sanitary processing']
     },
     {
       id: 'ss-316l-sanitary-fittings',
@@ -382,7 +404,7 @@
       wallThickness: '1.6 mm standard',
       length: '12.7 mm, 21.5 mm, 28.6 mm length options',
       mtc: 'Available with heat number marking',
-      image: createProductSVG('SS Tri-Clamp Ferrule', 'Tri-Clamp', '#F00078'),
+      image: 'assets/images/products/accessories/ss-tri-clamp-ferrule.svg',
       overview: 'Precision-machined sanitary Tri-Clamp ferrules provide quick-disconnect, leak-tight joints when paired with sanitary gaskets and heavy-duty clamps, conforming to international hygienic standards.',
       applications: ['Tank nozzle connections', 'Modular skid interconnection', 'Frequent washdown equipment connections']
     },
@@ -558,7 +580,7 @@
       wallThickness: 'High pressure rating',
       length: 'Compact',
       mtc: 'Supplied with certification',
-      image: createProductSVG('SS Sampling Valve', 'Valves', '#0284C7'),
+      image: 'assets/images/products/valves/ss-sanitary-sampling-valve.svg',
       overview: 'Specially engineered for aseptic extraction of representative liquid samples from sterile bioreactors, fermenters, or piping lines without exposing the system to contamination.',
       applications: ['Microbiological quality sampling', 'Fermenter cell count sampling', 'Dairy product QA lab verification']
     },
@@ -580,7 +602,7 @@
       wallThickness: 'Flow rate: 2 to 25 m³/h at 2-3 bar',
       length: 'Compact vessel entry',
       mtc: 'Material test certificate',
-      image: createProductSVG('SS Sanitary Spray Ball', 'Tank Cleaning', '#F59E0B'),
+      image: 'assets/images/products/accessories/ss-sanitary-spray-ball.svg',
       overview: 'Self-lubricating, fluid-driven 360-degree rotating spray balls delivering high-impact cleaning jet coverage across tank interior walls for automated Clean-In-Place (CIP) cycles.',
       applications: ['Milk storage tanks', 'Pharmaceutical compounding vessels', 'Yeast tanks and brewery fermenters']
     }
@@ -1100,7 +1122,7 @@
                 <div class="underline-pink"></div>
               </div>
               <div class="hero-visual-card">
-                <img src="${PRODUCTS[0].image}" alt="Polished Stainless Steel Sanitary Pipes and Tri-Clamp Fittings" class="hero-img">
+                <img src="assets/images/hero/sanitary-hero-pipes.svg" alt="Polished Stainless Steel Sanitary Pipes and Tri-Clamp Fittings" class="hero-img" onerror="this.onerror=null;this.src=${PRODUCTS[0].image};">
                 <div class="hero-spec-pill">
                   <strong>SS 316L EP</strong> &bull; Ra &le; 0.38 &mu;m &bull; ASTM A270 Certified
                 </div>
@@ -1285,7 +1307,7 @@
           <div class="about-preview-grid">
             
             <div class="about-preview-media">
-              <img src="${createProductSVG('Lotus Tubes Distribution Facility', 'Mumbai Office & Sourcing Hub', '#10263D')}" alt="Lotus Tubes Office and Warehousing Facility" class="about-preview-img">
+              <img src="assets/images/company/lotus-tubes-facility.svg" alt="Lotus Tubes Office and Warehousing Facility" class="about-preview-img">
               <div class="about-building-overlay">
                 <img src="Lotus Tubes Logo.png" alt="Lotus Tubes" class="about-building-logo">
               </div>
@@ -1773,7 +1795,7 @@
             </div>
 
             <div>
-              <img src="${createProductSVG(ind.name + ' System', 'Industrial Sanitary Piping Skid', '#10263D')}" alt="${ind.name} Installation" style="border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+              <img src="assets/images/industries/${ind.slug}.svg" alt="${ind.name} Installation" style="border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);" onerror="this.onerror=null;this.src='assets/images/hero/sanitary-hero-pipes.svg';">
             </div>
           </div>
 
@@ -1821,7 +1843,7 @@
           ${INDUSTRIES.map(ind => `
             <article class="range-card">
               <div class="range-card__img-wrap">
-                <img src="${createProductSVG(ind.name, 'Process Industry', '#10263D')}" alt="${ind.name}" class="range-card__img">
+                <img src="assets/images/industries/${ind.slug}.svg" alt="${ind.name}" class="range-card__img" loading="lazy" onerror="this.onerror=null;this.src='assets/images/hero/sanitary-hero-pipes.svg';">
               </div>
               <div class="range-card__body">
                 <div style="font-size: 2rem; margin-bottom: 8px;">${ind.icon}</div>
@@ -2457,7 +2479,7 @@
       </div>
 
       <!-- Two Column Layout: Enquiry Trends & Lead Status -->
-      <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; margin-bottom: 28px;">
+      <div class="crm-dashboard-split">
         
         <!-- Enquiry Trend Chart (Clean Pure SVG Bar Visualization) -->
         <div class="crm-panel">

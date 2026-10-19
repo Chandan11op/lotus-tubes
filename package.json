@@ -1,0 +1,13 @@
+{
+  "name": "lotus-tubes",
+  "version": "1.0.0",
+  "description": "Lotus Tubes Web Application",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js",
+    "dev": "node serve.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

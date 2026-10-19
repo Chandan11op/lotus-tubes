@@ -2117,6 +2117,13 @@ ul, ol {
   background-color: var(--pure-white);
   box-shadow: 0 0 0 3px rgba(240, 0, 120, 0.12);
 }
+.form-group input.has-error,
+.form-group select.has-error,
+.form-group textarea.has-error {
+  border-color: #EF4444 !important;
+  background-color: #FFF5F5 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
 .field-error {
   font-size: 0.78rem;
   color: #EF4444;
@@ -2416,6 +2423,17 @@ ul, ol {
   box-shadow: var(--shadow-sm);
   overflow: hidden;
   margin-bottom: 28px;
+}
+.crm-dashboard-split {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+@media (max-width: 991px) {
+  .crm-dashboard-split {
+    grid-template-columns: 1fr;
+  }
 }
 .crm-panel__header {
   padding: 20px 24px;
