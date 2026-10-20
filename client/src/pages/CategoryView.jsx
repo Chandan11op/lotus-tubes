@@ -1,5 +1,6 @@
 import React from 'react';
 import { CATEGORIES, PRODUCTS, CONFIG } from '../data/siteData';
+import ProductCardVideo from '../components/common/ProductCardVideo';
 
 export const CategoryView = ({ slug, onOpenEnquiry }) => {
   const cat = CATEGORIES.find((c) => c.slug === slug || c.id === slug) || CATEGORIES[0];
@@ -37,7 +38,7 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
                 </div>
                 <div className="product-card__img-wrap">
-                  <img src={prod.image} alt={prod.name} className="product-card__img" loading="lazy" />
+                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} />
                 </div>
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>
@@ -57,7 +58,7 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
                       className="btn btn--primary btn--sm quick-rfq-btn"
                       onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
                     >
-                      Get Quote
+                      Request Official Quotation
                     </button>
                   </div>
                 </div>
@@ -90,16 +91,8 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
                 className="btn btn--primary quick-rfq-btn"
                 onClick={() => onOpenEnquiry && onOpenEnquiry(cat.slug, cat.name)}
               >
-                Enquire for Size &amp; Price
+                Request Official Quotation
               </button>
-              <a
-                href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20have%20an%20enquiry%20regarding%20${encodeURIComponent(cat.name)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn--whatsapp"
-              >
-                WhatsApp Direct Enquiry
-              </a>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
   const { t } = useLanguage();
@@ -15,9 +16,6 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             alt="Lotus Tubes Logo - Stainless Steel Sanitary Solutions"
             className="brand-logo__img"
           />
-          <div className="brand-logo__subtext">
-            <span>SANITARY PIPES &bull; FITTINGS &bull; VALVES</span>
-          </div>
         </a>
 
         {/* Main Navigation Links */}
@@ -139,12 +137,25 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             </svg>
           </button>
 
-          {/* Minimal Profile Icon (Replaces CRM Portal label with smooth pink hover/focus transition) */}
+          {/* Profile / Account Icon */}
           <a
-            href="#crm/login"
+            href={
+              !isAuthenticated
+                ? '#login'
+                : user?.role === 'staff' || user?.role === 'admin'
+                ? '#crm/dashboard'
+                : '#account'
+            }
             className="nav-profile-btn"
-            title="Profile"
+            title={
+              !isAuthenticated
+                ? 'Sign In / Register'
+                : user?.role === 'staff' || user?.role === 'admin'
+                ? `Staff Workspace (${user.name})`
+                : `Customer Account (${user.name})`
+            }
             aria-label="Profile"
+            style={{ position: 'relative' }}
           >
             <svg
               viewBox="0 0 24 24"
@@ -158,6 +169,21 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
               <circle cx="12" cy="8" r="4.2" />
               <path d="M4.5 20.2c0-4 3.3-7.2 7.5-7.2s7.5 3.2 7.5 7.2" />
             </svg>
+            {isAuthenticated && (
+              <span
+                style={{
+                  position: 'absolute',
+                  top: '6px',
+                  right: '6px',
+                  width: '7px',
+                  height: '7px',
+                  borderRadius: '50%',
+                  background: '#10B981',
+                  border: '1.5px solid #FFFFFF'
+                }}
+                title="Active Session"
+              />
+            )}
           </a>
 
           {/* Note: "Request a Quote" navbar item removed as authorized */}

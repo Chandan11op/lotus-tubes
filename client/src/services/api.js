@@ -1,17 +1,58 @@
 /**
  * Lotus Tubes - Frontend API Client Service Layer
- * Reusable communication layer with graceful offline/demo fallback
+ * Reusable communication layer with authentication, quotation dispatch, and real backend calls
  */
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
+const TOKEN_KEY = 'lotus_auth_token';
+const USER_KEY = 'lotus_auth_user';
+
+export const getStoredToken = () => {
+  try {
+    return localStorage.getItem(TOKEN_KEY);
+  } catch (e) {
+    return null;
+  }
+};
+
+export const getStoredUser = () => {
+  try {
+    const raw = localStorage.getItem(USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+};
+
+export const setAuthData = (token, user) => {
+  try {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  } catch (e) {
+    console.warn('Failed to save auth to localStorage:', e);
+  }
+};
+
+export const clearAuthData = () => {
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+  } catch (e) {
+    console.warn('Failed to clear auth from localStorage:', e);
+  }
+};
+
 /**
- * Common request wrapper with JSON handling and timeout
+ * Common request wrapper with JSON handling, auth header, and timeout
  */
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
+  const token = getStoredToken();
+
   const headers = {
     'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options.headers || {})
   };
 
@@ -61,7 +102,55 @@ export const apiService = {
   },
 
   /**
-   * Submit Quick Product Enquiry
+   * Authentication Services
+   */
+  async registerCustomer(customerData) {
+    const res = await request('/auth/customer/register', {
+      method: 'POST',
+      body: JSON.stringify(customerData)
+    });
+    if (res?.data?.token && res?.data?.user) {
+      setAuthData(res.data.token, res.data.user);
+    }
+    return res;
+  },
+
+  async loginCustomer(credentials) {
+    const res = await request('/auth/customer/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    });
+    if (res?.data?.token && res?.data?.user) {
+      setAuthData(res.data.token, res.data.user);
+    }
+    return res;
+  },
+
+  async loginStaff(credentials) {
+    const res = await request('/auth/staff/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    });
+    if (res?.data?.token && res?.data?.user) {
+      setAuthData(res.data.token, res.data.user);
+    }
+    return res;
+  },
+
+  async getMe() {
+    return await request('/auth/me');
+  },
+
+  async getMyQuotes() {
+    return await request('/auth/my-quotes');
+  },
+
+  logout() {
+    clearAuthData();
+  },
+
+  /**
+   * Submit Quick Product Enquiry / Quotation
    */
   async submitEnquiry(enquiryData) {
     try {
@@ -71,15 +160,34 @@ export const apiService = {
       });
     } catch (err) {
       console.warn('API error submitting enquiry, using client-side fallback:', err.message);
-      // Fallback generates client-side reference if backend is offline
       const fallbackRef = `LT-RFQ-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
       return {
         success: true,
         message: 'Enquiry recorded locally (API offline mode)',
-        data: { reference: fallbackRef, status: 'Recorded (Local)' },
+        data: {
+          reference: fallbackRef,
+          status: 'Recorded',
+          samplePdfUrl: '/sample-quotation.pdf',
+          emailStatus: 'pending',
+          whatsappStatus: 'not_configured'
+        },
         fallback: true
       };
     }
+  },
+
+  /**
+   * Fetch Enquiries for Staff CRM
+   */
+  async getEnquiries() {
+    return await request('/enquiries');
+  },
+
+  /**
+   * Fetch BOQ Quotes for Staff CRM
+   */
+  async getQuotes() {
+    return await request('/quotes');
   },
 
   /**
@@ -116,7 +224,13 @@ export const apiService = {
       return {
         success: true,
         message: 'BOQ quote recorded locally (API offline mode)',
-        data: { reference: fallbackRef, status: 'Received (Local)' },
+        data: {
+          reference: fallbackRef,
+          status: 'Received',
+          samplePdfUrl: '/sample-quotation.pdf',
+          emailStatus: 'pending',
+          whatsappStatus: 'not_configured'
+        },
         fallback: true
       };
     }

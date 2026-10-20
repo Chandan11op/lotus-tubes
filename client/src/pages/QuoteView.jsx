@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { apiService } from '../services/api';
 import { Loader } from '../components/common/Loader';
+import { useAuth } from '../context/AuthContext';
 
 export const QuoteView = ({ onNotify }) => {
+  const { user, isAuthenticated } = useAuth();
+
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -14,6 +17,18 @@ export const QuoteView = ({ onNotify }) => {
     destination: '',
     specs: ''
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || user.name || '',
+        company: prev.company || user.company || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || ''
+      }));
+    }
+  }, [user]);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [successCode, setSuccessCode] = useState(null);
@@ -111,22 +126,33 @@ export const QuoteView = ({ onNotify }) => {
                 Your reference code: <strong id="rfq-success-code">{successCode}</strong>
               </p>
               <p>
-                A copy has been recorded in our local CRM demonstration workflow. Our estimators will contact you via WhatsApp and email with pricing details.
+                A copy has been recorded in our operational workflow. A sample quotation PDF has been assigned and dispatched to your email address.
               </p>
               <div className="success-actions mt-2" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <a href="#crm/enquiries" className="btn btn--outline-dark">
-                  Inspect In Internal CRM Demo &rarr;
+                <a
+                  href="/sample-quotation.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--primary"
+                  download={`LotusTubes-Quote-${successCode}.pdf`}
+                >
+                  📥 Download Sample Quotation PDF
                 </a>
+                {isAuthenticated && (
+                  <a href="#account" className="btn btn--outline-dark">
+                    View in My Customer Account &rarr;
+                  </a>
+                )}
                 <button
                   type="button"
                   className="btn btn--secondary"
                   onClick={() => {
                     setSuccessCode(null);
                     setFormData({
-                      name: '',
-                      company: '',
-                      email: '',
-                      phone: '',
+                      name: user?.name || '',
+                      company: user?.company || '',
+                      email: user?.email || '',
+                      phone: user?.phone || '',
                       category: 'Sanitary Pipes & Tubes',
                       material: 'SS 316L',
                       quantity: '',
@@ -138,6 +164,9 @@ export const QuoteView = ({ onNotify }) => {
                   Submit Another RFQ
                 </button>
               </div>
+              <p style={{ fontSize: '11px', color: '#98A2B3', marginTop: '12px', fontStyle: 'italic' }}>
+                Notice: The generated document is a sample quotation for evaluation purposes. Binding commercial pricing and delivery timelines require formal review.
+              </p>
             </div>
           ) : (
             <form id="full-rfq-form" onSubmit={handleSubmit} noValidate>

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
+import ProductCardVideo from '../components/common/ProductCardVideo';
 
 export const ProductsView = ({ onOpenEnquiry }) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -251,7 +252,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                     <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
                   </div>
                   <div className="product-card__img-wrap">
-                    <img src={prod.image} alt={prod.name} className="product-card__img" loading="lazy" />
+                    <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} />
                   </div>
                   <div className="product-card__body">
                     <span className="product-card__category">{prod.category}</span>
@@ -271,7 +272,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                         className="btn btn--primary btn--sm quick-rfq-btn"
                         onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
                       >
-                        Get Quote
+                        Request Official Quotation
                       </button>
                     </div>
                   </div>

@@ -1,8 +1,13 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { config } from './config/env.js';
 import apiRoutes from './routes/apiRoutes.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -33,6 +38,10 @@ app.use(
 // Body Parsing Middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Static Files (serving sample quotation PDF and assets)
+app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../../client/public')));
 
 // Root welcome route
 app.get('/', (req, res) => {

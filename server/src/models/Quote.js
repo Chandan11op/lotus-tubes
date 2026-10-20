@@ -53,6 +53,26 @@ const quoteSchema = new mongoose.Schema(
       type: String,
       default: 'Standard (1-2 Weeks)'
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+      index: true
+    },
+    samplePdfUrl: {
+      type: String,
+      default: '/sample-quotation.pdf'
+    },
+    emailStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'failed', 'not_configured'],
+      default: 'pending'
+    },
+    whatsappStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'failed', 'not_configured'],
+      default: 'not_configured'
+    },
     status: {
       type: String,
       enum: ['Received', 'Under Review', 'BOQ Prepared', 'Quote Sent', 'Accepted', 'Rejected'],

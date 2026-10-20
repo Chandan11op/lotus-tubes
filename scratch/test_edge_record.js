@@ -1,0 +1,153 @@
+import { exec } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+
+const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { margin: 0; background: #000; overflow: hidden; }
+    canvas { width: 600px; height: 450px; }
+  </style>
+</head>
+<body>
+<canvas id="c" width="600" height="450"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let angle = 0;
+const totalFrames = 60; // 2 seconds at 30fps
+let frameCount = 0;
+
+function drawFrame() {
+  // Clear
+  ctx.fillStyle = '#F8FAFC';
+  ctx.fillRect(0, 0, 600, 450);
+
+  // Subtle circular ambient glow
+  const radGrad = ctx.createRadialGradient(300, 225, 50, 300, 225, 280);
+  radGrad.addColorStop(0, '#FFFFFF');
+  radGrad.addColorStop(0.7, '#EEF2F6');
+  radGrad.addColorStop(1, '#E2E8F0');
+  ctx.fillStyle = radGrad;
+  ctx.fillRect(0, 0, 600, 450);
+
+  // Shadow under rotating component
+  ctx.save();
+  ctx.translate(300, 330);
+  ctx.scale(1, 0.25);
+  ctx.beginPath();
+  ctx.arc(0, 0, 140 + Math.sin(angle) * 20, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(16, 38, 61, 0.15)';
+  ctx.filter = 'blur(10px)';
+  ctx.fill();
+  ctx.restore();
+
+  // 3D Turntable Platform
+  ctx.save();
+  ctx.translate(300, 290);
+  ctx.scale(1, 0.35);
+  ctx.beginPath();
+  ctx.arc(0, 0, 160, 0, Math.PI * 2);
+  ctx.fillStyle = '#CBD5E1';
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = '#94A3B8';
+  ctx.stroke();
+  ctx.restore();
+
+  // Rotating Stainless Steel Sanitary Component
+  ctx.save();
+  ctx.translate(300, 210);
+  
+  // Simulated 360 degree rotation
+  const cosA = Math.cos(angle);
+  const sinA = Math.sin(angle);
+
+  // Metallic gradient with dynamic specular highlight based on rotation
+  const metalGrad = ctx.createLinearGradient(-150 * cosA, -60, 150 * cosA, 60);
+  metalGrad.addColorStop(0, '#64748B');
+  metalGrad.addColorStop(0.2, '#CBD5E1');
+  metalGrad.addColorStop(0.4 + 0.2 * Math.sin(angle * 2), '#FFFFFF');
+  metalGrad.addColorStop(0.7, '#94A3B8');
+  metalGrad.addColorStop(1, '#334155');
+
+  // Cylinder body
+  ctx.beginPath();
+  ctx.rect(-100 * Math.abs(cosA) - 20, -50, (200 * Math.abs(cosA)) + 40, 100);
+  ctx.fillStyle = metalGrad;
+  ctx.fill();
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Sanitary ferrule flange lip
+  ctx.beginPath();
+  ctx.ellipse(-100 * Math.abs(cosA) - 20, 0, 18, 55, 0, 0, Math.PI * 2);
+  ctx.fillStyle = '#E2E8F0';
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.ellipse(100 * Math.abs(cosA) + 20, 0, 18, 55, 0, 0, Math.PI * 2);
+  ctx.fillStyle = metalGrad;
+  ctx.fill();
+  ctx.stroke();
+
+  // Mirror sheen lines
+  ctx.beginPath();
+  ctx.moveTo(-90 * Math.abs(cosA), -30);
+  ctx.lineTo(90 * Math.abs(cosA), -30);
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+  ctx.lineWidth = 4;
+  ctx.stroke();
+
+  ctx.restore();
+
+  // 360 Badge & Indicator
+  ctx.fillStyle = 'rgba(16, 38, 61, 0.85)';
+  ctx.roundRect(20, 20, 160, 32, 6);
+  ctx.fill();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 12px sans-serif';
+  ctx.fillText('🔄 360° TURNTABLE', 36, 41);
+
+  angle += (Math.PI * 2) / totalFrames;
+  frameCount++;
+}
+
+// Draw initial
+drawFrame();
+
+// Start Recording
+const stream = canvas.captureStream(30);
+const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8' });
+const chunks = [];
+recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+recorder.onstop = async () => {
+  const blob = new Blob(chunks, { type: 'video/webm' });
+  const reader = new FileReader();
+  reader.onload = () => {
+    window.recordedBase64 = reader.result.split(',')[1];
+    document.title = 'DONE:' + window.recordedBase64.length;
+  };
+  reader.readAsDataURL(blob);
+};
+
+recorder.start();
+const interval = setInterval(() => {
+  drawFrame();
+  if (frameCount >= totalFrames) {
+    clearInterval(interval);
+    recorder.stop();
+  }
+}, 1000 / 30);
+</script>
+</body>
+</html>`;
+
+const tempHtml = path.resolve('scratch/temp_recorder.html');
+fs.writeFileSync(tempHtml, htmlContent);
+console.log('Written to', tempHtml);

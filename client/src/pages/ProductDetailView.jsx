@@ -1,72 +1,92 @@
 import React, { useState } from 'react';
-import { PRODUCTS, CONFIG, createProductSVG } from '../data/siteData';
+import { PRODUCTS, CONFIG } from '../data/siteData';
+import ProductCardVideo from '../components/common/ProductCardVideo';
 
 export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
-  const [activeImg, setActiveImg] = useState(prod.image);
-  const [rotationAngle, setRotationAngle] = useState(0);
+  // Requirement 4.1 & 4.3:
+  // Primary media is the 360-degree looping, muted video.
+  // 3 images correspond to this specific product.
+  const [activeMedia, setActiveMedia] = useState('video'); // 'video' | 0 | 1 | 2
   const [activeTab, setActiveTab] = useState('tab-apps');
 
-  const thumbs = [
-    { src: prod.image, alt: `${prod.name} View 1` },
-    {
-      src: createProductSVG(prod.name + ' - Bore Detail', 'Internal EP Bore Ra ≤ 0.38µm', '#10263D'),
-      alt: `${prod.name} Internal Finish`
-    },
-    {
-      src: createProductSVG(prod.name + ' - Cleanroom Packaging', 'Capped & Bagged', '#0284C7'),
-      alt: `${prod.name} Packing`
-    }
-  ];
+  const productImages = prod.images && prod.images.length >= 3
+    ? prod.images
+    : [prod.image, prod.image, prod.image];
 
   return (
     <div className="site-container product-detail-view">
       <div className="product-detail-grid">
-        {/* Left: Gallery & Interactive 360 Concept */}
+        {/* Left: Gallery & Primary 360-Degree Video Media */}
         <div className="product-gallery-box">
-          <div className="product-main-image-wrap">
-            <img
-              src={activeImg}
-              alt={prod.name}
-              className="product-main-img"
-              id="detail-main-img"
-              style={{
-                transform: `rotate(${rotationAngle}deg)`,
-                transition: 'transform 0.1s ease-out'
-              }}
-            />
-            <div className="viewer-360-badge">
-              <span>🔄 Interactive 360° View</span>
+          <div className="product-main-image-wrap" style={{ position: 'relative', overflow: 'hidden', background: '#F8FAFC', borderRadius: '8px' }}>
+            {activeMedia === 'video' ? (
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <video
+                  key={prod.video}
+                  src={prod.video}
+                  poster={productImages[0]}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  aria-label={`${prod.name} - 360 degree product video`}
+                />
+                <div className="viewer-360-badge">
+                  <span>🔄 Looping 360° Product Video (Muted)</span>
+                </div>
+              </div>
+            ) : (
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <img
+                  src={productImages[activeMedia]}
+                  alt={`${prod.name} - Gallery Detail ${activeMedia + 1}`}
+                  className="product-main-img"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div className="viewer-360-badge" style={{ background: 'rgba(16,38,61,0.85)' }}>
+                  <span>📷 High-Res Specification Photo {activeMedia + 1} of 3</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Media Switcher Bar: Primary 360° Video + 3 Product Images */}
+          <div className="gallery-thumbs" style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+            {/* Video Thumbnail Button */}
+            <div
+              className={`gallery-thumb ${activeMedia === 'video' ? 'active' : ''}`}
+              onClick={() => setActiveMedia('video')}
+              style={{ cursor: 'pointer', position: 'relative', border: activeMedia === 'video' ? '2px solid var(--primary-pink)' : '1px solid #E3E8EF', borderRadius: '6px', overflow: 'hidden' }}
+              title="View 360° Rotating Video"
+            >
+              <img src={productImages[0]} alt={`${prod.name} 360 Video Preview`} style={{ width: '100%', height: '60px', objectFit: 'cover' }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(16,38,61,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>
+                ▶ 360°
+              </div>
             </div>
-          </div>
 
-          {/* Conceptual 360 Rotation Slider */}
-          <div className="simulated-360-bar">
-            <label htmlFor="slider-360">Rotate View:</label>
-            <input
-              type="range"
-              id="slider-360"
-              min="0"
-              max="360"
-              value={rotationAngle}
-              onChange={(e) => setRotationAngle(Number(e.target.value))}
-              aria-label="Simulate 360 degree rotation"
-            />
-            <span id="angle-display">{rotationAngle}°</span>
-          </div>
-
-          <div className="gallery-thumbs">
-            {thumbs.map((thumb, idx) => (
+            {/* 3 Product Images corresponding to this selected product */}
+            {productImages.slice(0, 3).map((imgSrc, idx) => (
               <div
                 key={idx}
-                className={`gallery-thumb ${activeImg === thumb.src ? 'active' : ''}`}
-                onClick={() => setActiveImg(thumb.src)}
+                className={`gallery-thumb ${activeMedia === idx ? 'active' : ''}`}
+                onClick={() => setActiveMedia(idx)}
+                style={{ cursor: 'pointer', position: 'relative', border: activeMedia === idx ? '2px solid var(--primary-pink)' : '1px solid #E3E8EF', borderRadius: '6px', overflow: 'hidden' }}
+                title={`View Product Image ${idx + 1}`}
               >
-                <img src={thumb.src} alt={thumb.alt} />
+                <img src={imgSrc} alt={`${prod.name} View ${idx + 1}`} style={{ width: '100%', height: '60px', objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', bottom: 2, right: 4, background: 'rgba(16,38,61,0.7)', color: '#FFF', fontSize: '9px', padding: '1px 4px', borderRadius: '3px' }}>
+                  #{idx + 1}
+                </div>
               </div>
             ))}
+          </div>
+          <div style={{ fontSize: '11px', color: '#667085', marginTop: '6px', textAlign: 'center' }}>
+            Primary media: Looping 360° turntable video &bull; Click thumbnails to inspect dimensional details
           </div>
         </div>
 
@@ -79,7 +99,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             <span className="badge badge--navy">{prod.material}</span>
             <span className="badge badge--pink">{prod.finish}</span>
             <span className="badge badge--steel">{prod.standard}</span>
-            <span className="badge badge--outline">MTC EN 10204 3.1 Available</span>
+            <span className="badge badge--outline">MTC EN 10204 3.1 Certified</span>
           </div>
 
           <p className="product-overview-text">{prod.overview}</p>
@@ -136,22 +156,21 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             </table>
           </div>
 
-          {/* Direct Action Cluster */}
-          <div className="product-cta-cluster">
+          {/* Direct Action Cluster - Requirement 5: Request Official Quotation replacing Get Price on WhatsApp */}
+          <div className="product-cta-cluster" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
             <button
               type="button"
               className="btn btn--primary btn--lg quick-rfq-btn"
               onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
+              style={{ flex: 1, minWidth: '240px' }}
             >
               <span>Request Official Quotation</span> &rarr;
             </button>
             <a
-              href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20need%20a%20price%20quote%20for%3A%20${encodeURIComponent(prod.name)}%20(Grade%3A%20${encodeURIComponent(prod.material)}%2C%20Finish%3A%20${encodeURIComponent(prod.finish)}).`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn--whatsapp btn--lg"
+              href="#contact"
+              className="btn btn--outline-dark btn--lg"
             >
-              <span>🟢 Get Price on WhatsApp</span>
+              <span>Technical Desk Consultation</span>
             </a>
           </div>
         </div>
@@ -203,14 +222,17 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
 
         {activeTab === 'tab-inquiry' && (
           <div className="tab-content-panel active" id="tab-inquiry">
-            <h4>Quick Specification Enquiry:</h4>
+            <h4>Direct Technical Quotation:</h4>
             <p>
-              Need custom sizes, special orbital weld end preps, or specific boroscopy checks? Contact our technical engineering desk at{' '}
-              <a href={`mailto:${CONFIG.primaryEmail}`} className="text-pink">
-                <strong>{CONFIG.primaryEmail}</strong>
-              </a>{' '}
-              or call <strong>{CONFIG.primaryPhone}</strong>.
+              Receive a formal quotation document for <strong>{prod.name}</strong> with customized quantity breaks, mill test certification, and packaging confirmation.
             </p>
+            <button
+              type="button"
+              className="btn btn--primary mt-2"
+              onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
+            >
+              Request Official Quotation &rarr;
+            </button>
           </div>
         )}
       </div>
@@ -226,7 +248,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                   <span className="badge badge--navy">{rel.material}</span>
                 </div>
                 <div className="product-card__img-wrap">
-                  <img src={rel.image} alt={rel.name} className="product-card__img" loading="lazy" />
+                  <ProductCardVideo video={rel.video} poster={rel.image} alt={rel.name} />
                 </div>
                 <div className="product-card__body">
                   <h4 className="product-card__title">
@@ -242,7 +264,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                       className="btn btn--primary btn--sm quick-rfq-btn"
                       onClick={() => onOpenEnquiry && onOpenEnquiry(rel.id, rel.name)}
                     >
-                      Quote
+                      Request Official Quotation
                     </button>
                   </div>
                 </div>

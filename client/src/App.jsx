@@ -25,6 +25,7 @@ import BlogView from './pages/BlogView';
 import ContactView from './pages/ContactView';
 import QuoteView from './pages/QuoteView';
 import CRMView from './pages/crm/CRMView';
+import CustomerAccountView from './pages/CustomerAccountView';
 
 export const App = () => {
   const [currentHash, setCurrentHash] = useState(() => window.location.hash || '#home');
@@ -63,7 +64,7 @@ export const App = () => {
   const route = parts[0] || 'home';
   const param = parts[1] || '';
 
-  const isCRM = route === 'crm';
+  const isCRM = route === 'crm' || route === 'login';
 
   const handleOpenEnquiry = (product) => {
     setEnquiryProduct(product);
@@ -138,6 +139,7 @@ export const App = () => {
               {route === 'blog' && <BlogView slug={param} />}
               {route === 'contact' && <ContactView onNotify={addToast} />}
               {route === 'quote' && <QuoteView onNotify={addToast} />}
+              {route === 'account' && <CustomerAccountView onNotify={addToast} />}
             </main>
 
             {/* Dual Split Pre-Footer Action Banner */}

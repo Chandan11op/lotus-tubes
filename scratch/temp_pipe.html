@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>body { margin: 0; background: #000; overflow: hidden; } canvas { width: 600px; height: 450px; }</style>
+</head>
+<body>
+<canvas id="c" width="600" height="450"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let angle = 0;
+const totalFrames = 60; // 2 sec at 30 fps
+let frameCount = 0;
+
+function draw() {
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, 600, 450);
+  bg.addColorStop(0, '#F8FAFC');
+  bg.addColorStop(1, '#E2E8F0');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 600, 450);
+
+  // Turntable shadow
+  ctx.save();
+  ctx.translate(300, 340);
+  ctx.scale(1, 0.28);
+  ctx.beginPath();
+  ctx.arc(0, 0, 160, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(16, 38, 61, 0.12)';
+  ctx.fill();
+  ctx.restore();
+
+  // Turntable disk
+  ctx.save();
+  ctx.translate(300, 310);
+  ctx.scale(1, 0.3);
+  ctx.beginPath();
+  ctx.arc(0, 0, 150, 0, Math.PI * 2);
+  ctx.fillStyle = '#CBD5E1';
+  ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = '#94A3B8';
+  ctx.stroke();
+  ctx.restore();
+
+  // Draw 3D rotated sanitary component
+  ctx.save();
+  ctx.translate(300, 210);
+
+  const cosA = Math.cos(angle);
+  const sinA = Math.sin(angle);
+
+  const metalGrad = ctx.createLinearGradient(-150 * cosA, -80, 150 * cosA, 80);
+  metalGrad.addColorStop(0, '#64748B');
+  metalGrad.addColorStop(0.25, '#CBD5E1');
+  metalGrad.addColorStop(0.5 + 0.25 * Math.sin(angle * 2), '#FFFFFF');
+  metalGrad.addColorStop(0.75, '#94A3B8');
+  metalGrad.addColorStop(1, '#334155');
+
+  if ('pipe' === 'pipe') {
+    // Rotating Sanitary Pipe
+    ctx.beginPath();
+    ctx.rect(-120 * Math.abs(cosA) - 20, -45, 240 * Math.abs(cosA) + 40, 90);
+    ctx.fillStyle = metalGrad;
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#475569';
+    ctx.stroke();
+
+    // End Ferrule Lips
+    ctx.beginPath();
+    ctx.ellipse(-120 * Math.abs(cosA) - 20, 0, 22, 50, 0, 0, Math.PI * 2);
+    ctx.fillStyle = cosA > 0 ? '#1E293B' : '#E2E8F0';
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.ellipse(120 * Math.abs(cosA) + 20, 0, 22, 50, 0, 0, Math.PI * 2);
+    ctx.fillStyle = cosA > 0 ? '#E2E8F0' : '#1E293B';
+    ctx.fill();
+    ctx.stroke();
+
+    // Mirror highlight sheen line
+    ctx.beginPath();
+    ctx.moveTo(-110 * Math.abs(cosA), -25);
+    ctx.lineTo(110 * Math.abs(cosA), -25);
+    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+  } else if ('pipe' === 'fitting') {
+    // Rotating 90 Degree Elbow
+    ctx.beginPath();
+    ctx.arc(0, 0, 80, -Math.PI / 2 + angle * 0.2, 0 + angle * 0.2);
+    ctx.lineWidth = 60 * Math.abs(cosA) + 20;
+    ctx.strokeStyle = metalGrad;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.ellipse(80 * cosA, 40 * sinA, 25, 45, angle, 0, Math.PI * 2);
+    ctx.fillStyle = '#CBD5E1';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#475569';
+    ctx.stroke();
+  } else if ('pipe' === 'clamp') {
+    // Rotating Heavy Duty Tri-Clamp & Silicone Gasket
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 110 * Math.abs(cosA) + 20, 110, angle * 0.1, 0, Math.PI * 2);
+    ctx.lineWidth = 24;
+    ctx.strokeStyle = metalGrad;
+    ctx.stroke();
+
+    // Silicone Gasket inner ring
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 80 * Math.abs(cosA) + 15, 80, angle * 0.1, 0, Math.PI * 2);
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = 'rgba(2, 132, 199, 0.7)'; // Translucent blue food-grade silicone
+    ctx.stroke();
+
+    // Wing nut bolt
+    ctx.beginPath();
+    ctx.arc(120 * cosA, 120 * sinA, 18, 0, Math.PI * 2);
+    ctx.fillStyle = '#10263D';
+    ctx.fill();
+  } else if ('pipe' === 'valve') {
+    // Rotating Sanitary Butterfly Valve Body
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 85 * Math.abs(cosA) + 30, 85, 0, 0, Math.PI * 2);
+    ctx.fillStyle = metalGrad;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#334155';
+    ctx.stroke();
+
+    // Valve stem & blue handle
+    ctx.beginPath();
+    ctx.rect(-10, -110, 20, 45);
+    ctx.fillStyle = '#475569';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.roundRect(-50 * cosA - 15, -135, 100 * Math.abs(cosA) + 30, 24, 6);
+    ctx.fillStyle = '#0284C7'; // Blue industrial handle
+    ctx.fill();
+  }
+
+  ctx.restore();
+
+  // 360 Badge & Label
+  ctx.fillStyle = 'rgba(16, 38, 61, 0.88)';
+  ctx.roundRect(24, 24, 220, 34, 6);
+  ctx.fill();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 12px sans-serif';
+  ctx.fillText('🔄 SS 316L EP PIPE 360°', 38, 46);
+
+  angle += (Math.PI * 2) / totalFrames;
+  frameCount++;
+}
+
+draw();
+
+const stream = canvas.captureStream(30);
+const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8' });
+const chunks = [];
+recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+recorder.onstop = () => {
+  const blob = new Blob(chunks, { type: 'video/webm' });
+  const reader = new FileReader();
+  reader.onload = () => {
+    window.recordedBase64 = reader.result.split(',')[1];
+    document.title = 'DONE:' + window.recordedBase64.length;
+  };
+  reader.readAsDataURL(blob);
+};
+
+recorder.start();
+const interval = setInterval(() => {
+  draw();
+  if (frameCount >= totalFrames) {
+    clearInterval(interval);
+    recorder.stop();
+  }
+}, 1000 / 30);
+</script>
+</body>
+</html>

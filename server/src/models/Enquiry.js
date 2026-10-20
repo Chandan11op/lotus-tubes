@@ -55,6 +55,26 @@ const enquirySchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+      index: true
+    },
+    samplePdfUrl: {
+      type: String,
+      default: '/sample-quotation.pdf'
+    },
+    emailStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'failed', 'not_configured'],
+      default: 'pending'
+    },
+    whatsappStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'failed', 'not_configured'],
+      default: 'not_configured'
+    },
     status: {
       type: String,
       enum: ['New Lead', 'Quoted', 'Follow-up', 'Confirmed', 'Closed'],

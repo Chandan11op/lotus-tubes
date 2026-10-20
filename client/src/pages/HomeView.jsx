@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
+import ProductCardVideo from '../components/common/ProductCardVideo';
 
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
@@ -163,7 +164,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
                 </div>
                 <div className="product-card__img-wrap">
-                  <img src={prod.image} alt={prod.name} className="product-card__img" loading="lazy" />
+                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} />
                 </div>
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>
@@ -183,7 +184,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                       className="btn btn--primary btn--sm quick-rfq-btn"
                       onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
                     >
-                      {t('btn_get_quote_card', 'Get a Quote')}
+                      {t('btn_request_quotation', 'Request Official Quotation')}
                     </button>
                   </div>
                 </div>
