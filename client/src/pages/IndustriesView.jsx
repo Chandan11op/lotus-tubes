@@ -1,123 +1,147 @@
 import React from 'react';
 import { INDUSTRIES, PRODUCTS } from '../data/siteData';
 
-export const IndustriesView = ({ slug }) => {
-  const currentIndustry = INDUSTRIES.find((i) => i.slug === slug || i.id === slug);
+export const IndustriesView = ({ slug, onOpenEnquiry }) => {
+  if (slug) {
+    const ind = INDUSTRIES.find((i) => i.slug === slug || i.id === slug) || INDUSTRIES[0];
+    const indProducts = PRODUCTS.filter((p) => ind.products && ind.products.includes(p.id));
+
+    return (
+      <>
+        <section className="page-hero">
+          <div className="site-container">
+            <span className="badge badge--pink mb-2">Process Industry Solutions</span>
+            <h1 className="page-hero-title">
+              {ind.icon} {ind.name}
+            </h1>
+            <p className="page-hero-subtitle">{ind.summary}</p>
+          </div>
+        </section>
+
+        <div className="site-container section">
+          <div className="about-preview-grid">
+            <div>
+              <h2 className="section-title">Hygienic Process Demands in {ind.name}</h2>
+              <p style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginTop: '14px' }}>
+                {ind.overview}
+              </p>
+
+              <h4 className="mt-3 mb-2" style={{ fontFamily: 'var(--font-heading)', color: 'var(--deep-navy)' }}>
+                Industry Compliance Standards:
+              </h4>
+              <ul style={{ listStyle: 'disc', paddingLeft: '20px', lineHeight: 1.8, color: 'var(--text-secondary)' }}>
+                {ind.standards && ind.standards.map((s, idx) => (
+                  <li key={idx}>
+                    <strong>{s}</strong>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="hero-actions mt-3">
+                <a href="#quote" className="btn btn--primary">
+                  Request Industry Specific RFQ &rarr;
+                </a>
+                <a href="#industries" className="btn btn--outline-dark">
+                  View All Industries
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <img
+                src={`/assets/images/industries/${ind.slug}.svg`}
+                alt={`${ind.name} Installation`}
+                style={{ borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-lg)', width: '100%' }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/assets/images/hero/sanitary-hero-pipes.svg';
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <h3 className="section-title mb-2">Recommended Sanitary Components for {ind.name}</h3>
+            <div className="featured-products-grid">
+              {indProducts.map((prod) => (
+                <article className="product-card" key={prod.slug}>
+                  <div className="product-card__badge-bar">
+                    <span className="badge badge--navy">{prod.material}</span>
+                    <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
+                  </div>
+                  <div className="product-card__img-wrap">
+                    <img src={prod.image} alt={prod.name} className="product-card__img" />
+                  </div>
+                  <div className="product-card__body">
+                    <span className="product-card__category">{prod.category}</span>
+                    <h3 className="product-card__title">
+                      <a href={`#product/${prod.slug}`}>{prod.name}</a>
+                    </h3>
+                    <p className="product-card__specs">{prod.roughness || prod.standard}</p>
+                    <div className="product-card__actions">
+                      <a href={`#product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
+                        View Details
+                      </a>
+                      <button
+                        type="button"
+                        className="btn btn--primary btn--sm quick-rfq-btn"
+                        onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
+                      >
+                        Get Quote
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
-    <div>
+    <>
       <section className="page-hero">
         <div className="site-container">
-          <span style={{ fontSize: '2.5rem', display: 'inline-block', marginBottom: '8px' }}>
-            {currentIndustry?.icon || '🏭'}
-          </span>
-          <h1 className="page-hero-title">
-            {currentIndustry ? currentIndustry.name : 'Industries Served'}
-          </h1>
+          <h1 className="page-hero-title">Industries We Serve</h1>
           <p className="page-hero-subtitle">
-            {currentIndustry
-              ? currentIndustry.desc
-              : 'Engineered stainless steel sanitary piping solutions meeting global regulatory compliance for sterile and hygienic manufacturing.'}
+            Engineering clean, reliable stainless steel sanitary solutions for mission-critical hygienic process lines across the globe.
           </p>
         </div>
       </section>
 
       <div className="site-container section">
-        {currentIndustry ? (
-          <div>
-            <div className="about-preview-grid">
-              <div>
-                <span className="section-eyebrow">Hygienic Process Requirements</span>
-                <h2 className="section-title">{currentIndustry.name} Solutions</h2>
-                <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '16px' }}>
-                  {currentIndustry.desc}
-                </p>
-
-                <div className="spec-box" style={{ marginTop: '24px', background: '#F8FAFC', padding: '16px', borderRadius: '8px', border: '1px solid #E3E8EF' }}>
-                  <strong style={{ display: 'block', color: '#10263D', marginBottom: '6px' }}>
-                    Recommended Material &amp; Finish:
-                  </strong>
-                  <span style={{ color: 'var(--primary-blue)', fontWeight: 600 }}>
-                    {currentIndustry.recommendedGrade}
-                  </span>
-                </div>
-
-                <div style={{ marginTop: '28px' }}>
-                  <a href="#quote" className="btn btn--primary btn--lg">
-                    Request Industry Specific BOQ Quote &rarr;
-                  </a>
-                </div>
-              </div>
-
-              <div>
+        <div className="product-range-grid">
+          {INDUSTRIES.map((ind) => (
+            <article className="range-card" key={ind.slug}>
+              <div className="range-card__img-wrap">
                 <img
-                  src={`/assets/images/industries/${currentIndustry.slug}.svg`}
-                  alt={currentIndustry.name}
-                  style={{ width: '100%', borderRadius: '12px', border: '1px solid #E3E8EF', background: '#F8FAFC' }}
+                  src={`/assets/images/industries/${ind.slug}.svg`}
+                  alt={ind.name}
+                  className="range-card__img"
+                  loading="lazy"
                   onError={(e) => {
-                    e.target.style.display = 'none';
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = '/assets/images/hero/sanitary-hero-pipes.svg';
                   }}
                 />
               </div>
-            </div>
-
-            {/* Recommended Products for this industry */}
-            <div style={{ marginTop: '56px' }}>
-              <h3 style={{ color: 'var(--deep-navy)', marginBottom: '20px' }}>
-                Recommended Sanitary Components for {currentIndustry.name}
-              </h3>
-              <div className="featured-products-grid">
-                {PRODUCTS.slice(0, 4).map((prod) => (
-                  <article key={prod.id} className="product-card">
-                    <div className="product-card__img-wrap">
-                      <img
-                        src={prod.image?.startsWith('assets/') ? `/${prod.image}` : prod.image}
-                        alt={prod.name}
-                        className="product-card__img"
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="product-card__body">
-                      <h4 className="product-card__title">
-                        <a href={`#product/${prod.slug}`}>{prod.name}</a>
-                      </h4>
-                      <p className="product-card__specs">
-                        <strong>Grade:</strong> {prod.material} &bull; {prod.standard}
-                      </p>
-                      <a href={`#product/${prod.slug}`} className="btn btn--outline-dark btn--sm mt-2">
-                        View Specs &rarr;
-                      </a>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="industries-grid">
-            {INDUSTRIES.map((ind) => (
-              <article key={ind.id} className="industry-card">
-                <div className="industry-card__header">
-                  <span className="industry-card__icon">{ind.icon}</span>
-                  <h3 className="industry-card__title">
-                    <a href={`#industry/${ind.slug}`}>{ind.name}</a>
-                  </h3>
-                </div>
-                <p className="industry-card__desc">{ind.desc}</p>
-                <div className="industry-card__spec">
-                  <strong>Recommended Grade:</strong> {ind.recommendedGrade}
-                </div>
-                <div className="industry-card__footer">
-                  <a href={`#industry/${ind.slug}`} className="industry-card__link">
-                    Explore Solutions &rarr;
+              <div className="range-card__body">
+                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{ind.icon}</div>
+                <h3 className="range-card__title">{ind.name}</h3>
+                <p className="range-card__desc">{ind.summary}</p>
+                <div className="range-card__footer">
+                  <a href={`#industry/${ind.slug}`} className="range-card__link">
+                    Explore {ind.name} &rarr;
                   </a>
                 </div>
-              </article>
-            ))}
-          </div>
-        )}
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

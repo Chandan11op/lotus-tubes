@@ -1,139 +1,137 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { CATEGORIES, PRODUCTS, INDUSTRIES } from '../data/siteData';
+import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
 
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
 
-  const monopolyProduct = PRODUCTS.find((p) => p.slug === 'ss-316l-ep-pipe') || PRODUCTS[0];
-
   return (
-    <div>
-      {/* A. Hero Section */}
+    <>
+      {/* A. Hero Section (Matching UI-UX Reference Structure) */}
       <section className="hero-section" aria-label="Hero Showcase">
         <div className="site-container">
           <div className="hero-grid">
+            
             <div className="hero-content">
               <span className="hero-eyebrow">{t('hero_eyebrow', 'The Quality Maker')}</span>
               <h1 className="hero-title">
                 {t('hero_title', 'Stainless Steel Sanitary Pipes, Fittings & Valves')}
               </h1>
-              <p className="hero-subtitle">
-                {t(
-                  'hero_subtitle',
-                  'Engineered for critical high-purity processes in pharmaceuticals, biotech, food, dairy, and beverage industries. Premium SS 304 & SS 316L with Electro-Polished (EP) & Mechanical Polished (MP) finishes conforming to ASTM A270.'
-                )}
+              <h2 className="hero-subtitle">
+                {t('hero_subtitle', 'Engineered for Hygienic Process Applications')}
+              </h2>
+              <p className="hero-description">
+                {t('hero_desc', 'Explore stainless steel sanitary products in SS 304 and SS 316L, with available surface finishes and configurations suited to pharmaceutical, dairy, food & beverage, and high-purity process industries.')}
               </p>
 
+              {/* 4 Feature Badges (Matching Reference Layout) */}
+              <div className="hero-badges-grid">
+                <div className="hero-badge-item">
+                  <span className="hero-badge-icon">💎</span>
+                  <div
+                    className="hero-badge-label"
+                    dangerouslySetInnerHTML={{ __html: t('badge_premium', 'Premium<br>SS 304 / 316L') }}
+                  />
+                </div>
+                <div className="hero-badge-item">
+                  <span className="hero-badge-icon">📦</span>
+                  <div
+                    className="hero-badge-label"
+                    dangerouslySetInnerHTML={{ __html: t('badge_stock', 'Ready<br>Stock Range') }}
+                  />
+                </div>
+                <div className="hero-badge-item">
+                  <span className="hero-badge-icon">🌐</span>
+                  <div
+                    className="hero-badge-label"
+                    dangerouslySetInnerHTML={{ __html: t('badge_supply', 'Global & Pan<br>India Supply') }}
+                  />
+                </div>
+                <div className="hero-badge-item">
+                  <span className="hero-badge-icon">📋</span>
+                  <div
+                    className="hero-badge-label"
+                    dangerouslySetInnerHTML={{ __html: t('badge_mtc', 'MTC & Technical<br>Assistance') }}
+                  />
+                </div>
+              </div>
+
+              {/* Primary CTAs */}
               <div className="hero-actions">
                 <a href="#products" className="btn btn--primary btn--lg">
-                  <span>{t('btn_explore_catalogue', 'Explore Sanitary Catalogue')}</span> &rarr;
+                  <span>{t('btn_explore', 'Explore Products')}</span> &rarr;
                 </a>
-                <a href="#quote" className="btn btn--secondary btn--lg">
-                  {t('btn_get_quote', 'Request a Quote')}
+                <a href="#quote" className="btn btn--outline-dark btn--lg">
+                  {t('btn_quote', 'Request a Quote')} &rarr;
                 </a>
-                <button
-                  type="button"
-                  className="btn btn--outline-dark btn--lg"
-                  onClick={onOpenVideo}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                <a
+                  href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20your%20sanitary%20stainless%20steel%20products.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--whatsapp btn--lg"
                 >
-                  <span>▶</span> <span>Watch Process Tour</span>
-                </button>
-              </div>
-
-              {/* Statistical Trust Strip */}
-              <div className="hero-stats">
-                <div className="stat-item">
-                  <span className="stat-number">25+</span>
-                  <span className="stat-label">Years of Industry Trust</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">450+</span>
-                  <span className="stat-label">Metric Tons Ready Inventory</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">12,000+</span>
-                  <span className="stat-label">MTC Certified Batches</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">18+</span>
-                  <span className="stat-label">Export Destinations</span>
-                </div>
+                  <span>🟢 {t('top_whatsapp', 'WhatsApp Enquiry')}</span>
+                </a>
               </div>
             </div>
 
+            {/* Hero Visual Media & Tagline */}
             <div className="hero-media">
+              <div className="hero-tagline-float">
+                <h3>
+                  {t('hero_tagline_1', 'Hygienic.')}<br />
+                  {t('hero_tagline_2', 'Reliable.')}<br />
+                  {t('hero_tagline_3', 'Global.')}
+                </h3>
+                <div className="underline-pink"></div>
+              </div>
               <div className="hero-visual-card">
-                <div className="hero-badge-overlay">
-                  <span className="hero-badge hero-badge--primary">SS 316L &bull; ASTM A270</span>
-                  <span className="hero-badge hero-badge--accent">Ra &le; 0.38 &mu;m (EP Finish)</span>
-                </div>
                 <img
                   src="/assets/images/hero/sanitary-hero-pipes.svg"
-                  alt="Stainless Steel Sanitary Pipes, Bends and Valves Showcase"
-                  className="hero-image"
+                  alt="Polished Stainless Steel Sanitary Pipes and Tri-Clamp Fittings"
+                  className="hero-img"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    if (PRODUCTS[0]?.image) e.currentTarget.src = PRODUCTS[0].image;
+                  }}
                 />
-                <div className="hero-floating-card">
-                  <div className="floating-card-icon">⚡</div>
-                  <div className="floating-card-text">
-                    <strong>Rapid Dispatch Guarantee</strong>
-                    <span>Same-day dispatch for standard OD pipe sizes</span>
-                  </div>
+                <div className="hero-spec-pill">
+                  <strong>SS 316L EP</strong> &bull; Ra &le; 0.38 &mu;m &bull; ASTM A270 Certified
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* B. Product Category Showcase Grid */}
-      <section className="section bg-light" id="categories-section" aria-label="Product Categories">
+      {/* B. Product Range (Image-Led Cards) */}
+      <section className="section section--white" id="section-range" aria-label="Our Product Range">
         <div className="site-container">
           <div className="section-header">
             <div>
-              <span className="section-eyebrow">{t('sec_eyebrow_cat', 'Core Sanitary Products')}</span>
-              <h2 className="section-title">{t('sec_title_cat', 'Engineered for Fluid Purity & Compliance')}</h2>
-              <p className="section-subtitle">
-                {t(
-                  'sec_sub_cat',
-                  'Explore our certified range of sanitary stainless steel tubes, tri-clamp components, manual and automated hygienic valves.'
-                )}
-              </p>
+              <span className="section-eyebrow">{t('sec_range_eyebrow', 'Our Product Range')}</span>
+              <h2 className="section-title">{t('sec_range_title', 'Premium Stainless Steel Solutions')}</h2>
             </div>
-            <a href="#products" className="btn btn--outline-dark btn--sm">
-              {t('btn_view_all', 'View All Products &rarr;')}
+            <a href="#products" className="btn btn--outline-dark">
+              {t('btn_view_all', 'View All Products')} &rarr;
             </a>
           </div>
 
-          <div className="category-grid">
+          <div className="product-range-grid">
             {CATEGORIES.map((cat) => (
-              <article key={cat.id} className="category-card">
-                <div className="category-card__header">
-                  <span className="category-card__icon" aria-hidden="true">{cat.icon}</span>
-                  <span className="category-card__count">{cat.subcategories?.length || 4} Series</span>
+              <article className="range-card" key={cat.slug}>
+                <div className="range-card__img-wrap">
+                  <img src={cat.image} alt={cat.name} className="range-card__img" loading="lazy" />
                 </div>
-                <div className="category-card__img-wrap">
-                  <img
-                    src={cat.image?.startsWith('assets/') ? `/${cat.image}` : cat.image}
-                    alt={cat.name}
-                    className="category-card__img"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="category-card__body">
-                  <h3 className="category-card__title">
-                    <a href={`#category/${cat.slug}`}>{cat.name}</a>
-                  </h3>
-                  <p className="category-card__desc">{cat.desc}</p>
-                  <div className="category-card__subtags">
-                    {cat.subcategories?.slice(0, 3).map((sub, i) => (
-                      <span key={i} className="subtag">{sub}</span>
-                    ))}
+                <div className="range-card__body">
+                  <h3 className="range-card__title">{cat.name}</h3>
+                  <p className="range-card__desc">{cat.desc}</p>
+                  <div className="range-card__footer">
+                    <a href={`#category/${cat.slug}`} className="range-card__link">
+                      {t('link_view_products', 'View Products')} <span>&rarr;</span>
+                    </a>
                   </div>
-                  <a href={`#category/${cat.slug}`} className="category-card__link">
-                    Explore Category &rarr;
-                  </a>
                 </div>
               </article>
             ))}
@@ -141,199 +139,238 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         </div>
       </section>
 
-      {/* C. Monopoly Highlight Product */}
-      <section className="section monopoly-section" aria-label="Signature High-Purity Line">
-        <div className="site-container">
-          <div className="monopoly-card">
-            <div className="monopoly-grid">
-              <div className="monopoly-info">
-                <div className="monopoly-badge-row">
-                  <span className="badge badge--pink">Monopoly Focus Product</span>
-                  <span className="badge badge--navy">Pharma &amp; Biotech Grade</span>
-                </div>
-                <h2 className="monopoly-title">{monopolyProduct.name}</h2>
-                <p className="monopoly-desc">{monopolyProduct.overview}</p>
-
-                <div className="monopoly-spec-grid">
-                  <div className="spec-box">
-                    <span className="spec-label">Material Grade</span>
-                    <span className="spec-value">{monopolyProduct.material}</span>
-                  </div>
-                  <div className="spec-box">
-                    <span className="spec-label">Surface Finish</span>
-                    <span className="spec-value">{monopolyProduct.finish}</span>
-                  </div>
-                  <div className="spec-box">
-                    <span className="spec-label">Internal Roughness</span>
-                    <span className="spec-value">{monopolyProduct.roughness}</span>
-                  </div>
-                  <div className="spec-box">
-                    <span className="spec-label">Compliance</span>
-                    <span className="spec-value">{monopolyProduct.standard}</span>
-                  </div>
-                </div>
-
-                <div className="monopoly-actions">
-                  <button
-                    type="button"
-                    className="btn btn--primary btn--lg"
-                    onClick={() => onOpenEnquiry(monopolyProduct)}
-                  >
-                    <span>Instant Price &amp; Stock Inquiry</span> &rarr;
-                  </button>
-                  <a href={`#product/${monopolyProduct.slug}`} className="btn btn--outline-dark btn--lg">
-                    Full Technical Datasheet
-                  </a>
-                </div>
-              </div>
-
-              <div className="monopoly-visual">
-                <img
-                  src={monopolyProduct.image?.startsWith('assets/') ? `/${monopolyProduct.image}` : monopolyProduct.image}
-                  alt={monopolyProduct.name}
-                  className="monopoly-img"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* D. Industries We Serve */}
-      <section className="section bg-light" id="industries-section" aria-label="Industries Served">
+      {/* C. Featured Products (Top Priority B2B Products) */}
+      <section className="section" id="section-featured" aria-label="Featured Priority Products">
         <div className="site-container">
           <div className="section-header">
             <div>
-              <span className="section-eyebrow">Sector Expertise</span>
-              <h2 className="section-title">Certified Hygienic Piping Across Global Industries</h2>
+              <span className="section-eyebrow">{t('sec_featured_eyebrow', 'Monopoly & Priority Range')}</span>
+              <h2 className="section-title">{t('sec_featured_title', 'Priority Stainless Steel Sanitary Products')}</h2>
               <p className="section-subtitle">
-                Tailored surface micro-roughness, high corrosion resistance, and complete traceability documentation for sterile processing environments.
+                {t('sec_featured_desc', 'Precision components across SS 304 & SS 316L for high-cleanliness applications.')}
               </p>
             </div>
+            <a href="#products" className="btn btn--primary">
+              {t('btn_browse_catalogue', 'Browse Complete 20+ Catalogue')} &rarr;
+            </a>
           </div>
 
-          <div className="industries-grid">
-            {INDUSTRIES.map((ind) => (
-              <article key={ind.id} className="industry-card">
-                <div className="industry-card__header">
-                  <span className="industry-card__icon">{ind.icon}</span>
-                  <h3 className="industry-card__title">
-                    <a href={`#industry/${ind.slug}`}>{ind.name}</a>
+          <div className="featured-products-grid">
+            {PRODUCTS.slice(0, 12).map((prod) => (
+              <article className="product-card" key={prod.slug}>
+                <div className="product-card__badge-bar">
+                  <span className="badge badge--navy">{prod.material}</span>
+                  <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
+                </div>
+                <div className="product-card__img-wrap">
+                  <img src={prod.image} alt={prod.name} className="product-card__img" loading="lazy" />
+                </div>
+                <div className="product-card__body">
+                  <span className="product-card__category">{prod.category}</span>
+                  <h3 className="product-card__title">
+                    <a href={`#product/${prod.slug}`}>{prod.name}</a>
                   </h3>
-                </div>
-                <p className="industry-card__desc">{ind.desc}</p>
-                <div className="industry-card__spec">
-                  <strong>Recommended Grade:</strong> {ind.recommendedGrade}
-                </div>
-                <div className="industry-card__footer">
-                  <a href={`#industry/${ind.slug}`} className="industry-card__link">
-                    Explore Solutions &rarr;
-                  </a>
+                  <p className="product-card__specs">
+                    <strong>{t('label_roughness', 'Roughness:')}</strong> {prod.roughness || 'Hygienic standard'}<br />
+                    <strong>{t('label_standard', 'Standard:')}</strong> {prod.standard}
+                  </p>
+                  <div className="product-card__actions">
+                    <a href={`#product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
+                      {t('btn_view_details', 'View Details')}
+                    </a>
+                    <button
+                      type="button"
+                      className="btn btn--primary btn--sm quick-rfq-btn"
+                      onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
+                    >
+                      {t('btn_get_quote_card', 'Get a Quote')}
+                    </button>
+                  </div>
                 </div>
               </article>
+            ))}
+          </div>
+
+          <div className="load-more-container mt-3">
+            <a href="#products" className="btn btn--outline-dark btn--lg">
+              {t('btn_view_all_catalogue', 'View All 20+ Industrial Products in Catalogue')} &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* D. Industries Served (Image-led Cards with Circular Icons) */}
+      <section className="section section--white" id="section-industries" aria-label="Industries We Serve">
+        <div className="site-container">
+          <div className="section-header">
+            <div>
+              <span className="section-eyebrow">{t('sec_industries_eyebrow', 'Industries We Serve')}</span>
+              <h2 className="section-title">{t('sec_industries_title', 'Trusted Across Multiple Process Industries')}</h2>
+            </div>
+            <a href="#industries" className="btn btn--outline-dark">
+              {t('btn_view_all_industries', 'View All Industries')} &rarr;
+            </a>
+          </div>
+
+          <div className="industries-scroll-grid">
+            {INDUSTRIES.map((ind) => (
+              <a href={`#industry/${ind.slug}`} className="industry-chip-card" key={ind.slug}>
+                <div className="industry-chip-card__img-wrap">
+                  <img
+                    src={createProductSVG(ind.name, 'Industry Application', '#10263D')}
+                    alt={ind.name}
+                    className="industry-chip-card__img"
+                    loading="lazy"
+                  />
+                  <div className="industry-chip-card__icon-bubble">{ind.icon}</div>
+                </div>
+                <div className="industry-chip-card__body">
+                  <h4 className="industry-chip-card__title">{ind.name}</h4>
+                </div>
+              </a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* E. Quality Assurance & Certification Section */}
-      <section className="section" id="quality-preview-section" aria-label="Quality and Standards">
+      {/* E. Why Lotus Tubes (Dark Navy Industrial Section with Line Icons & Video Modal) */}
+      <section className="why-section" id="section-why" aria-label="Why Lotus Tubes">
+        <div className="site-container">
+          <div className="section-header section-header--center">
+            <span className="section-eyebrow">{t('sec_why_eyebrow', 'Why Choose Lotus Tubes')}</span>
+            <h2 className="section-title">{t('sec_why_title', 'Quality. Stock. Service. Always.')}</h2>
+            <p className="section-subtitle">
+              {t('sec_why_desc', 'Dedicated supplier of hygienic stainless steel components, engineered for integrity and traceability.')}
+            </p>
+          </div>
+
+          <div className="why-grid">
+            <div className="why-card">
+              <div className="why-card__icon">🔬</div>
+              <h3 className="why-card__title">{t('why_1_title', 'Material Integrity')}</h3>
+              <p className="why-card__desc">
+                {t('why_1_desc', 'Complete stock across SS 304 and molybdenum-rich SS 316L, conforming to strict chemical composition thresholds.')}
+              </p>
+            </div>
+            <div className="why-card">
+              <div className="why-card__icon">⚡</div>
+              <h3 className="why-card__title">{t('why_2_title', 'Finish & Precision')}</h3>
+              <p className="why-card__desc">
+                {t('why_2_desc', 'Available Electro-Polished (EP) with Ra ≤ 0.38 µm and Mechanical Polished (MP) finishes tailored for CIP cleanliness.')}
+              </p>
+            </div>
+            <div className="why-card">
+              <div className="why-card__icon">📑</div>
+              <h3 className="why-card__title">{t('why_3_title', 'Traceability & MTC')}</h3>
+              <p className="why-card__desc">
+                {t('why_3_desc', 'Complete EN 10204 3.1 Material Test Certificates confirming mechanical, chemical, and roughness properties upon request.')}
+              </p>
+            </div>
+            <div className="why-card">
+              <div className="why-card__icon">📦</div>
+              <h3 className="why-card__title">{t('why_4_title', 'Ready Stock Availability')}</h3>
+              <p className="why-card__desc">
+                {t('why_4_desc', 'Broad domestic stockholding of sanitary bends, tees, clamps, gaskets, and pipes ready for immediate dispatch.')}
+              </p>
+            </div>
+            <div className="why-card">
+              <div className="why-card__icon">🤝</div>
+              <h3 className="why-card__title">{t('why_5_title', 'Quotation Assistance')}</h3>
+              <p className="why-card__desc">
+                {t('why_5_desc', 'Fast technical response via mail and dedicated WhatsApp Business desk with full BOQ item breakdown.')}
+              </p>
+            </div>
+            <div className="why-card">
+              <div className="why-card__icon">🌍</div>
+              <h3 className="why-card__title">{t('why_6_title', 'Global Sourcing Support')}</h3>
+              <p className="why-card__desc">
+                {t('why_6_desc', 'Supplying process plants, distributors, and skid fabricators across India, Europe, UAE, USA, and Southeast Asia.')}
+              </p>
+            </div>
+          </div>
+
+          {/* Video Tour Bar (Matching UI Reference) */}
+          <div className="why-video-bar">
+            <div className="why-video-bar__left">
+              <button
+                type="button"
+                className="play-btn-circle"
+                id="open-process-video"
+                aria-label="Play Process Demonstration"
+                onClick={onOpenVideo}
+              >
+                ▶
+              </button>
+              <div className="why-video-bar__text">
+                <h4>{t('why_video_title', 'Watch Sourcing & Quality Inspection Overview')}</h4>
+                <p>{t('why_video_desc', 'See our multi-stage electro-polishing verification, surface Ra testing, and packaging protocol.')}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn btn--outline-light"
+              id="open-process-video-btn"
+              onClick={onOpenVideo}
+            >
+              {t('btn_video_demo', 'Explore Quality Demo')} &rarr;
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      {/* F. About Section (2-Column Preview) */}
+      <section className="section section--white" id="section-about-preview" aria-label="About Lotus Tubes">
         <div className="site-container">
           <div className="about-preview-grid">
-            <div className="about-preview-text">
-              <span className="section-eyebrow">Zero Defect Manufacturing</span>
-              <h2 className="section-title">Uncompromising Quality &amp; Certified Metallurgical Integrity</h2>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '16px' }}>
-                Every tube, bend, and valve supplied by Lotus Tubes undergoes rigorous surface roughness testing, hydrostatic pressure checking, and spectro-chemical verification. Supplied with authentic EN 10204 3.1 Mill Test Certificates.
-              </p>
-
-              <div className="quality-feature-list" style={{ marginTop: '24px' }}>
-                <div className="quality-feature-item">
-                  <span className="feat-check">✓</span>
-                  <div>
-                    <strong>ASTM A270 &amp; ASTM A269 Strict Compliance:</strong>
-                    <p style={{ margin: 0, fontSize: '13px', color: '#667085' }}>Precision tolerances for roundness, OD, and uniform wall thickness.</p>
-                  </div>
-                </div>
-                <div className="quality-feature-item">
-                  <span className="feat-check">✓</span>
-                  <div>
-                    <strong>Mitutoyo Surface Roughness Verification:</strong>
-                    <p style={{ margin: 0, fontSize: '13px', color: '#667085' }}>Certified Ra &le; 0.38 &mu;m inside finish eliminating bacterial adhesion.</p>
-                  </div>
-                </div>
-                <div className="quality-feature-item">
-                  <span className="feat-check">✓</span>
-                  <div>
-                    <strong>100% Eddy Current &amp; Hydrostatic Testing:</strong>
-                    <p style={{ margin: 0, fontSize: '13px', color: '#667085' }}>Zero porosity and leak-proof guarantees under severe hygienic process pressures.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ marginTop: '30px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <a href="#quality" className="btn btn--primary">
-                  Review Quality Standards &rarr;
-                </a>
-                <button type="button" className="btn btn--outline-dark" onClick={onOpenVideo}>
-                  Watch QC Video Demonstration
-                </button>
-              </div>
-            </div>
-
+            
             <div className="about-preview-media">
-              <div className="facility-card">
-                <img
-                  src="/assets/images/company/lotus-tubes-facility.svg"
-                  alt="Lotus Tubes Inspection and Stock Facility"
-                  className="facility-img"
-                  style={{ width: '100%', borderRadius: '12px', boxShadow: '0 8px 24px rgba(16,38,61,0.12)' }}
-                />
+              <img
+                src="/assets/images/company/lotus-tubes-facility.svg"
+                alt="Lotus Tubes Office and Warehousing Facility"
+                className="about-preview-img"
+              />
+              <div className="about-building-overlay">
+                <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="about-building-logo" />
               </div>
             </div>
+
+            <div className="about-preview-content">
+              <span className="section-eyebrow">{t('sec_about_eyebrow', 'About Lotus Tubes')}</span>
+              <h2 className="section-title">{t('sec_about_title', 'Your Trusted Partner in Stainless Steel Solutions')}</h2>
+              <p>
+                {t('sec_about_desc', 'Lotus Tubes (a venture of Lotus Impex, Mumbai) is a dedicated supplier and stockist of high-quality stainless steel sanitary pipes, pipe fittings, and valves. Catering to pharmaceutical, dairy, food & beverage, breweries, water treatment, and chemical industries across India and worldwide.')}
+              </p>
+              
+              {/* Factual Capabilities & Metrics */}
+              <div className="stats-counter-grid">
+                <div className="stat-box">
+                  <div className="stat-box__number">SS 316L</div>
+                  <div className="stat-box__label">{t('stat_pharma', 'High-Purity Pharma Grade')}</div>
+                </div>
+                <div className="stat-box">
+                  <div className="stat-box__number">EP / MP</div>
+                  <div className="stat-box__label">{t('stat_finishes', 'Precision Surface Finishes')}</div>
+                </div>
+                <div className="stat-box">
+                  <div className="stat-box__number">ASTM</div>
+                  <div className="stat-box__label">{t('stat_compliance', 'A270 / A269 Compliance')}</div>
+                </div>
+                <div className="stat-box">
+                  <div className="stat-box__number">100%</div>
+                  <div className="stat-box__label">{t('stat_traceability', 'MTC Traceability Support')}</div>
+                </div>
+              </div>
+
+              <a href="#about" className="btn btn--primary btn--lg">
+                <span>{t('btn_know_more', 'Know More About Us')}</span> &rarr;
+              </a>
+            </div>
+
           </div>
         </div>
       </section>
-
-      {/* F. Testimonials Strip */}
-      <section className="section bg-light" aria-label="Customer Testimonials">
-        <div className="site-container">
-          <div className="section-header" style={{ textAlign: 'center', margin: '0 auto 40px auto' }}>
-            <span className="section-eyebrow">Client Validation</span>
-            <h2 className="section-title">Trusted by Process Engineers &amp; OEM Fabricators</h2>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-            <div className="card" style={{ padding: '24px', background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
-              <div style={{ color: '#F59E0B', marginBottom: '12px' }}>★★★★★</div>
-              <p style={{ color: '#202B38', fontStyle: 'italic', marginBottom: '16px' }}>
-                "Lotus Tubes supplied our entire WFI pipe installation in SS 316L EP with Ra ≤ 0.38 µm. The MTC documentation passed the US FDA audit without a single observation."
-              </p>
-              <strong style={{ display: 'block', color: '#10263D' }}>Project Engineering Head</strong>
-              <small style={{ color: '#667085' }}>Major Sterile Injectables Plant, Gujarat</small>
-            </div>
-
-            <div className="card" style={{ padding: '24px', background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
-              <div style={{ color: '#F59E0B', marginBottom: '12px' }}>★★★★★</div>
-              <p style={{ color: '#202B38', fontStyle: 'italic', marginBottom: '16px' }}>
-                "Outstanding consistency in sanitary bends and tri-clamp ferrules. Smooth welds and flawless surface finish. Fast dispatch when we have urgent project deadlines."
-              </p>
-              <strong style={{ display: 'block', color: '#10263D' }}>Purchase Director</strong>
-              <small style={{ color: '#667085' }}>Dairy Process Equipment Fabricator, Maharashtra</small>
-            </div>
-
-            <div className="card" style={{ padding: '24px', background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
-              <div style={{ color: '#F59E0B', marginBottom: '12px' }}>★★★★★</div>
-              <p style={{ color: '#202B38', fontStyle: 'italic', marginBottom: '16px' }}>
-                "We export hygienic skids globally. Lotus Tubes is our go-to supplier for ASTM A270 sanitary tubes and pneumatic diaphragm valves. Always reliable."
-              </p>
-              <strong style={{ display: 'block', color: '#10263D' }}>Managing Director</strong>
-              <small style={{ color: '#667085' }}>Biotech Skid Manufacturer, Mumbai</small>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    </>
   );
 };
 

@@ -1,86 +1,95 @@
 import React from 'react';
-import { BLOG_POSTS } from '../data/siteData';
+import { BLOG_POSTS, createProductSVG } from '../data/siteData';
 
 export const BlogView = ({ slug }) => {
-  const currentPost = slug ? BLOG_POSTS.find((b) => b.slug === slug || b.id === slug) : null;
+  if (slug) {
+    const post = BLOG_POSTS.find((p) => p.slug === slug || p.id === slug) || BLOG_POSTS[0];
+    return (
+      <>
+        <section className="page-hero">
+          <div className="site-container">
+            <span className="badge badge--pink mb-2">
+              {post.category} &bull; {post.readTime}
+            </span>
+            <h1 className="page-hero-title">{post.title}</h1>
+            <p className="page-hero-subtitle">Published on {post.date} by Lotus Tubes Technical Desk</p>
+          </div>
+        </section>
+
+        <div className="site-container section" style={{ maxWidth: '860px' }}>
+          <article className="form-card" style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-main)' }}>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div
+              className="mt-3 pt-3"
+              style={{
+                borderTop: '1px solid var(--border-color)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <a href="#blog" className="btn btn--outline-dark">
+                &larr; Back to All Articles
+              </a>
+              <a href="#quote" className="btn btn--primary">
+                Discuss Your Piping Project &rarr;
+              </a>
+            </div>
+          </article>
+        </div>
+      </>
+    );
+  }
 
   return (
-    <div>
+    <>
       <section className="page-hero">
         <div className="site-container">
           <h1 className="page-hero-title">Technical Engineering Blog</h1>
           <p className="page-hero-subtitle">
-            Insights on stainless steel metallurgy, sanitary standards compliance, electro-polishing mechanics, and fluid process piping.
+            Insights into stainless steel metallurgy, sanitary standards, roughness guidelines, and hygienic process engineering.
           </p>
         </div>
       </section>
 
       <div className="site-container section">
-        {currentPost ? (
-          <article style={{ maxWidth: '840px', margin: '0 auto' }}>
-            <div style={{ marginBottom: '16px' }}>
-              <span className="badge badge--pink">{currentPost.category}</span>
-              <span style={{ fontSize: '13px', color: '#667085', marginLeft: '12px' }}>{currentPost.date}</span>
-            </div>
-            <h1 style={{ fontFamily: 'var(--font-heading)', color: 'var(--deep-navy)', fontSize: '2.2rem', marginBottom: '20px', lineHeight: 1.3 }}>
-              {currentPost.title}
-            </h1>
-            <div style={{ fontSize: '1.1rem', color: '#475569', lineHeight: 1.8, marginBottom: '24px', fontStyle: 'italic' }}>
-              {currentPost.excerpt}
-            </div>
-            <hr style={{ border: 'none', borderTop: '1px solid #E3E8EF', margin: '24px 0' }} />
-            <div style={{ color: '#334155', lineHeight: 1.8, fontSize: '1.05rem' }}>
-              <p>{currentPost.content || currentPost.excerpt}</p>
-              <p style={{ marginTop: '16px' }}>
-                For technical specifications, dimensional schedules, and testing certificates for stainless steel sanitary tubes, consult our engineering desk directly.
-              </p>
-            </div>
-            <div style={{ marginTop: '36px' }}>
-              <a href="#blog" className="btn btn--secondary">
-                &larr; Back to All Articles
-              </a>
-              <a href="#quote" className="btn btn--primary" style={{ marginLeft: '12px' }}>
-                Request Technical Sourcing Quote &rarr;
-              </a>
-            </div>
-          </article>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-            {BLOG_POSTS.map((post) => (
-              <article
-                key={post.id}
-                className="card"
-                style={{
-                  background: '#FFFFFF',
-                  borderRadius: '12px',
-                  border: '1px solid #E3E8EF',
-                  padding: '28px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                    <span className="badge badge--navy">{post.category}</span>
-                    <span style={{ fontSize: '12px', color: '#667085' }}>{post.date}</span>
-                  </div>
-                  <h3 style={{ fontSize: '1.3rem', color: '#10263D', marginBottom: '12px', lineHeight: 1.4 }}>
-                    <a href={`#blog/${post.slug}`}>{post.title}</a>
-                  </h3>
-                  <p style={{ color: '#667085', lineHeight: 1.6, fontSize: '14px', marginBottom: '20px' }}>
-                    {post.excerpt}
-                  </p>
+        <div className="resource-grid">
+          {BLOG_POSTS.map((post) => (
+            <article className="range-card" key={post.slug}>
+              <div className="range-card__img-wrap">
+                <img
+                  src={createProductSVG(post.title, post.category, '#10263D')}
+                  alt={post.title}
+                  className="range-card__img"
+                />
+              </div>
+              <div className="range-card__body">
+                <div
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: 'var(--primary-blue)',
+                    textTransform: 'uppercase',
+                    marginBottom: '6px'
+                  }}
+                >
+                  {post.category} &bull; {post.readTime}
                 </div>
-                <a href={`#blog/${post.slug}`} className="btn btn--outline-dark btn--sm" style={{ alignSelf: 'flex-start' }}>
-                  Read Technical Article &rarr;
-                </a>
-              </article>
-            ))}
-          </div>
-        )}
+                <h3 className="range-card__title">
+                  <a href={`#blog/${post.slug}`}>{post.title}</a>
+                </h3>
+                <p className="range-card__desc">{post.excerpt}</p>
+                <div className="range-card__footer">
+                  <a href={`#blog/${post.slug}`} className="range-card__link">
+                    Read Article <span>&rarr;</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

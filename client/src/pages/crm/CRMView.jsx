@@ -237,10 +237,6 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               + New Enquiry
             </button>
 
-            <span className="crm-mode-badge" title="Changes are stored in local browser session">
-              🟢 Live Demo Storage
-            </span>
-
             <a href="#home" className="btn btn--secondary btn--sm">
               Public Site
             </a>

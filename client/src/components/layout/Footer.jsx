@@ -82,7 +82,6 @@ export const Footer = () => {
               <li><a href="#blog">{t('nav_blog', 'Technical Engineering Blog')}</a></li>
               <li><a href="#contact">{t('nav_contact', 'Contact & Plant Location')}</a></li>
               <li><a href="#quote">{t('btn_get_quote', 'Submit Detailed BOQ / RFQ')}</a></li>
-              <li><a href="#crm/login" className="text-pink">{t('nav_crm', 'Internal Sales CRM (Staff)')}</a></li>
             </ul>
           </div>
 
@@ -123,7 +122,7 @@ export const Footer = () => {
             <span className="sep">&bull;</span>
             <a href="#contact">Terms of Supply</a>
             <span className="sep">&bull;</span>
-            <a href="#crm/login">CRM Demo</a>
+
           </div>
         </div>
       </div>

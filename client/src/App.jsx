@@ -124,8 +124,12 @@ export const App = () => {
               {route === 'product' && (
                 <ProductDetailView slug={param} onOpenEnquiry={handleOpenEnquiry} />
               )}
-              {route === 'industries' && <IndustriesView slug={param} />}
-              {route === 'industry' && <IndustriesView slug={param} />}
+              {route === 'industries' && (
+                <IndustriesView slug={param} onOpenEnquiry={handleOpenEnquiry} />
+              )}
+              {route === 'industry' && (
+                <IndustriesView slug={param} onOpenEnquiry={handleOpenEnquiry} />
+              )}
               {route === 'about' && <AboutView />}
               {route === 'quality' && (
                 <QualityView onOpenVideo={() => setIsVideoOpen(true)} />

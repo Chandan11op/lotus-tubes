@@ -1,99 +1,205 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { apiService } from '../services/api';
 
-export const QualityView = ({ onOpenVideo }) => {
+export const QualityView = () => {
+  const [formData, setFormData] = useState({
+    company: '',
+    email: '',
+    product: '',
+    docType: 'EN 10204 3.1 MTC'
+  });
+  const [status, setStatus] = useState({ state: 'idle', message: '' });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.company || !formData.email) {
+      setStatus({ state: 'error', message: 'Please enter both company name and a valid email address.' });
+      return;
+    }
+    setStatus({ state: 'submitting', message: 'Submitting request...' });
+    try {
+      await apiService.submitEnquiry({
+        name: formData.company,
+        email: formData.email,
+        phone: 'N/A',
+        company: formData.company,
+        productName: formData.product || 'Quality Documentation Request',
+        notes: `Document Type Requested: ${formData.docType}`
+      });
+      setStatus({
+        state: 'success',
+        message: 'Your technical document request has been received. Our QC desk will verify and dispatch within 24 hours.'
+      });
+      setFormData({ company: '', email: '', product: '', docType: 'EN 10204 3.1 MTC' });
+    } catch (err) {
+      setStatus({
+        state: 'error',
+        message: 'Error submitting your request. Please email us directly at sales@lotustubes.com.'
+      });
+    }
+  };
+
   return (
-    <div>
+    <>
       <section className="page-hero">
         <div className="site-container">
-          <h1 className="page-hero-title">Quality Assurance &amp; MTC Documentation</h1>
+          <h1 className="page-hero-title">Quality Standards &amp; Documentation</h1>
           <p className="page-hero-subtitle">
-            Zero-compromise hygienic standards conforming to ASTM A270, ASME BPE, and 3-A Sanitary Standards with 100% heat traceability.
+            Surface finish precision, metallurgical compliance, and batch test certification for pharmaceutical and sanitary installations.
           </p>
         </div>
       </section>
 
       <div className="site-container section">
-        {/* Surface Finish Guide Table */}
-        <div style={{ marginBottom: '48px' }}>
-          <span className="section-eyebrow">Surface Topography Standards</span>
-          <h2 className="section-title">Surface Roughness (Ra) Benchmark Matrix</h2>
-          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginTop: '12px', marginBottom: '24px' }}>
-            Surface roughness dictates fluid shear stress and bacterial harborage risk. Below are Lotus Tubes verified finish grades:
-          </p>
-
-          <div style={{ overflowX: 'auto' }}>
-            <table className="spec-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-              <thead>
-                <tr style={{ background: '#10263D', color: '#FFFFFF' }}>
-                  <th style={{ padding: '14px' }}>Finish Designation</th>
-                  <th style={{ padding: '14px' }}>Internal Roughness (ID)</th>
-                  <th style={{ padding: '14px' }}>External Finish (OD)</th>
-                  <th style={{ padding: '14px' }}>Target Application</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style={{ borderBottom: '1px solid #E3E8EF' }}>
-                  <td style={{ padding: '12px' }}><strong>Electro Polished (EP) High Purity</strong></td>
-                  <td style={{ padding: '12px', color: 'var(--primary-blue)', fontWeight: 600 }}>Ra &le; 0.38 &mu;m (15 &mu;in)</td>
-                  <td style={{ padding: '12px' }}>Ra &le; 0.8 &mu;m (32 &mu;in)</td>
-                  <td style={{ padding: '12px' }}>WFI Loops, Biotech Fermenters, Injectable lines</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E3E8EF', background: '#F8FAFC' }}>
-                  <td style={{ padding: '12px' }}><strong>Mechanical Polished (MP) Sanitary</strong></td>
-                  <td style={{ padding: '12px', color: 'var(--primary-blue)', fontWeight: 600 }}>Ra &le; 0.8 &mu;m (32 &mu;in)</td>
-                  <td style={{ padding: '12px' }}>Ra &le; 0.8 &mu;m (32 &mu;in)</td>
-                  <td style={{ padding: '12px' }}>Dairy, Breweries, Food Puree, Juices</td>
-                </tr>
-                <tr style={{ borderBottom: '1px solid #E3E8EF' }}>
-                  <td style={{ padding: '12px' }}><strong>Ultra-Fine Pharma (SF4 Equivalent)</strong></td>
-                  <td style={{ padding: '12px', color: 'var(--primary-blue)', fontWeight: 600 }}>Ra &le; 0.25 &mu;m (10 &mu;in)</td>
-                  <td style={{ padding: '12px' }}>Ra &le; 0.8 &mu;m</td>
-                  <td style={{ padding: '12px' }}>Ultra-pure semiconductors, critical bio-processing</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Quality Tests Protocol */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '48px' }}>
-          <div className="card" style={{ padding: '24px', background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
-            <span style={{ fontSize: '2rem' }}>🔬</span>
-            <h3 style={{ color: 'var(--deep-navy)', marginTop: '12px', marginBottom: '8px' }}>Spectro Chemical Verification</h3>
-            <p style={{ color: '#667085', fontSize: '14px', lineHeight: 1.6 }}>
-              100% PMI (Positive Material Identification) ensures carbon content &le; 0.03% in 316L and molybdenum content &ge; 2.0% for maximum pitting resistance.
-            </p>
-          </div>
-
-          <div className="card" style={{ padding: '24px', background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
-            <span style={{ fontSize: '2rem' }}>💧</span>
-            <h3 style={{ color: 'var(--deep-navy)', marginTop: '12px', marginBottom: '8px' }}>Hydrostatic &amp; Eddy Current</h3>
-            <p style={{ color: '#667085', fontSize: '14px', lineHeight: 1.6 }}>
-              Every tube length tested up to 150 bar hydrostatic pressure and 100% non-destructive eddy current scan to guarantee zero pinholes or weld seam fissures.
-            </p>
-          </div>
-
-          <div className="card" style={{ padding: '24px', background: '#FFFFFF', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
-            <span style={{ fontSize: '2rem' }}>📑</span>
-            <h3 style={{ color: 'var(--deep-navy)', marginTop: '12px', marginBottom: '8px' }}>EN 10204 3.1 Traceability</h3>
-            <p style={{ color: '#667085', fontSize: '14px', lineHeight: 1.6 }}>
-              Each shipment is accompanied by Mill Test Certificates stating chemical composition, mechanical tensile values, elongation, and surface Ra roughness readings.
-            </p>
-          </div>
-        </div>
-
-        {/* Action Callout */}
-        <div style={{ background: '#10263D', color: '#FFFFFF', padding: '36px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px' }}>
+        <div className="about-preview-grid mb-3">
           <div>
-            <h3 style={{ fontSize: '1.6rem', marginBottom: '8px' }}>Watch Our Quality &amp; Sourcing Sequence</h3>
-            <p style={{ color: '#CBD5E1', margin: 0 }}>See step-by-step sizing, electro-polishing, testing, and capping sequence.</p>
+            <span className="section-eyebrow">Quality Philosophy</span>
+            <h2 className="section-title">Strict Adherence to Hygienic Standards</h2>
+            <p style={{ lineHeight: 1.7, color: 'var(--text-secondary)', marginTop: '14px' }}>
+              Sanitary piping systems must prevent microbiological entrapment and withstand intensive CIP/SIP sterilization routines. At Lotus Tubes, all high-purity components are tracked by heat number and verified against recognized international benchmarks.
+            </p>
+            <div
+              className="why-card mt-2"
+              style={{ background: 'var(--pink-subtle)', borderColor: 'var(--pink-light)', color: 'var(--deep-navy)' }}
+            >
+              <h4 style={{ marginBottom: '6px' }}>Important Compliance Notice:</h4>
+              <p style={{ fontSize: '0.9rem', lineHeight: 1.5 }}>
+                We supply Material Test Certificates (EN 10204 3.1) confirming chemical analysis and mechanical properties. We do not claim compliance with a particular standard unless the supplied product verifiedly meets its requirements.
+              </p>
+            </div>
           </div>
-          <button type="button" className="btn btn--white" onClick={onOpenVideo}>
-            ▶ Watch QC Video Simulation
-          </button>
+          <div>
+            <div className="spec-table-box">
+              <table className="spec-table">
+                <thead>
+                  <tr>
+                    <th>Finish Code</th>
+                    <th>Process</th>
+                    <th>Typical Ra Roughness</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>EP (Electro Polished)</strong>
+                    </td>
+                    <td>Electrochemical dissolution</td>
+                    <td>Ra ≤ 0.38 µm (15 µin) Inside</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>MP (Mechanical Polish)</strong>
+                    </td>
+                    <td>Abrasive belt &amp; compound</td>
+                    <td>Ra ≤ 0.8 µm (32 µin) Inside</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>ASTM A270</strong>
+                    </td>
+                    <td>Sanitary austenitic tube standard</td>
+                    <td>Controlled OD &amp; Wall Tolerance</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>ASTM A269</strong>
+                    </td>
+                    <td>Seamless &amp; welded SS tube</td>
+                    <td>Corrosion resistant process lines</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Document Enquiry Form */}
+        <div className="form-card mt-3">
+          <div className="section-header" style={{ marginBottom: '24px' }}>
+            <div>
+              <span className="section-eyebrow">Technical Support</span>
+              <h3 className="section-title" style={{ fontSize: '1.6rem' }}>
+                Request Material Test Certificates or Technical Datasheets
+              </h3>
+            </div>
+          </div>
+
+          {status.state === 'success' && (
+            <div className="alert alert--success mb-3" style={{ padding: '16px', background: '#ECFDF5', color: '#065F46', borderRadius: '8px' }}>
+              ✓ {status.message}
+            </div>
+          )}
+          {status.state === 'error' && (
+            <div className="alert alert--error mb-3" style={{ padding: '16px', background: '#FEF2F2', color: '#991B1B', borderRadius: '8px' }}>
+              ⚠ {status.message}
+            </div>
+          )}
+
+          <form id="quality-request-form" onSubmit={handleSubmit} noValidate>
+            <div className="form-row">
+              <div className="form-group">
+                <label>
+                  Company / Organization <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="qc-company"
+                  required
+                  placeholder="e.g. Cipla / Dr. Reddy's Contractor"
+                  value={formData.company}
+                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>
+                  Your Email Address <span className="required">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="qc-email"
+                  required
+                  placeholder="engineer@plant.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Product of Interest / Heat No.</label>
+                <input
+                  type="text"
+                  id="qc-product"
+                  placeholder="e.g. SS 316L EP Tube 1.5 inch"
+                  value={formData.product}
+                  onChange={(e) => setFormData({ ...formData, product: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Required Document Type</label>
+                <select
+                  id="qc-doc-type"
+                  value={formData.docType}
+                  onChange={(e) => setFormData({ ...formData, docType: e.target.value })}
+                >
+                  <option value="EN 10204 3.1 MTC">EN 10204 3.1 Material Test Certificate</option>
+                  <option value="Product Specification Sheet">Product Specification Sheet</option>
+                  <option value="Surface Roughness Certificate">Surface Roughness Verification</option>
+                  <option value="Complete Product Catalogue PDF">Complete Product Catalogue PDF</option>
+                </select>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="btn btn--primary btn--lg"
+              disabled={status.state === 'submitting'}
+            >
+              {status.state === 'submitting' ? 'Submitting...' : 'Submit Technical Request →'}
+            </button>
+          </form>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

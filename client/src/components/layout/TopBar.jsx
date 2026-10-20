@@ -83,11 +83,6 @@ export const TopBar = () => {
               </div>
             )}
           </div>
-
-          <span className="top-bar__divider" aria-hidden="true">|</span>
-          <a href="#quote" className="top-bar__cta">
-            {t('btn_get_quote', 'Get a Quote')}
-          </a>
         </div>
       </div>
     </aside>

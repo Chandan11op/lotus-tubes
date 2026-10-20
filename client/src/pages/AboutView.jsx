@@ -1,14 +1,14 @@
 import React from 'react';
-import { CONFIG } from '../data/siteData';
+import { createProductSVG } from '../data/siteData';
 
 export const AboutView = () => {
   return (
-    <div>
+    <>
       <section className="page-hero">
         <div className="site-container">
           <h1 className="page-hero-title">About Lotus Tubes</h1>
           <p className="page-hero-subtitle">
-            Trusted supplier and global distributor of precision stainless steel sanitary pipes, fittings, and valves for over 25 years.
+            Dedicated supplier and distributor of high-purity stainless steel sanitary pipes, fittings, and hygienic valves based in Mumbai, India.
           </p>
         </div>
       </section>
@@ -17,50 +17,64 @@ export const AboutView = () => {
         <div className="about-preview-grid">
           <div>
             <span className="section-eyebrow">Company Profile</span>
-            <h2 className="section-title">The Quality Maker in Sanitary Fluid Handling</h2>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginTop: '16px' }}>
-              Headquartered in Mumbai, India, Lotus Tubes (operating under legal entity Lotus Impex) is a premier supplier specializing exclusively in hygienic and high-purity stainless steel flow components.
+            <h2 className="section-title">Commitment to Hygienic Engineering &amp; Global Sourcing</h2>
+            <p style={{ lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '16px' }}>
+              Established as a key trading and supply venture under <strong>Lotus Impex</strong> (registered in Mumbai, 2019), <strong>Lotus Tubes</strong> was formed to solve the specialized supply needs of hygienic process equipment makers, skid fabricators, and manufacturing plants across pharmaceutical, dairy, food &amp; beverage, and biotechnology sectors.
             </p>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginTop: '12px' }}>
-              We cater to leading pharmaceutical bulk drug manufacturers, sterile vaccine labs, biotech pilot plants, multi-national dairy processing conglomerates, breweries, and food ingredient processors across India, the Middle East, Southeast Asia, and Europe.
+            <p style={{ lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '14px' }}>
+              Understanding that standard industrial pipe fittings fail to meet sterile Clean-In-Place (CIP) and Steam-In-Place (SIP) conditions, we focus exclusively on sanitary stainless steel components with certified internal smoothness (Ra &le; 0.38 &mu;m), true-roundness tolerances, and verifiable metallurgical test certificates.
             </p>
 
-            <div style={{ marginTop: '24px', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px', border: '1px solid #E3E8EF' }}>
-                <strong style={{ color: '#10263D', display: 'block', fontSize: '1.2rem' }}>25+ Years</strong>
-                <span style={{ fontSize: '13px', color: '#667085' }}>Industry Domain Experience</span>
+            <div className="stats-counter-grid mt-3">
+              <div className="stat-box">
+                <div className="stat-box__number">GSTIN</div>
+                <div className="stat-box__label">27AIIPS0303A1ZU</div>
               </div>
-              <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '8px', border: '1px solid #E3E8EF' }}>
-                <strong style={{ color: '#10263D', display: 'block', fontSize: '1.2rem' }}>100% Traceability</strong>
-                <span style={{ fontSize: '13px', color: '#667085' }}>EN 10204 3.1 MTC with every heat</span>
+              <div className="stat-box">
+                <div className="stat-box__number">IEC</div>
+                <div className="stat-box__label">0316902471</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-box__number">Mumbai</div>
+                <div className="stat-box__label">Girgaon Sourcing Desk</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-box__number">Global</div>
+                <div className="stat-box__label">Export Shipping Support</div>
               </div>
             </div>
 
-            <div style={{ marginTop: '28px' }}>
-              <a href="#quote" className="btn btn--primary">
-                Partner With Us / Request Quotation &rarr;
+            <div className="hero-actions mt-3">
+              <a href="#quote" className="btn btn--primary btn--lg">
+                Request Quotation &rarr;
+              </a>
+              <a href="#contact" className="btn btn--outline-dark btn--lg">
+                Visit Office / Contact Us
               </a>
             </div>
           </div>
 
           <div>
             <img
-              src="/assets/images/company/lotus-tubes-facility.svg"
-              alt="Lotus Tubes Mumbai Distribution Facility"
-              style={{ width: '100%', borderRadius: '12px', border: '1px solid #E3E8EF', boxShadow: '0 8px 24px rgba(16,38,61,0.08)' }}
+              src={createProductSVG('Lotus Tubes Distribution Headquarters', 'Registered Trade Facility - Mumbai', '#10263D')}
+              alt="Lotus Tubes Headquarters"
+              style={{ borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-xl)', width: '100%' }}
             />
-            <div style={{ marginTop: '16px', padding: '16px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E3E8EF' }}>
-              <strong style={{ color: '#10263D' }}>Corporate Identifiers</strong>
-              <div style={{ fontSize: '13px', color: '#667085', marginTop: '6px' }}>
-                <strong>Legal Name:</strong> {CONFIG.companyLegalName}<br />
-                <strong>GSTIN:</strong> {CONFIG.gstin} &bull; <strong>IEC:</strong> {CONFIG.iec}<br />
-                <strong>Registered Office:</strong> {CONFIG.officeAddress}
-              </div>
-            </div>
           </div>
         </div>
+
+        {/* Verified Sourcing Approach Notice */}
+        <div
+          className="why-card mt-3"
+          style={{ backgroundColor: 'var(--pure-white)', borderColor: 'var(--border-color)', color: 'var(--text-main)' }}
+        >
+          <h3 style={{ color: 'var(--deep-navy)', marginBottom: '8px' }}>Our Authentic Business Philosophy</h3>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            We operate with complete commercial honesty. Lotus Tubes partners with leading precision drawing mills and certified CNC machining foundries, delivering rigorous batch inspection, full MTC EN 10204 3.1 documentation, and fast responsive order execution through our dedicated sales and accounting teams.
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

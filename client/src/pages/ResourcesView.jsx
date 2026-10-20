@@ -1,98 +1,113 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FAQS } from '../data/siteData';
 
 export const ResourcesView = ({ onNotify }) => {
-  const resources = [
-    {
-      title: 'Lotus Tubes Master Sanitary Catalogue 2026',
-      desc: 'Complete product specifications, OD charts, valve flow curves, and ASTM standards in high-resolution PDF format.',
-      format: 'PDF',
-      size: '8.4 MB',
-      image: '/assets/images/resources/catalogue-cover.svg'
-    },
-    {
-      title: 'Sanitary Tubing Dimensional & Wall Gauge Chart',
-      desc: 'Complete size lookup table from 1/2" to 4" OD showing wall thickness in mm, gauge ratings, and working pressure limits.',
-      format: 'PDF / Excel',
-      size: '2.1 MB',
-      image: '/assets/images/resources/dimensions-chart.svg'
-    },
-    {
-      title: 'Surface Finish & Roughness (Ra) Conversion Guide',
-      desc: 'Engineering whitepaper comparing Electro-Polishing (EP) vs Mechanical Polishing (MP), grit finishes, and ASME BPE designations.',
-      format: 'PDF',
-      size: '1.8 MB',
-      image: '/assets/images/resources/roughness-guide.svg'
-    }
-  ];
+  const [openFaq, setOpenFaq] = useState(null);
 
-  const handleDownload = (resTitle) => {
+  const handleDownload = (docName) => {
     if (onNotify) {
-      onNotify(`Document [${resTitle}] prepared for download. (Demonstration)`, 'success');
+      onNotify(`Downloading ${docName} (Demo Mode)...`, 'success');
+    } else {
+      alert(`Downloading ${docName} (Demo Mode)...`);
     }
   };
 
+  const toggleFaq = (idx) => {
+    setOpenFaq(openFaq === idx ? null : idx);
+  };
+
   return (
-    <div>
+    <>
       <section className="page-hero">
         <div className="site-container">
-          <h1 className="page-hero-title">Engineering Datasheets &amp; Resources</h1>
+          <h1 className="page-hero-title">Engineering Resources &amp; Downloads</h1>
           <p className="page-hero-subtitle">
-            Download dimensional charts, surface roughness standards, MTC sample documentation, and complete product catalogues.
+            Download technical catalogues, standard pipe dimensional charts, and review sanitary engineering guides.
           </p>
         </div>
       </section>
 
       <div className="site-container section">
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '32px' }}>
-          {resources.map((res, i) => (
-            <article
-              key={i}
-              className="card"
-              style={{
-                background: '#FFFFFF',
-                borderRadius: '12px',
-                border: '1px solid #E3E8EF',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column'
-              }}
+        <div className="resource-grid mb-3">
+          <div className="resource-card">
+            <div className="resource-card__icon">📘</div>
+            <h3 className="resource-card__title">Complete Product Catalogue</h3>
+            <p className="resource-card__desc">
+              Complete specification guide covering SS 304/316L tubes, bends, tees, clamps, ferrules, and valves.
+            </p>
+            <button
+              type="button"
+              className="btn btn--outline-dark btn--sm download-mock-btn"
+              onClick={() => handleDownload('Lotus-Tubes-Full-Catalogue-2026.pdf')}
             >
-              <div style={{ height: '220px', background: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid #E3E8EF' }}>
-                <img
-                  src={res.image}
-                  alt={res.title}
-                  style={{ maxHeight: '180px', maxWidth: '80%', objectFit: 'contain' }}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-              </div>
-              <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                    <span className="badge badge--navy">{res.format}</span>
-                    <span style={{ fontSize: '12px', color: '#667085' }}>{res.size}</span>
-                  </div>
-                  <h3 style={{ fontSize: '1.2rem', color: '#10263D', marginBottom: '10px', lineHeight: 1.4 }}>
-                    {res.title}
-                  </h3>
-                  <p style={{ fontSize: '14px', color: '#667085', lineHeight: 1.6, marginBottom: '20px' }}>
-                    {res.desc}
-                  </p>
+              📥 Download PDF (Demo)
+            </button>
+          </div>
+
+          <div className="resource-card">
+            <div className="resource-card__icon">📐</div>
+            <h3 className="resource-card__title">Sanitary Tube Dimensions Chart</h3>
+            <p className="resource-card__desc">
+              Outside diameter (OD), wall thickness gauge comparison, and internal cross-sectional area reference table.
+            </p>
+            <button
+              type="button"
+              className="btn btn--outline-dark btn--sm download-mock-btn"
+              onClick={() => handleDownload('Sanitary-Tube-OD-Wall-Chart.pdf')}
+            >
+              📥 Download Chart (Demo)
+            </button>
+          </div>
+
+          <div className="resource-card">
+            <div className="resource-card__icon">🔬</div>
+            <h3 className="resource-card__title">Surface Roughness (Ra) Guide</h3>
+            <p className="resource-card__desc">
+              Microscopic roughness conversion chart comparing Grit numbers, Ra microns, and micro-inches (µin).
+            </p>
+            <button
+              type="button"
+              className="btn btn--outline-dark btn--sm download-mock-btn"
+              onClick={() => handleDownload('Surface-Roughness-Conversion-Guide.pdf')}
+            >
+              📥 Download Guide (Demo)
+            </button>
+          </div>
+        </div>
+
+        {/* Interactive FAQ Accordion */}
+        <div className="mt-3">
+          <div className="section-header section-header--center">
+            <span className="section-eyebrow">Frequently Asked Questions</span>
+            <h2 className="section-title">Technical &amp; Commercial FAQs</h2>
+          </div>
+
+          <div className="faq-accordion">
+            {FAQS.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div className={`faq-item ${isOpen ? 'active' : ''}`} key={idx}>
+                  <button
+                    type="button"
+                    className="faq-question"
+                    onClick={() => toggleFaq(idx)}
+                    aria-expanded={isOpen}
+                  >
+                    <span>{faq.q}</span>
+                    <span className="faq-toggle-icon">{isOpen ? '−' : '+'}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="faq-answer" style={{ display: 'block' }}>
+                      <p>{faq.a}</p>
+                    </div>
+                  )}
                 </div>
-                <button
-                  type="button"
-                  className="btn btn--outline-dark btn--block"
-                  onClick={() => handleDownload(res.title)}
-                >
-                  <span>Download Document</span> &darr;
-                </button>
-              </div>
-            </article>
-          ))}
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
