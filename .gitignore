@@ -4,3 +4,15 @@ Business Info first meet.txt
 Lotus Tubes.txt
 
 
+server/node_modules
+client/node_modules
+client/dist
+
+# Environment configuration
+server/.env
+server/.env.local
+server/.env.example
+
+client/.env
+client/.env.local
+client/.env.example

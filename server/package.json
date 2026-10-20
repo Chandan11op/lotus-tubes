@@ -1,0 +1,22 @@
+{
+  "name": "lotus-tubes-server",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Backend API for Lotus Tubes B2B Application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.8.4",
+    "resend": "^4.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
