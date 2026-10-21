@@ -153,27 +153,10 @@ export const apiService = {
    * Submit Quick Product Enquiry / Quotation
    */
   async submitEnquiry(enquiryData) {
-    try {
-      return await request('/enquiries', {
-        method: 'POST',
-        body: JSON.stringify(enquiryData)
-      });
-    } catch (err) {
-      console.warn('API error submitting enquiry, using client-side fallback:', err.message);
-      const fallbackRef = `LT-RFQ-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      return {
-        success: true,
-        message: 'Enquiry recorded locally (API offline mode)',
-        data: {
-          reference: fallbackRef,
-          status: 'Recorded',
-          samplePdfUrl: '/sample-quotation.pdf',
-          emailStatus: 'pending',
-          whatsappStatus: 'not_configured'
-        },
-        fallback: true
-      };
-    }
+    return await request('/enquiries', {
+      method: 'POST',
+      body: JSON.stringify(enquiryData)
+    });
   },
 
   /**
@@ -194,46 +177,20 @@ export const apiService = {
    * Submit Contact Us Form
    */
   async submitContact(contactData) {
-    try {
-      return await request('/contact', {
-        method: 'POST',
-        body: JSON.stringify(contactData)
-      });
-    } catch (err) {
-      console.warn('API error submitting contact, using fallback:', err.message);
-      return {
-        success: true,
-        message: 'Message recorded locally (API offline mode)',
-        fallback: true
-      };
-    }
+    return await request('/contact', {
+      method: 'POST',
+      body: JSON.stringify(contactData)
+    });
   },
 
   /**
    * Submit Detailed RFQ / BOQ Quote Form
    */
   async submitQuote(quoteData) {
-    try {
-      return await request('/quotes', {
-        method: 'POST',
-        body: JSON.stringify(quoteData)
-      });
-    } catch (err) {
-      console.warn('API error submitting quote, using fallback:', err.message);
-      const fallbackRef = `LT-BOQ-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-      return {
-        success: true,
-        message: 'BOQ quote recorded locally (API offline mode)',
-        data: {
-          reference: fallbackRef,
-          status: 'Received',
-          samplePdfUrl: '/sample-quotation.pdf',
-          emailStatus: 'pending',
-          whatsappStatus: 'not_configured'
-        },
-        fallback: true
-      };
-    }
+    return await request('/quotes', {
+      method: 'POST',
+      body: JSON.stringify(quoteData)
+    });
   }
 };
 

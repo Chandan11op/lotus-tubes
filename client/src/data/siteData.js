@@ -8,9 +8,9 @@
     companyLegalName: 'Lotus Impex',
     gstin: '27AIIPS0303A1ZU',
     iec: '0316902471',
-    primaryPhone: '+919930430789',
+    primaryPhone: '+91 98673 04316',
     primaryEmail: 'sales@lotustubes.com',
-    whatsappNumber: '919930430789',
+    whatsappNumber: '919867304316',
     officeAddress: 'Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, opp. to 11th Lane, Charni Road East, Khetwadi, Girgaon, Mumbai, Maharashtra 400004, India'
   };
 
@@ -67,7 +67,7 @@
       name: 'Sanitary Pipes & Tubes',
       desc: 'SS 304 and SS 316L high-purity sanitary tubing with Electro Polished (EP) and Mechanical Polished (MP) finishes conforming to ASTM A270 & A269.',
       icon: '📏',
-      image: 'assets/images/products/pipes/ss-316l-ep-pipe.svg',
+      image: '/assets/images/products/pipes/ss-316l-ep-pipe.svg',
       subcategories: ['EP Sanitary Pipe', 'MP Sanitary Pipe', 'Seamless Tube', 'Welded Tube']
     },
     {
@@ -76,7 +76,7 @@
       name: 'Sanitary Pipe Fittings',
       desc: 'Hygienic 90° and 45° bends, equal tees, reducing tees, concentric & eccentric reducers engineered with smooth internal radiuses for fluid cleanliness.',
       icon: '🔀',
-      image: 'assets/images/products/fittings/ss-sanitary-90-bend.svg',
+      image: '/assets/images/products/fittings/ss-sanitary-90-bend.svg',
       subcategories: ['Sanitary Bends', 'Equal Tees', 'Reducing Tees', 'Concentric Reducers', 'Eccentric Reducers']
     },
     {
@@ -85,7 +85,7 @@
       name: 'Tri-Clamp Fittings & Components',
       desc: 'Sanitary Tri-Clamp ferrules, heavy-duty single/double pin clamps, SMS unions, DIN unions, and blind end caps for rapid hygienic disassembly.',
       icon: '🔗',
-      image: 'assets/images/products/accessories/ss-tri-clamp-clamp.svg',
+      image: '/assets/images/products/accessories/ss-tri-clamp-clamp.svg',
       subcategories: ['TC Ferrules', 'TC Clamps', 'SMS Unions', 'DIN Unions', 'TC End Caps']
     },
     {
@@ -94,7 +94,7 @@
       name: 'Sanitary Gaskets',
       desc: 'FDA & USP Class VI compliant sealing gaskets in Silicone, EPDM, PTFE, Viton (FKM), and NBR for leak-free hygienic pipe joints.',
       icon: '⭕',
-      image: 'assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
+      image: '/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
       subcategories: ['Silicone Gaskets', 'EPDM Gaskets', 'PTFE Gaskets', 'Viton Gaskets', 'Manhole Gaskets']
     },
     {
@@ -103,7 +103,7 @@
       name: 'Manual Sanitary Valves',
       desc: 'Hygienic sanitary butterfly valves, multi-position pull/gripper handles, 3-piece ball valves with TC ends, non-return valves, and diaphragm valves.',
       icon: '🚰',
-      image: 'assets/images/products/valves/ss-sanitary-butterfly-valve.svg',
+      image: '/assets/images/products/valves/ss-sanitary-butterfly-valve.svg',
       subcategories: ['Butterfly Valves', 'Diaphragm Valves', '3-Piece Ball Valves', 'Sampling Valves', 'Check Valves']
     },
     {
@@ -112,7 +112,7 @@
       name: 'Pneumatic & Automated Valves',
       desc: 'Pneumatically actuated sanitary ball valves, automated diaphragm valves with control heads, safety switches, and process automation accessories.',
       icon: '⚡',
-      image: 'assets/images/products/valves/pneumatic-sanitary-ball-valve.svg',
+      image: '/assets/images/products/valves/pneumatic-sanitary-ball-valve.svg',
       subcategories: ['Pneumatic Diaphragm', 'Pneumatic Ball Valve', 'Control Tops', 'Actuator Accessories']
     },
     {
@@ -121,7 +121,7 @@
       name: 'Tank Cleaning Accessories',
       desc: 'Fixed and 360° rotary spray balls, sanitary manhole covers (round/oval/pressure), CIP tank vent filter housings, and vessel sight glasses.',
       icon: '🚿',
-      image: 'assets/images/products/accessories/ss-sanitary-spray-ball.svg',
+      image: '/assets/images/products/accessories/ss-sanitary-spray-ball.svg',
       subcategories: ['Rotary Spray Balls', 'Static Spray Balls', 'Pressure Manholes', 'Tank Sight Glass']
     },
     {
@@ -130,7 +130,7 @@
       name: 'Custom Hygienic Assemblies',
       desc: 'Drawing-based sanitary pipe spools, fabricated manifolds, instrument tees, and specialized stainless steel transfer panels.',
       icon: '⚙️',
-      image: 'assets/images/products/accessories/custom-assemblies.svg',
+      image: '/assets/images/products/accessories/custom-assemblies.svg',
       subcategories: ['Sanitary Spools', 'Custom Manifolds', 'Instrument Connections', 'Transition Fittings']
     }
   ];
@@ -155,7 +155,7 @@
     "wallThickness": "1.2 mm, 1.5 mm, 1.65 mm (16G), 2.0 mm",
     "length": "6.0 Meters Standard (Custom cut lengths available)",
     "mtc": "EN 10204 3.1 Material Test Certificate supplied",
-    "image": "assets/images/products/pipes/ss-316l-ep-pipe.svg",
+    "image": "/assets/images/products/pipes/ss-316l-ep-pipe.svg",
     "overview": "SS 316L Electro Polished Sanitary Pipe is the gold standard for high-purity pharmaceutical, biotechnology, and sterile process applications. The electrochemical polishing process removes surface microscopic peaks and crevices, delivering ultra-smooth hygienic contact surfaces that eliminate bacterial harborage, minimize biofilm formation, and resist corrosive cleaning agents.",
     "applications": [
       "Water For Injection (WFI) loops",
@@ -170,7 +170,7 @@
       "/assets/images/products/details/ss-316l-ep-pipe-bore.svg",
       "/assets/images/products/details/ss-316l-ep-pipe-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-304-ep-pipe",
@@ -190,7 +190,7 @@
     "wallThickness": "1.2 mm to 2.0 mm",
     "length": "6.0 Meters standard",
     "mtc": "Available upon dispatch",
-    "image": "assets/images/products/pipes/ss-304-ep-pipe.svg",
+    "image": "/assets/images/products/pipes/ss-304-ep-pipe.svg",
     "overview": "SS 304 EP Sanitary Pipes provide exceptional surface cleanliness and cleanability for food, dairy, and beverage processing systems requiring hygienic standards at cost-efficient operating economics.",
     "applications": [
       "Dairy milk handling lines",
@@ -204,7 +204,7 @@
       "/assets/images/products/details/ss-304-ep-pipe-bore.svg",
       "/assets/images/products/details/ss-304-ep-pipe-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-316l-mp-pipe",
@@ -224,7 +224,7 @@
     "wallThickness": "1.5 mm, 1.65 mm, 2.0 mm",
     "length": "6.0 Meters",
     "mtc": "Available with chemical & mechanical analysis",
-    "image": "assets/images/products/pipes/ss-316l-mp-pipe.svg",
+    "image": "/assets/images/products/pipes/ss-316l-mp-pipe.svg",
     "overview": "Precision mechanically polished SS 316L tube designed for sanitary process piping where electro-polishing is not mandatorily specified, delivering superior molybdenum-assisted corrosion resistance.",
     "applications": [
       "Personal care formulations",
@@ -238,7 +238,7 @@
       "/assets/images/products/details/ss-316l-mp-pipe-bore.svg",
       "/assets/images/products/details/ss-316l-mp-pipe-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-304-mp-pipe",
@@ -258,7 +258,7 @@
     "wallThickness": "1.2 mm to 1.65 mm",
     "length": "6.0 Meters",
     "mtc": "Supplied with test report",
-    "image": "assets/images/products/pipes/ss-304-mp-pipe.svg",
+    "image": "/assets/images/products/pipes/ss-304-mp-pipe.svg",
     "overview": "Standard hygienic stainless steel tube with mirror/satin mechanical polish, widely utilized in food processing facilities and commercial dairy setups across India and international markets.",
     "applications": [
       "Milk pasteurization units",
@@ -272,7 +272,7 @@
       "/assets/images/products/details/ss-304-mp-pipe-bore.svg",
       "/assets/images/products/details/ss-304-mp-pipe-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-304-seamless-tube",
@@ -292,7 +292,7 @@
     "wallThickness": "1.2 mm to 2.0 mm",
     "length": "6.0 Meters Standard",
     "mtc": "EN 10204 3.1 Material Test Certificate supplied",
-    "image": "assets/images/products/pipes/ss-304-seamless-tube.svg",
+    "image": "/assets/images/products/pipes/ss-304-seamless-tube.svg",
     "overview": "SS 304 Seamless Sanitary Tube offers seamless cold-drawn construction for critical hygienic utility and processing lines requiring uniform grain structure, pressure integrity, and zero weld seam.",
     "applications": [
       "Clean utilities and pure steam distribution",
@@ -306,7 +306,7 @@
       "/assets/images/products/details/ss-304-seamless-tube-bore.svg",
       "/assets/images/products/details/ss-304-seamless-tube-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-316l-sanitary-fittings",
@@ -325,7 +325,7 @@
     "wallThickness": "1.6 mm / 1.65 mm",
     "length": "Standard dimension",
     "mtc": "Complete batch traceability",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS 316L Sanitary Fittings</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/fittings/ss-316l-sanitary-fittings.svg",
     "overview": "Comprehensive range of SS 316L hygienic pipe fittings designed with gentle radius curvature and controlled tolerances to avoid product entrapment or pressure drops in sterile fluid transfer.",
     "applications": [
       "Pharma clean utilities",
@@ -334,11 +334,11 @@
     ],
     "video": "/assets/videos/fittings-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS 316L Sanitary Fittings</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/fittings/ss-316l-sanitary-fittings.svg",
       "/assets/images/products/details/ss-316l-sanitary-fittings-bore.svg",
       "/assets/images/products/details/ss-316l-sanitary-fittings-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-90-bend",
@@ -358,7 +358,7 @@
     "wallThickness": "1.5 mm / 1.65 mm",
     "length": "1.5D or 2.0D radius",
     "mtc": "Available with dispatch",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary 90° Bend</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/fittings/ss-sanitary-90-bend.svg",
     "overview": "Hygienic 90-degree pipe bends manufactured with true-circular cross sections and uniform wall thickness to ensure unhindered laminar flow and thorough Clean-In-Place (CIP) drainage.",
     "applications": [
       "Process piping direction change",
@@ -367,11 +367,11 @@
     ],
     "video": "/assets/videos/fittings-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary 90° Bend</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/fittings/ss-sanitary-90-bend.svg",
       "/assets/images/products/details/ss-sanitary-90-bend-bore.svg",
       "/assets/images/products/details/ss-sanitary-90-bend-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-equal-tee",
@@ -391,7 +391,7 @@
     "wallThickness": "1.6 mm",
     "length": "Standard",
     "mtc": "Verified test certificate",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10263D\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary Equal Tee</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/fittings/ss-sanitary-equal-tee.svg",
     "overview": "Precision-formed three-way equal connection fitting engineered without interior dead-legs to allow smooth splitting or combining of hygienic fluid flows.",
     "applications": [
       "Flow distribution loops",
@@ -400,11 +400,11 @@
     ],
     "video": "/assets/videos/fittings-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10263D\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary Equal Tee</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/fittings/ss-sanitary-equal-tee.svg",
       "/assets/images/products/details/ss-sanitary-equal-tee-bore.svg",
       "/assets/images/products/details/ss-sanitary-equal-tee-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-reducing-tee",
@@ -424,7 +424,7 @@
     "wallThickness": "1.65 mm",
     "length": "Standard",
     "mtc": "Supplied with material traceability",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10B981\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary Reducing Tee</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/fittings/ss-sanitary-reducing-tee.svg",
     "overview": "Sanitary reducing tee designed to feed smaller process equipment branches or instrument sensors from main hygienic headers without turbulence.",
     "applications": [
       "Utility sub-headers",
@@ -433,11 +433,11 @@
     ],
     "video": "/assets/videos/fittings-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10B981\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary Reducing Tee</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/fittings/ss-sanitary-reducing-tee.svg",
       "/assets/images/products/details/ss-sanitary-reducing-tee-bore.svg",
       "/assets/images/products/details/ss-sanitary-reducing-tee-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-concentric-reducer",
@@ -457,7 +457,7 @@
     "wallThickness": "1.6 mm",
     "length": "Standard",
     "mtc": "Available upon order",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Concentric Reducer</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/fittings/ss-sanitary-concentric-reducer.svg",
     "overview": "Concentric reducers provide linear, symmetrical fluid velocity transitions between differing pipe diameters along the vertical or center line.",
     "applications": [
       "Vertical pipe size reductions",
@@ -466,11 +466,11 @@
     ],
     "video": "/assets/videos/fittings-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Concentric Reducer</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/fittings/ss-sanitary-concentric-reducer.svg",
       "/assets/images/products/details/ss-sanitary-concentric-reducer-bore.svg",
       "/assets/images/products/details/ss-sanitary-concentric-reducer-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-eccentric-reducer",
@@ -490,7 +490,7 @@
     "wallThickness": "1.65 mm",
     "length": "Standard",
     "mtc": "Supplied with product",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Eccentric Reducer</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/fittings/ss-sanitary-eccentric-reducer.svg",
     "overview": "Crucial for horizontal sanitary pipelines. The eccentric reducer features a flat bottom to prevent liquid pooling and air entrapment, guaranteeing 100% self-draining capability for CIP operations.",
     "applications": [
       "Horizontal sanitary pipelines",
@@ -499,11 +499,11 @@
     ],
     "video": "/assets/videos/fittings-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Eccentric Reducer</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/fittings/ss-sanitary-eccentric-reducer.svg",
       "/assets/images/products/details/ss-sanitary-eccentric-reducer-bore.svg",
       "/assets/images/products/details/ss-sanitary-eccentric-reducer-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-tri-clamp-ferrule",
@@ -523,7 +523,7 @@
     "wallThickness": "1.6 mm standard",
     "length": "12.7 mm, 21.5 mm, 28.6 mm length options",
     "mtc": "Available with heat number marking",
-    "image": "assets/images/products/accessories/ss-tri-clamp-ferrule.svg",
+    "image": "/assets/images/products/accessories/ss-tri-clamp-ferrule.svg",
     "overview": "Precision-machined sanitary Tri-Clamp ferrules provide quick-disconnect, leak-tight joints when paired with sanitary gaskets and heavy-duty clamps, conforming to international hygienic standards.",
     "applications": [
       "Tank nozzle connections",
@@ -536,7 +536,7 @@
       "/assets/images/products/details/ss-tri-clamp-ferrule-bore.svg",
       "/assets/images/products/details/ss-tri-clamp-ferrule-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-tri-clamp-clamp",
@@ -556,7 +556,7 @@
     "wallThickness": "Heavy duty forged cross section",
     "length": "Wingnut tightening",
     "mtc": "Batch inspection certificate",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10263D\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Tri-Clamp Clamp</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Tri-Clamp</text>\n    </svg>",
+    "image": "/assets/images/products/accessories/ss-tri-clamp-clamp.svg",
     "overview": "Heavy-duty stainless steel 304 sanitary clamps engineered with ergonomic solid wingnuts and reinforced hinge pins to deliver uniform circumferential compression on Tri-Clamp gaskets.",
     "applications": [
       "Secure pipeline union clamping",
@@ -565,11 +565,11 @@
     ],
     "video": "/assets/videos/clamps-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10263D\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Tri-Clamp Clamp</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Tri-Clamp</text>\n    </svg>",
+      "/assets/images/products/accessories/ss-tri-clamp-clamp.svg",
       "/assets/images/products/details/ss-tri-clamp-clamp-bore.svg",
       "/assets/images/products/details/ss-tri-clamp-clamp-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "silicone-tri-clamp-gasket",
@@ -589,7 +589,7 @@
     "wallThickness": "Flanged and Unflanged profiles",
     "length": "Temperature rating: -50°C to +200°C",
     "mtc": "FDA compliance declaration",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#8B5CF6\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">Silicone TC Gasket</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Gaskets</text>\n    </svg>",
+    "image": "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
     "overview": "Platinum-cured translucent silicone sanitary gaskets deliver outstanding thermal resilience, low compression set, and zero taste/odor transmission in food and pharma pipelines.",
     "applications": [
       "High temperature beverage processing",
@@ -598,11 +598,11 @@
     ],
     "video": "/assets/videos/clamps-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#8B5CF6\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">Silicone TC Gasket</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Gaskets</text>\n    </svg>",
+      "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
       "/assets/images/products/details/silicone-tri-clamp-gasket-bore.svg",
       "/assets/images/products/details/silicone-tri-clamp-gasket-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sms-union",
@@ -622,7 +622,7 @@
     "wallThickness": "To standard",
     "length": "Compact dairy profile",
     "mtc": "Available on request",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10B981\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS SMS Union</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+    "image": "/assets/images/products/accessories/ss-sms-union.svg",
     "overview": "Traditional European dairy standard union offering secure threaded union connection for dairy, milk, and beverage processing lines where frequent sanitation and mechanical strength are paramount.",
     "applications": [
       "Milk tankers and silos",
@@ -631,11 +631,11 @@
     ],
     "video": "/assets/videos/clamps-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10B981\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS SMS Union</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Fittings</text>\n    </svg>",
+      "/assets/images/products/accessories/ss-sms-union.svg",
       "/assets/images/products/details/ss-sms-union-bore.svg",
       "/assets/images/products/details/ss-sms-union-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-butterfly-valve",
@@ -655,7 +655,7 @@
     "wallThickness": "Pressure rating: PN10 (10 Bar)",
     "length": "Compact wafer or clamp body",
     "mtc": "Pressure test & MTC supplied",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary Butterfly Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Valves</text>\n    </svg>",
+    "image": "/assets/images/products/valves/ss-sanitary-butterfly-valve.svg",
     "overview": "Reliable, compact sanitary butterfly valve featuring a polished stainless steel disc, food-grade EPDM/Silicone seat, and multi-position stainless handle for precise manual on/off flow throttling.",
     "applications": [
       "Fermenter outlet isolation",
@@ -664,11 +664,11 @@
     ],
     "video": "/assets/videos/valves-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS Sanitary Butterfly Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Valves</text>\n    </svg>",
+      "/assets/images/products/valves/ss-sanitary-butterfly-valve.svg",
       "/assets/images/products/details/ss-sanitary-butterfly-valve-bore.svg",
       "/assets/images/products/details/ss-sanitary-butterfly-valve-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-316l-diaphragm-valve",
@@ -688,7 +688,7 @@
     "wallThickness": "PN10 rated",
     "length": "Standard",
     "mtc": "Full 3.1 MTC & Diaphragm FDA Certificate",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10263D\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS 316L Diaphragm Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Valves</text>\n    </svg>",
+    "image": "/assets/images/products/valves/ss-316l-diaphragm-valve.svg",
     "overview": "The definitive valve for pharmaceutical and sterile bioprocess applications. Features a hermetic weir design with PTFE/EPDM dual diaphragm isolating process fluid completely from moving valve mechanics.",
     "applications": [
       "Water For Injection (WFI) loop point-of-use",
@@ -697,11 +697,11 @@
     ],
     "video": "/assets/videos/valves-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#10263D\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS 316L Diaphragm Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Valves</text>\n    </svg>",
+      "/assets/images/products/valves/ss-316l-diaphragm-valve.svg",
       "/assets/images/products/details/ss-316l-diaphragm-valve-bore.svg",
       "/assets/images/products/details/ss-316l-diaphragm-valve-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-3-piece-ball-valve-tc-end",
@@ -721,7 +721,7 @@
     "wallThickness": "1000 WOG rating",
     "length": "Direct mount actuator pad",
     "mtc": "Hydrostatic and air test certified",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS 3-Piece Ball Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Valves</text>\n    </svg>",
+    "image": "/assets/images/products/valves/ss-3-piece-ball-valve-tc-end.svg",
     "overview": "Full-bore sanitary ball valve featuring cavity-filled PTFE seats to eliminate stagnant fluid entrapment around the ball sphere. Swing-out three-piece body facilitates quick inline maintenance.",
     "applications": [
       "Viscous food processing",
@@ -730,11 +730,11 @@
     ],
     "video": "/assets/videos/valves-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#0284C7\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">SS 3-Piece Ball Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Valves</text>\n    </svg>",
+      "/assets/images/products/valves/ss-3-piece-ball-valve-tc-end.svg",
       "/assets/images/products/details/ss-3-piece-ball-valve-tc-end-bore.svg",
       "/assets/images/products/details/ss-3-piece-ball-valve-tc-end-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "pneumatic-sanitary-ball-valve",
@@ -754,7 +754,7 @@
     "wallThickness": "Air supply: 4 - 8 bar",
     "length": "Spring Return / Double Acting",
     "mtc": "Actuator torque & pressure test report",
-    "image": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#8B5CF6\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">Pneumatic Ball Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Pneumatic Valves</text>\n    </svg>",
+    "image": "/assets/images/products/valves/pneumatic-sanitary-ball-valve.svg",
     "overview": "High-speed automated sanitary valve package combining a hygienic full-bore ball valve with a pneumatic rack-and-pinion actuator and visual position feedback for PLC-controlled process plants.",
     "applications": [
       "Automated batching skids",
@@ -763,11 +763,11 @@
     ],
     "video": "/assets/videos/valves-360-sample.webm",
     "images": [
-      "/data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"450\" viewBox=\"0 0 600 450\">\n      <defs>\n        <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">\n          <stop offset=\"0%\" stop-color=\"%23F8FAFC\"/>\n          <stop offset=\"100%\" stop-color=\"%23E2E8F0\"/>\n        </linearGradient>\n        <linearGradient id=\"metal\" x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"80%\">\n          <stop offset=\"0%\" stop-color=\"%2394A3B8\"/>\n          <stop offset=\"35%\" stop-color=\"%23FFFFFF\"/>\n          <stop offset=\"65%\" stop-color=\"%23CBD5E1\"/>\n          <stop offset=\"100%\" stop-color=\"%2364748B\"/>\n        </linearGradient>\n        <filter id=\"shadow\" x=\"-10%\" y=\"-10%\" width=\"120%\" height=\"120%\">\n          <feDropShadow dx=\"0\" dy=\"12\" stdDeviation=\"16\" flood-color=\"%2310263D\" flood-opacity=\"0.15\"/>\n        </filter>\n      </defs>\n      <rect width=\"600\" height=\"450\" fill=\"url(%23bg)\"/>\n      <circle cx=\"520\" cy=\"80\" r=\"140\" fill=\"#8B5CF6\" opacity=\"0.04\"/>\n      <g filter=\"url(%23shadow)\">\n        <!-- Stylized Sanitary Fitting / Pipe Geometry -->\n        <rect x=\"150\" y=\"160\" width=\"300\" height=\"90\" rx=\"14\" fill=\"url(%23metal)\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"%23475569\"/>\n        <ellipse cx=\"150\" cy=\"205\" rx=\"20\" ry=\"35\" fill=\"%231E293B\"/>\n        <ellipse cx=\"450\" cy=\"205\" rx=\"28\" ry=\"45\" fill=\"url(%23metal)\"/>\n        <!-- Polish Highlight Sheen -->\n        <line x1=\"160\" y1=\"180\" x2=\"440\" y2=\"180\" stroke=\"%23FFFFFF\" stroke-width=\"6\" stroke-linecap=\"round\" opacity=\"0.85\"/>\n        <line x1=\"180\" y1=\"192\" x2=\"420\" y2=\"192\" stroke=\"%23FFFFFF\" stroke-width=\"2\" opacity=\"0.6\"/>\n        <!-- Sanitary Ferrule Ring -->\n        <rect x=\"430\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n        <rect x=\"138\" y=\"145\" width=\"22\" height=\"120\" rx=\"6\" fill=\"url(%23metal)\" stroke=\"%23334155\" stroke-width=\"1.5\"/>\n      </g>\n      <!-- Lotus Tubes Brand Tag -->\n      <rect x=\"230\" y=\"360\" width=\"140\" height=\"28\" rx=\"6\" fill=\"%2310263D\"/>\n      <text x=\"300\" y=\"379\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"bold\" fill=\"%23FFFFFF\" text-anchor=\"middle\">LOTUS TUBES</text>\n      <text x=\"300\" y=\"325\" font-family=\"sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"%2310263D\" text-anchor=\"middle\">Pneumatic Ball Valve</text>\n      <text x=\"300\" y=\"344\" font-family=\"sans-serif\" font-size=\"12\" fill=\"%2364748B\" text-anchor=\"middle\">Pneumatic Valves</text>\n    </svg>",
+      "/assets/images/products/valves/pneumatic-sanitary-ball-valve.svg",
       "/assets/images/products/details/pneumatic-sanitary-ball-valve-bore.svg",
       "/assets/images/products/details/pneumatic-sanitary-ball-valve-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-sampling-valve",
@@ -787,7 +787,7 @@
     "wallThickness": "High pressure rating",
     "length": "Compact",
     "mtc": "Supplied with certification",
-    "image": "assets/images/products/valves/ss-sanitary-sampling-valve.svg",
+    "image": "/assets/images/products/valves/ss-sanitary-sampling-valve.svg",
     "overview": "Specially engineered for aseptic extraction of representative liquid samples from sterile bioreactors, fermenters, or piping lines without exposing the system to contamination.",
     "applications": [
       "Microbiological quality sampling",
@@ -800,7 +800,7 @@
       "/assets/images/products/details/ss-sanitary-sampling-valve-bore.svg",
       "/assets/images/products/details/ss-sanitary-sampling-valve-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   },
   {
     "id": "ss-sanitary-spray-ball",
@@ -820,7 +820,7 @@
     "wallThickness": "Flow rate: 2 to 25 m³/h at 2-3 bar",
     "length": "Compact vessel entry",
     "mtc": "Material test certificate",
-    "image": "assets/images/products/accessories/ss-sanitary-spray-ball.svg",
+    "image": "/assets/images/products/accessories/ss-sanitary-spray-ball.svg",
     "overview": "Self-lubricating, fluid-driven 360-degree rotating spray balls delivering high-impact cleaning jet coverage across tank interior walls for automated Clean-In-Place (CIP) cycles.",
     "applications": [
       "Milk storage tanks",
@@ -833,7 +833,7 @@
       "/assets/images/products/details/ss-sanitary-spray-ball-bore.svg",
       "/assets/images/products/details/ss-sanitary-spray-ball-pack.svg"
     ],
-    "mediaStatus": "sample"
+    "mediaStatus": "ready"
   }
 ];
 
@@ -926,7 +926,7 @@
     },
     {
       q: 'How fast can I receive an official technical quotation?',
-      a: 'Enquiries submitted via our website quotation form or directly through our WhatsApp desk (+91 99304 30789) receive prompt same-day quotation assistance and stock availability confirmation during business hours.'
+      a: 'Enquiries submitted via our website quotation form or directly through our WhatsApp desk (+91 98673 04316) receive prompt same-day quotation assistance and stock availability confirmation during business hours.'
     },
     {
       q: 'Can you supply custom fabricated spools or drawing-based fittings?',
@@ -998,7 +998,7 @@
       employees: [],
       integrations: {
         whatsappStatus: 'Cloud API Ready',
-        whatsappPhone: '+91 99304 30789',
+        whatsappPhone: '+91 98673 04316',
         emailSMTP: 'Configured (sales@lotustubes.com)',
         autoEnquiryCapture: true
       }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BLOG_POSTS, createProductSVG } from '../data/siteData';
 
-export const BlogView = ({ slug }) => {
+export const BlogView = ({ slug, onOpenEnquiry }) => {
   if (slug) {
     const post = BLOG_POSTS.find((p) => p.slug === slug || p.id === slug) || BLOG_POSTS[0];
     return (
@@ -31,9 +31,13 @@ export const BlogView = ({ slug }) => {
               <a href="#blog" className="btn btn--outline-dark">
                 &larr; Back to All Articles
               </a>
-              <a href="#quote" className="btn btn--primary">
+              <button
+                type="button"
+                onClick={() => onOpenEnquiry && onOpenEnquiry(null, post.title)}
+                className="btn btn--primary"
+              >
                 Discuss Your Piping Project &rarr;
-              </a>
+              </button>
             </div>
           </article>
         </div>

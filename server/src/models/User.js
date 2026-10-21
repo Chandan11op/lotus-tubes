@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address']
+      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'],
+      index: true
     },
     password: {
       type: String,
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['customer', 'staff'],
+      enum: ['customer', 'staff', 'admin'],
       default: 'customer'
     },
     company: {
@@ -37,6 +38,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       default: ''
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: true
+    },
+    accountStatus: {
+      type: String,
+      enum: ['active', 'pending', 'suspended'],
+      default: 'active'
     }
   },
   {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { CONFIG } from '../../data/siteData';
 
-export const MobileDrawer = ({ isOpen, onClose }) => {
+export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
   const { currentLang, setCurrentLang, languages, t } = useLanguage();
 
   if (!isOpen) return null;
@@ -79,9 +79,16 @@ export const MobileDrawer = ({ isOpen, onClose }) => {
         </ul>
 
         <div className="mobile-drawer__footer">
-          <a href="#quote" onClick={onClose} className="btn btn--primary btn--block">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              if (onOpenEnquiry) onOpenEnquiry(null, 'Sanitary Products Sourcing');
+            }}
+            className="btn btn--primary btn--block"
+          >
             {t('btn_request_quote', 'Request Quick Quote')}
-          </a>
+          </button>
           <a
             href={`https://wa.me/${CONFIG.whatsappNumber}`}
             target="_blank"

@@ -12,6 +12,7 @@ import {
 } from '../controllers/authController.js';
 import { validateEnquiry, validateContact, validateQuote } from '../middleware/validateRequest.js';
 import { authenticate, requireStaff, optionalAuth } from '../middleware/authMiddleware.js';
+import { requireTurnstileForAnonymous } from '../middleware/turnstileMiddleware.js';
 
 const router = express.Router();
 
@@ -31,14 +32,14 @@ router.get('/auth/my-quotes', authenticate, getMyQuotations);
 router.get('/auth/my-quotations', authenticate, getMyQuotations);
 
 // Product Enquiries (Quick RFQ)
-router.post('/enquiries', optionalAuth, validateEnquiry, createEnquiry);
+router.post('/enquiries', optionalAuth, requireTurnstileForAnonymous, validateEnquiry, createEnquiry);
 router.get('/enquiries', authenticate, requireStaff, getEnquiries);
 
 // Contact Us
 router.post('/contact', validateContact, submitContact);
 
 // Detailed Quote / BOQ Submission
-router.post('/quotes', optionalAuth, validateQuote, submitQuote);
+router.post('/quotes', optionalAuth, requireTurnstileForAnonymous, validateQuote, submitQuote);
 router.get('/quotes', authenticate, requireStaff, getQuotes);
 
 export default router;

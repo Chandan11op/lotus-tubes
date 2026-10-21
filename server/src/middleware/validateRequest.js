@@ -6,14 +6,18 @@ export const validateEmail = (email) => {
 };
 
 export const validateEnquiry = (req, res, next) => {
-  const { name, company, email, phone, quantity, location } = req.body;
+  const name = req.body.name || req.user?.name;
+  const company = req.body.company || req.user?.company || 'Company';
+  const email = req.body.email || req.user?.email;
+  const phone = req.body.phone || req.user?.phone;
+  const { quantity, location } = req.body;
   const errors = [];
 
-  if (!name || name.trim().length < 2) {
+  if (!name || String(name).trim().length < 2) {
     errors.push({ field: 'name', message: 'Full name is required (min 2 characters)' });
   }
 
-  if (!company || company.trim().length < 2) {
+  if (!company || String(company).trim().length < 2) {
     errors.push({ field: 'company', message: 'Company name is required' });
   }
 
@@ -21,15 +25,15 @@ export const validateEnquiry = (req, res, next) => {
     errors.push({ field: 'email', message: 'A valid business email address is required' });
   }
 
-  if (!phone || phone.trim().length < 7) {
+  if (!phone || String(phone).trim().length < 7) {
     errors.push({ field: 'phone', message: 'A valid contact phone or WhatsApp number is required' });
   }
 
-  if (!quantity || quantity.trim().length < 1) {
+  if (!quantity || String(quantity).trim().length < 1) {
     errors.push({ field: 'quantity', message: 'Estimated quantity is required' });
   }
 
-  if (!location || location.trim().length < 2) {
+  if (!location || String(location).trim().length < 2) {
     errors.push({ field: 'location', message: 'Delivery location is required' });
   }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 
-export const PreFooterBanner = () => {
+export const PreFooterBanner = ({ onOpenEnquiry }) => {
   const { t } = useLanguage();
 
   return (
@@ -22,9 +22,13 @@ export const PreFooterBanner = () => {
               <h3>{t('banner_quote_title', 'Looking for a Custom Quote?')}</h3>
               <p>{t('banner_quote_desc', 'Share your required sizes, material grades (SS 304/316L), and delivery timeline.')}</p>
             </div>
-            <a href="#quote" className="btn btn--white">
+            <button
+              type="button"
+              className="btn btn--white"
+              onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Custom Sanitary Stainless Steel Piping')}
+            >
               {t('btn_get_quote', 'Get a Quote →')}
-            </a>
+            </button>
           </div>
         </div>
 

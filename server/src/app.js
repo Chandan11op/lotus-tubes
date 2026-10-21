@@ -13,6 +13,8 @@ const app = express();
 
 // CORS configuration supporting local dev and configured origin
 const allowedOrigins = [
+  'http://localhost:1109',
+  'http://127.0.0.1:1109',
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',

@@ -55,6 +55,14 @@ const enquirySchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    sizes: {
+      type: String,
+      default: ''
+    },
+    finish: {
+      type: String,
+      default: ''
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

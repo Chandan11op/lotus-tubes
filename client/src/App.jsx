@@ -11,6 +11,7 @@ import QuickEnquiryModal from './components/modals/QuickEnquiryModal';
 import VideoModal from './components/modals/VideoModal';
 import Toast from './components/common/Toast';
 import ScrollToTop from './components/common/ScrollToTop';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 // Page Views
 import HomeView from './pages/HomeView';
@@ -26,6 +27,7 @@ import ContactView from './pages/ContactView';
 import QuoteView from './pages/QuoteView';
 import CRMView from './pages/crm/CRMView';
 import CustomerAccountView from './pages/CustomerAccountView';
+import { PRODUCTS } from './data/siteData';
 
 export const App = () => {
   const [currentHash, setCurrentHash] = useState(() => window.location.hash || '#home');
@@ -66,8 +68,13 @@ export const App = () => {
 
   const isCRM = route === 'crm' || route === 'login';
 
-  const handleOpenEnquiry = (product) => {
-    setEnquiryProduct(product);
+  const handleOpenEnquiry = (product, productName) => {
+    if (typeof product === 'string') {
+      const found = PRODUCTS.find((p) => p.id === product || p.slug === product);
+      setEnquiryProduct(found || { id: product, name: productName || product });
+    } else {
+      setEnquiryProduct(product);
+    }
   };
 
   const handleCloseEnquiry = () => {
@@ -103,6 +110,7 @@ export const App = () => {
             <MobileDrawer
               isOpen={isMobileOpen}
               onClose={() => setIsMobileOpen(false)}
+              onOpenEnquiry={handleOpenEnquiry}
             />
 
             {/* Breadcrumbs Bar */}
@@ -110,40 +118,42 @@ export const App = () => {
 
             {/* Main Content Area */}
             <main id="main-content" className="main-content" role="main">
-              {route === 'home' && (
-                <HomeView
-                  onOpenEnquiry={handleOpenEnquiry}
-                  onOpenVideo={() => setIsVideoOpen(true)}
-                />
-              )}
-              {route === 'products' && (
-                <ProductsView onOpenEnquiry={handleOpenEnquiry} />
-              )}
-              {route === 'category' && (
-                <CategoryView slug={param} onOpenEnquiry={handleOpenEnquiry} />
-              )}
-              {route === 'product' && (
-                <ProductDetailView slug={param} onOpenEnquiry={handleOpenEnquiry} />
-              )}
-              {route === 'industries' && (
-                <IndustriesView slug={param} onOpenEnquiry={handleOpenEnquiry} />
-              )}
-              {route === 'industry' && (
-                <IndustriesView slug={param} onOpenEnquiry={handleOpenEnquiry} />
-              )}
-              {route === 'about' && <AboutView />}
-              {route === 'quality' && (
-                <QualityView onOpenVideo={() => setIsVideoOpen(true)} />
-              )}
-              {route === 'resources' && <ResourcesView onNotify={addToast} />}
-              {route === 'blog' && <BlogView slug={param} />}
-              {route === 'contact' && <ContactView onNotify={addToast} />}
-              {route === 'quote' && <QuoteView onNotify={addToast} />}
-              {route === 'account' && <CustomerAccountView onNotify={addToast} />}
+              <ErrorBoundary>
+                {route === 'home' && (
+                  <HomeView
+                    onOpenEnquiry={handleOpenEnquiry}
+                    onOpenVideo={() => setIsVideoOpen(true)}
+                  />
+                )}
+                {route === 'products' && (
+                  <ProductsView onOpenEnquiry={handleOpenEnquiry} />
+                )}
+                {route === 'category' && (
+                  <CategoryView slug={param} onOpenEnquiry={handleOpenEnquiry} />
+                )}
+                {route === 'product' && (
+                  <ProductDetailView slug={param} onOpenEnquiry={handleOpenEnquiry} />
+                )}
+                {route === 'industries' && (
+                  <IndustriesView slug={param} onOpenEnquiry={handleOpenEnquiry} />
+                )}
+                {route === 'industry' && (
+                  <IndustriesView slug={param} onOpenEnquiry={handleOpenEnquiry} />
+                )}
+                {route === 'about' && <AboutView onOpenEnquiry={handleOpenEnquiry} />}
+                {route === 'quality' && (
+                  <QualityView onOpenVideo={() => setIsVideoOpen(true)} />
+                )}
+                {route === 'resources' && <ResourcesView onNotify={addToast} />}
+                {route === 'blog' && <BlogView slug={param} onOpenEnquiry={handleOpenEnquiry} />}
+                {route === 'contact' && <ContactView onNotify={addToast} />}
+                {route === 'quote' && <QuoteView onNotify={addToast} />}
+                {route === 'account' && <CustomerAccountView onNotify={addToast} />}
+              </ErrorBoundary>
             </main>
 
             {/* Dual Split Pre-Footer Action Banner */}
-            <PreFooterBanner />
+            <PreFooterBanner onOpenEnquiry={handleOpenEnquiry} />
 
             {/* Global Public Footer */}
             <Footer />

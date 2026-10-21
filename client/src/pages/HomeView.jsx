@@ -62,9 +62,13 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <a href="#products" className="btn btn--primary btn--lg">
                   <span>{t('btn_explore', 'Explore Products')}</span> &rarr;
                 </a>
-                <a href="#quote" className="btn btn--outline-dark btn--lg">
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Stainless Steel Sanitary Piping')}
+                  className="btn btn--outline-dark btn--lg"
+                >
                   {t('btn_quote', 'Request a Quote')} &rarr;
-                </a>
+                </button>
                 <a
                   href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20your%20sanitary%20stainless%20steel%20products.`}
                   target="_blank"
@@ -164,7 +168,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
                 </div>
                 <div className="product-card__img-wrap">
-                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} />
+                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
                 </div>
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>

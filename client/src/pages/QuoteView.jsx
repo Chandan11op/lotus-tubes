@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { apiService } from '../services/api';
 import { Loader } from '../components/common/Loader';
 import { useAuth } from '../context/AuthContext';
+import { CONFIG } from '../data/siteData';
 
 export const QuoteView = ({ onNotify }) => {
   const { user, isAuthenticated } = useAuth();
@@ -137,6 +138,16 @@ export const QuoteView = ({ onNotify }) => {
                   download={`LotusTubes-Quote-${successCode}.pdf`}
                 >
                   📥 Download Sample Quotation PDF
+                </a>
+                <a
+                  href={`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
+                    `Hello Lotus Tubes, I have submitted RFQ Quotation Request ${successCode}. Please review and update me with commercial terms.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--whatsapp"
+                >
+                  <span>🟢 WhatsApp Desk ({successCode})</span>
                 </a>
                 {isAuthenticated && (
                   <a href="#account" className="btn btn--outline-dark">

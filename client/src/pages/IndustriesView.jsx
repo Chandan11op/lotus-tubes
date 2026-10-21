@@ -39,9 +39,13 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
               </ul>
 
               <div className="hero-actions mt-3">
-                <a href="#quote" className="btn btn--primary">
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, `${ind.name} Hygienic Process Piping`)}
+                  className="btn btn--primary"
+                >
                   Request Industry Specific RFQ &rarr;
-                </a>
+                </button>
                 <a href="#industries" className="btn btn--outline-dark">
                   View All Industries
                 </a>
@@ -71,7 +75,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                     <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
                   </div>
                   <div className="product-card__img-wrap">
-                    <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} />
+                    <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
                   </div>
                   <div className="product-card__body">
                     <span className="product-card__category">{prod.category}</span>

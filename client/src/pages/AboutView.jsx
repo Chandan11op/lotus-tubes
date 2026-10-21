@@ -1,7 +1,7 @@
 import React from 'react';
 import { createProductSVG } from '../data/siteData';
 
-export const AboutView = () => {
+export const AboutView = ({ onOpenEnquiry }) => {
   return (
     <>
       <section className="page-hero">
@@ -45,9 +45,13 @@ export const AboutView = () => {
             </div>
 
             <div className="hero-actions mt-3">
-              <a href="#quote" className="btn btn--primary btn--lg">
+              <button
+                type="button"
+                onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Lotus Tubes Sanitary Solutions')}
+                className="btn btn--primary btn--lg"
+              >
                 Request Quotation &rarr;
-              </a>
+              </button>
               <a href="#contact" className="btn btn--outline-dark btn--lg">
                 Visit Office / Contact Us
               </a>

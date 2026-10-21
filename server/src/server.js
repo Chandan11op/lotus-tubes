@@ -1,10 +1,12 @@
 import app from './app.js';
 import { config } from './config/env.js';
 import { connectDB } from './config/db.js';
+import { provisionStaffUser } from './scripts/provisionStaff.js';
 
 const startServer = async () => {
   // Connect to MongoDB gracefully
   await connectDB();
+  await provisionStaffUser();
 
   let port = config.port;
 

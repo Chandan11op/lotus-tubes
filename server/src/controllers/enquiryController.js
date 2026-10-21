@@ -7,11 +7,15 @@ import { memoryEnquiries } from '../utils/memoryStore.js';
 
 export const createEnquiry = async (req, res, next) => {
   try {
-    const { productId, productName, name, company, email, phone, grade, quantity, location, notes } = req.body;
+    const { productId, productName, grade, quantity, location, notes, finish, sizes } = req.body;
 
     const reference = `LT-RFQ-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
     const samplePdfUrl = '/sample-quotation.pdf';
-    const userId = req.user ? req.user.id : null;
+    const userId = req.user ? (req.user.id || req.user._id) : null;
+    const name = (req.body.name || req.user?.name || '').trim();
+    const company = (req.body.company || req.user?.company || '').trim();
+    const email = (req.body.email || req.user?.email || '').toLowerCase().trim();
+    const phone = (req.body.phone || req.user?.phone || '').trim();
 
     // 1. Send customer confirmation email with sample quotation details
     const customerEmailHtml = `
@@ -104,6 +108,8 @@ export const createEnquiry = async (req, res, next) => {
       quantity,
       location,
       notes: notes || '',
+      sizes: sizes || '',
+      finish: finish || '',
       userId,
       samplePdfUrl,
       emailStatus,
@@ -130,7 +136,7 @@ export const createEnquiry = async (req, res, next) => {
       {
         reference,
         status: 'Recorded',
-        persisted: !!savedEnquiry || true,
+        persisted: !!savedEnquiry,
         samplePdfUrl,
         emailStatus,
         whatsappStatus,
