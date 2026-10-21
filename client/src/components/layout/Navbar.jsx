@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
   const { t } = useLanguage();
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <header className="site-header" id="site-header">

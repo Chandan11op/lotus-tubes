@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 /* Profile outline icon hover transition (250ms pink transition) */
 .nav-profile-btn {
@@ -17,12 +17,14 @@
   cursor: pointer;
   text-decoration: none;
 }
+
 .nav-profile-btn svg {
   width: 20px;
   height: 20px;
   stroke: currentColor;
   transition: stroke 250ms ease;
 }
+
 .nav-profile-btn:hover,
 .nav-profile-btn:focus-visible {
   color: #F00078 !important;
@@ -30,6 +32,7 @@
   box-shadow: 0 0 0 3px rgba(240, 0, 120, 0.15);
   outline: none;
 }
+
 .nav-profile-btn:hover svg,
 .nav-profile-btn:focus-visible svg {
   stroke: #F00078 !important;
@@ -426,7 +429,8 @@ ol {
   font-size: 0.82rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
-  z-index: 1005; /* Always render on top of sticky .site-header (z-index 900) */
+  z-index: 1005;
+  /* Always render on top of sticky .site-header (z-index 900) */
 }
 
 .top-bar__inner {
@@ -558,6 +562,7 @@ ol {
     opacity: 0;
     transform: translateY(-6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1483,6 +1488,7 @@ ol {
   margin-bottom: 8px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

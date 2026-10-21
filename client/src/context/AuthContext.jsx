@@ -70,6 +70,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     token,
+    isAuthenticated: !!user,
     isLoggedIn: !!user,
     isCustomer: user?.role === 'customer',
     isStaff: user?.role === 'staff',
