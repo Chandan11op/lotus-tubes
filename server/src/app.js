@@ -11,29 +11,57 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// CORS configuration supporting local dev and configured origin
-const allowedOrigins = [
+// Comprehensive CORS configuration supporting local ports (1109, 5173, 3000) and hosted Vercel/Render origins
+const rawOrigins = [
   'http://localhost:1109',
   'http://127.0.0.1:1109',
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
-  config.clientUrl
-].filter(Boolean);
+  'https://lotus-tubes-design.vercel.app',
+  'https://lotus-tubes-react-design.vercel.app',
+  'https://lotus-tubes.onrender.com',
+  config.vercelApi,
+  config.renderApi,
+  ...(typeof config.clientUrl === 'string' ? config.clientUrl.split(',') : [])
+];
+
+const normalizedAllowedOrigins = rawOrigins
+  .filter(Boolean)
+  .map(o => o.trim().replace(/\/$/, ''));
+
+const isOriginPermitted = (origin) => {
+  if (!origin) return true; // mobile apps, server-to-server, curl
+  const cleanOrigin = origin.replace(/\/$/, '');
+  
+  if (normalizedAllowedOrigins.some(o => o === '*' || cleanOrigin === o)) {
+    return true;
+  }
+  // Allow all Vercel deployments and preview URLs for this project
+  if (/^https:\/\/lotus-tubes(-[a-zA-Z0-9_-]+)?\.vercel\.app$/.test(cleanOrigin)) {
+    return true;
+  }
+  // Allow Render domains
+  if (/^https:\/\/lotus-tubes(-[a-zA-Z0-9_-]+)?\.onrender\.com$/.test(cleanOrigin)) {
+    return true;
+  }
+  return false;
+};
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, postman)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.some(o => origin.startsWith(o) || o === '*')) {
+      if (isOriginPermitted(origin)) {
         return callback(null, true);
       }
-      return callback(null, true); // Permissive in dev mode for smooth pair programming
+      if (config.nodeEnv === 'development') {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'cf-turnstile-token']
   })
 );
 
