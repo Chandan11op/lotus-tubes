@@ -4,51 +4,64 @@ import { config } from '../config/env.js';
 import { User } from '../models/User.js';
 
 export const provisionStaffUser = async () => {
-  const staffEmail = (config.staffInitEmail || 'chirag@lotustubes.com').toLowerCase().trim();
-  const staffPassword = config.staffInitPassword;
+  const adminEmail = (config.staffInitEmail || 'sales@lotustubes.com').toLowerCase().trim();
+  const adminPassword = config.staffInitPassword || 'lotustubes11';
 
-  if (!staffPassword) {
-    console.warn('⚠️ STAFF_INIT_PASSWORD is not configured in environment. Skipping staff auto-provisioning.');
+  if (!adminPassword) {
+    console.warn('⚠️ STAFF_INIT_PASSWORD is not configured in environment. Skipping admin auto-provisioning.');
     return null;
   }
 
   try {
-    const existingStaff = await User.findOne({ email: staffEmail });
-    if (existingStaff) {
-      if (existingStaff.role !== 'staff' && existingStaff.role !== 'admin') {
-        existingStaff.role = 'staff';
-        await existingStaff.save();
-        console.log(`🔒 Upgraded account ${staffEmail} to staff role in MongoDB.`);
-      } else {
-        console.log(`✅ Staff account already provisioned in MongoDB: ${staffEmail}`);
+    const existing = await User.findOne({ email: adminEmail });
+    if (existing) {
+      let needsSave = false;
+      if (existing.role !== 'admin') {
+        existing.role = 'admin';
+        needsSave = true;
       }
-      return existingStaff;
+      if (existing.department !== 'management') {
+        existing.department = 'management';
+        needsSave = true;
+      }
+      if (!existing.permissions || !existing.permissions.includes('all')) {
+        existing.permissions = ['all'];
+        needsSave = true;
+      }
+      if (needsSave) {
+        await existing.save();
+        console.log(`🔒 Provisioned ${adminEmail} with full Super Admin privileges.`);
+      } else {
+        console.log(`✅ Super Admin already provisioned in MongoDB: ${adminEmail}`);
+      }
+      return existing;
     }
 
-    // Create staff account
-    const newStaff = await User.create({
+    // Create Super Admin account
+    const newAdmin = await User.create({
       name: 'Chirag Shah',
-      email: staffEmail,
-      password: staffPassword,
-      role: 'staff',
+      email: adminEmail,
+      password: adminPassword,
+      role: 'admin',
+      department: 'management',
+      permissions: ['all'],
       company: 'Lotus Tubes',
       phone: '+919930430789',
       isEmailVerified: true,
       accountStatus: 'active'
     });
 
-    console.log(`✅ Successfully provisioned staff account [${staffEmail}] in MongoDB lotus_tubes database.`);
-    return newStaff;
+    console.log(`✅ Successfully created Super Admin [${adminEmail}] in MongoDB lotus_tubes database.`);
+    return newAdmin;
   } catch (error) {
-    console.error('❌ Failed to provision staff account in MongoDB:', error.message);
+    console.error('❌ Failed to provision Super Admin in MongoDB:', error.message);
     return null;
   }
 };
 
-// If run directly from CLI
 if (process.argv[1] && process.argv[1].endsWith('provisionStaff.js')) {
   (async () => {
-    console.log('Connecting to MongoDB for staff provisioning...');
+    console.log('Connecting to MongoDB for Super Admin provisioning...');
     await connectDB();
     await provisionStaffUser();
     await mongoose.disconnect();

@@ -14,7 +14,7 @@ const enquirySchema = new mongoose.Schema(
     },
     productName: {
       type: String,
-      default: ''
+      default: 'Sanitary Component'
     },
     name: {
       type: String,
@@ -24,15 +24,28 @@ const enquirySchema = new mongoose.Schema(
     company: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      index: true
     },
     email: {
       type: String,
       required: true,
       trim: true,
-      lowercase: true
+      lowercase: true,
+      index: true
     },
     phone: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true
+    },
+    country: {
+      type: String,
+      trim: true,
+      default: 'India'
+    },
+    location: {
       type: String,
       required: true,
       trim: true
@@ -46,15 +59,6 @@ const enquirySchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    location: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    notes: {
-      type: String,
-      default: ''
-    },
     sizes: {
       type: String,
       default: ''
@@ -63,31 +67,62 @@ const enquirySchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    notes: {
+      type: String,
+      default: ''
+    },
+    sourceChannel: {
+      type: String,
+      enum: ['Website RFQ', 'WhatsApp Business', 'Direct Email', 'Phone Call', 'IndiaMART / Trade Portal'],
+      default: 'Website RFQ'
+    },
+    priority: {
+      type: String,
+      enum: ['High', 'Medium', 'Normal'],
+      default: 'Medium'
+    },
+    status: {
+      type: String,
+      enum: ['New', 'Contacted', 'Quotation Sent', 'Follow-up', 'Negotiation', 'Order Confirmed', 'Lost', 'On Hold'],
+      default: 'New',
+      index: true
+    },
+    assignedTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null
+    },
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer',
+      default: null
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      default: null,
-      index: true
-    },
-    samplePdfUrl: {
-      type: String,
-      default: '/sample-quotation.pdf'
+      default: null
     },
     emailStatus: {
       type: String,
-      enum: ['pending', 'sent', 'failed', 'not_configured'],
+      enum: ['pending', 'sent', 'delivered', 'failed', 'not_configured'],
       default: 'pending'
     },
     whatsappStatus: {
       type: String,
-      enum: ['pending', 'sent', 'failed', 'not_configured'],
+      enum: ['pending', 'sent', 'delivered', 'failed', 'not_configured'],
       default: 'not_configured'
     },
-    status: {
-      type: String,
-      enum: ['New Lead', 'Quoted', 'Follow-up', 'Confirmed', 'Closed'],
-      default: 'New Lead'
-    }
+    activityHistory: [
+      {
+        action: String,
+        note: String,
+        performedBy: String,
+        timestamp: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ]
   },
   {
     timestamps: true

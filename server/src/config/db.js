@@ -9,14 +9,19 @@ export const connectDB = async () => {
   }
 
   if (!config.mongoUri) {
-    console.warn('⚠️ MONGODB_URI not configured. Database persistence will be disabled.');
+    const errorMsg = '⚠️ MONGODB_URI not configured. In production, persistent database storage is mandatory.';
+    if (config.isProduction) {
+      console.error('FATAL: ' + errorMsg);
+      throw new Error(errorMsg);
+    }
+    console.warn(errorMsg);
     return null;
   }
 
   try {
     const conn = await mongoose.connect(config.mongoUri, {
       dbName: 'lotus_tubes',
-      serverSelectionTimeoutMS: 8000,
+      serverSelectionTimeoutMS: 10000,
       autoIndex: true
     });
     isConnected = true;
@@ -25,7 +30,11 @@ export const connectDB = async () => {
     return conn;
   } catch (error) {
     isConnected = false;
-    console.warn(`⚠️ MongoDB Connection Warning: ${error.message}. Database currently offline.`);
+    console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    if (config.isProduction) {
+      // In production, do not proceed with severed persistent storage
+      throw error;
+    }
     return null;
   }
 };
@@ -40,10 +49,27 @@ mongoose.connection.on('reconnected', () => {
   console.log('🔄 MongoDB reconnected successfully.');
 });
 
-export const getDBStatus = () => ({
-  connected: isConnected && mongoose.connection.readyState === 1,
-  readyState: mongoose.connection.readyState,
-  dbName: mongoose.connection.name || 'lotus_tubes',
-  status: (isConnected && mongoose.connection.readyState === 1) ? 'connected' : 'disconnected'
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB runtime error:', err.message);
 });
 
+export const getDBStatus = () => {
+  const ready = mongoose.connection.readyState === 1;
+  return {
+    connected: ready,
+    readyState: mongoose.connection.readyState,
+    dbName: mongoose.connection.name || 'lotus_tubes',
+    status: ready ? 'connected' : 'disconnected'
+  };
+};
+
+/**
+ * Middleware or helper to verify DB availability for persistence operations
+ */
+export const assertDatabaseConnected = () => {
+  if (mongoose.connection.readyState !== 1) {
+    const err = new Error('Database service is currently unavailable. Operation aborted to prevent data loss.');
+    err.status = 503;
+    throw err;
+  }
+};

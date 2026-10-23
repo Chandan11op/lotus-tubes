@@ -331,12 +331,16 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             
             <div className="about-preview-media">
               <img
-                src="/assets/images/company/lotus-tubes-facility.svg"
+                src="/assets/images/company/lotus-tubes-facility.jpg"
                 alt="Lotus Tubes Office and Warehousing Facility"
                 className="about-preview-img"
+                loading="lazy"
               />
-              <div className="about-building-overlay">
-                <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="about-building-logo" />
+              <div className="about-building-overlay" style={{ top: 'auto', bottom: '20px', left: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="about-building-logo" style={{ height: '32px' }} />
+                <span style={{ color: '#FFFFFF', fontSize: '11px', fontWeight: 600, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
+                  Mumbai Distribution Hub
+                </span>
               </div>
             </div>
 

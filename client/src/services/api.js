@@ -3,7 +3,26 @@
  * Reusable communication layer with authentication, quotation dispatch, and real backend calls
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+const resolveApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim() && !envUrl.includes('localhost:5000')) {
+    return envUrl.trim().replace(/\/$/, '');
+  }
+
+  // Runtime browser check: never silently default to localhost in production
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return envUrl ? envUrl.trim().replace(/\/$/, '') : 'http://localhost:5000/api';
+    }
+    // Deployed environment (Vercel / custom domain)
+    return 'https://lotus-tubes.onrender.com/api';
+  }
+
+  return 'https://lotus-tubes.onrender.com/api';
+};
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 const TOKEN_KEY = 'lotus_auth_token';
 const USER_KEY = 'lotus_auth_user';
@@ -57,7 +76,7 @@ async function request(endpoint, options = {}) {
   };
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000);
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
 
   try {
     const res = await fetch(url, {
@@ -96,7 +115,7 @@ export const apiService = {
     try {
       return await request('/health');
     } catch (err) {
-      console.warn('Backend API currently unreachable:', err.message);
+      console.warn('Backend API unreachable:', err.message);
       return { success: false, message: 'Backend unreachable', offline: true };
     }
   },
@@ -150,7 +169,28 @@ export const apiService = {
   },
 
   /**
-   * Submit Quick Product Enquiry / Quotation
+   * Staff User Administration (Super Admin)
+   */
+  async getStaffUsers() {
+    return await request('/users/staff');
+  },
+
+  async createStaffUser(data) {
+    return await request('/users/staff', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async updateStaffUser(id, data) {
+    return await request(`/users/staff/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  /**
+   * Enquiries & RFQs
    */
   async submitEnquiry(enquiryData) {
     return await request('/enquiries', {
@@ -159,37 +199,170 @@ export const apiService = {
     });
   },
 
-  /**
-   * Fetch Enquiries for Staff CRM
-   */
-  async getEnquiries() {
-    return await request('/enquiries');
+  async getEnquiries(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/enquiries${query ? `?${query}` : ''}`);
   },
 
-  /**
-   * Fetch BOQ Quotes for Staff CRM
-   */
-  async getQuotes() {
-    return await request('/quotes');
+  async getEnquiryById(id) {
+    return await request(`/enquiries/${id}`);
   },
 
-  /**
-   * Submit Contact Us Form
-   */
-  async submitContact(contactData) {
-    return await request('/contact', {
-      method: 'POST',
-      body: JSON.stringify(contactData)
+  async updateEnquiry(id, data) {
+    return await request(`/enquiries/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async deleteEnquiry(id) {
+    return await request(`/enquiries/${id}`, {
+      method: 'DELETE'
     });
   },
 
   /**
-   * Submit Detailed RFQ / BOQ Quote Form
+   * Quotation Management
    */
   async submitQuote(quoteData) {
     return await request('/quotes', {
       method: 'POST',
       body: JSON.stringify(quoteData)
+    });
+  },
+
+  async getQuotes(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/quotes${query ? `?${query}` : ''}`);
+  },
+
+  async createFormalQuote(data) {
+    return await request('/quotes/formal', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async updateQuote(id, data) {
+    return await request(`/quotes/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async sendQuoteEmail(id) {
+    return await request(`/quotes/${id}/send-email`, {
+      method: 'POST'
+    });
+  },
+
+  /**
+   * Customer Management
+   */
+  async getCustomers(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/customers${query ? `?${query}` : ''}`);
+  },
+
+  async getCustomerById(id) {
+    return await request(`/customers/${id}`);
+  },
+
+  async createCustomer(data) {
+    return await request('/customers', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async updateCustomer(id, data) {
+    return await request(`/customers/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async mergeCustomers(data) {
+    return await request('/customers/merge', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  /**
+   * Task & Follow-up Actions
+   */
+  async getTasks(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/tasks${query ? `?${query}` : ''}`);
+  },
+
+  async createTask(data) {
+    return await request('/tasks', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async updateTask(id, data) {
+    return await request(`/tasks/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async deleteTask(id) {
+    return await request(`/tasks/${id}`, {
+      method: 'DELETE'
+    });
+  },
+
+  /**
+   * Product Catalogue Management
+   */
+  async getProducts(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/products${query ? `?${query}` : ''}`);
+  },
+
+  async getProductBySlug(slug) {
+    return await request(`/products/${slug}`);
+  },
+
+  async createProduct(data) {
+    return await request('/products', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async updateProduct(id, data) {
+    return await request(`/products/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async deleteProduct(id) {
+    return await request(`/products/${id}`, {
+      method: 'DELETE'
+    });
+  },
+
+  /**
+   * Reporting Metrics
+   */
+  async getDashboardMetrics() {
+    return await request('/reports/metrics');
+  },
+
+  /**
+   * Contact Form
+   */
+  async submitContact(contactData) {
+    return await request('/contact', {
+      method: 'POST',
+      body: JSON.stringify(contactData)
     });
   }
 };

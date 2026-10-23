@@ -30,7 +30,7 @@ export const sendWhatsAppQuotation = async ({ phone, customerName, reference, pr
       success: false,
       status: 'not_configured',
       message: 'WhatsApp Business API credentials not configured on server.',
-      directLink: `https://wa.me/919867304316?text=${encodeURIComponent(
+      directLink: `https://wa.me/919930430789?text=${encodeURIComponent(
         `Hello Lotus Tubes, I submitted quotation request ${reference} for ${productName || 'Sanitary Component'} (Qty: ${quantity}). Please provide price and stock availability.`
       )}`
     };
@@ -45,7 +45,7 @@ export const sendWhatsAppQuotation = async ({ phone, customerName, reference, pr
       type: 'text',
       text: {
         preview_url: true,
-        body: `Dear ${customerName || 'Customer'},\n\nThank you for your interest in Lotus Tubes sanitary products.\n\nYour Quotation Request (Ref: ${reference}) for *${productName || 'Sanitary Component'}* (Qty: ${quantity}) has been registered.\n\nA sample quotation document is available for initial specification review: ${samplePdfUrl || 'https://lotus-tubes-react-design.vercel.app/sample-quotation.pdf'}\n\nOur sales desk will verify final pricing and stock availability shortly.\n\n*Lotus Tubes (Lotus Impex)*\nSales Desk: +91 98673 04316\nEmail: sales@lotustubes.com`
+        body: `Dear ${customerName || 'Customer'},\n\nThank you for your interest in Lotus Tubes sanitary products.\n\nYour Quotation Request (Ref: ${reference}) for *${productName || 'Sanitary Component'}* (Qty: ${quantity}) has been registered.\n\nA sample quotation document is available for initial specification review: ${samplePdfUrl || 'https://lotus-tubes-react-design.vercel.app/sample-quotation.pdf'}\n\nOur sales desk will verify final pricing and stock availability shortly.\n\n*Lotus Tubes (Lotus Impex)*\nSales Desk: +91 99304 30789\nEmail: sales@lotustubes.com`
       }
     };
 

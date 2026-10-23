@@ -29,9 +29,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await apiService.loginCustomer(credentials);
-      setUser(res.data.user);
-      setToken(res.data.token);
-      return res;
+      const u = res?.data?.user || res?.user;
+      const t = res?.data?.token || res?.token;
+      setUser(u);
+      setToken(t);
+      return { success: true, user: u, token: t, data: res?.data };
     } finally {
       setLoading(false);
     }
@@ -41,9 +43,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await apiService.registerCustomer(customerData);
-      setUser(res.data.user);
-      setToken(res.data.token);
-      return res;
+      const u = res?.data?.user || res?.user;
+      const t = res?.data?.token || res?.token;
+      setUser(u);
+      setToken(t);
+      return { success: true, user: u, token: t, data: res?.data };
     } finally {
       setLoading(false);
     }
@@ -53,9 +57,11 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await apiService.loginStaff(credentials);
-      setUser(res.data.user);
-      setToken(res.data.token);
-      return res;
+      const u = res?.data?.user || res?.user;
+      const t = res?.data?.token || res?.token;
+      setUser(u);
+      setToken(t);
+      return { success: true, user: u, token: t, data: res?.data };
     } finally {
       setLoading(false);
     }
@@ -73,7 +79,8 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
     isLoggedIn: !!user,
     isCustomer: user?.role === 'customer',
-    isStaff: user?.role === 'staff',
+    isStaff: user?.role === 'staff' || user?.role === 'admin',
+    isAdmin: user?.role === 'admin',
     loading,
     loginCustomer,
     registerCustomer,

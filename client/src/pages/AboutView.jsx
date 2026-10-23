@@ -60,9 +60,10 @@ export const AboutView = ({ onOpenEnquiry }) => {
 
           <div>
             <img
-              src={createProductSVG('Lotus Tubes Distribution Headquarters', 'Registered Trade Facility - Mumbai', '#10263D')}
-              alt="Lotus Tubes Headquarters"
-              style={{ borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-xl)', width: '100%' }}
+              src="/assets/images/company/lotus-tubes-facility.jpg"
+              alt="Lotus Tubes Office and Warehousing Facility"
+              style={{ borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-xl)', width: '100%', height: '440px', objectFit: 'cover' }}
+              loading="lazy"
             />
           </div>
         </div>

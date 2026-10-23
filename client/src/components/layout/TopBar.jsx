@@ -28,6 +28,7 @@ export const TopBar = () => {
             <span>{t('top_locations', 'Mumbai • Domestic & Global Supply')}</span>
           </span>
         </div>
+
         <div className="top-bar__right">
           <a href={`mailto:${CONFIG.primaryEmail}`} className="top-bar__link" title="Official Sales Email">
             <span className="top-bar__icon" aria-hidden="true">✉</span> {CONFIG.primaryEmail}

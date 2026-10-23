@@ -11,8 +11,11 @@ client/dist
 # Environment configuration
 server/.env
 server/.env.local
-server/.env.example
+server/.env*.local
 
 client/.env
 client/.env.local
-client/.env.example
+client/.env*.local
+
+# Temporary scratch scripts
+scratch/

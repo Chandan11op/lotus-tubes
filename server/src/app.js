@@ -1,15 +1,25 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { config } from './config/env.js';
 import apiRoutes from './routes/apiRoutes.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
+import { generalApiLimiter } from './middleware/rateLimiters.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Security Headers with Helmet
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // Allows flexible API & asset delivery across domains
+    crossOriginEmbedderPolicy: false
+  })
+);
 
 // Comprehensive CORS configuration supporting local ports (1109, 5173, 3000) and hosted Vercel/Render origins
 const rawOrigins = [
@@ -28,13 +38,13 @@ const rawOrigins = [
 
 const normalizedAllowedOrigins = rawOrigins
   .filter(Boolean)
-  .map(o => o.trim().replace(/\/$/, ''));
+  .map((o) => o.trim().replace(/\/$/, ''));
 
 const isOriginPermitted = (origin) => {
-  if (!origin) return true; // mobile apps, server-to-server, curl
+  if (!origin) return true; // mobile apps, server-to-server, curl, same-origin
   const cleanOrigin = origin.replace(/\/$/, '');
-  
-  if (normalizedAllowedOrigins.some(o => o === '*' || cleanOrigin === o)) {
+
+  if (normalizedAllowedOrigins.some((o) => o === '*' || cleanOrigin === o)) {
     return true;
   }
   // Allow all Vercel deployments and preview URLs for this project
@@ -60,28 +70,31 @@ app.use(
       return callback(new Error(`CORS blocked for origin: ${origin}`));
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'cf-turnstile-token']
   })
 );
 
-// Body Parsing Middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Request body size limits (1MB is plenty for B2B RFQs and prevents payload-bombing)
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
-// Static Files (serving sample quotation PDF and assets)
+// Static Files (serving sample quotation PDF and static assets)
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../../client/public')));
 
-// Root welcome route
+// Root welcome & API health indicator
 app.get('/', (req, res) => {
   res.json({
     name: 'Lotus Tubes B2B API',
-    version: '1.0.0',
+    version: '2.0.0',
     status: 'online',
     documentation: '/api/health'
   });
 });
+
+// Apply general API rate limiting to all /api routes
+app.use('/api', generalApiLimiter);
 
 // Mount API Routes
 app.use('/api', apiRoutes);

@@ -28,9 +28,26 @@ import QuoteView from './pages/QuoteView';
 import CRMView from './pages/crm/CRMView';
 import CustomerAccountView from './pages/CustomerAccountView';
 import { PRODUCTS } from './data/siteData';
+import { updatePageSEO } from './utils/seo';
 
 export const App = () => {
-  const [currentHash, setCurrentHash] = useState(() => window.location.hash || '#home');
+  const parseCurrentLocation = () => {
+    // 1. Prioritize hash if explicitly present (e.g. #product/ss-316l-ep-pipe)
+    const hash = (window.location.hash || '').replace(/^#\/?/, '');
+    if (hash) {
+      const parts = hash.split('/');
+      return { route: parts[0] || 'home', param: parts[1] || '' };
+    }
+    // 2. Otherwise inspect clean path route (e.g. /product/ss-316l-ep-pipe)
+    const pathname = (window.location.pathname || '').replace(/^\/?/, '');
+    if (pathname && pathname !== 'index.html') {
+      const parts = pathname.split('/');
+      return { route: parts[0] || 'home', param: parts[1] || '' };
+    }
+    return { route: 'home', param: '' };
+  };
+
+  const [currentLoc, setCurrentLoc] = useState(parseCurrentLocation);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -38,15 +55,76 @@ export const App = () => {
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash || '#home';
-      setCurrentHash(hash);
+    const handleLocationChange = () => {
+      setCurrentLoc(parseCurrentLocation());
       window.scrollTo(0, 0);
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
   }, []);
+
+  const { route, param } = currentLoc;
+
+  // Dynamic Technical SEO & Schema.org JSON-LD structured data injection
+  useEffect(() => {
+    let title = 'Lotus Tubes | Sanitary Stainless Steel Pipes, Fittings & Valves';
+    let description = 'Leading manufacturer & stockist of SS 304 and SS 316L sanitary tubes, Tri-Clamp fittings, hygienic valves, and gaskets for pharmaceutical and dairy processing.';
+    let productData = null;
+    let breadcrumbs = [{ name: 'Home', path: '/' }];
+
+    if (route === 'products') {
+      title = 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes';
+      description = 'Explore Lotus Tubes comprehensive range of SS 304 and SS 316L sanitary pipes, electropolished tubing, Tri-Clamp fittings, and hygienic valves.';
+      breadcrumbs.push({ name: 'Products', path: '/products' });
+    } else if (route === 'product' && param) {
+      const found = PRODUCTS.find((p) => p.slug === param || p.id === param);
+      if (found) {
+        title = `${found.name} (${found.material}) - Sanitary Specifications | Lotus Tubes`;
+        description = found.overview || `${found.name} manufactured from ${found.material} with ${found.surfaceFinish || 'electropolished'} finish for hygienic applications.`;
+        productData = found;
+        breadcrumbs.push({ name: 'Products', path: '/products' });
+        breadcrumbs.push({ name: found.name, path: `/product/${found.slug || found.id}` });
+      }
+    } else if (route === 'category' && param) {
+      const catName = param.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+      title = `${catName} | Sanitary Stainless Steel Components | Lotus Tubes`;
+      description = `Certified sanitary ${catName} in high purity SS 304 and SS 316L grades with Ra < 0.4µm surface finish for pharmaceutical and food process lines.`;
+      breadcrumbs.push({ name: 'Categories', path: '/products' });
+      breadcrumbs.push({ name: catName, path: `/category/${param}` });
+    } else if (route === 'about') {
+      title = 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai';
+      description = 'Lotus Tubes (Lotus Impex) delivers high-precision stainless steel sanitary tubes and process components from Girgaon, Mumbai to pharmaceutical and food process leaders globally.';
+      breadcrumbs.push({ name: 'About Us', path: '/about' });
+    } else if (route === 'quality') {
+      title = 'Quality Assurance & Mill Test Certification | Lotus Tubes';
+      description = 'Every Lotus Tubes sanitary product complies with ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 MTR inspection certification.';
+      breadcrumbs.push({ name: 'Quality Assurance', path: '/quality' });
+    } else if (route === 'contact') {
+      title = 'Contact Lotus Tubes | Girgaon Mumbai Sales Office';
+      description = 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 99304 30789.';
+      breadcrumbs.push({ name: 'Contact', path: '/contact' });
+    } else if (route === 'quote') {
+      title = 'Request a Formal B2B Quotation | Lotus Tubes';
+      description = 'Submit your Bill of Quantities (BOQ) or technical specifications for instant review and competitive quotation for SS 304 / SS 316L sanitary tubes and valves.';
+      breadcrumbs.push({ name: 'Request Quote', path: '/quote' });
+    } else if (route === 'crm') {
+      title = 'Lotus Tubes Staff CRM & Operations Portal';
+      description = 'Internal operational management system for Lotus Tubes customer enquiries, quotations, pipeline, and staff RBAC.';
+    }
+
+    updatePageSEO({
+      title,
+      description,
+      path: route === 'home' ? '/' : `/${route}${param ? `/${param}` : ''}`,
+      productData,
+      breadcrumbs
+    });
+  }, [route, param]);
 
   const addToast = (message, type = 'info') => {
     const id = Date.now() + Math.random();
@@ -59,12 +137,6 @@ export const App = () => {
   const dismissToast = (id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
-
-  // Parse hash route and param
-  const cleanHash = currentHash.replace(/^#\/?/, '') || 'home';
-  const parts = cleanHash.split('/');
-  const route = parts[0] || 'home';
-  const param = parts[1] || '';
 
   const isCRM = route === 'crm' || route === 'login';
 

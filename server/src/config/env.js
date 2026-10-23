@@ -1,22 +1,38 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isProduction = nodeEnv === 'production';
+
+// In production, ensure secure JWT secret is supplied
+const rawJwtSecret = process.env.JWT_SECRET;
+if (isProduction) {
+  if (!rawJwtSecret || rawJwtSecret.length < 32 || rawJwtSecret.includes('dev') || rawJwtSecret.includes('secret')) {
+    throw new Error('SECURITY FATAL: In production, JWT_SECRET must be set and contain at least 32 high-entropy characters.');
+  }
+}
+
 export const config = {
   port: parseInt(process.env.PORT, 10) || 5000,
-  nodeEnv: process.env.NODE_ENV || 'development',
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:1109',
+  nodeEnv,
+  isProduction,
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
   renderApi: process.env.RENDER_API || 'https://lotus-tubes.onrender.com',
-  vercelApi: process.env.VERCEL_API || 'https://lotus-tubes-design.vercel.app',
-  mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/lotus_tubes',
-  jwtSecret: process.env.JWT_SECRET || 'lotus_tubes_jwt_secret_dev_2026_hygienic_valves',
+  vercelApi: process.env.VERCEL_API || 'https://lotus-tubes-react-design.vercel.app',
+  mongoUri: process.env.MONGODB_URI || (isProduction ? '' : 'mongodb://localhost:27017/lotus_tubes'),
+  jwtSecret: rawJwtSecret || 'lotus_tubes_jwt_secret_dev_2026_hygienic_valves',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   staffInitEmail: (process.env.STAFF_INIT_EMAIL || 'chirag@lotustubes.com').toLowerCase().trim(),
-  staffInitPassword: process.env.STAFF_INIT_PASSWORD || 'LotusTubesStaff2026!',
+  staffInitPassword: process.env.STAFF_INIT_PASSWORD || (isProduction ? '' : 'LotusTubesDev2026!'),
   turnstileSecretKey: process.env.TURNSTILE_SECRET_KEY || process.env.SECRET_KEY || '',
   resend: {
     apiKey: process.env.RESEND_API_KEY || '',
     fromEmail: process.env.RESEND_FROM_EMAIL || 'sales@lotustubes.com',
-    notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || 'sales@lotustubes.com',
+    notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || 'sales@lotustubes.com'
+  },
+  whatsapp: {
+    accessToken: process.env.WHATSAPP_ACCESS_TOKEN || '',
+    phoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
+    businessAccountId: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || ''
   }
 };
-

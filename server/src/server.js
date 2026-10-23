@@ -2,11 +2,27 @@ import app from './app.js';
 import { config } from './config/env.js';
 import { connectDB } from './config/db.js';
 import { provisionStaffUser } from './scripts/provisionStaff.js';
+import { Product } from './models/Product.js';
+import { seedProductCatalog } from './scripts/seedProducts.js';
 
 const startServer = async () => {
-  // Connect to MongoDB gracefully
-  await connectDB();
-  await provisionStaffUser();
+  try {
+    // Connect to MongoDB
+    await connectDB();
+    await provisionStaffUser();
+
+    // Check if products need initial seeding
+    const productCount = await Product.countDocuments();
+    if (productCount === 0) {
+      console.log('📦 Initializing product catalogue in MongoDB...');
+      await seedProductCatalog();
+    }
+  } catch (err) {
+    console.error('Initialization error during startup:', err.message);
+    if (config.isProduction) {
+      process.exit(1);
+    }
+  }
 
   let port = config.port;
 

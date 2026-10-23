@@ -1,14 +1,39 @@
 import mongoose from 'mongoose';
 
+const lineItemSchema = new mongoose.Schema(
+  {
+    productId: { type: String, default: '' },
+    description: { type: String, required: true },
+    grade: { type: String, default: 'SS 316L' },
+    size: { type: String, default: '' },
+    finish: { type: String, default: 'Electro Polished' },
+    quantity: { type: Number, required: true, min: 1 },
+    unit: { type: String, default: 'Pcs' }, // Pcs, Meters, Feet
+    unitPrice: { type: Number, required: true, min: 0 },
+    discountPercent: { type: Number, default: 0, min: 0, max: 100 },
+    taxPercent: { type: Number, default: 18 }, // Standard 18% GST on SS pipes/fittings
+    lineTotal: { type: Number, required: true }
+  },
+  { _id: true }
+);
+
 const quoteSchema = new mongoose.Schema(
   {
-    reference: {
+    quotationNumber: {
       type: String,
       required: true,
       unique: true,
       index: true
     },
-    name: {
+    reference: {
+      type: String,
+      index: true
+    },
+    version: {
+      type: Number,
+      default: 1
+    },
+    customerName: {
       type: String,
       required: true,
       trim: true
@@ -16,68 +41,127 @@ const quoteSchema = new mongoose.Schema(
     company: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      index: true
     },
     email: {
       type: String,
       required: true,
       trim: true,
-      lowercase: true
+      lowercase: true,
+      index: true
     },
     phone: {
       type: String,
       required: true,
       trim: true
     },
-    location: {
+    billingAddress: {
       type: String,
       default: ''
     },
-    projectType: {
-      type: String,
-      default: 'Sanitary Piping Project'
-    },
-    materialGrade: {
-      type: String,
-      default: 'SS 316L'
-    },
-    finishRequired: {
-      type: String,
-      default: 'Electro Polished (EP)'
-    },
-    boqSummary: {
+    shippingAddress: {
       type: String,
       default: ''
     },
-    timeline: {
+    country: {
       type: String,
-      default: 'Standard (1-2 Weeks)'
+      default: 'India'
     },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      default: null,
-      index: true
-    },
-    samplePdfUrl: {
+    currency: {
       type: String,
-      default: '/sample-quotation.pdf'
+      enum: ['INR', 'USD', 'EUR', 'GBP', 'AED'],
+      default: 'INR'
     },
-    emailStatus: {
-      type: String,
-      enum: ['pending', 'sent', 'failed', 'not_configured'],
-      default: 'pending'
+    lineItems: [lineItemSchema],
+    subtotal: {
+      type: Number,
+      required: true,
+      default: 0
     },
-    whatsappStatus: {
+    discountTotal: {
+      type: Number,
+      default: 0
+    },
+    taxTotal: {
+      type: Number,
+      default: 0
+    },
+    shippingCharge: {
+      type: Number,
+      default: 0
+    },
+    grandTotal: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    paymentTerms: {
       type: String,
-      enum: ['pending', 'sent', 'failed', 'not_configured'],
-      default: 'not_configured'
+      default: '100% advance against Proforma or 30 days credit for approved clients'
+    },
+    validityDays: {
+      type: Number,
+      default: 15
+    },
+    validUntil: {
+      type: Date
+    },
+    leadTime: {
+      type: String,
+      default: 'Ready stock dispatch within 24-48 hours; custom lengths 1-2 weeks'
+    },
+    deliveryTerms: {
+      type: String,
+      default: 'Ex-Works Mumbai / Door Delivery at Actuals'
     },
     status: {
       type: String,
-      enum: ['Received', 'Under Review', 'BOQ Prepared', 'Quote Sent', 'Accepted', 'Rejected'],
-      default: 'Received'
-    }
+      enum: ['Received', 'Draft', 'Pending Approval', 'Sent', 'Accepted', 'Rejected', 'Expired', 'Revised'],
+      default: 'Draft',
+      index: true
+    },
+    enquiryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Enquiry',
+      default: null
+    },
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer',
+      default: null
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null
+    },
+    assignedTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null
+    },
+    emailStatus: {
+      type: String,
+      enum: ['pending', 'sent', 'delivered', 'failed', 'not_configured'],
+      default: 'pending'
+    },
+    pdfUrl: {
+      type: String,
+      default: ''
+    },
+    internalNotes: {
+      type: String,
+      default: ''
+    },
+    activityLog: [
+      {
+        action: String,
+        performedBy: String,
+        note: String,
+        timestamp: { type: Date, default: Date.now }
+      }
+    ]
   },
   {
     timestamps: true

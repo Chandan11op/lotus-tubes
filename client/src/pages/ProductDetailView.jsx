@@ -1,24 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { PRODUCTS, CONFIG } from '../data/siteData';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
-import ProductCardVideo from '../components/common/ProductCardVideo';
+import { Product360Viewer } from '../components/common/Product360Viewer';
+import { ProductVideoPlayer } from '../components/common/ProductVideoPlayer';
+import { updatePageSEO } from '../utils/seo';
 
 export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
-  const [activeMedia, setActiveMedia] = useState('video'); // 'video' | 0 | 1 | 2
+  const [activeMedia, setActiveMedia] = useState('360'); // '360' | 'video' | 0 | 1 | 2
   const [activeTab, setActiveTab] = useState('tab-apps');
-  const [videoError, setVideoError] = useState(!prod.video);
   const [imgFallbacks, setImgFallbacks] = useState({});
 
   useEffect(() => {
-    setActiveMedia('video');
-    setVideoError(!prod.video);
+    setActiveMedia(prod.has360View ? '360' : prod.video ? 'video' : 0);
     setImgFallbacks({});
-  }, [slug, prod.id, prod.video]);
 
-  const productImages = prod.images && prod.images.length >= 3
+    // Update dynamic technical SEO & Structured Data
+    updatePageSEO({
+      title: prod.seo?.title || `${prod.name} | Lotus Tubes`,
+      description: prod.seo?.metaDescription || prod.overview,
+      path: `/product/${prod.slug || prod.id}`,
+      image: prod.image,
+      productData: prod,
+      breadcrumbs: [
+        { name: 'Home', path: '/' },
+        { name: 'Products', path: '/products' },
+        { name: prod.category, path: `/category/${prod.categorySlug}` },
+        { name: prod.name, path: `/product/${prod.slug || prod.id}` }
+      ]
+    });
+  }, [slug, prod.id]);
+
+  const productImages = prod.images && prod.images.length >= 2
     ? prod.images
     : [
         prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name),
@@ -41,306 +56,260 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     return INLINE_SVG_FAILSAFE;
   };
 
-  const showVideo = activeMedia === 'video' && prod.video && !videoError;
-
   return (
-    <div className="site-container product-detail-view">
+    <div className="site-container product-detail-view" style={{ paddingTop: '20px', paddingBottom: '60px' }}>
       <div className="product-detail-grid">
-        {/* Left: Gallery & Primary Media Area */}
+        {/* Left: Gallery & Primary Interactive Media */}
         <div className="product-gallery-box">
-          <div className="product-main-image-wrap" style={{ position: 'relative', overflow: 'hidden', background: '#F8FAFC', borderRadius: '8px' }}>
-            {showVideo ? (
-              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                <video
-                  key={prod.video}
-                  poster={resolveImage(productImages[0], 'main-poster')}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  onError={() => setVideoError(true)}
-                  aria-label={`${prod.name} - 360 degree product video`}
-                >
-                  <source
-                    src={prod.video}
-                    type={prod.video.endsWith('.webm') ? 'video/webm' : 'video/mp4'}
-                    onError={() => setVideoError(true)}
-                  />
-                </video>
-                <div className="viewer-360-badge">
-                  <span>🔄 Looping 360° Product Video (Muted)</span>
-                </div>
-              </div>
+          <div className="product-main-image-wrap" style={{ position: 'relative', overflow: 'hidden', background: '#F8FAFC', borderRadius: '12px', minHeight: '420px' }}>
+            {activeMedia === '360' ? (
+              <Product360Viewer product={prod} fallbackImage={productImages[0]} />
+            ) : activeMedia === 'video' ? (
+              <ProductVideoPlayer
+                src={prod.video}
+                poster={productImages[0]}
+                title={`${prod.name} - Technical Video`}
+                isIllustrative={false}
+              />
             ) : (
-              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+              <div style={{ position: 'relative', width: '100%', height: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC' }}>
                 <img
-                  src={resolveImage(
-                    activeMedia === 'video' ? productImages[0] : productImages[activeMedia],
-                    `main-${activeMedia}`
-                  )}
+                  src={resolveImage(productImages[activeMedia] || productImages[0], `main-${activeMedia}`)}
                   alt={`${prod.name} - Specification Detail`}
                   className="product-main-img"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                   onError={() => handleImageError(`main-${activeMedia}`)}
                 />
                 <div className="viewer-360-badge" style={{ background: 'rgba(16,38,61,0.85)' }}>
-                  <span>
-                    {activeMedia === 'video'
-                      ? '📷 High-Res Specification Photo (Primary)'
-                      : `📷 High-Res Specification Photo ${Number(activeMedia) + 1} of 3`}
-                  </span>
+                  <span>📷 High-Resolution Specification Photo {Number(activeMedia) + 1} of {productImages.length}</span>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Media Switcher Bar: Primary 360° Video + 3 Product Images */}
-          <div className="gallery-thumbs" style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: prod.video && !videoError ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)', gap: '10px' }}>
-            {/* Video Thumbnail Button (rendered when video is available) */}
-            {prod.video && !videoError && (
-              <div
-                className={`gallery-thumb ${activeMedia === 'video' ? 'active' : ''}`}
+          {/* Media Switcher Bar: 360° Inspection + Video + Photo Thumbnails */}
+          <div className="gallery-thumbs" style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))', gap: '8px' }}>
+            {/* 360° Inspection Mode Button */}
+            <button
+              type="button"
+              onClick={() => setActiveMedia('360')}
+              className={`gallery-thumb-btn ${activeMedia === '360' ? 'active' : ''}`}
+              style={{
+                position: 'relative',
+                height: '64px',
+                borderRadius: '8px',
+                border: activeMedia === '360' ? '2px solid #0284C7' : '1px solid #CBD5E1',
+                background: '#0F172A',
+                color: '#FFF',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                padding: '4px'
+              }}
+              title="Interactive 360° View"
+            >
+              <span style={{ fontSize: '18px' }}>🔄</span>
+              <span style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>360° INSPECT</span>
+            </button>
+
+            {/* Video Inspection Mode Button */}
+            {prod.video && (
+              <button
+                type="button"
                 onClick={() => setActiveMedia('video')}
-                style={{ cursor: 'pointer', position: 'relative', border: activeMedia === 'video' ? '2px solid var(--primary-pink)' : '1px solid #E3E8EF', borderRadius: '6px', overflow: 'hidden' }}
-                title="View 360° Rotating Video"
+                className={`gallery-thumb-btn ${activeMedia === 'video' ? 'active' : ''}`}
+                style={{
+                  position: 'relative',
+                  height: '64px',
+                  borderRadius: '8px',
+                  border: activeMedia === 'video' ? '2px solid #0284C7' : '1px solid #CBD5E1',
+                  background: '#1E293B',
+                  color: '#FFF',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  padding: '4px'
+                }}
+                title="Product Video Inspection"
               >
-                <img
-                  src={resolveImage(productImages[0], 'thumb-video')}
-                  alt={`${prod.name} 360 Video Preview`}
-                  style={{ width: '100%', height: '60px', objectFit: 'cover' }}
-                  onError={() => handleImageError('thumb-video')}
-                />
-                <div style={{ position: 'absolute', inset: 0, background: 'rgba(16,38,61,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', fontSize: '11px', fontWeight: 700 }}>
-                  ▶ 360°
-                </div>
-              </div>
+                <span style={{ fontSize: '18px' }}>📹</span>
+                <span style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>VIDEO</span>
+              </button>
             )}
 
-            {/* 3 Product Images corresponding to this selected product */}
-            {productImages.slice(0, 3).map((imgSrc, idx) => (
-              <div
+            {/* Standard Photography Thumbnails */}
+            {productImages.map((imgSrc, idx) => (
+              <button
+                type="button"
                 key={idx}
-                className={`gallery-thumb ${activeMedia === idx || (activeMedia === 'video' && (videoError || !prod.video) && idx === 0) ? 'active' : ''}`}
                 onClick={() => setActiveMedia(idx)}
+                className={`gallery-thumb-btn ${activeMedia === idx ? 'active' : ''}`}
                 style={{
-                  cursor: 'pointer',
                   position: 'relative',
-                  border: (activeMedia === idx || (activeMedia === 'video' && (videoError || !prod.video) && idx === 0)) ? '2px solid var(--primary-pink)' : '1px solid #E3E8EF',
-                  borderRadius: '6px',
-                  overflow: 'hidden'
+                  height: '64px',
+                  borderRadius: '8px',
+                  border: activeMedia === idx ? '2px solid #0284C7' : '1px solid #CBD5E1',
+                  background: '#FFF',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  padding: '2px'
                 }}
-                title={`View Product Image ${idx + 1}`}
+                title={`View Photo ${idx + 1}`}
               >
                 <img
                   src={resolveImage(imgSrc, `thumb-${idx}`)}
-                  alt={`${prod.name} View ${idx + 1}`}
-                  style={{ width: '100%', height: '60px', objectFit: 'cover' }}
+                  alt={`${prod.name} Photo ${idx + 1}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   onError={() => handleImageError(`thumb-${idx}`)}
                 />
-                <div style={{ position: 'absolute', bottom: 2, right: 4, background: 'rgba(16,38,61,0.7)', color: '#FFF', fontSize: '9px', padding: '1px 4px', borderRadius: '3px' }}>
-                  #{idx + 1}
-                </div>
-              </div>
+              </button>
             ))}
           </div>
-          <div style={{ fontSize: '11px', color: '#667085', marginTop: '6px', textAlign: 'center' }}>
-            {prod.video && !videoError
-              ? 'Primary media: Looping 360° turntable video • Click thumbnails to inspect dimensional details'
-              : 'Primary media: High-resolution sanitary specification view • Click thumbnails to inspect dimensional details'}
+
+          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '8px', textAlign: 'center' }}>
+            Lotus Tubes Verification: Drag 360° viewer horizontally to inspect component symmetry and finish.
           </div>
         </div>
 
         {/* Right: Technical Details & Specifications */}
         <div className="product-info-box">
-          <span className="product-detail-eyebrow">{prod.category}</span>
-          <h1 className="product-detail-title">{prod.name}</h1>
+          <span className="product-detail-eyebrow" style={{ textTransform: 'uppercase', letterSpacing: '0.8px', color: '#0284C7', fontWeight: 700, fontSize: '12px' }}>
+            {prod.category}
+          </span>
+          <h1 className="product-detail-title" style={{ fontSize: '1.85rem', color: 'var(--deep-navy)', marginTop: '4px', marginBottom: '12px' }}>
+            {prod.name}
+          </h1>
 
-          <div className="product-badges-row">
-            <span className="badge badge--navy">{prod.material}</span>
-            <span className="badge badge--pink">{prod.finish}</span>
-            <span className="badge badge--steel">{prod.standard}</span>
-            <span className="badge badge--outline">MTC EN 10204 3.1 Certified</span>
+          <div className="product-badges-row" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+            <span className="badge badge--navy" style={{ background: '#10263D', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.material}</span>
+            <span className="badge badge--pink" style={{ background: '#F00078', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.finish}</span>
+            <span className="badge badge--steel" style={{ background: '#E2E8F0', color: '#334155', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.standard}</span>
+            <span className="badge badge--outline" style={{ border: '1px solid #CBD5E1', color: '#475569', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>EN 10204 3.1 Traceable</span>
           </div>
 
-          <p className="product-overview-text">{prod.overview}</p>
+          <p className="product-overview-text" style={{ fontSize: '14px', lineHeight: 1.6, color: '#334155', marginBottom: '20px' }}>
+            {prod.overview}
+          </p>
 
           {/* Specification Table */}
-          <div className="spec-table-box">
-            <table className="spec-table">
+          <div className="spec-table-box" style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
+            <h4 style={{ margin: '0 0 12px 0', fontSize: '13px', textTransform: 'uppercase', color: '#10263D', letterSpacing: '0.5px' }}>
+              Technical Parameters &amp; Supply Scope:
+            </h4>
+            <table className="spec-table" style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse' }}>
               <tbody>
-                <tr>
-                  <th>Material Grade</th>
-                  <td>
-                    <strong>{prod.material}</strong>
-                  </td>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B', width: '38%' }}>Material Grade</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}><strong>{prod.material}</strong></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Surface Finish</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.finish} ({prod.roughness || 'Ra ≤ 0.4 µm'})</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Manufacturing Type</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.manufacturingType}</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Size / Outside Diameter</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.sizes}</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Wall Thickness</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.wallThickness}</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Verified Standard</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.standard} (Confirmed per heat batch)</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Connection / Ends</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.connection}</td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Quality Documentation</th>
+                  <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.mtc}</td>
                 </tr>
                 <tr>
-                  <th>Surface Finish</th>
-                  <td>
-                    {prod.finish} ({prod.roughness || 'Hygienic standard'})
-                  </td>
-                </tr>
-                <tr>
-                  <th>Manufacturing Type</th>
-                  <td>{prod.manufacturingType}</td>
-                </tr>
-                <tr>
-                  <th>Outside Diameter (OD)</th>
-                  <td>{prod.sizes}</td>
-                </tr>
-                <tr>
-                  <th>Wall Thickness</th>
-                  <td>{prod.wallThickness}</td>
-                </tr>
-                <tr>
-                  <th>Standard Compliance</th>
-                  <td>{prod.standard} (Confirmed against actual supply)</td>
-                </tr>
-                <tr>
-                  <th>Connection Type</th>
-                  <td>{prod.connection}</td>
-                </tr>
-                <tr>
-                  <th>Standard Length</th>
-                  <td>{prod.length}</td>
-                </tr>
-                <tr>
-                  <th>Quality Documentation</th>
-                  <td>{prod.mtc}</td>
-                </tr>
-                <tr>
-                  <th>Stock &amp; Availability</th>
-                  <td>Ready stock in Mumbai / Lead time confirmed upon quotation</td>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Stock &amp; Availability</th>
+                  <td style={{ padding: '8px 0', color: '#059669', fontWeight: 600 }}>{prod.availability || 'Ready Stock in Mumbai'}</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           {/* Direct Action Cluster */}
-          <div className="product-cta-cluster" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+          <div className="product-cta-cluster" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <button
               type="button"
-              className="btn btn--primary btn--lg quick-rfq-btn"
+              className="btn btn--primary btn--lg"
               onClick={() => onOpenEnquiry && onOpenEnquiry(prod, prod.name)}
-              style={{ flex: 1, minWidth: '240px' }}
+              style={{ flex: 1, minWidth: '220px' }}
             >
-              <span>Request Official Quotation</span> &rarr;
+              <span>Request Formal Price Quote</span> &rarr;
             </button>
             <a
               href={`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
-                `Hello Lotus Tubes, I would like to request an official quotation for ${prod.name} (Ref: ${prod.id}). Please share the available specifications and pricing.`
+                `Hello Lotus Tubes, I would like to request an official quotation for ${prod.name} (Ref: ${prod.slug || prod.id}). Please share available sizes and pricing.`
               )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--whatsapp btn--lg"
-              title={`Enquire on WhatsApp for ${prod.name}`}
+              title={`WhatsApp inquiry for ${prod.name}`}
             >
-              <span>🟢 WhatsApp Product Enquiry</span>
+              <span>🟢 Get Price on WhatsApp</span>
             </a>
             <a
-              href="#contact"
-              className="btn btn--outline-dark btn--lg"
+              href="#quote"
+              className="btn btn--secondary btn--lg"
             >
-              <span>Technical Desk Consultation</span>
+              <span>Submit BOQ Document</span>
             </a>
           </div>
         </div>
       </div>
 
-      {/* Technical Deep-Dive Tabs */}
-      <div className="tech-tabs-section">
-        <div className="tab-headers">
-          <button
-            type="button"
-            className={`tab-btn ${activeTab === 'tab-apps' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tab-apps')}
-          >
-            Hygienic Applications
-          </button>
-          <button
-            type="button"
-            className={`tab-btn ${activeTab === 'tab-standards' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tab-standards')}
-          >
-            Standards &amp; Quality Compliance
-          </button>
-          <button
-            type="button"
-            className={`tab-btn ${activeTab === 'tab-inquiry' ? 'active' : ''}`}
-            onClick={() => setActiveTab('tab-inquiry')}
-          >
-            Submit Direct RFQ for this Product
-          </button>
+      {/* Product Applications & Verified Industry Uses */}
+      {prod.applications && prod.applications.length > 0 && (
+        <div style={{ marginTop: '48px', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '28px' }}>
+          <h3 style={{ color: 'var(--deep-navy)', fontSize: '1.25rem', marginBottom: '16px' }}>
+            Recommended Hygienic Process Applications
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
+            {prod.applications.map((app, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#F8FAFC', padding: '12px 16px', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                <span style={{ color: '#0284C7', fontWeight: 'bold' }}>✓</span>
+                <span style={{ fontSize: '13px', color: '#1E293B', fontWeight: 500 }}>{app}</span>
+              </div>
+            ))}
+          </div>
         </div>
+      )}
 
-        {activeTab === 'tab-apps' && (
-          <div className="tab-content-panel active" id="tab-apps">
-            <h4>Recommended Process Applications:</h4>
-            <ul style={{ listStyle: 'disc', paddingLeft: '20px', lineHeight: 1.8, marginTop: '10px' }}>
-              {prod.applications && prod.applications.map((app, idx) => <li key={idx}>{app}</li>)}
-            </ul>
-          </div>
-        )}
-
-        {activeTab === 'tab-standards' && (
-          <div className="tab-content-panel active" id="tab-standards">
-            <h4>Material Traceability &amp; Standards Integrity:</h4>
-            <p>
-              Lotus Tubes adheres to strict sourcing controls. All supplied batches are accompanied by comprehensive chemical composition and mechanical test verification. We do not claim compliance with a particular standard unless the supplied material strictly matches its dimensions, wall tolerances, and surface roughness requirements.
-            </p>
-          </div>
-        )}
-
-        {activeTab === 'tab-inquiry' && (
-          <div className="tab-content-panel active" id="tab-inquiry">
-            <h4>Direct Technical Quotation:</h4>
-            <p>
-              Receive a formal quotation document for <strong>{prod.name}</strong> with customized quantity breaks, mill test certification, and packaging confirmation.
-            </p>
-            <button
-              type="button"
-              className="btn btn--primary mt-2"
-              onClick={() => onOpenEnquiry && onOpenEnquiry(prod, prod.name)}
-            >
-              Request Official Quotation &rarr;
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Related Products Section */}
+      {/* Related Hygienic Products */}
       {related.length > 0 && (
-        <div className="section mt-3">
-          <h3 className="section-title mb-2">Related Sanitary Components</h3>
-          <div className="featured-products-grid">
+        <div style={{ marginTop: '48px' }}>
+          <h3 style={{ color: 'var(--deep-navy)', fontSize: '1.35rem', marginBottom: '20px' }}>
+            Complementary Products in {prod.category}
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
             {related.map((rel) => (
-              <article className="product-card" key={rel.slug}>
-                <div className="product-card__badge-bar">
-                  <span className="badge badge--navy">{rel.material}</span>
-                </div>
-                <div className="product-card__img-wrap">
-                  <ProductCardVideo video={rel.video} poster={rel.image} alt={rel.name} categorySlug={rel.categorySlug} />
-                </div>
-                <div className="product-card__body">
-                  <h4 className="product-card__title">
-                    <a href={`#product/${rel.slug}`}>{rel.name}</a>
-                  </h4>
-                  <p className="product-card__specs">{rel.sizes}</p>
-                  <div className="product-card__actions">
-                    <a href={`#product/${rel.slug}`} className="btn btn--outline-dark btn--sm">
-                      Details
-                    </a>
-                    <button
-                      type="button"
-                      className="btn btn--primary btn--sm quick-rfq-btn"
-                      onClick={() => onOpenEnquiry && onOpenEnquiry(rel, rel.name)}
-                    >
-                      Request Official Quotation
-                    </button>
-                  </div>
-                </div>
-              </article>
+              <div key={rel.id} style={{ background: '#FFF', border: '1px solid #E2E8F0', borderRadius: '10px', overflow: 'hidden', padding: '16px' }}>
+                <img
+                  src={rel.image || productImages[0]}
+                  alt={rel.name}
+                  style={{ width: '100%', height: '140px', objectFit: 'contain', marginBottom: '12px' }}
+                />
+                <h4 style={{ fontSize: '14px', margin: '0 0 6px 0', color: '#10263D' }}>{rel.name}</h4>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 12px 0' }}>Grade: {rel.material} &bull; {rel.finish}</p>
+                <a href={`#product/${rel.slug || rel.id}`} className="btn btn--outline-dark btn--sm btn--block">
+                  View Specifications &rarr;
+                </a>
+              </div>
             ))}
           </div>
         </div>
