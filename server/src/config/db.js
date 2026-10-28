@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
+import dns from 'dns';
 import { config } from './env.js';
+
+// Ensure IPv4 lookup precedence on dual-stack hosts to avoid MongoDB Atlas connection timeouts
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch {
+  // Graceful fallback for environments where setDefaultResultOrder is unavailable
+}
 
 let isConnected = false;
 

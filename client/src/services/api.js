@@ -12,7 +12,7 @@ const resolveApiBaseUrl = () => {
   // Runtime browser check: never silently default to localhost in production
   if (typeof window !== 'undefined') {
     const host = window.location.hostname;
-    if (host === 'localhost' || host === '127.0.0.1') {
+    if (host === 'localhost' || host === '127.0.0.1' || host === '::1' || host.startsWith('192.168.') || host.startsWith('10.') || host.startsWith('172.')) {
       return envUrl ? envUrl.trim().replace(/\/$/, '') : 'http://localhost:5000/api';
     }
     // Deployed environment (Vercel / custom domain)

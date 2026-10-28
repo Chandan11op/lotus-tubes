@@ -284,6 +284,7 @@ export const createFormalQuote = async (req, res, next) => {
 
     const quote = await Quote.create({
       quotationNumber,
+      reference: req.body.reference || quotationNumber,
       customerName: customerName.trim(),
       company: company.trim(),
       email: email.toLowerCase().trim(),

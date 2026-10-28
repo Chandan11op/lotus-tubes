@@ -21,13 +21,15 @@ app.use(
   })
 );
 
-// Comprehensive CORS configuration supporting local ports (1109, 5173, 3000) and hosted Vercel/Render origins
+// Comprehensive CORS configuration supporting local ports (5174, 1109, 5173, 3000) and hosted Vercel/Render origins
 const rawOrigins = [
+  'http://localhost:5174',
+  'http://127.0.0.1:5174',
   'http://localhost:1109',
   'http://127.0.0.1:1109',
   'http://localhost:5173',
-  'http://localhost:3000',
   'http://127.0.0.1:5173',
+  'http://localhost:3000',
   'https://lotus-tubes-design.vercel.app',
   'https://lotus-tubes-react-design.vercel.app',
   'https://lotus-tubes.onrender.com',

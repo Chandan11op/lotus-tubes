@@ -92,7 +92,7 @@
           <ellipse cx="130" cy="145" rx="16" ry="55" fill="url(#epGrad)"/>
           <!-- Internal Polished Disc in partial rotation -->
           <ellipse cx="90" cy="145" rx="8" ry="46" fill="#38BDF8" opacity="0.85" stroke="#0284C7"/>
-          <!-- Vertical Bonnet & Stem -->
+          <!-- Vertical Bonnet &amp; Stem -->
           <rect x="78" y="20" width="24" height="75" rx="4" fill="url(#epGrad)" stroke="#334155"/>
           <!-- Pink Manual Pull Gripper Handle -->
           <g transform="translate(90, 25)">

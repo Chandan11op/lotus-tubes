@@ -43,11 +43,15 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [dashboardMetrics, setDashboardMetrics] = useState(null);
   const [dataLoading, setDataLoading] = useState(true);
 
-  // Shell Layout State
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  // Shell Layout State - Single source of truth for Pinned & Hover expansion
+  const [sidebarPinned, setSidebarPinned] = useState(true);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(subroute || 'dashboard');
+
+  // Sidebar is expanded if pinned OR temporarily hovered on desktop
+  const isSidebarExpanded = sidebarPinned || sidebarHovered;
 
   // Modals & Active Edit State
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
@@ -555,6 +559,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
             tasks={tasks}
             customers={customers}
             dashboardMetrics={dashboardMetrics}
+            searchQuery={searchQuery}
             onSelectEnquiry={setSelectedEnquiry}
             onSelectQuote={setSelectedQuote}
             onOpenQuoteBuilder={handleOpenQuoteBuilder}
@@ -630,6 +635,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
             tasks={tasks}
             customers={customers}
             dashboardMetrics={dashboardMetrics}
+            searchQuery={searchQuery}
             onSelectEnquiry={setSelectedEnquiry}
             onSelectQuote={setSelectedQuote}
             onOpenQuoteBuilder={handleOpenQuoteBuilder}
@@ -641,7 +647,10 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   };
 
   return (
-    <div className="crm-layout" id="crm-shell">
+    <div
+      className={`crm-layout crm-shell ${isSidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed'}`}
+      id="crm-shell"
+    >
       {/* 1. Collapsible & Responsive Navigation Sidebar */}
       <CRMSidebar
         currentRoute={activeTab}
@@ -654,8 +663,27 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         pendingTaskCount={tasks.filter((t) => !t.completed).length}
         user={user}
         isSuperAdmin={isSuperAdmin}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        isExpanded={isSidebarExpanded}
+        isPinned={sidebarPinned}
+        onTogglePin={() => {
+          setSidebarPinned((prev) => !prev);
+          setSidebarHovered(false);
+        }}
+        onMouseEnter={() => {
+          if (!sidebarPinned && typeof window !== 'undefined' && window.innerWidth > 768) {
+            setSidebarHovered(true);
+          }
+        }}
+        onMouseLeave={() => {
+          if (!sidebarPinned) {
+            setSidebarHovered(false);
+          }
+        }}
+        collapsed={!isSidebarExpanded}
+        onToggleCollapse={() => {
+          setSidebarPinned((prev) => !prev);
+          setSidebarHovered(false);
+        }}
         mobileOpen={mobileSidebarOpen}
         onCloseMobile={() => setMobileSidebarOpen(false)}
         onLogout={handleLogout}
@@ -676,7 +704,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         />
 
         {/* Content Body */}
-        <main className="crm-content" role="main">
+        <main className="crm-content crm-body-scroll" role="main">
           {dataLoading ? (
             <div className="crm-loading-container">
               <Loader variant="block" size="md" label="Loading real database records from MongoDB..." />

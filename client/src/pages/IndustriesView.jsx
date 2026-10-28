@@ -125,7 +125,6 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                   src={`/assets/images/industries/${ind.slug}.svg`}
                   alt={ind.name}
                   className="range-card__img"
-                  loading="lazy"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = '/assets/images/hero/sanitary-hero-pipes.svg';

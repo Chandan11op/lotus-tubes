@@ -7,6 +7,7 @@ export const CRMDashboardView = ({
   tasks = [],
   customers = [],
   dashboardMetrics = null,
+  searchQuery = '',
   onSelectEnquiry,
   onSelectQuote,
   onOpenQuoteBuilder,
@@ -40,6 +41,22 @@ export const CRMDashboardView = ({
   };
 
   const filterCutoff = getFilterDate();
+
+  // Search filtered enquiries memo
+  const searchFilteredEnquiries = React.useMemo(() => {
+    if (!searchQuery || !searchQuery.trim()) return enquiries;
+    const q = searchQuery.toLowerCase().trim();
+    return enquiries.filter((e) =>
+      (e.reference && e.reference.toLowerCase().includes(q)) ||
+      (e.name && e.name.toLowerCase().includes(q)) ||
+      (e.company && e.company.toLowerCase().includes(q)) ||
+      (e.phone && e.phone.toLowerCase().includes(q)) ||
+      (e.email && e.email.toLowerCase().includes(q)) ||
+      (e.productName && e.productName.toLowerCase().includes(q)) ||
+      (e.grade && e.grade.toLowerCase().includes(q)) ||
+      (e.location && e.location.toLowerCase().includes(q))
+    );
+  }, [enquiries, searchQuery]);
 
   const periodEnquiries = enquiries.filter(
     (e) => new Date(e.createdAt || 0) >= filterCutoff
@@ -151,7 +168,7 @@ export const CRMDashboardView = ({
         </div>
 
         {/* Period Filter Selector */}
-        <div className="crm-period-selector" role="group" aria-label="Reporting Period">
+        <div className="crm-period-selector" role="radiogroup" aria-label="Reporting Period">
           {[
             { id: 'today', label: 'Today' },
             { id: '7days', label: 'Last 7 Days' },
@@ -162,6 +179,8 @@ export const CRMDashboardView = ({
             <button
               key={p.id}
               type="button"
+              role="radio"
+              aria-checked={periodFilter === p.id}
               className={`crm-period-btn ${periodFilter === p.id ? 'active' : ''}`}
               onClick={() => setPeriodFilter(p.id)}
             >
@@ -178,6 +197,9 @@ export const CRMDashboardView = ({
           className="crm-kpi-card"
           onClick={() => onNavigateTab('enquiries')}
           title="Click to view all enquiries"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigateTab('enquiries'); } }}
         >
           <div className="crm-kpi-card__top">
             <span className="crm-kpi-card__label">Total Inbound RFQs</span>
@@ -198,6 +220,9 @@ export const CRMDashboardView = ({
           className="crm-kpi-card"
           onClick={() => onNavigateTab('quotations')}
           title="Click to view all quotations"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigateTab('quotations'); } }}
         >
           <div className="crm-kpi-card__top">
             <span className="crm-kpi-card__label">Open Quotations Value</span>
@@ -220,6 +245,9 @@ export const CRMDashboardView = ({
           className="crm-kpi-card"
           onClick={() => onNavigateTab('tasks')}
           title="Click to view tasks and reminders"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigateTab('tasks'); } }}
         >
           <div className="crm-kpi-card__top">
             <span className="crm-kpi-card__label">Follow-ups Scheduled</span>
@@ -242,7 +270,14 @@ export const CRMDashboardView = ({
         </div>
 
         {/* KPI 4: Confirmed Orders */}
-        <div className="crm-kpi-card">
+        <div
+          className="crm-kpi-card"
+          onClick={() => onNavigateTab('enquiries')}
+          title="Click to view confirmed orders"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigateTab('enquiries'); } }}
+        >
           <div className="crm-kpi-card__top">
             <span className="crm-kpi-card__label">Confirmed Orders</span>
             <div className="crm-kpi-card__icon icon-green">
@@ -361,6 +396,11 @@ export const CRMDashboardView = ({
           <div className="crm-card__header-title">
             <CRMIcon name="enquiries" size={18} />
             <h3>Recent Quotation Requests &amp; RFQs</h3>
+            {searchQuery && (
+              <span className="crm-badge crm-badge-blue" style={{ marginLeft: '8px' }}>
+                Filtered: &ldquo;{searchQuery}&rdquo; ({searchFilteredEnquiries.length})
+              </span>
+            )}
           </div>
           <button
             type="button"
@@ -372,16 +412,22 @@ export const CRMDashboardView = ({
         </div>
 
         <div className="crm-card__body" style={{ padding: 0 }}>
-          {enquiries.length === 0 ? (
+          {searchFilteredEnquiries.length === 0 ? (
             <div className="crm-empty-state" style={{ padding: '36px' }}>
-              <p>No customer enquiries recorded in database yet.</p>
-              <button
-                type="button"
-                className="crm-btn crm-btn-primary crm-btn-sm"
-                onClick={() => onOpenQuickEnquiry?.(null)}
-              >
-                + Log First RFQ
-              </button>
+              <p>
+                {searchQuery
+                  ? `No customer enquiries match "${searchQuery}".`
+                  : 'No customer enquiries recorded in database yet.'}
+              </p>
+              {!searchQuery && (
+                <button
+                  type="button"
+                  className="crm-btn crm-btn-primary crm-btn-sm"
+                  onClick={() => onOpenQuickEnquiry?.(null)}
+                >
+                  + Log First RFQ
+                </button>
+              )}
             </div>
           ) : (
             <div className="crm-table-container">
@@ -398,7 +444,7 @@ export const CRMDashboardView = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {enquiries.slice(0, 6).map((eq) => (
+                  {searchFilteredEnquiries.slice(0, 6).map((eq) => (
                     <tr key={eq._id}>
                       <td className="crm-td-ref">
                         <button

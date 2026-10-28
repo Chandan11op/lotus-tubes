@@ -92,10 +92,10 @@
           <text x="95" y="76" font-family="sans-serif" font-size="10" font-weight="900" fill="#10263D" text-anchor="middle">LOTUS TUBES</text>
           <text x="55" y="115" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">TECHNICAL</text>
           <text x="55" y="132" font-family="sans-serif" font-size="12" font-weight="700" fill="#F00078">CATALOGUE</text>
-          <text x="55" y="155" font-family="sans-serif" font-size="9" fill="#CBD5E1">SS 304 &bull; SS 316L</text>
-          <text x="55" y="170" font-family="sans-serif" font-size="9" fill="#CBD5E1">EP &bull; MP FINISHES</text>
+          <text x="55" y="155" font-family="sans-serif" font-size="9" fill="#CBD5E1">SS 304 &amp;bull; SS 316L</text>
+          <text x="55" y="170" font-family="sans-serif" font-size="9" fill="#CBD5E1">EP &amp;bull; MP FINISHES</text>
           <rect x="55" y="200" width="150" height="20" rx="4" fill="#1E293B"/>
-          <text x="130" y="214" font-family="sans-serif" font-size="8" fill="#38BDF8" text-anchor="middle">ASTM A270 &bull; BS 4825 &bull; 3-A</text>
+          <text x="130" y="214" font-family="sans-serif" font-size="8" fill="#38BDF8" text-anchor="middle">ASTM A270 &amp;bull; BS 4825 &amp;bull; 3-A</text>
         </g>
       
   </g>
@@ -112,7 +112,7 @@
       Lotus Tubes Master Technical Catalogue 2026
     </text>
     <text x="36" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" fill="#667085">
-      Complete Engineering Specifications, Dimensions & Standards PDF
+      Complete Engineering Specifications, Dimensions &amp; Standards PDF
     </text>
 
     <!-- Verified Stamp Tag -->

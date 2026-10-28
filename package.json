@@ -2,10 +2,10 @@
   "name": "lotus-tubes",
   "version": "1.0.0",
   "description": "Lotus Tubes Web Application",
-  "main": "serve.js",
+  "main": "server/src/server.js",
   "scripts": {
-    "start": "node serve.js",
-    "dev": "node serve.js",
+    "start": "npm run server:start",
+    "dev": "npm run server:dev",
     "client:dev": "npm --prefix client run dev",
     "client:build": "npm --prefix client run build",
     "client:preview": "npm --prefix client run preview",

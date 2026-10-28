@@ -9,12 +9,20 @@ export const CRMSidebar = ({
   pendingTaskCount = 0,
   user = null,
   isSuperAdmin = false,
-  collapsed = false,
+  isExpanded = true,
+  isPinned = true,
+  onTogglePin,
+  onMouseEnter,
+  onMouseLeave,
+  collapsed,
   onToggleCollapse,
   mobileOpen = false,
   onCloseMobile,
   onLogout
 }) => {
+  // Single source of truth for collapsed state:
+  const isCurrentlyCollapsed = collapsed !== undefined ? collapsed : !isExpanded;
+
   const navSections = [
     {
       title: 'SALES & OPERATIONS',
@@ -54,6 +62,14 @@ export const CRMSidebar = ({
     .join('')
     .toUpperCase();
 
+  const handleToggle = () => {
+    if (onTogglePin) {
+      onTogglePin();
+    } else if (onToggleCollapse) {
+      onToggleCollapse();
+    }
+  };
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -67,8 +83,10 @@ export const CRMSidebar = ({
 
       <aside
         id="crm-sidebar"
-        className={`crm-sidebar ${collapsed ? 'collapsed' : ''} ${mobileOpen ? 'mobile-open' : ''}`}
+        className={`crm-sidebar ${isCurrentlyCollapsed ? 'collapsed' : 'expanded'} ${mobileOpen ? 'mobile-open' : ''}`}
         aria-label="CRM Navigation"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
         {/* Brand Header */}
         <div className="crm-sidebar__header">
@@ -79,7 +97,7 @@ export const CRMSidebar = ({
                 alt="Lotus Tubes"
               />
             </div>
-            {!collapsed && (
+            {!isCurrentlyCollapsed && (
               <div className="crm-sidebar__brand-info">
                 <span className="crm-sidebar__brand-title">LOTUS TUBES</span>
                 <span className="crm-sidebar__brand-sub">Sanitary B2B Portal</span>
@@ -90,10 +108,10 @@ export const CRMSidebar = ({
 
         {/* User Card */}
         <div className="crm-sidebar__user">
-          <div className="crm-sidebar__user-avatar" title={user?.name || 'User'}>
+          <div className="crm-sidebar__user-avatar" title={user?.name || 'Authorized Staff'}>
             {userInitials}
           </div>
-          {!collapsed && (
+          {!isCurrentlyCollapsed && (
             <div className="crm-sidebar__user-info">
               <div className="crm-sidebar__user-name" title={user?.name}>
                 {user?.name || 'Authorized Staff'}
@@ -108,30 +126,41 @@ export const CRMSidebar = ({
         </div>
 
         {/* Navigation Sections */}
-        <div className="crm-sidebar__nav">
+        <div className="crm-sidebar__nav" role="navigation">
           {navSections.map((sec, secIdx) => (
             <div key={secIdx} className="crm-sidebar__section">
-              {!collapsed && <div className="crm-sidebar__section-title">{sec.title}</div>}
+              {!isCurrentlyCollapsed && <div className="crm-sidebar__section-title">{sec.title}</div>}
               {sec.items.map((item) => {
                 const isActive = currentRoute === item.id;
+                const tooltipText = isCurrentlyCollapsed
+                  ? `${item.label}${item.badge ? ` (${item.badge.count} pending)` : ''}`
+                  : undefined;
                 return (
                   <button
                     key={item.id}
                     type="button"
                     onClick={() => handleNavClick(item.id)}
                     className={`crm-nav-item ${isActive ? 'active' : ''}`}
-                    title={collapsed ? item.label : undefined}
+                    title={tooltipText}
+                    aria-label={item.label}
+                    aria-current={isActive ? 'page' : undefined}
                   >
                     <span className="crm-nav-item__icon">
                       <CRMIcon name={item.icon} size={18} />
                     </span>
-                    {!collapsed && (
+                    {!isCurrentlyCollapsed && (
                       <span className="crm-nav-item__label">{item.label}</span>
                     )}
-                    {!collapsed && item.badge && (
+                    {!isCurrentlyCollapsed && item.badge && (
                       <span className={`crm-nav-item__badge ${item.badge.color}`}>
                         {item.badge.count}
                       </span>
+                    )}
+                    {isCurrentlyCollapsed && item.badge && (
+                      <span
+                        className={`crm-nav-item__badge-dot ${item.badge.color}`}
+                        title={`${item.badge.count} items require attention`}
+                      />
                     )}
                   </button>
                 );
@@ -150,7 +179,7 @@ export const CRMSidebar = ({
             <span className="crm-nav-item__icon">
               <CRMIcon name="website" size={17} />
             </span>
-            {!collapsed && <span>Public Website</span>}
+            {!isCurrentlyCollapsed && <span>Public Website</span>}
           </a>
 
           <button
@@ -162,18 +191,24 @@ export const CRMSidebar = ({
             <span className="crm-nav-item__icon">
               <CRMIcon name="logout" size={17} />
             </span>
-            {!collapsed && <span>Sign Out</span>}
+            {!isCurrentlyCollapsed && <span>Sign Out</span>}
           </button>
 
-          {/* Desktop Collapse Toggle */}
+          {/* Desktop Collapse & Pin Toggle */}
           <button
             type="button"
-            onClick={onToggleCollapse}
-            className="crm-collapse-toggle"
-            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            onClick={handleToggle}
+            className={`crm-collapse-toggle ${isPinned ? 'pinned' : 'unpinned'}`}
+            title={isCurrentlyCollapsed ? 'Expand sidebar (click to pin)' : isPinned ? 'Unpin & collapse navigation' : 'Pin navigation open'}
+            aria-label={isCurrentlyCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-pressed={isPinned}
           >
-            <CRMIcon name={collapsed ? 'chevronRight' : 'chevronLeft'} size={14} />
+            <CRMIcon name={isCurrentlyCollapsed ? 'chevronRight' : 'chevronLeft'} size={14} />
+            {!isCurrentlyCollapsed && (
+              <span className="crm-collapse-toggle__hint">
+                {isPinned ? 'Pinned Open' : 'Hover Mode'}
+              </span>
+            )}
           </button>
         </div>
       </aside>

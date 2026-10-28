@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450" role="img" aria-label="SS Sanitary Rotary & Static Spray Ball">
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450" role="img" aria-label="SS Sanitary Rotary &amp; Static Spray Ball">
   <defs>
     <!-- Background Gradient -->
     <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -128,7 +128,7 @@
     <rect x="24" y="24" width="4" height="20" rx="2" fill="#F00078"/>
     
     <text x="36" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#10263D">
-      SS Sanitary Rotary & Static Spray Ball
+      SS Sanitary Rotary &amp; Static Spray Ball
     </text>
     <text x="36" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" fill="#667085">
       Self-Lubricating Fluid-Driven 360° CIP Tank Cleaning Jet Head

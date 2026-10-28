@@ -2,12 +2,16 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
 import ProductCardVideo from '../components/common/ProductCardVideo';
+import ProductTicker from '../components/layout/ProductTicker';
 
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
 
   return (
     <>
+      {/* Hot-Selling Products Ticker (Positioned immediately after Navbar and before Hero) */}
+      <ProductTicker />
+
       {/* A. Hero Section (Matching UI-UX Reference Structure) */}
       <section className="hero-section" aria-label="Hero Showcase">
         <div className="site-container">

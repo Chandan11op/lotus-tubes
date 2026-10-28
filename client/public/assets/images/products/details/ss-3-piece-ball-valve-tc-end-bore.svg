@@ -29,6 +29,6 @@
   <!-- Info Box -->
   <rect x="50" y="350" width="500" height="75" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
   <text x="70" y="378" font-family="sans-serif" font-size="14" font-weight="bold" fill="#10263D">SS 3-Piece Sanitary Ball Valve with TC End - Internal Bore Finish</text>
-  <text x="70" y="402" font-family="sans-serif" font-size="12" fill="#0284C7" font-weight="600">Roughness: Ra ≤ 0.4 µm ball & port</text>
+  <text x="70" y="402" font-family="sans-serif" font-size="12" fill="#0284C7" font-weight="600">Roughness: Ra ≤ 0.4 µm ball &amp; port</text>
   <text x="360" y="402" font-family="sans-serif" font-size="12" fill="#64748B">Standard: ISO 5211 Pad / 3-A</text>
 </svg>

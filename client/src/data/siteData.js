@@ -347,6 +347,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
 
   const TRANSLATIONS = {
     en: {
+      ticker_title: 'HOT-SELLING PRODUCTS',
+      ticker_title_short: 'HOT-SELLING',
+      ticker_aria: 'Hot-Selling Products Ticker',
       top_tagline: 'Stainless Steel Sanitary Pipes, Fittings &amp; Valves',
       top_locations: 'Mumbai &bull; Domestic &amp; Global Supply',
       top_whatsapp: 'WhatsApp Desk',
@@ -446,6 +449,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     hi: {
+      ticker_title: 'हॉट-सेलिंग उत्पाद',
+      ticker_title_short: 'हॉट-सेलिंग',
+      ticker_aria: 'हॉट-सेलिंग उत्पाद टिकर',
       top_tagline: 'स्टेनलेस स्टील सैनिटरी पाइप्स, फिटिंग्स और वाल्व्स',
       top_locations: 'मुंबई &bull; घरेलू और वैश्विक आपूर्ति',
       top_whatsapp: 'व्हाट्सएप सहायता',
@@ -545,6 +551,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     gu: {
+      ticker_title: 'હોટ-સેલિંગ પ્રોડક્ટ્સ',
+      ticker_title_short: 'હોટ-સેલિંગ',
+      ticker_aria: 'હોટ-સેલિંગ પ્રોડક્ટ્સ ટિકર',
       top_tagline: 'સ્ટેનલેસ સ્ટીલ સેનિટરી પાઇપ્સ, ફીટીંગ્સ અને વાલ્વ્સ',
       top_locations: 'મુંબઈ &bull; સ્થાનિક અને વૈશ્વિક સપ્લાય',
       top_whatsapp: 'વોટ્સએપ ડેસ્ક',
@@ -644,6 +653,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     ar: {
+      ticker_title: 'المنتجات الأكثر طلباً',
+      ticker_title_short: 'الأكثر طلباً',
+      ticker_aria: 'شريط المنتجات الأكثر طلباً',
       top_tagline: 'أنابيب وتركيبات وصمامات صحية من الفولاذ المقاوم للصدأ',
       top_locations: 'مومباي &bull; توريد محلي وعالمي',
       top_whatsapp: 'مكتب واتساب',
@@ -743,6 +755,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     de: {
+      ticker_title: 'MEISTVERKAUFTE PRODUKTE',
+      ticker_title_short: 'BELIEBT',
+      ticker_aria: 'Ticker für meistverkaufte Produkte',
       top_tagline: 'Edelstahl-Sanitärrohre, Armaturen &amp; Ventile',
       top_locations: 'Mumbai &bull; Inlands- &amp; Weltweiter Vertrieb',
       top_whatsapp: 'WhatsApp-Desk',
@@ -842,6 +857,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     fr: {
+      ticker_title: 'PRODUITS LES PLUS VENDUS',
+      ticker_title_short: 'POPULAIRES',
+      ticker_aria: 'Bandeau des produits les plus vendus',
       top_tagline: 'Tubes, Raccords et Vannes Sanitaires en Acier Inoxydable',
       top_locations: 'Mumbai &bull; Fourniture Locale et Mondiale',
       top_whatsapp: 'Assistance WhatsApp',
@@ -941,6 +959,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     es: {
+      ticker_title: 'PRODUCTOS MÁS VENDIDOS',
+      ticker_title_short: 'DESTACADOS',
+      ticker_aria: 'Cinta de productos más vendidos',
       top_tagline: 'Tuberías, Conexiones y Válvulas Sanitarias de Acero Inoxidable',
       top_locations: 'Bombay &bull; Suministro Nacional e Internacional',
       top_whatsapp: 'Atención WhatsApp',
@@ -1040,6 +1061,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
 
     ru: {
+      ticker_title: 'ХИТЫ ПРОДАЖ',
+      ticker_title_short: 'ХИТЫ',
+      ticker_aria: 'Бегущая строка хитов продаж',
       top_tagline: 'Санитарные трубы, фитинги и клапаны из нержавеющей стали',
       top_locations: 'Мумбаи &bull; Поставки по Индии и миру',
       top_whatsapp: 'Чат в WhatsApp',

@@ -1,3 +1,10 @@
+import dns from 'dns';
+try {
+  dns.setDefaultResultOrder('ipv4first');
+} catch {
+  // Graceful fallback
+}
+
 import app from './app.js';
 import { config } from './config/env.js';
 import { connectDB } from './config/db.js';
