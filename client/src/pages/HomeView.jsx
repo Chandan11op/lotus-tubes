@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 import ProductTicker from '../components/layout/ProductTicker';
+import Hero3DFloatingFitting from '../components/3d/Hero3DFloatingFitting';
+import Manufacturing3DProcess from '../components/3d/Manufacturing3DProcess';
+import ProductImage from '../components/common/ProductImage';
 
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
+  const [heroMediaMode, setHeroMediaMode] = useState('3d');
 
   return (
     <>
@@ -94,20 +98,50 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 </h3>
                 <div className="underline-pink"></div>
               </div>
-              <div className="hero-visual-card">
-                <img
-                  src="/assets/images/hero/sanitary-hero-pipes.svg"
-                  alt="Polished Stainless Steel Sanitary Pipes and Tri-Clamp Fittings"
-                  className="hero-img"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    if (PRODUCTS[0]?.image) e.currentTarget.src = PRODUCTS[0].image;
-                  }}
-                />
-                <div className="hero-spec-pill">
-                  <strong>SS 316L EP</strong> &bull; Ra &le; 0.38 &mu;m &bull; ASTM A270 Certified
-                </div>
+
+              {/* Hero Media Switcher */}
+              <div className="flex items-center gap-2 mb-3 self-end">
+                <button
+                  type="button"
+                  onClick={() => setHeroMediaMode('3d')}
+                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                    heroMediaMode === '3d'
+                      ? 'bg-sky-600 text-white shadow-md'
+                      : 'bg-white/80 text-slate-700 hover:bg-white border border-slate-200'
+                  }`}
+                >
+                  🔄 3D Digital Twin
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHeroMediaMode('photo')}
+                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                    heroMediaMode === 'photo'
+                      ? 'bg-sky-600 text-white shadow-md'
+                      : 'bg-white/80 text-slate-700 hover:bg-white border border-slate-200'
+                  }`}
+                >
+                  📷 Master Studio Line
+                </button>
               </div>
+
+              {heroMediaMode === '3d' ? (
+                <Hero3DFloatingFitting />
+              ) : (
+                <div className="hero-visual-card relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shadow-2xl">
+                  <ProductImage
+                    src="/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-005.jpg"
+                    alt="Lotus Tubes Complete Stainless Steel Sanitary Product Showcase"
+                    priority={true}
+                    aspectRatio="16/10"
+                    className="w-full h-full"
+                    imgClassName="object-cover"
+                  />
+                  <div className="hero-spec-pill">
+                    <strong>SS 316L EP</strong> &bull; Ra &le; 0.38 &mu;m &bull; ASTM A270 &amp; ASME BPE Certified
+                  </div>
+                </div>
+              )}
             </div>
 
           </div>
@@ -128,16 +162,29 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           </div>
 
           <div className="product-range-grid">
-            {CATEGORIES.map((cat) => (
-              <article className="range-card" key={cat.slug}>
-                <div className="range-card__img-wrap">
-                  <img src={cat.image} alt={cat.name} className="range-card__img" loading="lazy" />
+            {CATEGORIES.map((cat, idx) => (
+              <article
+                className="range-card group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl rounded-xl overflow-hidden border border-slate-200 bg-white"
+                key={cat.slug}
+                style={{ animationDelay: `${idx * 80}ms` }}
+              >
+                <div className="range-card__img-wrap overflow-hidden bg-slate-50">
+                  <ProductImage
+                    src={cat.image}
+                    alt={cat.name}
+                    aspectRatio="4/3"
+                    className="w-full h-48 transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
-                <div className="range-card__body">
-                  <h3 className="range-card__title">{cat.name}</h3>
-                  <p className="range-card__desc">{cat.desc}</p>
-                  <div className="range-card__footer">
-                    <a href={`#category/${cat.slug}`} className="range-card__link">
+                <div className="range-card__body p-5">
+                  <h3 className="range-card__title text-lg font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
+                    {cat.name}
+                  </h3>
+                  <p className="range-card__desc text-sm text-slate-600 mt-2 line-clamp-3">
+                    {cat.desc}
+                  </p>
+                  <div className="range-card__footer mt-4 pt-3 border-t border-slate-100">
+                    <a href={`#category/${cat.slug}`} className="range-card__link text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
                       {t('link_view_products', 'View Products')} <span>&rarr;</span>
                     </a>
                   </div>
@@ -170,6 +217,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <div className="product-card__badge-bar">
                   <span className="badge badge--navy">{prod.material}</span>
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
+                  {prod.model3d && (
+                    <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
+                      3D CAD
+                    </span>
+                  )}
                 </div>
                 <div className="product-card__img-wrap">
                   <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
@@ -207,6 +259,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           </div>
         </div>
       </section>
+
+      {/* 3D Manufacturing Process & Engineering Showcase */}
+      <Manufacturing3DProcess />
 
       {/* D. Industries Served (Image-led Cards with Circular Icons) */}
       <section className="section section--white" id="section-industries" aria-label="Industries We Serve">

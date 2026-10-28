@@ -33,13 +33,9 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     });
   }, [slug, prod.id]);
 
-  const productImages = prod.images && prod.images.length >= 2
+  const productImages = prod.images && prod.images.length > 0
     ? prod.images
-    : [
-        prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name),
-        `/assets/images/products/details/${prod.id}-bore.svg`,
-        `/assets/images/products/details/${prod.id}-pack.svg`
-      ];
+    : [prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name)];
 
   const handleImageError = (key) => {
     setImgFallbacks((prev) => {
@@ -188,6 +184,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             <span className="badge badge--navy" style={{ background: '#10263D', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.material}</span>
             <span className="badge badge--pink" style={{ background: '#F00078', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.finish}</span>
             <span className="badge badge--steel" style={{ background: '#E2E8F0', color: '#334155', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.standard}</span>
+            <span className="badge badge--sky" style={{ background: '#0284C7', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>3D Interactive Model</span>
             <span className="badge badge--outline" style={{ border: '1px solid #CBD5E1', color: '#475569', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>EN 10204 3.1 Traceable</span>
           </div>
 

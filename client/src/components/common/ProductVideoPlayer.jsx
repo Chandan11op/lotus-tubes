@@ -67,7 +67,7 @@ export const ProductVideoPlayer = ({
         <video
           ref={videoRef}
           src={src || '/assets/videos/pipes-360-sample.webm'}
-          poster={poster || '/assets/images/products/pipes/ss-316l-ep-pipe.svg'}
+          poster={poster || '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg'}
           playsInline
           muted={isMuted}
           controls

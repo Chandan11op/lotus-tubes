@@ -250,6 +250,11 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                   <div className="product-card__badge-bar">
                     <span className="badge badge--navy">{prod.material}</span>
                     <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
+                    {prod.model3d && (
+                      <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
+                        3D CAD
+                      </span>
+                    )}
                   </div>
                   <div className="product-card__img-wrap">
                     <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
