@@ -8,6 +8,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
   const [selectedFinish, setSelectedFinish] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('featured');
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((p) => {
@@ -71,8 +72,24 @@ export const ProductsView = ({ onOpenEnquiry }) => {
       </section>
 
       <div className="site-container catalogue-layout">
+        {/* Mobile Filter Toggle */}
+        <button
+          type="button"
+          className="mobile-filter-toggle"
+          onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+          aria-expanded={isMobileFilterOpen}
+          aria-controls="filter-sidebar"
+        >
+          <span>🔍 Filter Products ({filteredProducts.length})</span>
+          <span>{isMobileFilterOpen ? '▲ Hide Filters' : '▼ Show Filters'}</span>
+        </button>
+
         {/* Filter Sidebar */}
-        <aside className="filter-sidebar" aria-label="Product Filters">
+        <aside
+          className={`filter-sidebar ${isMobileFilterOpen ? 'mobile-open' : ''}`}
+          id="filter-sidebar"
+          aria-label="Product Filters"
+        >
           <div className="filter-sidebar__header">
             <h3 className="filter-sidebar__title">Filters</h3>
             <button

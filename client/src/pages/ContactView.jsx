@@ -87,7 +87,7 @@ export const ContactView = ({ onNotify }) => {
 
             <div className="mt-3">
               <div className="contact-line" style={{ fontSize: '1rem', marginBottom: '18px' }}>
-                <strong>📍 Registered Office &amp; Trade Address:</strong><br />
+                <strong>📍 Registered Office & Trade Address:</strong><br />
                 {CONFIG.officeAddress}
               </div>
               <div className="contact-line" style={{ fontSize: '1rem', marginBottom: '18px' }}>
@@ -105,7 +105,7 @@ export const ContactView = ({ onNotify }) => {
               </div>
               <div className="contact-line" style={{ fontSize: '1rem', marginBottom: '18px' }}>
                 <strong>🏢 Tax Identifiers:</strong><br />
-                GSTIN: <strong>{CONFIG.gstin}</strong> &bull; IEC: <strong>{CONFIG.iec}</strong>
+                GSTIN: <strong>{CONFIG.gstin}</strong> • IEC: <strong>{CONFIG.iec}</strong>
               </div>
             </div>
 
@@ -215,7 +215,7 @@ export const ContactView = ({ onNotify }) => {
 
                 <div className="form-group">
                   <label htmlFor="contact-message">
-                    Requirements &amp; Quantities <span className="required">*</span>
+                    Requirements & Quantities <span className="required">*</span>
                   </label>
                   <textarea
                     id="contact-message"

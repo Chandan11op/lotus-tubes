@@ -39,7 +39,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                   <div className="mega-menu__col">
                     <h4 className="mega-menu__title">{t('mega_pipes', 'Pipes & Tubing')}</h4>
                     <ul className="mega-menu__links">
-                      <li><a href="#category/sanitary-pipes">Sanitary Pipes &amp; Tubes</a></li>
+                      <li><a href="#category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
                       <li><a href="#product/ss-316l-ep-pipe">SS 316L EP Sanitary Pipe</a></li>
                       <li><a href="#product/ss-304-ep-pipe">SS 304 EP Sanitary Pipe</a></li>
                       <li><a href="#product/ss-316l-mp-pipe">SS 316L MP Sanitary Pipe</a></li>
@@ -50,18 +50,18 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                     <h4 className="mega-menu__title">{t('mega_fittings', 'Fittings & Components')}</h4>
                     <ul className="mega-menu__links">
                       <li><a href="#category/sanitary-fittings">Sanitary Pipe Fittings (Bends, Tees)</a></li>
-                      <li><a href="#category/tri-clamp">Tri-Clamp Fittings &amp; Clamps</a></li>
+                      <li><a href="#category/tri-clamp">Tri-Clamp Fittings & Clamps</a></li>
                       <li><a href="#category/gaskets">Sanitary Gaskets (Silicone, EPDM, PTFE)</a></li>
-                      <li><a href="#product/ss-sms-union">SS SMS &amp; DIN Unions</a></li>
+                      <li><a href="#product/ss-sms-union">SS SMS & DIN Unions</a></li>
                     </ul>
                   </div>
                   <div className="mega-menu__col">
                     <h4 className="mega-menu__title">{t('mega_valves', 'Valves & Assemblies')}</h4>
                     <ul className="mega-menu__links">
                       <li><a href="#category/manual-valves">Manual Sanitary Valves</a></li>
-                      <li><a href="#category/pneumatic-valves">Pneumatic &amp; Automated Valves</a></li>
-                      <li><a href="#category/tank-cleaning">Tank Cleaning &amp; Spray Balls</a></li>
-                      <li><a href="#category/custom-assemblies">Custom Fabricated Spools &amp; Manifolds</a></li>
+                      <li><a href="#category/pneumatic-valves">Pneumatic & Automated Valves</a></li>
+                      <li><a href="#category/tank-cleaning">Tank Cleaning & Spray Balls</a></li>
+                      <li><a href="#category/custom-assemblies">Custom Fabricated Spools & Manifolds</a></li>
                     </ul>
                   </div>
                   <div className="mega-menu__highlight">

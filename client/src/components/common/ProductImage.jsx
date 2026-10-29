@@ -4,7 +4,7 @@ import { INLINE_SVG_FAILSAFE } from '../../utils/mediaFallback.js';
 /**
  * Reusable Product Image Component for Lotus Tubes
  * Features:
- * - Proper aspect ratio container to prevent layout shift (CLS)
+ * - Full-cover edge-to-edge container fitting with object-fit: cover default
  * - Skeleton shimmer loading state
  * - Multi-stage error handling (primary -> fallback -> inline neutral SVG)
  * - Eager/High-priority mode for above-the-fold hero imagery
@@ -15,7 +15,9 @@ export default function ProductImage({
   src,
   alt = 'Lotus Tubes Stainless Steel Sanitary Component',
   fallbackSrc,
-  aspectRatio = '4/3',
+  aspectRatio = null,
+  objectFit = 'cover',
+  objectPosition = 'center',
   className = '',
   imgClassName = '',
   priority = false,
@@ -43,21 +45,23 @@ export default function ProductImage({
     setLoaded(true);
   };
 
+  const containerStyle = aspectRatio ? { aspectRatio } : undefined;
+
   return (
     <div
-      className={`relative overflow-hidden bg-slate-50 flex items-center justify-center ${className}`}
-      style={{ aspectRatio }}
+      className={`relative w-full h-full overflow-hidden bg-slate-100 ${className}`}
+      style={containerStyle}
       onClick={onClick}
     >
       {/* Loading Skeleton */}
       {!loaded && errorCount === 0 && (
         <div
-          className="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 animate-pulse"
+          className="absolute inset-0 bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 animate-pulse z-10"
           aria-hidden="true"
         />
       )}
 
-      {/* Actual Product Image */}
+      {/* Actual Product Image — Fills container completely */}
       <img
         src={currentSrc}
         alt={alt}
@@ -69,14 +73,18 @@ export default function ProductImage({
         sizes={sizes}
         onLoad={handleLoad}
         onError={handleError}
-        className={`w-full h-full object-contain object-center transition-opacity duration-300 ${
+        style={{
+          objectFit,
+          objectPosition
+        }}
+        className={`w-full h-full block transition-opacity duration-300 ${
           loaded ? 'opacity-100' : 'opacity-0'
         } ${imgClassName}`}
       />
 
       {/* Fallback Badge if fallback is active */}
       {errorCount > 0 && (
-        <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none">
+        <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none z-20">
           <span className="inline-block px-2 py-0.5 text-[10px] font-semibold text-slate-500 bg-white/90 backdrop-blur-sm rounded border border-slate-200 shadow-sm">
             Hygienic Component Visual
           </span>

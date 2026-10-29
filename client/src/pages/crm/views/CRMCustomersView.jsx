@@ -26,7 +26,7 @@ export const CRMCustomersView = ({
         <div className="crm-card__header">
           <div className="crm-card__header-title">
             <CRMIcon name="customers" size={18} />
-            <h3>Customer Directory &amp; Enterprise Accounts</h3>
+            <h3>Customer Directory & Enterprise Accounts</h3>
             <span className="crm-badge crm-badge-blue">
               {filteredCustomers.length} accounts
             </span>

@@ -143,7 +143,7 @@ export default function Manufacturing3DProcess() {
               <span className="text-xs font-bold text-sky-400 uppercase tracking-wider">
                 Step {current.stepNum} of 05
               </span>
-              <span className="text-slate-600">&bull;</span>
+              <span className="text-slate-600">•</span>
               <span className="text-xs font-semibold px-2 py-0.5 bg-slate-700/80 rounded text-slate-200">
                 {current.badge}
               </span>
@@ -165,7 +165,7 @@ export default function Manufacturing3DProcess() {
               </div>
               <div className="text-right">
                 <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Applicable Standard</div>
-                <div className="text-xs font-medium text-slate-200">ASTM A270 &bull; ASME BPE</div>
+                <div className="text-xs font-medium text-slate-200">ASTM A270 • ASME BPE</div>
               </div>
             </div>
 

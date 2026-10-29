@@ -16,7 +16,7 @@ export const VideoModal = ({ isOpen, onClose }) => {
     <div className="modal-overlay active" id="process-video-modal" role="dialog" aria-modal="true" aria-label="Hygienic Process Tour">
       <div className="modal-box modal-box--video">
         <div className="modal-header">
-          <h3>Hygienic Sourcing &amp; Surface Finishing Process</h3>
+          <h3>Hygienic Sourcing & Surface Finishing Process</h3>
           <button type="button" className="modal-close-btn" onClick={onClose} aria-label="Close">
             &times;
           </button>

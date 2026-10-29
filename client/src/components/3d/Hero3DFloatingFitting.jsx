@@ -44,35 +44,35 @@ export default function Hero3DFloatingFitting() {
     }
   };
 
-  const currentSpec = modelSpecs[activeModel];
+  const currentSpec = modelSpecs[activeModel] || modelSpecs.bend;
 
   return (
-    <div className="relative w-full h-[480px] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#10263d] to-slate-950 border border-slate-700/60 shadow-2xl flex flex-col">
+    <div className="hero-3d-card relative w-full h-[380px] sm:h-[440px] md:h-[500px] lg:h-[580px] xl:h-[620px] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#10263d] to-slate-950 border border-slate-700/60 shadow-2xl flex flex-col">
       {/* Top Floating Badge & Specs */}
-      <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between pointer-events-none">
-        <div className="bg-slate-900/80 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-slate-700/70 text-left pointer-events-auto">
-          <div className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+      <div className="absolute top-3.5 left-3.5 right-3.5 sm:top-4 sm:left-4 sm:right-4 z-10 flex items-center justify-between pointer-events-none">
+        <div className="bg-slate-900/85 backdrop-blur-md px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg border border-slate-700/70 text-left pointer-events-auto max-w-[80%] sm:max-w-none shadow-lg">
+          <div className="text-[10.5px] sm:text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             3D Interactive Digital Twin
           </div>
-          <div className="text-sm font-semibold text-white tracking-tight">
+          <div className="text-xs sm:text-sm font-semibold text-white tracking-tight truncate">
             {currentSpec.title}
           </div>
-          <div className="text-[11px] text-slate-300">
-            {currentSpec.subtitle} &bull; <span className="text-sky-300 font-medium">{currentSpec.finish}</span>
+          <div className="text-[10px] sm:text-[11px] text-slate-300 truncate">
+            {currentSpec.subtitle} • <span className="text-sky-300 font-medium">{currentSpec.finish}</span>
           </div>
         </div>
 
-        <div className="hidden sm:block bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/70 text-[11px] text-slate-300 pointer-events-auto">
-          Drag to inspect &bull; Scroll to zoom
+        <div className="hidden sm:block bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/70 text-[11px] text-slate-300 pointer-events-auto shadow-lg">
+          Drag to inspect • Scroll to zoom
         </div>
       </div>
 
       {/* 3D WebGL Canvas */}
-      <div className="w-full flex-1">
+      <div className="w-full flex-1 relative touch-none">
         <Canvas
           shadows
-          camera={{ position: [2.5, 2.0, 3.8], fov: 42 }}
+          camera={{ position: [2.5, 1.8, 3.8], fov: 42 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           onPointerDown={() => setIsInteractive(true)}
         >
@@ -101,7 +101,7 @@ export default function Hero3DFloatingFitting() {
             autoRotate={!isInteractive}
             autoRotateSpeed={1.4}
             enablePan={false}
-            minDistance={2.2}
+            minDistance={2.0}
             maxDistance={6.5}
             enableDamping
             dampingFactor={0.06}
@@ -110,7 +110,7 @@ export default function Hero3DFloatingFitting() {
       </div>
 
       {/* Bottom Component Selector Pills */}
-      <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-center gap-1.5 overflow-x-auto py-1 px-2 bg-slate-950/80 backdrop-blur-md rounded-xl border border-slate-800">
+      <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-10 flex items-center justify-start sm:justify-center gap-1.5 overflow-x-auto py-1 px-1.5 sm:px-2 bg-slate-950/85 backdrop-blur-md rounded-xl border border-slate-800 shadow-xl">
         {[
           { id: 'bend', label: '90° Bend' },
           { id: 'tube', label: 'EP Sanitary Tube' },
@@ -122,9 +122,9 @@ export default function Hero3DFloatingFitting() {
             key={item.id}
             type="button"
             onClick={() => setActiveModel(item.id)}
-            className={`px-3 py-1 text-xs font-medium rounded-lg transition-all whitespace-nowrap ${
+            className={`px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-medium rounded-lg transition-all whitespace-nowrap min-h-[32px] sm:min-h-[36px] ${
               activeModel === item.id
-                ? 'bg-sky-500 text-white font-semibold shadow-md shadow-sky-500/20'
+                ? 'bg-sky-500 text-white font-semibold shadow-md shadow-sky-500/25'
                 : 'text-slate-400 hover:text-white hover:bg-slate-800/80'
             }`}
           >

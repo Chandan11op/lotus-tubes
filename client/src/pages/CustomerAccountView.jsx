@@ -67,7 +67,7 @@ export const CustomerAccountView = ({ onNotify }) => {
           <div>
             <h3 style={{ margin: 0, color: 'var(--deep-navy)', fontSize: '1.2rem' }}>{user?.name}</h3>
             <p style={{ margin: '4px 0', color: '#667085', fontSize: '14px' }}>
-              <strong>Company:</strong> {user?.company || 'Individual / Contractor'} &bull; <strong>Email:</strong> {user?.email} {user?.phone ? `• Phone: ${user?.phone}` : ''}
+              <strong>Company:</strong> {user?.company || 'Individual / Contractor'} • <strong>Email:</strong> {user?.email} {user?.phone ? `• Phone: ${user?.phone}` : ''}
             </p>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
@@ -91,7 +91,7 @@ export const CustomerAccountView = ({ onNotify }) => {
         {/* Quotation Requests List */}
         <div className="card" style={{ background: '#FFFFFF', padding: '24px', borderRadius: '12px', border: '1px solid #E3E8EF' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3 style={{ margin: 0, color: '#10263D', fontSize: '1.2rem' }}>Submitted RFQs &amp; Status</h3>
+            <h3 style={{ margin: 0, color: '#10263D', fontSize: '1.2rem' }}>Submitted RFQs & Status</h3>
             <span style={{ fontSize: '13px', color: '#667085' }}>Total: {allItems.length} requests</span>
           </div>
 
@@ -106,7 +106,7 @@ export const CustomerAccountView = ({ onNotify }) => {
                   <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #E3E8EF' }}>
                     <th style={{ padding: '12px' }}>Reference</th>
                     <th style={{ padding: '12px' }}>Product / Project</th>
-                    <th style={{ padding: '12px' }}>Grade &amp; Qty</th>
+                    <th style={{ padding: '12px' }}>Grade & Qty</th>
                     <th style={{ padding: '12px' }}>Date</th>
                     <th style={{ padding: '12px' }}>Request Status</th>
                     <th style={{ padding: '12px' }}>Sample PDF</th>

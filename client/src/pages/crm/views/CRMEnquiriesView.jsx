@@ -182,8 +182,8 @@ export const CRMEnquiriesView = ({
                   <tr>
                     <th>Reference</th>
                     <th>Date</th>
-                    <th>Customer &amp; Company</th>
-                    <th>Product &amp; Specification</th>
+                    <th>Customer & Company</th>
+                    <th>Product & Specification</th>
                     <th>Qty</th>
                     <th>Email Status</th>
                     <th>WhatsApp Status</th>
@@ -215,7 +215,7 @@ export const CRMEnquiriesView = ({
                       <td>
                         <div className="crm-cell-title">{eq.name}</div>
                         <div className="crm-cell-sub">
-                          {eq.company || 'Direct Buyer'} &bull; {eq.phone}
+                          {eq.company || 'Direct Buyer'} • {eq.phone}
                         </div>
                       </td>
                       <td>

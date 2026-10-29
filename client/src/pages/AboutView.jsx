@@ -17,12 +17,12 @@ export const AboutView = ({ onOpenEnquiry }) => {
         <div className="about-preview-grid">
           <div>
             <span className="section-eyebrow">Company Profile</span>
-            <h2 className="section-title">Commitment to Hygienic Engineering &amp; Global Sourcing</h2>
+            <h2 className="section-title">Commitment to Hygienic Engineering & Global Sourcing</h2>
             <p style={{ lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '16px' }}>
-              Established as a key trading and supply venture under <strong>Lotus Impex</strong> (registered in Mumbai, 2019), <strong>Lotus Tubes</strong> was formed to solve the specialized supply needs of hygienic process equipment makers, skid fabricators, and manufacturing plants across pharmaceutical, dairy, food &amp; beverage, and biotechnology sectors.
+              Established as a key trading and supply venture under <strong>Lotus Impex</strong> (registered in Mumbai, 2019), <strong>Lotus Tubes</strong> was formed to solve the specialized supply needs of hygienic process equipment makers, skid fabricators, and manufacturing plants across pharmaceutical, dairy, food & beverage, and biotechnology sectors.
             </p>
             <p style={{ lineHeight: 1.8, color: 'var(--text-secondary)', marginTop: '14px' }}>
-              Understanding that standard industrial pipe fittings fail to meet sterile Clean-In-Place (CIP) and Steam-In-Place (SIP) conditions, we focus exclusively on sanitary stainless steel components with certified internal smoothness (Ra &le; 0.38 &mu;m), true-roundness tolerances, and verifiable metallurgical test certificates.
+              Understanding that standard industrial pipe fittings fail to meet sterile Clean-In-Place (CIP) and Steam-In-Place (SIP) conditions, we focus exclusively on sanitary stainless steel components with certified internal smoothness (Ra ≤ 0.38 µm), true-roundness tolerances, and verifiable metallurgical test certificates.
             </p>
 
             <div className="stats-counter-grid mt-3">

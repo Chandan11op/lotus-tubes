@@ -90,7 +90,7 @@ export const SearchModal = ({ isOpen, onClose }) => {
                 <span style={{ fontSize: '24px' }}>{c.icon}</span>
                 <div>
                   <h4 style={{ margin: 0, fontSize: '15px', color: '#10263D' }}>{c.name}</h4>
-                  <p style={{ margin: 0, fontSize: '12px', color: '#667085' }}>Category &bull; {c.subcategories?.join(', ')}</p>
+                  <p style={{ margin: 0, fontSize: '12px', color: '#667085' }}>Category • {c.subcategories?.join(', ')}</p>
                 </div>
               </a>
             ))}
@@ -111,7 +111,7 @@ export const SearchModal = ({ isOpen, onClose }) => {
                 <div>
                   <h4 style={{ margin: 0, fontSize: '15px', color: '#10263D' }}>{p.name}</h4>
                   <p style={{ margin: 0, fontSize: '12px', color: '#667085' }}>
-                    {p.category} &bull; {p.material} &bull; {p.finish} &bull; {p.sizes}
+                    {p.category} • {p.material} • {p.finish} • {p.sizes}
                   </p>
                 </div>
               </a>

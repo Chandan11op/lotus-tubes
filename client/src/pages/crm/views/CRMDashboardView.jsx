@@ -395,10 +395,10 @@ export const CRMDashboardView = ({
         <div className="crm-card__header">
           <div className="crm-card__header-title">
             <CRMIcon name="enquiries" size={18} />
-            <h3>Recent Quotation Requests &amp; RFQs</h3>
+            <h3>Recent Quotation Requests & RFQs</h3>
             {searchQuery && (
               <span className="crm-badge crm-badge-blue" style={{ marginLeft: '8px' }}>
-                Filtered: &ldquo;{searchQuery}&rdquo; ({searchFilteredEnquiries.length})
+                Filtered: “{searchQuery}” ({searchFilteredEnquiries.length})
               </span>
             )}
           </div>
@@ -435,7 +435,7 @@ export const CRMDashboardView = ({
                 <thead>
                   <tr>
                     <th>Reference</th>
-                    <th>Customer &amp; Company</th>
+                    <th>Customer & Company</th>
                     <th>Requested Component</th>
                     <th>Qty</th>
                     <th>Location</th>

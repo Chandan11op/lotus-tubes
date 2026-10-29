@@ -43,7 +43,7 @@ export const QualityView = () => {
     <>
       <section className="page-hero">
         <div className="site-container">
-          <h1 className="page-hero-title">Quality Standards &amp; Documentation</h1>
+          <h1 className="page-hero-title">Quality Standards & Documentation</h1>
           <p className="page-hero-subtitle">
             Surface finish precision, metallurgical compliance, and batch test certification for pharmaceutical and sanitary installations.
           </p>
@@ -90,7 +90,7 @@ export const QualityView = () => {
                     <td>
                       <strong>MP (Mechanical Polish)</strong>
                     </td>
-                    <td>Abrasive belt &amp; compound</td>
+                    <td>Abrasive belt & compound</td>
                     <td>Ra ≤ 0.8 µm (32 µin) Inside</td>
                   </tr>
                   <tr>
@@ -98,13 +98,13 @@ export const QualityView = () => {
                       <strong>ASTM A270</strong>
                     </td>
                     <td>Sanitary austenitic tube standard</td>
-                    <td>Controlled OD &amp; Wall Tolerance</td>
+                    <td>Controlled OD & Wall Tolerance</td>
                   </tr>
                   <tr>
                     <td>
                       <strong>ASTM A269</strong>
                     </td>
-                    <td>Seamless &amp; welded SS tube</td>
+                    <td>Seamless & welded SS tube</td>
                     <td>Corrosion resistant process lines</td>
                   </tr>
                 </tbody>

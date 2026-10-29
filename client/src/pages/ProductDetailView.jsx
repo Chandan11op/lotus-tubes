@@ -193,11 +193,11 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           </p>
 
           {/* Specification Table */}
-          <div className="spec-table-box" style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '16px', marginBottom: '24px' }}>
+          <div className="spec-table-box" style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '16px', marginBottom: '24px', overflowX: 'auto' }}>
             <h4 style={{ margin: '0 0 12px 0', fontSize: '13px', textTransform: 'uppercase', color: '#10263D', letterSpacing: '0.5px' }}>
-              Technical Parameters &amp; Supply Scope:
+              Technical Parameters & Supply Scope:
             </h4>
-            <table className="spec-table" style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse' }}>
+            <table className="spec-table" style={{ width: '100%', fontSize: '13px', borderCollapse: 'collapse', minWidth: '280px' }}>
               <tbody>
                 <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
                   <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B', width: '38%' }}>Material Grade</th>
@@ -232,7 +232,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                   <td style={{ padding: '8px 0', color: '#10263D' }}>{prod.mtc}</td>
                 </tr>
                 <tr>
-                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Stock &amp; Availability</th>
+                  <th style={{ padding: '8px 0', textAlign: 'left', color: '#64748B' }}>Stock & Availability</th>
                   <td style={{ padding: '8px 0', color: '#059669', fontWeight: 600 }}>{prod.availability || 'Ready Stock in Mumbai'}</td>
                 </tr>
               </tbody>
@@ -295,17 +295,43 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
             {related.map((rel) => (
-              <div key={rel.id} style={{ background: '#FFF', border: '1px solid #E2E8F0', borderRadius: '10px', overflow: 'hidden', padding: '16px' }}>
-                <img
-                  src={rel.image || productImages[0]}
-                  alt={rel.name}
-                  style={{ width: '100%', height: '140px', objectFit: 'contain', marginBottom: '12px' }}
-                />
-                <h4 style={{ fontSize: '14px', margin: '0 0 6px 0', color: '#10263D' }}>{rel.name}</h4>
-                <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 12px 0' }}>Grade: {rel.material} &bull; {rel.finish}</p>
-                <a href={`#product/${rel.slug || rel.id}`} className="btn btn--outline-dark btn--sm btn--block">
-                  View Specifications &rarr;
-                </a>
+              <div
+                key={rel.id}
+                className="related-product-card"
+                style={{
+                  background: '#FFF',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'transform 0.25s ease, box-shadow 0.25s ease'
+                }}
+              >
+                <div style={{ position: 'relative', width: '100%', height: '170px', overflow: 'hidden', backgroundColor: '#F8FAFC' }}>
+                  <img
+                    src={rel.image || productImages[0]}
+                    alt={rel.name}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      display: 'block',
+                      transition: 'transform 0.4s ease'
+                    }}
+                  />
+                </div>
+                <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: 600, margin: '0 0 6px 0', color: '#10263D', lineHeight: 1.35 }}>{rel.name}</h4>
+                  <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 14px 0' }}>Grade: {rel.material} • {rel.finish}</p>
+                  <div style={{ marginTop: 'auto' }}>
+                    <a href={`#product/${rel.slug || rel.id}`} className="btn btn--outline-dark btn--sm btn--block">
+                      View Specifications &rarr;
+                    </a>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

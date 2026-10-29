@@ -264,7 +264,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
               Request Official Quotation
             </h3>
             <p className="modal-subtitle" id="quick-enquiry-subtitle" style={{ margin: '2px 0 0 0', fontSize: '12px', color: '#64748B' }}>
-              Formal Commercial Quotation &bull; Dispatched via Email &amp; WhatsApp
+              Formal Commercial Quotation • Dispatched via Email & WhatsApp
             </p>
           </div>
           <button
@@ -369,7 +369,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
 
               <div className="success-actions mt-3">
                 <button type="button" className="btn btn--secondary btn--sm" onClick={onClose}>
-                  Done &bull; Close Window
+                  Done • Close Window
                 </button>
               </div>
             </div>

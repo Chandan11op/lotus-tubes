@@ -4,24 +4,42 @@ import { PRODUCTS } from '../../data/siteData';
 import './ProductTicker.css';
 
 /**
+ * Clean & format material grade tag for consistent compact badges
+ */
+const getMaterialTag = (mat) => {
+  if (!mat) return null;
+  const m = mat.toUpperCase();
+  if (m.includes('316L')) return 'SS 316L';
+  if (m.includes('304')) return 'SS 304';
+  if (m.includes('SILICONE')) return 'Silicone';
+  if (m.includes('PTFE') || m.includes('TEFLON')) return 'PTFE';
+  if (m.includes('EPDM')) return 'EPDM';
+  if (m.includes('VITON') || m.includes('FKM')) return 'Viton';
+  if (m.includes('FORGED')) return 'Forged';
+  return mat.split('/')[0].trim().slice(0, 12);
+};
+
+/**
  * ProductTicker — Premium continuously scrolling hot-selling products ticker
  * Engineered for Lotus Tubes B2B Stainless Steel Sanitary Showcase
  *
  * Features:
  * - Continuous right-to-left linear CSS marquee animation
- * - Seamless looping using dual cloned groups (zero gap / zero jump)
+ * - Seamless infinite loop using dual identical cloned groups (zero gap / zero jump)
+ * - All configured products rendered from master catalogue
  * - Stationary label badge with subtle flame icon
  * - Clipped scrolling viewport with smooth gradient edge masks
- * - Real product data sourced from master catalogue
  * - Direct deep-links to product specification pages (#product/:slug)
- * - Pause on hover and focus-within
- * - Full prefers-reduced-motion accessibility support
+ * - Pause on hover and keyboard focus-within
+ * - Accessible alternative for prefers-reduced-motion
+ * - Strict zero horizontal overflow
  */
 export const ProductTicker = ({ products: customProducts }) => {
   const { t } = useLanguage();
 
-  // Use passed products or prioritize the verified catalogue products
-  const tickerProducts = customProducts || PRODUCTS.slice(0, 20);
+  // Guarantee all configured products appear in the ticker
+  const tickerProducts =
+    customProducts && customProducts.length > 0 ? customProducts : PRODUCTS;
 
   return (
     <aside
@@ -84,47 +102,49 @@ export const ProductTicker = ({ products: customProducts }) => {
         <div className="product-ticker__track">
           {/* Primary Group */}
           <div className="product-ticker__group" aria-hidden="false">
-            {tickerProducts.map((prod) => (
-              <a
-                key={`track-1-${prod.id || prod.slug}`}
-                href={`#product/${prod.slug || prod.id}`}
-                className="product-ticker__item"
-                title={`Explore ${prod.name} specifications & quotation`}
-              >
-                <span className="product-ticker__item-dot" aria-hidden="true">
-                  ✦
-                </span>
-                <span className="product-ticker__item-name">{prod.name}</span>
-                {prod.material && (
-                  <span className="product-ticker__item-tag">
-                    {prod.material.split('/')[0].trim()}
+            {tickerProducts.map((prod, idx) => {
+              const tag = getMaterialTag(prod.material);
+              return (
+                <a
+                  key={`pt-1-${prod.id || prod.slug || idx}`}
+                  href={`#product/${prod.slug || prod.id}`}
+                  className="product-ticker__item"
+                  title={`Explore ${prod.name} specifications & quotation`}
+                >
+                  <span className="product-ticker__item-dot" aria-hidden="true">
+                    ✦
                   </span>
-                )}
-              </a>
-            ))}
+                  <span className="product-ticker__item-name">{prod.name}</span>
+                  {tag && (
+                    <span className="product-ticker__item-tag">{tag}</span>
+                  )}
+                </a>
+              );
+            })}
           </div>
 
-          {/* Secondary Group (Cloned for seamless infinite loop) */}
+          {/* Secondary Group (Cloned identically for seamless infinite loop) */}
           <div className="product-ticker__group" aria-hidden="true">
-            {tickerProducts.map((prod) => (
-              <a
-                key={`track-2-${prod.id || prod.slug}`}
-                href={`#product/${prod.slug || prod.id}`}
-                tabIndex="-1"
-                className="product-ticker__item"
-                title={`Explore ${prod.name} specifications & quotation`}
-              >
-                <span className="product-ticker__item-dot" aria-hidden="true">
-                  ✦
-                </span>
-                <span className="product-ticker__item-name">{prod.name}</span>
-                {prod.material && (
-                  <span className="product-ticker__item-tag">
-                    {prod.material.split('/')[0].trim()}
+            {tickerProducts.map((prod, idx) => {
+              const tag = getMaterialTag(prod.material);
+              return (
+                <a
+                  key={`pt-2-${prod.id || prod.slug || idx}`}
+                  href={`#product/${prod.slug || prod.id}`}
+                  tabIndex="-1"
+                  className="product-ticker__item"
+                  title={`Explore ${prod.name} specifications & quotation`}
+                >
+                  <span className="product-ticker__item-dot" aria-hidden="true">
+                    ✦
                   </span>
-                )}
-              </a>
-            ))}
+                  <span className="product-ticker__item-name">{prod.name}</span>
+                  {tag && (
+                    <span className="product-ticker__item-tag">{tag}</span>
+                  )}
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

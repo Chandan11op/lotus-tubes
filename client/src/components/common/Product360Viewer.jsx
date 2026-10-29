@@ -63,7 +63,7 @@ export const Product360Viewer = ({ product, fallbackImage, height = '420px' }) =
             priority={true}
           />
           <div className="absolute bottom-3 right-3 bg-slate-900/80 text-white text-[11px] font-medium px-2.5 py-1 rounded backdrop-blur-sm">
-            Genuine Studio Photograph &bull; {product?.material || 'SS 316L'}
+            Genuine Studio Photograph • {product?.material || 'SS 316L'}
           </div>
         </div>
       )}

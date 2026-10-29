@@ -9,7 +9,7 @@ export const BlogView = ({ slug, onOpenEnquiry }) => {
         <section className="page-hero">
           <div className="site-container">
             <span className="badge badge--pink mb-2">
-              {post.category} &bull; {post.readTime}
+              {post.category} • {post.readTime}
             </span>
             <h1 className="page-hero-title">{post.title}</h1>
             <p className="page-hero-subtitle">Published on {post.date} by Lotus Tubes Technical Desk</p>
@@ -77,7 +77,7 @@ export const BlogView = ({ slug, onOpenEnquiry }) => {
                     marginBottom: '6px'
                   }}
                 >
-                  {post.category} &bull; {post.readTime}
+                  {post.category} • {post.readTime}
                 </div>
                 <h3 className="range-card__title">
                   <a href={`#blog/${post.slug}`}>{post.title}</a>

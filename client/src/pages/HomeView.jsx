@@ -9,7 +9,6 @@ import ProductImage from '../components/common/ProductImage';
 
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
-  const [heroMediaMode, setHeroMediaMode] = useState('3d');
 
   return (
     <>
@@ -88,60 +87,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </div>
             </div>
 
-            {/* Hero Visual Media & Tagline */}
+            {/* Hero Visual Media (3D Interactive Digital Twin) */}
             <div className="hero-media">
-              <div className="hero-tagline-float">
-                <h3>
-                  {t('hero_tagline_1', 'Hygienic.')}<br />
-                  {t('hero_tagline_2', 'Reliable.')}<br />
-                  {t('hero_tagline_3', 'Global.')}
-                </h3>
-                <div className="underline-pink"></div>
-              </div>
-
-              {/* Hero Media Switcher */}
-              <div className="flex items-center gap-2 mb-3 self-end">
-                <button
-                  type="button"
-                  onClick={() => setHeroMediaMode('3d')}
-                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
-                    heroMediaMode === '3d'
-                      ? 'bg-sky-600 text-white shadow-md'
-                      : 'bg-white/80 text-slate-700 hover:bg-white border border-slate-200'
-                  }`}
-                >
-                  🔄 3D Digital Twin
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setHeroMediaMode('photo')}
-                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
-                    heroMediaMode === 'photo'
-                      ? 'bg-sky-600 text-white shadow-md'
-                      : 'bg-white/80 text-slate-700 hover:bg-white border border-slate-200'
-                  }`}
-                >
-                  📷 Master Studio Line
-                </button>
-              </div>
-
-              {heroMediaMode === '3d' ? (
-                <Hero3DFloatingFitting />
-              ) : (
-                <div className="hero-visual-card relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shadow-2xl">
-                  <ProductImage
-                    src="/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-005.jpg"
-                    alt="Lotus Tubes Complete Stainless Steel Sanitary Product Showcase"
-                    priority={true}
-                    aspectRatio="16/10"
-                    className="w-full h-full"
-                    imgClassName="object-cover"
-                  />
-                  <div className="hero-spec-pill">
-                    <strong>SS 316L EP</strong> &bull; Ra &le; 0.38 &mu;m &bull; ASTM A270 &amp; ASME BPE Certified
-                  </div>
-                </div>
-              )}
+              <Hero3DFloatingFitting />
             </div>
 
           </div>
@@ -168,12 +116,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 key={cat.slug}
                 style={{ animationDelay: `${idx * 80}ms` }}
               >
-                <div className="range-card__img-wrap overflow-hidden bg-slate-50">
+                <div className="range-card__img-wrap">
                   <ProductImage
                     src={cat.image}
                     alt={cat.name}
-                    aspectRatio="4/3"
-                    className="w-full h-48 transition-transform duration-500 group-hover:scale-105"
+                    objectFit="cover"
+                    objectPosition="center"
+                    className="w-full h-full"
+                    imgClassName="range-card__img"
                   />
                 </div>
                 <div className="range-card__body p-5">
@@ -281,10 +231,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               <a href={`#industry/${ind.slug}`} className="industry-chip-card" key={ind.slug}>
                 <div className="industry-chip-card__img-wrap">
                   <img
-                    src={createProductSVG(ind.name, 'Industry Application', '#10263D')}
+                    src={ind.image || `/assets/images/industries/${ind.slug}.svg`}
                     alt={ind.name}
                     className="industry-chip-card__img"
                     loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = '/assets/images/hero/sanitary-hero-pipes.svg';
+                    }}
                   />
                   <div className="industry-chip-card__icon-bubble">{ind.icon}</div>
                 </div>

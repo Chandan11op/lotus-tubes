@@ -20,7 +20,7 @@ export const ResourcesView = ({ onNotify }) => {
     <>
       <section className="page-hero">
         <div className="site-container">
-          <h1 className="page-hero-title">Engineering Resources &amp; Downloads</h1>
+          <h1 className="page-hero-title">Engineering Resources & Downloads</h1>
           <p className="page-hero-subtitle">
             Download technical catalogues, standard pipe dimensional charts, and review sanitary engineering guides.
           </p>
@@ -79,7 +79,7 @@ export const ResourcesView = ({ onNotify }) => {
         <div className="mt-3">
           <div className="section-header section-header--center">
             <span className="section-eyebrow">Frequently Asked Questions</span>
-            <h2 className="section-title">Technical &amp; Commercial FAQs</h2>
+            <h2 className="section-title">Technical & Commercial FAQs</h2>
           </div>
 
           <div className="faq-accordion">

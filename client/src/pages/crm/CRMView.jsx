@@ -748,14 +748,14 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               <div className="crm-drawer-card">
                 <div className="crm-drawer-card__header">
                   <CRMIcon name="user" size={14} />
-                  <span>Customer &amp; Company</span>
+                  <span>Customer & Company</span>
                 </div>
                 <div className="crm-drawer-card__content">
                   <div style={{ fontSize: '15px', fontWeight: 700, color: '#10263D' }}>
                     {selectedEnquiry.name}
                   </div>
                   <div style={{ color: '#475569', marginTop: '2px' }}>
-                    {selectedEnquiry.company || 'Direct Buyer'} &bull; {selectedEnquiry.country || selectedEnquiry.location || 'India'}
+                    {selectedEnquiry.company || 'Direct Buyer'} • {selectedEnquiry.country || selectedEnquiry.location || 'India'}
                   </div>
                   <div style={{ marginTop: '8px', fontSize: '13px' }}>
                     <div>
@@ -772,7 +772,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               <div className="crm-drawer-card">
                 <div className="crm-drawer-card__header">
                   <CRMIcon name="products" size={14} />
-                  <span>Requested Component &amp; Specs</span>
+                  <span>Requested Component & Specs</span>
                 </div>
                 <div className="crm-drawer-card__content">
                   <div style={{ fontSize: '14px', fontWeight: 600, color: '#10263D' }}>
@@ -851,7 +851,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               <div className="crm-drawer-card" style={{ marginTop: '16px' }}>
                 <div className="crm-drawer-card__header">
                   <CRMIcon name="tasks" size={14} />
-                  <span>Activity History &amp; Internal Notes</span>
+                  <span>Activity History & Internal Notes</span>
                 </div>
                 <div className="crm-drawer-card__content">
                   <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
@@ -877,7 +877,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                       <div key={i} style={{ background: '#F8FAFC', padding: '8px 12px', borderRadius: '6px', fontSize: '12px', border: '1px solid #E2E8F0' }}>
                         <div style={{ fontWeight: 600, color: '#10263D' }}>{act.action}: {act.note}</div>
                         <div style={{ fontSize: '10px', color: '#94A3B8', marginTop: '2px' }}>
-                          By {act.performedBy} &bull; {new Date(act.timestamp).toLocaleString()}
+                          By {act.performedBy} • {new Date(act.timestamp).toLocaleString()}
                         </div>
                       </div>
                     ))}
@@ -1033,7 +1033,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
 
               {/* Standards Disclaimer */}
               <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '12px', borderRadius: '6px', fontSize: '11px', color: '#64748B', lineHeight: '1.5' }}>
-                <strong>Standard Quality &amp; Compliance Notes:</strong><br />
+                <strong>Standard Quality & Compliance Notes:</strong><br />
                 1. Supplied with verified EN 10204 3.1 Mill Test Certificates (MTR).<br />
                 2. Surface finish in strict accordance with ASME BPE / ASTM A270 standards (Ra &lt; 0.4µm electropolished).<br />
                 3. Freight charges extra at actuals unless otherwise confirmed in writing.

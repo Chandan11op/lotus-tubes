@@ -23,7 +23,7 @@ export const CRMStaffView = ({
         <div className="crm-card__header">
           <div className="crm-card__header-title">
             <CRMIcon name="staff" size={18} />
-            <h3>Authorized Staff Members &amp; RBAC Permissions</h3>
+            <h3>Authorized Staff Members & RBAC Permissions</h3>
             <span className="crm-badge crm-badge-red">
               {staffUsers.length} staff accounts
             </span>

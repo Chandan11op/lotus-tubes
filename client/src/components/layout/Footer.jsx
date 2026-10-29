@@ -20,8 +20,8 @@ export const Footer = () => {
               )}
             </p>
             <div className="footer-badges">
-              <span className="cert-tag">SS 304 &bull; SS 316L</span>
-              <span className="cert-tag">EP &bull; MP Finishes</span>
+              <span className="cert-tag">SS 304 • SS 316L</span>
+              <span className="cert-tag">EP • MP Finishes</span>
               <span className="cert-tag">ASTM A270 / A269 Standards</span>
             </div>
             <div className="footer-socials">
@@ -47,11 +47,11 @@ export const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col__title">{t('footer_col_products', 'Sanitary Products')}</h4>
             <ul className="footer-links">
-              <li><a href="#category/sanitary-pipes">Sanitary Pipes &amp; Tubes</a></li>
+              <li><a href="#category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
               <li><a href="#category/sanitary-fittings">Sanitary Pipe Fittings</a></li>
-              <li><a href="#category/tri-clamp">Tri-Clamp Components &amp; Clamps</a></li>
+              <li><a href="#category/tri-clamp">Tri-Clamp Components & Clamps</a></li>
               <li><a href="#category/gaskets">Sanitary Food-Grade Gaskets</a></li>
-              <li><a href="#category/manual-valves">Hygienic Butterfly &amp; Ball Valves</a></li>
+              <li><a href="#category/manual-valves">Hygienic Butterfly & Ball Valves</a></li>
               <li><a href="#category/pneumatic-valves">Pneumatic Diaphragm Valves</a></li>
               <li><a href="#category/tank-cleaning">Tank Cleaning Spray Balls</a></li>
               <li><a href="#category/custom-assemblies">Custom Hygienic Spools</a></li>
@@ -117,11 +117,11 @@ export const Footer = () => {
           </p>
           <div className="footer-bottom-links">
             <a href="#quality">Quality Disclaimer</a>
-            <span className="sep">&bull;</span>
+            <span className="sep">•</span>
             <a href="#contact">Privacy Policy</a>
-            <span className="sep">&bull;</span>
+            <span className="sep">•</span>
             <a href="#contact">Terms of Supply</a>
-            <span className="sep">&bull;</span>
+            <span className="sep">•</span>
 
           </div>
         </div>

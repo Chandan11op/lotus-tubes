@@ -60,7 +60,7 @@ export const CRMTasksView = ({
         <div className="crm-card__header">
           <div className="crm-card__header-title">
             <CRMIcon name="tasks" size={18} />
-            <h3>Sales Tasks &amp; Action Reminders</h3>
+            <h3>Sales Tasks & Action Reminders</h3>
             <span className="crm-badge crm-badge-red">
               {overdueCount > 0 ? `${overdueCount} Overdue` : 'On Schedule'}
             </span>

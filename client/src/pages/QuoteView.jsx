@@ -113,7 +113,7 @@ export const QuoteView = ({ onNotify }) => {
             <div>
               <span className="section-eyebrow">Quick RFQ System</span>
               <h2 className="section-title" style={{ fontSize: '1.8rem' }}>
-                Bill of Quantities (BOQ) &amp; RFQ Submission
+                Bill of Quantities (BOQ) & RFQ Submission
               </h2>
               <p className="section-subtitle">Our sales estimators respond within 2 to 4 business hours.</p>
             </div>
@@ -182,7 +182,7 @@ export const QuoteView = ({ onNotify }) => {
           ) : (
             <form id="full-rfq-form" onSubmit={handleSubmit} noValidate>
               <h4 style={{ fontFamily: 'var(--font-heading)', color: 'var(--deep-navy)', marginBottom: '12px', borderBottom: '1.5px solid var(--border-color)', paddingBottom: '6px' }}>
-                1. Customer &amp; Business Information
+                1. Customer & Business Information
               </h4>
               <div className="form-row">
                 <div className="form-group">
@@ -239,7 +239,7 @@ export const QuoteView = ({ onNotify }) => {
               </div>
 
               <h4 style={{ fontFamily: 'var(--font-heading)', color: 'var(--deep-navy)', marginTop: '24px', marginBottom: '12px', borderBottom: '1.5px solid var(--border-color)', paddingBottom: '6px' }}>
-                2. Technical &amp; Order Requirements
+                2. Technical & Order Requirements
               </h4>
 
               <div className="form-row">
@@ -250,10 +250,10 @@ export const QuoteView = ({ onNotify }) => {
                     value={formData.category}
                     onChange={handleChange}
                   >
-                    <option value="Sanitary Pipes & Tubes">Sanitary Pipes &amp; Tubes (EP / MP)</option>
+                    <option value="Sanitary Pipes & Tubes">Sanitary Pipes & Tubes (EP / MP)</option>
                     <option value="Sanitary Pipe Fittings">Sanitary Pipe Fittings (Bends, Tees, Reducers)</option>
-                    <option value="Tri-Clamp Components">Tri-Clamp Ferrules, Clamps &amp; Unions</option>
-                    <option value="Sanitary Valves">Manual &amp; Pneumatic Sanitary Valves</option>
+                    <option value="Tri-Clamp Components">Tri-Clamp Ferrules, Clamps & Unions</option>
+                    <option value="Sanitary Valves">Manual & Pneumatic Sanitary Valves</option>
                     <option value="Complete Process Line / BOQ">Complete Process Package / Mixed BOQ</option>
                   </select>
                 </div>
@@ -285,7 +285,7 @@ export const QuoteView = ({ onNotify }) => {
                   {errors.quantity && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.quantity}</span>}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="rfq-destination">Delivery City &amp; Country <span className="required">*</span></label>
+                  <label htmlFor="rfq-destination">Delivery City & Country <span className="required">*</span></label>
                   <input
                     type="text"
                     id="rfq-destination"

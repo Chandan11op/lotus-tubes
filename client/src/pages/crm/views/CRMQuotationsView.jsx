@@ -150,7 +150,7 @@ export const CRMQuotationsView = ({
         <div className="crm-card__header">
           <div className="crm-card__header-title">
             <CRMIcon name="quotations" size={18} />
-            <h3>Formal Quotations &amp; BOQ Submissions</h3>
+            <h3>Formal Quotations & BOQ Submissions</h3>
             <span className="crm-badge crm-badge-amber">
               {filteredQuotes.length} quotes
             </span>
@@ -178,7 +178,7 @@ export const CRMQuotationsView = ({
                   <tr>
                     <th>Quote Ref #</th>
                     <th>Date</th>
-                    <th>Customer &amp; Company</th>
+                    <th>Customer & Company</th>
                     <th>BOQ Line Items</th>
                     <th>Grand Total</th>
                     <th>Validity</th>

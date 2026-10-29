@@ -34,7 +34,7 @@ export const CRMReportsView = ({
         <div className="crm-toolbar-row">
           <div>
             <h3 style={{ margin: 0, fontSize: '1rem', color: '#10263D' }}>
-              Sales Operations Analytics &amp; Commercial Intelligence
+              Sales Operations Analytics & Commercial Intelligence
             </h3>
             <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#64748B' }}>
               Data derived from live customer RFQs, active quotations, and MongoDB persistent records.
