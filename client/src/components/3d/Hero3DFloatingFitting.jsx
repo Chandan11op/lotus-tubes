@@ -76,13 +76,14 @@ export default function Hero3DFloatingFitting() {
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           onPointerDown={() => setIsInteractive(true)}
         >
-          <ambientLight intensity={0.9} />
-          <directionalLight position={[6, 9, 6]} intensity={1.8} castShadow shadow-mapSize={1024} />
-          <directionalLight position={[-6, 4, -4]} intensity={1.0} color="#38bdf8" />
-          <pointLight position={[0, -2, 3]} intensity={0.5} color="#ffffff" />
+          <ambientLight intensity={1.1} />
+          <directionalLight position={[6, 9, 6]} intensity={2.0} castShadow shadow-mapSize={1024} />
+          <directionalLight position={[-6, 4, -4]} intensity={1.2} color="#38bdf8" />
+          <directionalLight position={[0, -4, 4]} intensity={0.8} color="#e0f2fe" />
+          <pointLight position={[3, 3, 3]} intensity={0.6} color="#ffffff" />
 
           <Suspense fallback={null}>
-            <Stage environment="city" intensity={0.7} adjustCamera={false}>
+            <Stage environment={null} intensity={0.8} adjustCamera={false}>
               <Float
                 speed={isInteractive ? 0.5 : 1.8}
                 rotationIntensity={isInteractive ? 0.2 : 0.6}

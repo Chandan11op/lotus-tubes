@@ -1610,6 +1610,34 @@
 .crm-status-pill.crm-status-draft::before,
 .crm-badge-pill--onhold::before { background-color: #94A3B8 !important; }
 
+/* 9. Approval Workflow States */
+.crm-status-pill.crm-status-pending-approval,
+.crm-badge-pill--pending-approval {
+  background-color: #FEF3C7 !important;
+  color: #B45309 !important;
+  border: 1px solid #FDE68A !important;
+}
+.crm-status-pill.crm-status-pending-approval::before,
+.crm-badge-pill--pending-approval::before { background-color: #F59E0B !important; }
+
+.crm-status-pill.crm-status-approved,
+.crm-badge-pill--approved {
+  background-color: #ECFDF5 !important;
+  color: #047857 !important;
+  border: 1px solid #A7F3D0 !important;
+}
+.crm-status-pill.crm-status-approved::before,
+.crm-badge-pill--approved::before { background-color: #10B981 !important; }
+
+.crm-status-pill.crm-status-changes-requested,
+.crm-badge-pill--changes-requested {
+  background-color: #FDF4FF !important;
+  color: #A21CAF !important;
+  border: 1px solid #F5D0FE !important;
+}
+.crm-status-pill.crm-status-changes-requested::before,
+.crm-badge-pill--changes-requested::before { background-color: #D946EF !important; }
+
 /* Status Badges */
 .crm-badge {
   display: inline-flex;

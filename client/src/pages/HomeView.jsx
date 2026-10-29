@@ -230,15 +230,13 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             {INDUSTRIES.map((ind) => (
               <a href={`#industry/${ind.slug}`} className="industry-chip-card" key={ind.slug}>
                 <div className="industry-chip-card__img-wrap">
-                  <img
+                  <ProductImage
                     src={ind.image || `/assets/images/industries/${ind.slug}.svg`}
+                    fallbackSrc="/assets/images/hero/sanitary-hero-pipes.svg"
                     alt={ind.name}
-                    className="industry-chip-card__img"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/assets/images/hero/sanitary-hero-pipes.svg';
-                    }}
+                    className="w-full h-full"
+                    imgClassName="industry-chip-card__img"
+                    objectFit="cover"
                   />
                   <div className="industry-chip-card__icon-bubble">{ind.icon}</div>
                 </div>

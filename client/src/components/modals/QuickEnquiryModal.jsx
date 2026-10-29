@@ -4,9 +4,18 @@ import { Loader } from '../common/Loader';
 import { CONFIG } from '../../data/siteData';
 import { useAuth } from '../../context/AuthContext';
 import TurnstileWidget from '../common/TurnstileWidget';
+import {
+  MATERIAL_GRADES,
+  NOMINAL_SIZES,
+  WALL_THICKNESSES,
+  UNITS_OF_MEASUREMENT,
+  getSpecsForCategory
+} from '../../data/productSpecsConfig';
 
 export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
   const { user, isAuthenticated } = useAuth();
+
+  const categorySpecs = getSpecsForCategory(product?.category || product?.name || 'Sanitary Pipes');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -14,7 +23,15 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     email: '',
     phone: '',
     grade: 'SS 316L',
-    quantity: '',
+    productType: '',
+    nominalSize: '1" (25.4mm OD)',
+    customSize: '',
+    wallThickness: '1.65 mm',
+    customThickness: '',
+    standard: '',
+    customStandard: '',
+    quantity: '50',
+    unit: 'Meter',
     location: '',
     notes: '',
     finish: '',
@@ -70,14 +87,24 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
       setTurnstileToken('');
       setTurnstileError(null);
 
+      const specs = getSpecsForCategory(product?.category || product?.name || 'Sanitary Pipes');
+
       setFormData((prev) => ({
         ...prev,
         name: isAuthenticated && user?.name ? user.name : (prev.name || ''),
         company: isAuthenticated && user?.company ? user.company : (prev.company || ''),
         email: isAuthenticated && user?.email ? user.email : (prev.email || ''),
         phone: isAuthenticated && user?.phone ? user.phone : (prev.phone || ''),
-        grade: product?.material || 'SS 316L',
-        quantity: prev.quantity || '',
+        grade: product?.material?.includes('304') ? 'SS 304L' : 'SS 316L',
+        productType: specs.itemTypes[0]?.value || '',
+        nominalSize: '1" (25.4mm OD)',
+        customSize: '',
+        wallThickness: '1.65 mm',
+        customThickness: '',
+        standard: specs.standards[0]?.value || '',
+        customStandard: '',
+        quantity: prev.quantity || '50',
+        unit: specs.defaultUnit || 'Meter',
         location: prev.location || '',
         notes: prev.notes || '',
         finish: product?.finish || 'Electro-Polished (EP Ra ≤ 0.38µm)',
@@ -137,15 +164,29 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     setIsLoading(true);
 
     try {
+      const selectedSize = formData.nominalSize === 'Custom Size' ? formData.customSize : formData.nominalSize;
+      const selectedThickness = formData.wallThickness === 'Custom' ? formData.customThickness : formData.wallThickness;
+      const selectedStandard = formData.standard === 'Custom' ? formData.customStandard : formData.standard;
+
+      const matchedSizeObj = NOMINAL_SIZES.find((s) => s.value === formData.nominalSize);
+      const outsideDiameter = matchedSizeObj && matchedSizeObj.odMm !== 'Custom' ? matchedSizeObj.odMm : formData.customSize;
+
       const payload = {
         productId: product?.id || 'sanitary-item',
         productName: product?.name || 'Sanitary Component',
         grade: formData.grade,
+        materialGrade: formData.grade,
+        productType: formData.productType || product?.category || 'Sanitary Component',
+        nominalSize: selectedSize,
+        outsideDiameter: outsideDiameter || '',
+        wallThickness: selectedThickness || '',
+        standard: selectedStandard || '',
         quantity: formData.quantity,
+        unit: formData.unit,
         location: formData.location,
         notes: formData.notes,
         finish: formData.finish,
-        sizes: formData.sizes,
+        sizes: `${selectedSize} (${outsideDiameter || ''}) x ${selectedThickness}`,
         // If guest, pass customer fields and Turnstile token
         ...(!isAuthenticated
           ? {
@@ -576,47 +617,165 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                 </div>
               )}
 
-              {/* Quotation Specification Fields */}
+              {/* Product Specifications Section */}
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="eq-grade">Material Grade</label>
+                  <label htmlFor="eq-grade">Material Grade <span className="required">*</span></label>
                   <select id="eq-grade" name="grade" value={formData.grade} onChange={handleChange}>
-                    <option value="SS 316L">SS 316L (High Purity / Electro-Polished)</option>
-                    <option value="SS 304">SS 304 (Standard Sanitary / Food & Dairy)</option>
-                    <option value="Both / Need Technical Consultation">Both / Need Technical Consultation</option>
+                    {MATERIAL_GRADES.map((m) => (
+                      <option key={m.value} value={m.value}>
+                        {m.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="form-group">
+                  <label htmlFor="eq-nominalSize">Nominal Size & Outside Diameter <span className="required">*</span></label>
+                  <select
+                    id="eq-nominalSize"
+                    name="nominalSize"
+                    value={formData.nominalSize}
+                    onChange={handleChange}
+                  >
+                    {NOMINAL_SIZES.map((s) => (
+                      <option key={s.value} value={s.value}>
+                        {s.nominal} {s.odMm !== 'Custom' ? `(OD: ${s.odMm})` : '(Custom Dimension)'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {formData.nominalSize === 'Custom Size' && (
+                <div className="form-group" style={{ marginBottom: '12px' }}>
+                  <label htmlFor="eq-customSize">Custom Size / Dimensions <span className="required">*</span></label>
+                  <input
+                    type="text"
+                    id="eq-customSize"
+                    name="customSize"
+                    value={formData.customSize}
+                    onChange={handleChange}
+                    placeholder="e.g. 5 inch OD (127mm) / customized drawing"
+                  />
+                  {errors.customSize && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.customSize}</span>}
+                </div>
+              )}
+
+              <div className="form-row">
+                {categorySpecs.hasThickness ? (
+                  <div className="form-group">
+                    <label htmlFor="eq-wallThickness">Wall Thickness</label>
+                    <select
+                      id="eq-wallThickness"
+                      name="wallThickness"
+                      value={formData.wallThickness}
+                      onChange={handleChange}
+                    >
+                      {WALL_THICKNESSES.map((w) => (
+                        <option key={w.value} value={w.value}>
+                          {w.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div className="form-group">
+                    <label htmlFor="eq-conn">End Connection</label>
+                    <input
+                      type="text"
+                      id="eq-conn"
+                      name="wallThickness"
+                      value={formData.wallThickness}
+                      onChange={handleChange}
+                      placeholder="e.g. Tri-Clamp, SMS, DIN, Welded"
+                    />
+                  </div>
+                )}
+
+                <div className="form-group">
+                  <label htmlFor="eq-standard">Applicable Standard</label>
+                  <select
+                    id="eq-standard"
+                    name="standard"
+                    value={formData.standard}
+                    onChange={handleChange}
+                  >
+                    {categorySpecs.standards.map((st) => (
+                      <option key={st.value} value={st.value}>
+                        {st.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {formData.wallThickness === 'Custom' && categorySpecs.hasThickness && (
+                <div className="form-group" style={{ marginBottom: '12px' }}>
+                  <label htmlFor="eq-customThickness">Custom Wall Thickness <span className="required">*</span></label>
+                  <input
+                    type="text"
+                    id="eq-customThickness"
+                    name="customThickness"
+                    value={formData.customThickness}
+                    onChange={handleChange}
+                    placeholder="e.g. 1.25 mm or Schedule 40S"
+                  />
+                  {errors.customThickness && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.customThickness}</span>}
+                </div>
+              )}
+
+              {formData.standard === 'Custom' && (
+                <div className="form-group" style={{ marginBottom: '12px' }}>
+                  <label htmlFor="eq-customStandard">Custom Standard / Requirement <span className="required">*</span></label>
+                  <input
+                    type="text"
+                    id="eq-customStandard"
+                    name="customStandard"
+                    value={formData.customStandard}
+                    onChange={handleChange}
+                    placeholder="e.g. Client Drawing DWG-2026 / ISO 1127"
+                  />
+                  {errors.customStandard && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.customStandard}</span>}
+                </div>
+              )}
+
+              <div className="form-row">
+                <div className="form-group" style={{ flex: '2 1 180px' }}>
                   <label htmlFor="eq-quantity">
                     Required Quantity <span className="required">*</span>
                   </label>
                   <input
                     ref={isAuthenticated ? firstInputRef : null}
-                    type="text"
+                    type="number"
                     id="eq-quantity"
                     name="quantity"
+                    min="0.1"
+                    step="any"
                     value={formData.quantity}
                     onChange={handleChange}
                     required
-                    placeholder="e.g. 150 meters / 200 pcs / 1 project lot"
+                    placeholder="e.g. 50"
                   />
                   {errors.quantity && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.quantity}</span>}
                 </div>
-              </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="eq-sizes">Size / Specifications (Optional)</label>
-                  <input
-                    type="text"
-                    id="eq-sizes"
-                    name="sizes"
-                    value={formData.sizes}
+                <div className="form-group" style={{ flex: '1 1 120px' }}>
+                  <label htmlFor="eq-unit">Unit <span className="required">*</span></label>
+                  <select
+                    id="eq-unit"
+                    name="unit"
+                    value={formData.unit}
                     onChange={handleChange}
-                    placeholder="e.g. 1.0 inch OD (25.4mm) x 1.65mm wall, ASTM A270"
-                  />
+                  >
+                    {UNITS_OF_MEASUREMENT.map((u) => (
+                      <option key={u.value} value={u.value}>
+                        {u.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <div className="form-group">
+
+                <div className="form-group" style={{ flex: '3 1 200px' }}>
                   <label htmlFor="eq-location">
                     Delivery Destination <span className="required">*</span>
                   </label>

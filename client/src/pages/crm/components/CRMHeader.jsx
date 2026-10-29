@@ -7,6 +7,7 @@ export const CRMHeader = ({
   onSearchChange,
   onOpenQuickEnquiry,
   onOpenQuoteBuilder,
+  onOpenStaffAppointment,
   onExportCSV,
   onToggleMobile,
   user
@@ -103,17 +104,30 @@ export const CRMHeader = ({
             <span className="btn-text">+ New Quote</span>
           </button>
 
-          {/* Primary Action 1: Log RFQ */}
-          <button
-            type="button"
-            className="crm-btn crm-btn-primary crm-action-primary"
-            onClick={() => onOpenQuickEnquiry?.(null)}
-            title="Log new customer enquiry or RFQ"
-            aria-label="Log new customer enquiry or RFQ"
-          >
-            <CRMIcon name="plus" size={15} />
-            <span className="btn-text">+ Log RFQ</span>
-          </button>
+          {/* Primary Action 1: New Staff Appointment (in staff route for Super Admin) OR Log RFQ */}
+          {currentRoute === 'staff' && (user?.role === 'admin' || user?.role === 'superadmin') ? (
+            <button
+              type="button"
+              className="crm-btn crm-btn-primary crm-action-primary"
+              onClick={() => onOpenStaffAppointment?.()}
+              title="Appoint new staff member and configure permissions"
+              aria-label="Appoint new staff member"
+            >
+              <CRMIcon name="staff" size={15} />
+              <span className="btn-text">+ New Staff Appointment</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="crm-btn crm-btn-primary crm-action-primary"
+              onClick={() => onOpenQuickEnquiry?.(null)}
+              title="Log new customer enquiry or RFQ"
+              aria-label="Log new customer enquiry or RFQ"
+            >
+              <CRMIcon name="plus" size={15} />
+              <span className="btn-text">+ Log RFQ</span>
+            </button>
+          )}
         </div>
 
         {/* Secondary System Indicator: Live Sync */}

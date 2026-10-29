@@ -1,4 +1,5 @@
 import React from 'react';
+import { getProductModelStatus } from '../../data/modelRegistry.js';
 import SanitaryTube from './SanitaryTube.jsx';
 import SanitaryBend90 from './SanitaryBend90.jsx';
 import SanitaryBend45 from './SanitaryBend45.jsx';
@@ -16,53 +17,51 @@ import SanitaryPneumaticValve from './SanitaryPneumaticValve.jsx';
 
 /**
  * ModelSelector
- * Routes a given product definition to its matching procedural 3D model component
+ * Routes a given product to its authentic procedural 3D model component
+ * strictly governed by the centralized modelRegistry.
+ * 
+ * Critical rule: If no verified model exists for the product, returns null.
+ * NEVER renders an unrelated fallback model.
  */
 export default function ModelSelector({ product, autoRotate = true }) {
-  const modelKey = product?.model3d || '';
-  const name = (product?.name || '').toLowerCase();
-  const cat = (product?.categorySlug || '').toLowerCase();
+  const modelInfo = getProductModelStatus(product);
 
-  if (modelKey === 'SanitaryBend90' || name.includes('90° bend') || name.includes('90 bend')) {
-    return <SanitaryBend90 autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryBend45' || name.includes('45° bend') || name.includes('45 bend')) {
-    return <SanitaryBend45 autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryEqualTee' || name.includes('equal tee')) {
-    return <SanitaryEqualTee autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryReducingTee' || name.includes('reducing tee')) {
-    return <SanitaryReducingTee autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'ConcentricReducer' || name.includes('concentric reducer')) {
-    return <ConcentricReducer autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'EccentricReducer' || name.includes('eccentric reducer')) {
-    return <EccentricReducer autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'TriClampClamp' || name.includes('heavy duty clamp') || name.includes('tc clamp')) {
-    return <TriClampClamp autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'TriClampFerrule' || name.includes('ferrule')) {
-    return <TriClampFerrule autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryButterflyValve' || name.includes('butterfly valve')) {
-    return <SanitaryButterflyValve autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryDiaphragmValve' || name.includes('diaphragm valve')) {
-    return <SanitaryDiaphragmValve autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryPneumaticValve' || name.includes('pneumatic')) {
-    return <SanitaryPneumaticValve autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryBallValve' || name.includes('ball valve')) {
-    return <SanitaryBallValve autoRotate={autoRotate} />;
-  }
-  if (modelKey === 'SanitaryCheckValve' || name.includes('check valve') || name.includes('non-return')) {
-    return <SanitaryCheckValve autoRotate={autoRotate} />;
+  if (modelInfo.status === 'unavailable' || !modelInfo.component) {
+    return null;
   }
 
-  // Default to SanitaryTube for pipes or general fittings
-  return <SanitaryTube autoRotate={autoRotate} />;
+  const component = modelInfo.component;
+
+  switch (component) {
+    case 'SanitaryBend90':
+      return <SanitaryBend90 autoRotate={autoRotate} />;
+    case 'SanitaryBend45':
+      return <SanitaryBend45 autoRotate={autoRotate} />;
+    case 'SanitaryTube':
+      return <SanitaryTube autoRotate={autoRotate} />;
+    case 'SanitaryEqualTee':
+      return <SanitaryEqualTee autoRotate={autoRotate} />;
+    case 'SanitaryReducingTee':
+      return <SanitaryReducingTee autoRotate={autoRotate} />;
+    case 'ConcentricReducer':
+      return <ConcentricReducer autoRotate={autoRotate} />;
+    case 'EccentricReducer':
+      return <EccentricReducer autoRotate={autoRotate} />;
+    case 'TriClampFerrule':
+      return <TriClampFerrule autoRotate={autoRotate} />;
+    case 'TriClampClamp':
+      return <TriClampClamp autoRotate={autoRotate} />;
+    case 'SanitaryButterflyValve':
+      return <SanitaryButterflyValve autoRotate={autoRotate} />;
+    case 'SanitaryBallValve':
+      return <SanitaryBallValve autoRotate={autoRotate} />;
+    case 'SanitaryPneumaticValve':
+      return <SanitaryPneumaticValve autoRotate={autoRotate} />;
+    case 'SanitaryDiaphragmValve':
+      return <SanitaryDiaphragmValve autoRotate={autoRotate} />;
+    case 'SanitaryCheckValve':
+      return <SanitaryCheckValve autoRotate={autoRotate} />;
+    default:
+      return null;
+  }
 }

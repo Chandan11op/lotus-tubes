@@ -54,6 +54,34 @@ const enquirySchema = new mongoose.Schema(
       type: String,
       default: 'SS 316L'
     },
+    materialGrade: {
+      type: String,
+      default: 'SS 316L'
+    },
+    productType: {
+      type: String,
+      default: ''
+    },
+    nominalSize: {
+      type: String,
+      default: ''
+    },
+    outsideDiameter: {
+      type: String,
+      default: ''
+    },
+    wallThickness: {
+      type: String,
+      default: ''
+    },
+    standard: {
+      type: String,
+      default: ''
+    },
+    unit: {
+      type: String,
+      default: 'Meter'
+    },
     quantity: {
       type: String,
       required: true,
@@ -66,6 +94,10 @@ const enquirySchema = new mongoose.Schema(
     finish: {
       type: String,
       default: ''
+    },
+    customSpecifications: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null
     },
     notes: {
       type: String,

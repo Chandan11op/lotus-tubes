@@ -13,7 +13,11 @@ import {
   getQuotes,
   createFormalQuote,
   updateQuote,
-  sendQuoteByEmail
+  sendQuoteByEmail,
+  submitForApproval,
+  approveQuote,
+  requestChangesQuote,
+  rejectQuote
 } from '../controllers/quoteController.js';
 import {
   registerCustomer,
@@ -23,7 +27,11 @@ import {
   getMyQuotations,
   getStaffUsers,
   createStaffUser,
-  updateStaffUser
+  updateStaffUser,
+  changeStaffPassword,
+  forgotStaffPassword,
+  resetStaffPasswordWithOtp,
+  getAuditLogs
 } from '../controllers/authController.js';
 import {
   getCustomers,
@@ -60,18 +68,22 @@ router.get('/health', getHealth);
 router.post('/auth/customer/register', authLimiter, registerCustomer);
 router.post('/auth/customer/login', authLimiter, loginCustomer);
 
-// Staff Authentication (rate limited)
+// Staff Authentication & Password Security (rate limited)
 router.post('/auth/staff/login', authLimiter, loginStaff);
+router.post('/auth/staff/change-password', authenticate, requireStaff, changeStaffPassword);
+router.post('/auth/staff/forgot-password', authLimiter, forgotStaffPassword);
+router.post('/auth/staff/reset-password-otp', authLimiter, resetStaffPasswordWithOtp);
 
 // Authenticated User Profile & Quotations
 router.get('/auth/me', authenticate, getMe);
 router.get('/auth/my-quotes', authenticate, getMyQuotations);
 router.get('/auth/my-quotations', authenticate, getMyQuotations);
 
-// Super Admin Staff Management
+// Super Admin Staff Management & Security Audit
 router.get('/users/staff', authenticate, requireSuperAdmin, getStaffUsers);
 router.post('/users/staff', authenticate, requireSuperAdmin, createStaffUser);
 router.patch('/users/staff/:id', authenticate, requireSuperAdmin, updateStaffUser);
+router.get('/audit-logs', authenticate, requireSuperAdmin, getAuditLogs);
 
 // Product Enquiries (Quick RFQ)
 router.post('/enquiries', publicFormLimiter, optionalAuth, requireTurnstileForAnonymous, validateEnquiry, createEnquiry);
@@ -85,6 +97,10 @@ router.post('/quotes', publicFormLimiter, optionalAuth, requireTurnstileForAnony
 router.get('/quotes', authenticate, requireStaff, getQuotes);
 router.post('/quotes/formal', authenticate, requireStaff, createFormalQuote);
 router.patch('/quotes/:id', authenticate, requireStaff, updateQuote);
+router.post('/quotes/:id/submit-approval', authenticate, requireStaff, submitForApproval);
+router.post('/quotes/:id/approve', authenticate, requireSuperAdmin, approveQuote);
+router.post('/quotes/:id/request-changes', authenticate, requireSuperAdmin, requestChangesQuote);
+router.post('/quotes/:id/reject', authenticate, requireSuperAdmin, rejectQuote);
 router.post('/quotes/:id/send-email', authenticate, requireStaff, sendQuoteByEmail);
 
 // Customer Management (Staff CRM)

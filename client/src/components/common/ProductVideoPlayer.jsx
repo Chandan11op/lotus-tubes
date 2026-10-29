@@ -2,12 +2,13 @@ import React, { useState, useRef } from 'react';
 
 /**
  * Accessible Video Viewer for Technical Overviews & Process Visualizations
- * Supports custom controls, mobile responsiveness, and clear distinction between genuine test footage vs illustrative 3D models.
+ * Supports custom controls, mobile responsiveness, and strict validation.
+ * Never displays dummy fallback video if no genuine video is supplied.
  */
 export const ProductVideoPlayer = ({
   src,
   poster,
-  title = 'Sanitary Component Video Inspection',
+  title = 'Sanitary Component Video',
   isIllustrative = false,
   captionsSrc = null
 }) => {
@@ -15,6 +16,10 @@ export const ProductVideoPlayer = ({
   const [isMuted, setIsMuted] = useState(true);
   const [playbackError, setPlaybackError] = useState(false);
   const videoRef = useRef(null);
+
+  if (!src) {
+    return null;
+  }
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -60,14 +65,14 @@ export const ProductVideoPlayer = ({
           letterSpacing: '0.5px'
         }}
       >
-        {isIllustrative ? '📐 3D PROCESS VISUALIZATION (ILLUSTRATIVE)' : '📹 TECHNICAL INSPECTION VIDEO'}
+        {isIllustrative ? '📐 3D PROCESS VISUALIZATION' : '📹 FACTORY INSPECTION FOOTAGE'}
       </div>
 
       <div style={{ position: 'relative', paddingTop: '56.25%', background: '#000' }}>
         <video
           ref={videoRef}
-          src={src || '/assets/videos/pipes-360-sample.webm'}
-          poster={poster || '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg'}
+          src={src}
+          poster={poster}
           playsInline
           muted={isMuted}
           controls
@@ -90,7 +95,7 @@ export const ProductVideoPlayer = ({
         </video>
       </div>
 
-      {/* Footer Disclaimer & Context */}
+      {/* Footer Context */}
       <div
         style={{
           padding: '12px 16px',
@@ -109,11 +114,11 @@ export const ProductVideoPlayer = ({
           <strong style={{ color: '#F1F5F9' }}>{title}</strong>
           {isIllustrative ? (
             <span style={{ display: 'block', fontSize: '11px', color: '#D97706', marginTop: '2px' }}>
-              Notice: Illustrative process model depicting internal fluid laminar flow and weld bead finishing. Not an owned factory representation.
+              Notice: Illustrative process animation.
             </span>
           ) : (
-            <span style={{ display: 'block', fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-              Lotus Tubes verification: Surface roughness measurement and cleanliness inspection.
+            <span style={{ display: 'block', fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>
+              Technical Product Video Overview
             </span>
           )}
         </div>

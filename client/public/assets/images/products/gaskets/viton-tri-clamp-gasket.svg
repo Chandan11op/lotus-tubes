@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450" role="img" aria-label="Viton (FKM) Tri-Clamp Sanitary Gasket">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="50%" stop-color="#EEF2F6"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+
+    <!-- Viton Dark Brown/Charcoal Material Gradient -->
+    <linearGradient id="vitonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D241E"/>
+      <stop offset="50%" stop-color="#1A1512"/>
+      <stop offset="100%" stop-color="#0F0C0A"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#10263D" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="600" height="450" fill="url(#cardBg)" rx="12"/>
+
+  <!-- Subtle Engineering Grid Lines -->
+  <g opacity="0.08" stroke="#10263D" stroke-width="1">
+    <line x1="0" y1="75" x2="600" y2="75"/>
+    <line x1="0" y1="150" x2="600" y2="150"/>
+    <line x1="0" y1="225" x2="600" y2="225"/>
+    <line x1="0" y1="300" x2="600" y2="300"/>
+    <line x1="0" y1="375" x2="600" y2="375"/>
+    <line x1="100" y1="0" x2="100" y2="450"/>
+    <line x1="200" y1="0" x2="200" y2="450"/>
+    <line x1="300" y1="0" x2="300" y2="450"/>
+    <line x1="400" y1="0" x2="400" y2="450"/>
+    <line x1="500" y1="0" x2="500" y2="450"/>
+  </g>
+
+  <!-- Background Ambient Brand Flare -->
+  <circle cx="530" cy="70" r="120" fill="#F00078" opacity="0.04"/>
+
+  <!-- Technical Spec Top Badge -->
+  <g transform="translate(24, 24)">
+    <rect width="170" height="26" rx="13" fill="#10263D" opacity="0.9"/>
+    <circle cx="12" cy="13" r="4" fill="#F00078"/>
+    <text x="24" y="17" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" letter-spacing="0.5">VITON (FKM) GRADE</text>
+  </g>
+
+  <!-- Graphic Centerpiece with soft shadow -->
+  <g filter="url(#softShadow)">
+    <g transform="translate(180, 80)">
+      <circle cx="120" cy="130" r="90" fill="none" stroke="url(#vitonGrad)" stroke-width="32"/>
+      <circle cx="120" cy="130" r="108" fill="none" stroke="#4A3B32" stroke-width="4"/>
+      <circle cx="120" cy="130" r="72" fill="none" stroke="#382C24" stroke-width="2"/>
+      <path d="M 60,70 A 90 90 0 0 1 180,70" fill="none" stroke="#6B5B52" stroke-width="6" opacity="0.7"/>
+    </g>
+  </g>
+
+  <!-- Bottom Details Bar -->
+  <g transform="translate(0, 382)">
+    <rect width="600" height="68" fill="#FFFFFF" opacity="0.88"/>
+    <line x1="0" y1="0" x2="600" y2="0" stroke="#E3E8EF" stroke-width="1"/>
+    
+    <!-- Brand Mark Indicator -->
+    <rect x="24" y="24" width="4" height="20" rx="2" fill="#F00078"/>
+    
+    <text x="36" y="34" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#10263D">
+      Viton (FKM) Tri-Clamp Sanitary Gasket
+    </text>
+    <text x="36" y="52" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" fill="#667085">
+      Fluorocarbon Elastomer • High Temp &amp; Chemical Resistance • FDA 21 CFR
+    </text>
+
+    <!-- Verified Stamp Tag -->
+    <g transform="translate(490, 20)">
+      <rect width="86" height="24" rx="4" fill="#F4F6F8" stroke="#E3E8EF"/>
+      <text x="43" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9.5" font-weight="700" fill="#F00078" text-anchor="middle">
+        VERIFIED MTC
+      </text>
+    </g>
+  </g>
+</svg>
+

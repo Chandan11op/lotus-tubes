@@ -1,10 +1,11 @@
-import { Quote } from '../models/Quote.js';
+import { Quote, computeQuotationApprovalHash } from '../models/Quote.js';
 import { Customer } from '../models/Customer.js';
 import { Enquiry } from '../models/Enquiry.js';
 import { sendEmail } from '../services/emailService.js';
 import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
+import { recordAuditEvent } from '../utils/auditLogger.js';
 
 /**
  * Public detailed RFQ / BOQ Quote Request Submission
@@ -24,21 +25,34 @@ export const submitQuote = async (req, res, next) => {
       finishRequired,
       boqSummary,
       timeline,
-      lineItems
+      lineItems,
+      // Rich specifications
+      nominalSize,
+      outsideDiameter,
+      wallThickness,
+      standard,
+      unit,
+      quantity
     } = req.body;
 
     const reference = generateReference('LT-BOQ');
     const quotationNumber = generateReference('LT-QT');
-    const safeName = sanitizeText(name, 100);
-    const safeCompany = sanitizeText(company, 120);
-    const safeEmail = (email || '').toLowerCase().trim();
-    const safePhone = sanitizeText(phone, 30);
+
+    // Anti-spoofing: if customer is authenticated, lock identity to verified session account
+    const safeName = sanitizeText(req.user?.name || name, 100);
+    const safeCompany = sanitizeText(req.user?.company || company, 120);
+    const safeEmail = (req.user?.email || email || '').toLowerCase().trim();
+    const safePhone = sanitizeText(req.user?.phone || phone, 30);
     const safeLocation = sanitizeText(location || '', 120);
     const safeProjectType = sanitizeText(projectType || 'Sanitary Piping Project', 100);
     const safeGrade = sanitizeText(materialGrade || 'SS 316L', 50);
     const safeFinish = sanitizeText(finishRequired || 'Electro Polished (EP)', 50);
     const safeBoqSummary = sanitizeText(boqSummary || '', 3000);
     const safeTimeline = sanitizeText(timeline || 'Standard (1-2 Weeks)', 60);
+
+    if (!safeName || !safeCompany || !safeEmail) {
+      return errorResponse(res, 'Customer name, company, and valid email address are required', 400);
+    }
 
     // Link or create Customer
     let customer = await Customer.findOne({ email: safeEmail });
@@ -67,10 +81,15 @@ export const submitQuote = async (req, res, next) => {
           productId: item.productId || '',
           description: sanitizeText(item.description || 'Sanitary Component', 150),
           grade: sanitizeText(item.grade || safeGrade, 50),
-          size: sanitizeText(item.size || '', 50),
+          size: sanitizeText(item.size || nominalSize || '', 50),
+          nominalSize: sanitizeText(item.nominalSize || nominalSize || '', 50),
+          outsideDiameter: sanitizeText(item.outsideDiameter || outsideDiameter || '', 50),
+          wallThickness: sanitizeText(item.wallThickness || wallThickness || '', 50),
+          standard: sanitizeText(item.standard || standard || '', 80),
+          productType: sanitizeText(item.productType || safeProjectType, 80),
           finish: sanitizeText(item.finish || safeFinish, 50),
           quantity: qty,
-          unit: sanitizeText(item.unit || 'Pcs', 20),
+          unit: sanitizeText(item.unit || unit || 'Pcs', 20),
           unitPrice: price,
           taxPercent: 18,
           lineTotal: total
@@ -78,12 +97,28 @@ export const submitQuote = async (req, res, next) => {
       });
     } else {
       // Default line item from project summary
+      const specDesc = [
+        safeProjectType,
+        safeGrade,
+        nominalSize ? `${nominalSize} (${outsideDiameter || ''})` : '',
+        wallThickness ? `x ${wallThickness}` : '',
+        standard ? `[${standard}]` : '',
+        `(${safeFinish})`
+      ]
+        .filter(Boolean)
+        .join(' ');
+
       items.push({
-        description: `${safeProjectType} - ${safeGrade} (${safeFinish})`,
+        description: specDesc,
         grade: safeGrade,
+        nominalSize: sanitizeText(nominalSize || '', 50),
+        outsideDiameter: sanitizeText(outsideDiameter || '', 50),
+        wallThickness: sanitizeText(wallThickness || '', 50),
+        standard: sanitizeText(standard || '', 80),
+        productType: safeProjectType,
         finish: safeFinish,
-        quantity: 1,
-        unit: 'Lot',
+        quantity: Number(quantity) || 1,
+        unit: sanitizeText(unit || 'Lot', 20),
         unitPrice: 0,
         taxPercent: 18,
         lineTotal: 0
@@ -107,6 +142,7 @@ export const submitQuote = async (req, res, next) => {
       grandTotal,
       leadTime: safeTimeline,
       status: 'Received',
+      approvalStatus: 'draft',
       customerId: customer._id,
       createdBy: req.user?.id || null,
       internalNotes: `Public BOQ Request. Customer Requirements: ${safeBoqSummary}`,
@@ -117,6 +153,16 @@ export const submitQuote = async (req, res, next) => {
           note: `Customer submitted detailed BOQ request`
         }
       ]
+    });
+
+    await recordAuditEvent({
+      actor: req.user || { name: safeName, email: safeEmail, role: 'customer' },
+      action: 'RFQ_CREATED',
+      targetType: 'Quote',
+      targetId: newQuote._id,
+      targetRef: reference,
+      metadata: { quotationNumber, customerCompany: safeCompany, lineItemCount: items.length },
+      ip: req.ip
     });
 
     // Send confirmation email to client with escaped HTML
@@ -135,11 +181,14 @@ export const submitQuote = async (req, res, next) => {
           <div style="background: #F8FAFC; border: 1px solid #E3E8EF; border-radius: 6px; padding: 16px; margin: 20px 0;">
             <p style="margin: 4px 0;"><strong>Project Type:</strong> ${escapeHtml(safeProjectType)}</p>
             <p style="margin: 4px 0;"><strong>Material Grade:</strong> ${escapeHtml(safeGrade)}</p>
+            ${nominalSize ? `<p style="margin: 4px 0;"><strong>Size:</strong> ${escapeHtml(nominalSize)} (${escapeHtml(outsideDiameter || '')})</p>` : ''}
+            ${wallThickness ? `<p style="margin: 4px 0;"><strong>Wall Thickness:</strong> ${escapeHtml(wallThickness)}</p>` : ''}
+            ${standard ? `<p style="margin: 4px 0;"><strong>Requested Standard:</strong> ${escapeHtml(standard)}</p>` : ''}
             <p style="margin: 4px 0;"><strong>Surface Finish:</strong> ${escapeHtml(safeFinish)}</p>
             <p style="margin: 4px 0;"><strong>Delivery Timeline:</strong> ${escapeHtml(safeTimeline)}</p>
           </div>
 
-          <p>Our sales engineering team in Mumbai is reviewing your bill of materials and will issue your formal priced commercial quotation shortly.</p>
+          <p>Our sales engineering team in Mumbai is reviewing your bill of materials and will issue your formal priced commercial quotation upon Super Admin authorization.</p>
           <p style="font-size: 13px; color: #64748B;">
             Sales Desk: +91 99304 30789 | Email: sales@lotustubes.com
           </p>
@@ -176,11 +225,14 @@ export const submitQuote = async (req, res, next) => {
 export const getQuotes = async (req, res, next) => {
   try {
     assertDatabaseConnected();
-    const { status, search, page = 1, limit = 50 } = req.query;
+    const { status, approvalStatus, search, page = 1, limit = 50 } = req.query;
 
     const query = {};
     if (status && status !== 'All') {
       query.status = status;
+    }
+    if (approvalStatus && approvalStatus !== 'All') {
+      query.approvalStatus = approvalStatus;
     }
     if (search) {
       const q = search.trim();
@@ -197,6 +249,8 @@ export const getQuotes = async (req, res, next) => {
     const [quotes, total] = await Promise.all([
       Quote.find(query)
         .populate('assignedTo', 'name email')
+        .populate('approvedBy', 'name email role')
+        .populate('submittedBy', 'name email')
         .populate('customerId', 'name company customerTier')
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -262,8 +316,13 @@ export const createFormalQuote = async (req, res, next) => {
       return {
         productId: item.productId || '',
         description: item.description,
-        grade: item.grade || 'SS 316L',
-        size: item.size || '',
+        grade: item.grade || item.materialGrade || 'SS 316L',
+        nominalSize: item.nominalSize || '',
+        outsideDiameter: item.outsideDiameter || '',
+        wallThickness: item.wallThickness || '',
+        standard: item.standard || '',
+        productType: item.productType || '',
+        size: item.size || item.nominalSize || '',
         finish: item.finish || 'Electro Polished',
         quantity: qty,
         unit: item.unit || 'Pcs',
@@ -305,6 +364,7 @@ export const createFormalQuote = async (req, res, next) => {
       leadTime: leadTime || 'Ex-stock 24-48h; manufactured items 7-10 days',
       deliveryTerms: deliveryTerms || 'Ex-Works Mumbai / Door Delivery at Actuals',
       status: 'Draft',
+      approvalStatus: 'draft',
       enquiryId: enquiryId || null,
       customerId: customerId || null,
       createdBy: req.user?.id || null,
@@ -318,6 +378,16 @@ export const createFormalQuote = async (req, res, next) => {
       ]
     });
 
+    await recordAuditEvent({
+      actor: req.user,
+      action: 'QUOTATION_DRAFTED',
+      targetType: 'Quote',
+      targetId: quote._id,
+      targetRef: quotationNumber,
+      metadata: { grandTotal, customerName, company },
+      ip: req.ip
+    });
+
     return successResponse(res, quote, 'Formal quotation drafted successfully', 201);
   } catch (error) {
     next(error);
@@ -325,7 +395,199 @@ export const createFormalQuote = async (req, res, next) => {
 };
 
 /**
+ * Staff CRM: Submit quotation for Super Admin approval
+ */
+export const submitForApproval = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { id } = req.params;
+    const quote = await Quote.findById(id);
+    if (!quote) {
+      return errorResponse(res, 'Quotation not found', 404);
+    }
+
+    if (quote.status === 'Approved' && quote.approvalStatus === 'approved') {
+      return errorResponse(res, 'Quotation is already approved by the Super Admin', 400);
+    }
+
+    quote.status = 'Pending Approval';
+    quote.approvalStatus = 'pending';
+    quote.submittedForApprovalAt = new Date();
+    quote.submittedBy = req.user?.id || null;
+    quote.submittedByName = req.user?.name || 'Sales Staff';
+
+    quote.activityLog.push({
+      action: 'Submitted for Approval',
+      performedBy: req.user?.name || 'Sales Staff',
+      note: `Quotation submitted for Super Admin review & approval`
+    });
+
+    await quote.save();
+
+    await recordAuditEvent({
+      actor: req.user,
+      action: 'QUOTATION_SUBMITTED_FOR_APPROVAL',
+      targetType: 'Quote',
+      targetId: quote._id,
+      targetRef: quote.quotationNumber,
+      metadata: { grandTotal: quote.grandTotal, submittedBy: req.user?.name },
+      ip: req.ip
+    });
+
+    return successResponse(res, quote, 'Quotation successfully submitted for Super Admin approval');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Super Admin: Approve quotation
+ * Mandatory rule: Only Super Admin can approve. Generates SHA-256 approvalHash.
+ */
+export const approveQuote = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { id } = req.params;
+    const quote = await Quote.findById(id);
+    if (!quote) {
+      return errorResponse(res, 'Quotation not found', 404);
+    }
+
+    // Compute cryptographic integrity hash
+    const hash = computeQuotationApprovalHash(quote);
+
+    quote.status = 'Approved';
+    quote.approvalStatus = 'approved';
+    quote.approvedBy = req.user.id;
+    quote.approvedByName = req.user.name || 'Super Admin';
+    quote.approvedAt = new Date();
+    quote.approvalHash = hash;
+    quote.rejectionReason = '';
+    quote.changesRequestedNotes = '';
+
+    quote.activityLog.push({
+      action: 'Super Admin Approved',
+      performedBy: req.user.name || 'Super Admin',
+      note: `Quotation authorized and approved for commercial release (Hash: ${hash.slice(0, 10)}...)`
+    });
+
+    await quote.save();
+
+    await recordAuditEvent({
+      actor: req.user,
+      action: 'QUOTATION_APPROVED',
+      targetType: 'Quote',
+      targetId: quote._id,
+      targetRef: quote.quotationNumber,
+      metadata: { grandTotal: quote.grandTotal, approver: req.user.name, hash: hash.slice(0, 16) },
+      ip: req.ip
+    });
+
+    return successResponse(res, quote, 'Quotation explicitly approved by Super Admin');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Super Admin: Request changes on quotation
+ */
+export const requestChangesQuote = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { id } = req.params;
+    const { notes } = req.body;
+
+    if (!notes || !notes.trim()) {
+      return errorResponse(res, 'Please provide the specific changes or revisions requested', 400);
+    }
+
+    const quote = await Quote.findById(id);
+    if (!quote) {
+      return errorResponse(res, 'Quotation not found', 404);
+    }
+
+    quote.status = 'Changes Requested';
+    quote.approvalStatus = 'changes_requested';
+    quote.changesRequestedNotes = notes.trim();
+    quote.approvedBy = null;
+    quote.approvedByName = '';
+    quote.approvedAt = null;
+    quote.approvalHash = null;
+
+    quote.activityLog.push({
+      action: 'Changes Requested',
+      performedBy: req.user?.name || 'Super Admin',
+      note: `Revisions requested by Super Admin: "${notes.trim()}"`
+    });
+
+    await quote.save();
+
+    await recordAuditEvent({
+      actor: req.user,
+      action: 'QUOTATION_CHANGES_REQUESTED',
+      targetType: 'Quote',
+      targetId: quote._id,
+      targetRef: quote.quotationNumber,
+      metadata: { reason: notes.trim(), grandTotal: quote.grandTotal },
+      ip: req.ip
+    });
+
+    return successResponse(res, quote, 'Revision request recorded and sent back to sales staff');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Super Admin: Reject quotation
+ */
+export const rejectQuote = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    const quote = await Quote.findById(id);
+    if (!quote) {
+      return errorResponse(res, 'Quotation not found', 404);
+    }
+
+    quote.status = 'Rejected';
+    quote.approvalStatus = 'rejected';
+    quote.rejectionReason = reason ? reason.trim() : 'Rejected by Super Admin';
+    quote.approvedBy = null;
+    quote.approvedByName = '';
+    quote.approvedAt = null;
+    quote.approvalHash = null;
+
+    quote.activityLog.push({
+      action: 'Super Admin Rejected',
+      performedBy: req.user?.name || 'Super Admin',
+      note: `Quotation rejected: "${quote.rejectionReason}"`
+    });
+
+    await quote.save();
+
+    await recordAuditEvent({
+      actor: req.user,
+      action: 'QUOTATION_REJECTED',
+      targetType: 'Quote',
+      targetId: quote._id,
+      targetRef: quote.quotationNumber,
+      metadata: { reason: quote.rejectionReason, grandTotal: quote.grandTotal },
+      ip: req.ip
+    });
+
+    return successResponse(res, quote, 'Quotation rejected');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Staff CRM: Update quotation (pricing, line items, status)
+ * Enforces rule: if modified after approval, approval is invalidated!
  */
 export const updateQuote = async (req, res, next) => {
   try {
@@ -337,22 +599,24 @@ export const updateQuote = async (req, res, next) => {
     }
 
     const { status, internalNotes, lineItems, paymentTerms, leadTime, deliveryTerms } = req.body;
-
-    if (status && status !== quote.status) {
-      quote.activityLog.push({
-        action: 'Status Change',
-        performedBy: req.user?.name || 'Staff',
-        note: `Status changed from ${quote.status} to ${status}`
-      });
-      quote.status = status;
-    }
+    let modifiedCommercials = false;
 
     if (internalNotes !== undefined) quote.internalNotes = internalNotes;
-    if (paymentTerms) quote.paymentTerms = paymentTerms;
-    if (leadTime) quote.leadTime = leadTime;
-    if (deliveryTerms) quote.deliveryTerms = deliveryTerms;
+    if (paymentTerms && paymentTerms !== quote.paymentTerms) {
+      quote.paymentTerms = paymentTerms;
+      modifiedCommercials = true;
+    }
+    if (leadTime && leadTime !== quote.leadTime) {
+      quote.leadTime = leadTime;
+      modifiedCommercials = true;
+    }
+    if (deliveryTerms && deliveryTerms !== quote.deliveryTerms) {
+      quote.deliveryTerms = deliveryTerms;
+      modifiedCommercials = true;
+    }
 
     if (Array.isArray(lineItems) && lineItems.length > 0) {
+      modifiedCommercials = true;
       quote.version = (quote.version || 1) + 1;
       let subtotal = 0;
       quote.lineItems = lineItems.map((item) => {
@@ -364,8 +628,13 @@ export const updateQuote = async (req, res, next) => {
         return {
           productId: item.productId || '',
           description: item.description,
-          grade: item.grade || 'SS 316L',
-          size: item.size || '',
+          grade: item.grade || item.materialGrade || 'SS 316L',
+          size: item.size || item.nominalSize || '',
+          nominalSize: item.nominalSize || '',
+          outsideDiameter: item.outsideDiameter || '',
+          wallThickness: item.wallThickness || '',
+          standard: item.standard || '',
+          productType: item.productType || '',
           finish: item.finish || 'Electro Polished',
           quantity: qty,
           unit: item.unit || 'Pcs',
@@ -385,6 +654,45 @@ export const updateQuote = async (req, res, next) => {
       });
     }
 
+    // Invalidation check: If commercial terms change on an Approved quotation, revoke approval!
+    if (modifiedCommercials && (quote.status === 'Approved' || quote.approvalStatus === 'approved')) {
+      quote.status = 'Draft';
+      quote.approvalStatus = 'draft';
+      quote.approvedBy = null;
+      quote.approvedByName = '';
+      quote.approvedAt = null;
+      quote.approvalHash = null;
+
+      quote.activityLog.push({
+        action: 'Approval Invalidated',
+        performedBy: req.user?.name || 'Staff',
+        note: 'Super Admin approval invalidated due to modification of commercial line items/terms. Re-approval required.'
+      });
+
+      await recordAuditEvent({
+        actor: req.user,
+        action: 'QUOTATION_APPROVAL_INVALIDATED',
+        targetType: 'Quote',
+        targetId: quote._id,
+        targetRef: quote.quotationNumber,
+        metadata: { reason: 'Line items or commercial terms edited after approval' },
+        ip: req.ip
+      });
+    }
+
+    if (status && status !== quote.status) {
+      // Prevent non-admin from setting status to Approved
+      if (status === 'Approved' && req.user?.role !== 'admin') {
+        return errorResponse(res, 'FORBIDDEN: Only Super Admin can set status to Approved', 403);
+      }
+      quote.activityLog.push({
+        action: 'Status Change',
+        performedBy: req.user?.name || 'Staff',
+        note: `Status changed from ${quote.status} to ${status}`
+      });
+      quote.status = status;
+    }
+
     await quote.save();
     return successResponse(res, quote, 'Quotation updated successfully');
   } catch (error) {
@@ -394,6 +702,7 @@ export const updateQuote = async (req, res, next) => {
 
 /**
  * Staff CRM: Send quotation by email to customer
+ * STRICT BUSINESS RULE: Cannot be sent until explicitly approved by Super Admin!
  */
 export const sendQuoteByEmail = async (req, res, next) => {
   try {
@@ -404,6 +713,51 @@ export const sendQuoteByEmail = async (req, res, next) => {
       return errorResponse(res, 'Quotation not found', 404);
     }
 
+    // MANDATORY BACKEND CHECK 1: Must be explicitly approved
+    if (quote.status !== 'Approved' || quote.approvalStatus !== 'approved') {
+      await recordAuditEvent({
+        actor: req.user,
+        action: 'UNAUTHORIZED_DISPATCH_BLOCKED',
+        targetType: 'Quote',
+        targetId: quote._id,
+        targetRef: quote.quotationNumber,
+        metadata: { attemptedStatus: quote.status, reason: 'Quotation has not been approved by the Super Admin' },
+        ip: req.ip
+      });
+
+      return errorResponse(
+        res,
+        'FORBIDDEN: Critical Security Rule — No quotation may be sent to a customer until the Super Admin has explicitly approved it.',
+        403
+      );
+    }
+
+    // MANDATORY BACKEND CHECK 2: Approval hash integrity verification
+    const currentHash = computeQuotationApprovalHash(quote);
+    if (quote.approvalHash && currentHash !== quote.approvalHash) {
+      quote.status = 'Draft';
+      quote.approvalStatus = 'draft';
+      quote.approvalHash = null;
+      quote.approvedBy = null;
+      await quote.save();
+
+      await recordAuditEvent({
+        actor: req.user,
+        action: 'QUOTATION_APPROVAL_INVALIDATED',
+        targetType: 'Quote',
+        targetId: quote._id,
+        targetRef: quote.quotationNumber,
+        metadata: { reason: 'Quotation content altered after approval' },
+        ip: req.ip
+      });
+
+      return errorResponse(
+        res,
+        'FORBIDDEN: Quotation content was modified after approval. Approval has been revoked. Please submit for Super Admin re-approval.',
+        403
+      );
+    }
+
     const itemsRows = quote.lineItems
       .map(
         (it, idx) => `
@@ -411,7 +765,12 @@ export const sendQuoteByEmail = async (req, res, next) => {
           <td style="padding: 10px; font-size: 13px;">${idx + 1}</td>
           <td style="padding: 10px; font-size: 13px;">
             <strong>${escapeHtml(it.description)}</strong><br>
-            <span style="color: #64748B; font-size: 11px;">Grade: ${escapeHtml(it.grade)} | Finish: ${escapeHtml(it.finish)} | Size: ${escapeHtml(it.size || 'Standard')}</span>
+            <span style="color: #64748B; font-size: 11px;">
+              Grade: ${escapeHtml(it.grade)} | Finish: ${escapeHtml(it.finish)}
+              ${it.nominalSize ? ` | Size: ${escapeHtml(it.nominalSize)} (${escapeHtml(it.outsideDiameter || '')})` : ''}
+              ${it.wallThickness ? ` | Wall: ${escapeHtml(it.wallThickness)}` : ''}
+              ${it.standard ? ` | Std: ${escapeHtml(it.standard)}` : ''}
+            </span>
           </td>
           <td style="padding: 10px; font-size: 13px; text-align: center;">${it.quantity} ${escapeHtml(it.unit)}</td>
           <td style="padding: 10px; font-size: 13px; text-align: right;">${quote.currency} ${Number(it.unitPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
@@ -494,14 +853,28 @@ export const sendQuoteByEmail = async (req, res, next) => {
 
     quote.emailStatus = sendRes.delivered ? 'sent' : 'failed';
     quote.status = 'Sent';
+    quote.sentAt = new Date();
+    quote.sentBy = req.user?.id || null;
+
     quote.activityLog.push({
       action: 'Dispatched',
       performedBy: req.user?.name || 'Staff',
-      note: `Quotation sent via email to ${quote.email} (Status: ${quote.emailStatus})`
+      note: `Approved quotation sent via email to ${quote.email} (Status: ${quote.emailStatus})`
     });
 
     await quote.save();
-    return successResponse(res, { quote, emailStatus: quote.emailStatus }, 'Quotation dispatched via email successfully');
+
+    await recordAuditEvent({
+      actor: req.user,
+      action: sendRes.delivered ? 'QUOTATION_DISPATCHED' : 'EMAIL_DISPATCH_FAILED',
+      targetType: 'Quote',
+      targetId: quote._id,
+      targetRef: quote.quotationNumber,
+      metadata: { recipient: quote.email, emailStatus: quote.emailStatus },
+      ip: req.ip
+    });
+
+    return successResponse(res, { quote, emailStatus: quote.emailStatus }, 'Approved quotation dispatched via email successfully');
   } catch (error) {
     next(error);
   }

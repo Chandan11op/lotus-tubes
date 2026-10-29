@@ -59,6 +59,47 @@ const userSchema = new mongoose.Schema(
       trim: true,
       default: ''
     },
+    contactNumber: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    designation: {
+      type: String,
+      trim: true,
+      default: 'Sales Executive'
+    },
+    dateOfBirth: {
+      type: Date,
+      default: null
+    },
+    mustChangePassword: {
+      type: Boolean,
+      default: false
+    },
+    passwordChangedAt: {
+      type: Date,
+      default: null
+    },
+    lastLoginAt: {
+      type: Date,
+      default: null
+    },
+    resetPasswordOtpHash: {
+      type: String,
+      select: false,
+      default: null
+    },
+    resetPasswordOtpExpiresAt: {
+      type: Date,
+      select: false,
+      default: null
+    },
+    resetPasswordOtpAttempts: {
+      type: Number,
+      select: false,
+      default: 0
+    },
     country: {
       type: String,
       trim: true,

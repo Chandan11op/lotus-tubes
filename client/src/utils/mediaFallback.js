@@ -6,12 +6,12 @@
 
 export const CATEGORY_FALLBACK_MAP = {
   'sanitary-pipes': '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg',
-  'sanitary-fittings': '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-001.jpg',
-  'tri-clamp': '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
-  'gaskets': '/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg',
-  'manual-valves': '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
-  'pneumatic-valves': '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-001.jpg',
-  'tank-cleaning': '/assets/images/products/manholes-and-tank-accessories/ss-sanitary-round-tank-manhole-cover-001.jpg',
+  'sanitary-fittings': '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg',
+  'tri-clamp': '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg',
+  'gaskets': '/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
+  'manual-valves': '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg',
+  'pneumatic-valves': '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg',
+  'tank-cleaning': '/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg',
   'custom-assemblies': '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg'
 };
 
@@ -28,31 +28,31 @@ export const getCategoryFallbackImage = (categorySlug, name = '') => {
   }
   const lower = name.toLowerCase();
   if (lower.includes('bend') || lower.includes('elbow')) {
-    return '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-001.jpg';
+    return '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg';
   }
   if (lower.includes('tee')) {
-    return '/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-001.jpg';
+    return '/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg';
   }
   if (lower.includes('reducer')) {
     return '/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-001.jpg';
   }
   if (lower.includes('clamp')) {
-    return '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-001.jpg';
+    return '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-007.jpg';
   }
   if (lower.includes('ferrule')) {
-    return '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg';
+    return '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg';
   }
   if (lower.includes('union')) {
     return '/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg';
   }
   if (lower.includes('butterfly')) {
-    return '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg';
+    return '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg';
   }
   if (lower.includes('diaphragm')) {
     return '/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-001.jpg';
   }
   if (lower.includes('ball')) {
-    return '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg';
+    return '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-006.jpg';
   }
   if (lower.includes('check') || lower.includes('non-return')) {
     return '/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg';

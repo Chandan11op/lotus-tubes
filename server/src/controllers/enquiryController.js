@@ -5,28 +5,59 @@ import { sendWhatsAppQuotation } from '../services/whatsappService.js';
 import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
+import { recordAuditEvent } from '../utils/auditLogger.js';
 
 export const createEnquiry = async (req, res, next) => {
   try {
     assertDatabaseConnected();
 
-    const { productId, productName, grade, quantity, location, notes, finish, sizes, country, sourceChannel } = req.body;
+    const {
+      productId,
+      productName,
+      grade,
+      materialGrade,
+      productType,
+      nominalSize,
+      outsideDiameter,
+      wallThickness,
+      standard,
+      unit,
+      quantity,
+      location,
+      notes,
+      finish,
+      sizes,
+      country,
+      sourceChannel
+    } = req.body;
 
     const reference = generateReference('LT-RFQ');
     const samplePdfUrl = '/sample-quotation.pdf';
     const userId = req.user ? (req.user.id || req.user._id) : null;
-    const name = sanitizeText(req.body.name || req.user?.name || '', 100);
-    const company = sanitizeText(req.body.company || req.user?.company || '', 120);
-    const email = (req.body.email || req.user?.email || '').toLowerCase().trim();
-    const phone = sanitizeText(req.body.phone || req.user?.phone || '', 30);
+
+    // Anti-spoofing: if customer is authenticated, use trusted session details
+    const name = sanitizeText(req.user?.name || req.body.name || '', 100);
+    const company = sanitizeText(req.user?.company || req.body.company || '', 120);
+    const email = (req.user?.email || req.body.email || '').toLowerCase().trim();
+    const phone = sanitizeText(req.user?.phone || req.body.phone || '', 30);
     const safeCountry = sanitizeText(country || 'India', 50);
     const safeLocation = sanitizeText(location || 'Mumbai, Maharashtra', 120);
     const safeNotes = sanitizeText(notes || '', 1000);
-    const safeGrade = sanitizeText(grade || 'SS 316L', 50);
+    const safeGrade = sanitizeText(materialGrade || grade || 'SS 316L', 50);
     const safeFinish = sanitizeText(finish || 'Electro Polished (EP)', 50);
-    const safeSizes = sanitizeText(sizes || '', 100);
+    const safeNominalSize = sanitizeText(nominalSize || '', 50);
+    const safeOD = sanitizeText(outsideDiameter || '', 50);
+    const safeThickness = sanitizeText(wallThickness || '', 50);
+    const safeStandard = sanitizeText(standard || '', 80);
+    const safeProductType = sanitizeText(productType || '', 80);
+    const safeUnit = sanitizeText(unit || 'Meter', 20);
+    const safeSizes = sanitizeText(sizes || (safeNominalSize ? `${safeNominalSize} (${safeOD}) x ${safeThickness}` : ''), 100);
     const safeQuantity = sanitizeText(String(quantity || '1'), 50);
     const safeProductName = sanitizeText(productName || 'Sanitary Component', 120);
+
+    if (!name || !company || !email) {
+      return errorResponse(res, 'Customer name, company, and valid email are required', 400);
+    }
 
     // Link or create Customer record to prevent duplicate contacts
     let customer = await Customer.findOne({ email });
@@ -140,6 +171,13 @@ export const createEnquiry = async (req, res, next) => {
       country: safeCountry,
       location: safeLocation,
       grade: safeGrade,
+      materialGrade: safeGrade,
+      productType: safeProductType,
+      nominalSize: safeNominalSize,
+      outsideDiameter: safeOD,
+      wallThickness: safeThickness,
+      standard: safeStandard,
+      unit: safeUnit,
       quantity: safeQuantity,
       sizes: safeSizes,
       finish: safeFinish,
@@ -159,6 +197,22 @@ export const createEnquiry = async (req, res, next) => {
           performedBy: 'System'
         }
       ]
+    });
+
+    await recordAuditEvent({
+      actor: req.user || { name, email, role: 'customer' },
+      action: 'RFQ_CREATED',
+      targetType: 'Enquiry',
+      targetId: savedEnquiry._id,
+      targetRef: reference,
+      metadata: {
+        productName: safeProductName,
+        materialGrade: safeGrade,
+        nominalSize: safeNominalSize,
+        quantity: safeQuantity,
+        customerCompany: company
+      },
+      ip: req.ip
     });
 
     return successResponse(

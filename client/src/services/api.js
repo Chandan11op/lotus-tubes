@@ -250,10 +250,65 @@ export const apiService = {
     });
   },
 
+  async submitQuoteForApproval(id) {
+    return await request(`/quotes/${id}/submit-approval`, {
+      method: 'POST'
+    });
+  },
+
+  async approveQuote(id) {
+    return await request(`/quotes/${id}/approve`, {
+      method: 'POST'
+    });
+  },
+
+  async requestChangesQuote(id, notes) {
+    return await request(`/quotes/${id}/request-changes`, {
+      method: 'POST',
+      body: JSON.stringify({ notes })
+    });
+  },
+
+  async rejectQuote(id, reason) {
+    return await request(`/quotes/${id}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ reason })
+    });
+  },
+
   async sendQuoteEmail(id) {
     return await request(`/quotes/${id}/send-email`, {
       method: 'POST'
     });
+  },
+
+  /**
+   * Password & Staff Security
+   */
+  async changeStaffPassword(currentPassword, newPassword) {
+    return await request('/auth/staff/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+  },
+
+  async forgotStaffPassword(email) {
+    return await request('/auth/staff/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
+  },
+
+  async resetStaffPasswordWithOtp(email, otp, newPassword) {
+    return await request('/auth/staff/reset-password-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp, newPassword })
+    });
+  },
+
+  async getAuditLogs(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/audit-logs${query ? `?${query}` : ''}`);
   },
 
   /**

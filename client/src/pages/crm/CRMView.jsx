@@ -18,6 +18,7 @@ import { CRMTasksView } from './views/CRMTasksView';
 import { CRMProductsView } from './views/CRMProductsView';
 import { CRMStaffView } from './views/CRMStaffView';
 import { CRMReportsView } from './views/CRMReportsView';
+import { NewStaffModal } from './components/NewStaffModal';
 
 export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }) => {
   const { user, loginStaff, loginCustomer, registerCustomer, logout, isStaff } = useAuth();
@@ -57,6 +58,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
+  const [showStaffModal, setShowStaffModal] = useState(false);
   const [newNote, setNewNote] = useState('');
 
   const isSuperAdmin = user?.role === 'admin';
@@ -226,14 +228,115 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
     }
   };
 
-  // Dispatch Quotation Email
+  // Staff Appointment Handler
+  const handleCreateStaff = async (staffData) => {
+    try {
+      if (onNotify) onNotify('Appointing staff member...', 'info');
+      const res = await apiService.createStaffUser(staffData);
+      if (res.success) {
+        if (onNotify) onNotify(`Staff member ${staffData.name} appointed successfully!`, 'success');
+        loadOperationalData();
+        return res.data;
+      } else {
+        throw new Error(res.error || 'Failed to appoint staff member');
+      }
+    } catch (err) {
+      if (onNotify) onNotify(err.message, 'danger');
+      throw err;
+    }
+  };
+
+  // Submit Quotation for Approval (Draft / Changes Requested -> Pending Approval)
+  const handleSubmitQuoteForApproval = async (quoteId) => {
+    try {
+      if (onNotify) onNotify('Submitting quotation for Super Admin approval...', 'info');
+      const res = await apiService.submitQuoteForApproval(quoteId);
+      if (res.success) {
+        if (onNotify) onNotify('Quotation submitted for Super Admin approval successfully!', 'success');
+        if (selectedQuote && selectedQuote._id === quoteId) {
+          setSelectedQuote(res.data);
+        }
+        loadOperationalData();
+      } else {
+        if (onNotify) onNotify(res.error || 'Failed to submit quote for approval', 'danger');
+      }
+    } catch (err) {
+      if (onNotify) onNotify('Error submitting quote for approval: ' + err.message, 'danger');
+    }
+  };
+
+  // Authorize & Approve Quotation (Super Admin Only)
+  const handleApproveQuote = async (quoteId) => {
+    try {
+      if (onNotify) onNotify('Validating and granting Super Admin approval...', 'info');
+      const res = await apiService.approveQuote(quoteId);
+      if (res.success) {
+        if (onNotify) onNotify('Quotation authorized & approved! Cryptographic integrity hash generated.', 'success');
+        if (selectedQuote && selectedQuote._id === quoteId) {
+          setSelectedQuote(res.data);
+        }
+        loadOperationalData();
+      } else {
+        if (onNotify) onNotify(res.error || 'Approval failed', 'danger');
+      }
+    } catch (err) {
+      if (onNotify) onNotify('Error approving quote: ' + err.message, 'danger');
+    }
+  };
+
+  // Request Changes on Quotation
+  const handleRequestChangesQuote = async (quoteId, notes) => {
+    try {
+      if (onNotify) onNotify('Recording changes request...', 'info');
+      const res = await apiService.requestChangesQuote(quoteId, notes);
+      if (res.success) {
+        if (onNotify) onNotify('Changes requested and recorded on quotation.', 'info');
+        if (selectedQuote && selectedQuote._id === quoteId) {
+          setSelectedQuote(res.data);
+        }
+        loadOperationalData();
+      } else {
+        if (onNotify) onNotify(res.error || 'Failed to request changes', 'danger');
+      }
+    } catch (err) {
+      if (onNotify) onNotify('Error requesting changes: ' + err.message, 'danger');
+    }
+  };
+
+  // Reject Quotation
+  const handleRejectQuote = async (quoteId, reason) => {
+    try {
+      if (onNotify) onNotify('Rejecting quotation...', 'info');
+      const res = await apiService.rejectQuote(quoteId, reason);
+      if (res.success) {
+        if (onNotify) onNotify('Quotation marked as Rejected.', 'info');
+        if (selectedQuote && selectedQuote._id === quoteId) {
+          setSelectedQuote(res.data);
+        }
+        loadOperationalData();
+      } else {
+        if (onNotify) onNotify(res.error || 'Failed to reject quote', 'danger');
+      }
+    } catch (err) {
+      if (onNotify) onNotify('Error rejecting quote: ' + err.message, 'danger');
+    }
+  };
+
+  // Dispatch Quotation Email (Mandatory Super Admin Approval Enforced)
   const handleSendQuoteEmail = async (quoteId) => {
     try {
+      const targetQuote = quotations.find((q) => q._id === quoteId) || selectedQuote;
+      if (targetQuote && targetQuote.status !== 'Approved') {
+        if (onNotify) onNotify('Dispatch blocked: This quotation requires explicit Super Admin approval before customer dispatch.', 'danger');
+        return;
+      }
       if (onNotify) onNotify('Dispatching formal quotation email...', 'info');
       const res = await apiService.sendQuoteEmail(quoteId);
       if (res.success) {
         if (onNotify) onNotify('Quotation email dispatched to customer successfully!', 'success');
         loadOperationalData();
+      } else {
+        if (onNotify) onNotify(res.error || 'Failed to dispatch quotation email', 'danger');
       }
     } catch (err) {
       if (onNotify) onNotify('Failed to dispatch quote email: ' + err.message, 'danger');
@@ -584,9 +687,15 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMQuotationsView
             quotations={quotations}
             searchQuery={searchQuery}
+            user={user}
+            isSuperAdmin={isSuperAdmin}
             onSelectQuote={setSelectedQuote}
             onSendQuoteEmail={handleSendQuoteEmail}
             onOpenQuoteBuilder={handleOpenQuoteBuilder}
+            onSubmitForApproval={handleSubmitQuoteForApproval}
+            onApproveQuote={handleApproveQuote}
+            onRequestChangesQuote={handleRequestChangesQuote}
+            onRejectQuote={handleRejectQuote}
           />
         );
       case 'customers':
@@ -616,6 +725,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMStaffView
             staffUsers={staffUsers}
             isSuperAdmin={isSuperAdmin}
+            onOpenStaffAppointment={() => setShowStaffModal(true)}
           />
         );
       case 'reports':
@@ -698,6 +808,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           onSearchChange={setSearchQuery}
           onOpenQuickEnquiry={onOpenQuickEnquiry}
           onOpenQuoteBuilder={handleOpenQuoteBuilder}
+          onOpenStaffAppointment={() => setShowStaffModal(true)}
           onExportCSV={handleExportCSV}
           onToggleMobile={() => setMobileSidebarOpen(!mobileSidebarOpen)}
           user={user}
@@ -904,7 +1015,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           >
             {/* Modal Actions */}
             <div className="crm-modal-actions no-print">
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <button
                   type="button"
                   className="crm-btn crm-btn-primary crm-btn-sm"
@@ -913,15 +1024,85 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                   <CRMIcon name="print" size={14} />
                   <span>Print / Save PDF</span>
                 </button>
-                <button
-                  type="button"
-                  className="crm-btn crm-btn-secondary crm-btn-sm"
-                  onClick={() => handleSendQuoteEmail(selectedQuote._id)}
-                >
-                  <CRMIcon name="mail" size={14} />
-                  <span>Dispatch Email to Customer</span>
-                </button>
+
+                {/* Email Dispatch Button: Strictly Enabled ONLY when Approved */}
+                {selectedQuote.status === 'Approved' ? (
+                  <button
+                    type="button"
+                    className="crm-btn crm-btn-primary crm-btn-sm"
+                    onClick={() => handleSendQuoteEmail(selectedQuote._id)}
+                    style={{ background: '#059669', borderColor: '#059669' }}
+                    title="Dispatch official approved quotation to customer email"
+                  >
+                    <CRMIcon name="mail" size={14} />
+                    <span>✓ Dispatch Approved Email</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="crm-btn crm-btn-secondary crm-btn-sm"
+                    disabled
+                    title="Quotation must be Approved by Super Admin before customer dispatch"
+                    style={{ opacity: 0.5, cursor: 'not-allowed', background: '#94A3B8', borderColor: '#94A3B8' }}
+                  >
+                    <CRMIcon name="lock" size={14} />
+                    <span>Email Locked (Approval Required)</span>
+                  </button>
+                )}
+
+                {/* Super Admin Approval Actions */}
+                {isSuperAdmin && selectedQuote.status === 'Pending Approval' && (
+                  <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
+                    <button
+                      type="button"
+                      className="crm-btn crm-btn-sm"
+                      onClick={() => handleApproveQuote(selectedQuote._id)}
+                      style={{ background: '#059669', color: '#FFF', fontWeight: 600 }}
+                      title="Authorize and approve commercial quotation"
+                    >
+                      ✓ Authorize & Approve
+                    </button>
+                    <button
+                      type="button"
+                      className="crm-btn crm-btn-sm crm-btn-outline"
+                      onClick={() => {
+                        const notes = window.prompt('Specify changes required for this quotation:');
+                        if (notes && notes.trim()) handleRequestChangesQuote(selectedQuote._id, notes.trim());
+                      }}
+                      style={{ color: '#D97706', borderColor: '#D97706' }}
+                      title="Request modifications from sales staff"
+                    >
+                      📝 Request Changes
+                    </button>
+                    <button
+                      type="button"
+                      className="crm-btn crm-btn-sm crm-btn-outline"
+                      onClick={() => {
+                        const reason = window.prompt('Specify reason for rejecting this quotation:');
+                        if (reason && reason.trim()) handleRejectQuote(selectedQuote._id, reason.trim());
+                      }}
+                      style={{ color: '#DC2626', borderColor: '#DC2626' }}
+                      title="Reject quotation"
+                    >
+                      ✕ Reject
+                    </button>
+                  </div>
+                )}
+
+                {/* Staff / Admin Submit for Approval (Draft or Changes Requested) */}
+                {(selectedQuote.status === 'Draft' || selectedQuote.status === 'Changes Requested') && (
+                  <button
+                    type="button"
+                    className="crm-btn crm-btn-primary crm-btn-sm"
+                    onClick={() => handleSubmitQuoteForApproval(selectedQuote._id)}
+                    style={{ marginLeft: 'auto', background: '#0284C7', borderColor: '#0284C7' }}
+                  >
+                    <CRMIcon name="check" size={14} />
+                    <span>Submit for Super Admin Approval</span>
+                  </button>
+                )}
               </div>
+
               <button
                 type="button"
                 className="crm-modal-close"
@@ -930,6 +1111,70 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               >
                 &times;
               </button>
+            </div>
+
+            {/* Super Admin Approval Status Banner */}
+            <div className="no-print" style={{ margin: '14px 24px 0 24px' }}>
+              {selectedQuote.status === 'Approved' && (
+                <div style={{ padding: '12px 16px', background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '8px', color: '#065F46', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '18px' }}>🛡️</span>
+                    <div>
+                      <strong>Super Admin Authorized:</strong> Approved by <u>{selectedQuote.approvedByName || 'Chirag Shah'}</u> on {selectedQuote.approvedAt ? new Date(selectedQuote.approvedAt).toLocaleString() : 'Recently'}.
+                      {selectedQuote.approvalHash && (
+                        <div style={{ fontSize: '11px', color: '#047857', fontFamily: 'monospace', marginTop: '2px' }}>
+                          SHA-256 Integrity Hash: {selectedQuote.approvalHash}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <span className="crm-badge crm-badge-green" style={{ fontSize: '12px', padding: '4px 10px' }}>
+                    Ready for Customer Dispatch
+                  </span>
+                </div>
+              )}
+
+              {selectedQuote.status === 'Pending Approval' && (
+                <div style={{ padding: '12px 16px', background: '#FEF3C7', border: '1px solid #FDE68A', borderRadius: '8px', color: '#92400E', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '18px' }}>⏳</span>
+                    <div>
+                      <strong>Awaiting Super Admin Authorization:</strong> Commercial quotation submitted {selectedQuote.submittedBy ? `by ${selectedQuote.submittedBy}` : ''}.
+                      <div style={{ fontSize: '11px', color: '#B45309', marginTop: '2px' }}>
+                        Customer dispatch and official PDF generation are locked until explicitly authorized by Super Admin.
+                      </div>
+                    </div>
+                  </div>
+                  <span className="crm-badge crm-badge-amber" style={{ fontSize: '12px', padding: '4px 10px' }}>
+                    Pending Approval
+                  </span>
+                </div>
+              )}
+
+              {selectedQuote.status === 'Changes Requested' && (
+                <div style={{ padding: '12px 16px', background: '#FDF4FF', border: '1px solid #F5D0FE', borderRadius: '8px', color: '#86198F', fontSize: '13px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '18px' }}>📝</span>
+                    <strong>Changes Requested by Super Admin:</strong>
+                  </div>
+                  <div style={{ background: '#FFFFFF', padding: '8px 12px', borderRadius: '6px', border: '1px solid #F0ABFC', color: '#701A75', marginTop: '4px' }}>
+                    {selectedQuote.changesRequestedNotes || 'Please adjust specifications and pricing before re-submitting.'}
+                  </div>
+                </div>
+              )}
+
+              {selectedQuote.status === 'Rejected' && (
+                <div style={{ padding: '12px 16px', background: '#FEE2E2', border: '1px solid #FECACA', borderRadius: '8px', color: '#991B1B', fontSize: '13px' }}>
+                  <strong>✕ Quotation Rejected:</strong> {selectedQuote.rejectionReason || 'Commercial terms not approved.'}
+                </div>
+              )}
+
+              {selectedQuote.status === 'Draft' && (
+                <div style={{ padding: '10px 16px', background: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: '8px', color: '#475569', fontSize: '12.5px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span>ℹ️ <strong>Draft Proforma Quotation:</strong> Review line items, calculate totals, and submit for Super Admin approval before customer dispatch.</span>
+                  <span className="crm-badge crm-badge-gray">Draft</span>
+                </div>
+              )}
             </div>
 
             {/* Official Letterhead Printable Container */}
@@ -1244,6 +1489,13 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           </div>
         </div>
       )}
+
+      {/* 5. New Staff Appointment Modal (Super Admin Exclusive) */}
+      <NewStaffModal
+        isOpen={showStaffModal}
+        onClose={() => setShowStaffModal(false)}
+        onStaffCreated={handleCreateStaff}
+      />
     </div>
   );
 };

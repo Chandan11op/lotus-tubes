@@ -79,7 +79,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Sanitary Pipe Fittings',
       desc: 'Hygienic 90° and 45° bends, equal tees, reducing tees, concentric & eccentric reducers engineered with smooth internal radiuses for fluid cleanliness.',
       icon: '🔀',
-      image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-001.jpg',
+      image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg',
       subcategories: ['Sanitary Bends', 'Equal Tees', 'Reducing Tees', 'Concentric Reducers', 'Eccentric Reducers']
     },
     {
@@ -88,7 +88,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tri-Clamp Fittings & Components',
       desc: 'Sanitary Tri-Clamp ferrules, heavy-duty single/double pin clamps, SMS unions, DIN unions, and blind end caps for rapid hygienic disassembly.',
       icon: '🔗',
-      image: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
+      image: '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg',
       subcategories: ['TC Ferrules', 'TC Clamps', 'SMS Unions', 'DIN Unions', 'TC End Caps']
     },
     {
@@ -97,7 +97,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Sanitary Gaskets',
       desc: 'FDA & USP Class VI compliant sealing gaskets in Silicone, EPDM, PTFE, Viton (FKM), and NBR for leak-free hygienic pipe joints.',
       icon: '⭕',
-      image: '/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg',
+      image: '/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
       subcategories: ['Silicone Gaskets', 'EPDM Gaskets', 'PTFE Gaskets', 'Viton Gaskets', 'Manhole Gaskets']
     },
     {
@@ -106,7 +106,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Manual Sanitary Valves',
       desc: 'Hygienic sanitary butterfly valves, multi-position pull/gripper handles, 3-piece ball valves with TC ends, non-return valves, and diaphragm valves.',
       icon: '🚰',
-      image: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
+      image: '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg',
       subcategories: ['Butterfly Valves', 'Diaphragm Valves', '3-Piece Ball Valves', 'Sampling Valves', 'Check Valves']
     },
     {
@@ -115,7 +115,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Pneumatic & Automated Valves',
       desc: 'Pneumatically actuated sanitary ball valves, automated diaphragm valves with control heads, safety switches, and process automation accessories.',
       icon: '⚡',
-      image: '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-001.jpg',
+      image: '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg',
       subcategories: ['Pneumatic Diaphragm', 'Pneumatic Ball Valve', 'Control Tops', 'Actuator Accessories']
     },
     {
@@ -124,7 +124,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tank Cleaning Accessories',
       desc: 'Fixed and 360° rotary spray balls, sanitary manhole covers (round/oval/pressure), CIP tank vent filter housings, and vessel sight glasses.',
       icon: '🚿',
-      image: '/assets/images/products/manholes-and-tank-accessories/ss-sanitary-round-tank-manhole-cover-001.jpg',
+      image: '/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg',
       subcategories: ['Rotary Spray Balls', 'Static Spray Balls', 'Pressure Manholes', 'Tank Sight Glass']
     },
     {

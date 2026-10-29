@@ -59,13 +59,14 @@ export default function InteractiveCanvas({
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         onError={() => setHasWebGLError(true)}
       >
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[5, 8, 5]} intensity={1.5} castShadow shadow-mapSize={1024} />
-        <directionalLight position={[-5, 3, -5]} intensity={0.8} color="#93c5fd" />
-        <pointLight position={[0, -3, 2]} intensity={0.4} />
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[5, 8, 5]} intensity={1.8} castShadow shadow-mapSize={1024} />
+        <directionalLight position={[-5, 3, -5]} intensity={1.0} color="#93c5fd" />
+        <directionalLight position={[0, -3, 3]} intensity={0.6} color="#f8fafc" />
+        <pointLight position={[2, 2, 2]} intensity={0.5} />
 
         <Suspense fallback={null}>
-          <Stage environment="city" intensity={0.6} adjustCamera={false}>
+          <Stage environment={null} intensity={0.7} adjustCamera={false}>
             {enableFloat ? (
               <Float speed={1.5} rotationIntensity={0.6} floatIntensity={0.8}>
                 <ModelSelector product={product} autoRotate={autoRotate} />

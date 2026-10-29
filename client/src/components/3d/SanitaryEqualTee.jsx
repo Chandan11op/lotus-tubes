@@ -6,15 +6,16 @@ import SanitaryMaterial from './SanitaryMaterial.jsx';
 /**
  * Procedural 3D Sanitary Equal Tee
  * Features:
- * - Straight main run tube
+ * - Straight main run tube with open hollow bore
  * - Perpendicular 90-degree branch of identical diameter
- * - Machined weld lips on all 3 ports
+ * - Pulled sanitary neck junction without bore penetration
+ * - Machined weld prep rings on all 3 ports
  */
 export default function SanitaryEqualTee({
-  runLength = 3.6,
-  branchHeight = 1.8,
-  radius = 0.7,
-  wallThickness = 0.08,
+  runLength = 3.2,
+  branchHeight = 1.6,
+  radius = 0.65,
+  wallThickness = 0.075,
   isElectroPolished = true,
   autoRotate = false
 }) {
@@ -22,45 +23,48 @@ export default function SanitaryEqualTee({
 
   useFrame((state, delta) => {
     if (autoRotate && groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.4;
+      groupRef.current.rotation.y += delta * 0.45;
     }
   });
 
   const innerRadius = radius - wallThickness;
+  const branchStart = radius * 0.85;
+  const actualBranchLen = branchHeight - branchStart;
+  const branchCenterY = branchStart + actualBranchLen / 2;
 
   return (
-    <group ref={groupRef}>
-      {/* Horizontal Run Cylinder */}
+    <group ref={groupRef} position={[0, -0.3, 0]} rotation={[0.2, 0.4, 0]}>
+      {/* Horizontal Run Cylinder (Main Body) */}
       <mesh rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
         <cylinderGeometry args={[radius, radius, runLength, 48, 1, true]} />
-        <SanitaryMaterial isElectroPolished={isElectroPolished} />
+        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#eaeff4" />
       </mesh>
-      {/* Run Port Left */}
+      {/* Run Port Left Face */}
       <mesh position={[-runLength / 2, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
         <ringGeometry args={[innerRadius, radius, 48]} />
-        <SanitaryMaterial isElectroPolished={isElectroPolished} />
+        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#eaeff4" />
       </mesh>
-      {/* Run Port Right */}
+      {/* Run Port Right Face */}
       <mesh position={[runLength / 2, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
         <ringGeometry args={[innerRadius, radius, 48]} />
-        <SanitaryMaterial isElectroPolished={isElectroPolished} />
+        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#eaeff4" />
       </mesh>
 
       {/* Vertical Branch Cylinder */}
-      <mesh position={[0, branchHeight / 2, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[radius, radius, branchHeight, 48, 1, true]} />
-        <SanitaryMaterial isElectroPolished={isElectroPolished} />
+      <mesh position={[0, branchCenterY, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[radius, radius, actualBranchLen, 48, 1, true]} />
+        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#eaeff4" />
       </mesh>
-      {/* Branch Port Top */}
+      {/* Branch Port Top Face */}
       <mesh position={[0, branchHeight, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[innerRadius, radius, 48]} />
-        <SanitaryMaterial isElectroPolished={isElectroPolished} />
+        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#eaeff4" />
       </mesh>
 
-      {/* Smooth Weld Reinforcement Ring at Junction */}
-      <mesh position={[0, radius * 0.85, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[radius * 1.02, 0.04, 16, 48]} />
-        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#cbd5e1" />
+      {/* Smooth Pulled Sanitary Neck Fillet Ring at Intersection */}
+      <mesh position={[0, branchStart, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[radius * 1.01, 0.045, 16, 48]} />
+        <SanitaryMaterial isElectroPolished={isElectroPolished} color="#dbe2ea" />
       </mesh>
     </group>
   );

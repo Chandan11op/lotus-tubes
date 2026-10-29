@@ -39,7 +39,7 @@ export default function Manufacturing3DProcess() {
         name: 'Cold-Bent Sanitary 90° Bend',
         model3d: 'SanitaryBend90',
         material: 'SS 316L',
-        image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-001.jpg'
+        image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg'
       }
     },
     {
@@ -53,7 +53,7 @@ export default function Manufacturing3DProcess() {
         name: 'Pulled Sanitary Equal Tee',
         model3d: 'SanitaryEqualTee',
         material: 'SS 316L',
-        image: '/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-001.jpg'
+        image: '/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg'
       }
     },
     {

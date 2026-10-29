@@ -3,7 +3,8 @@ import { CRMIcon } from '../components/CRMIcon';
 
 export const CRMStaffView = ({
   staffUsers = [],
-  isSuperAdmin = false
+  isSuperAdmin = false,
+  onOpenStaffAppointment
 }) => {
   if (!isSuperAdmin) {
     return (
@@ -20,7 +21,7 @@ export const CRMStaffView = ({
   return (
     <div className="crm-workspace-view">
       <div className="crm-card">
-        <div className="crm-card__header">
+        <div className="crm-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className="crm-card__header-title">
             <CRMIcon name="staff" size={18} />
             <h3>Authorized Staff Members & RBAC Permissions</h3>
@@ -28,6 +29,18 @@ export const CRMStaffView = ({
               {staffUsers.length} staff accounts
             </span>
           </div>
+
+          {onOpenStaffAppointment && (
+            <button
+              type="button"
+              className="crm-btn crm-btn-primary crm-btn-sm"
+              onClick={onOpenStaffAppointment}
+              title="Appoint a new staff member"
+            >
+              <CRMIcon name="plus" size={14} />
+              <span>+ New Staff Appointment</span>
+            </button>
+          )}
         </div>
 
         <div className="crm-card__body" style={{ padding: 0 }}>
@@ -35,11 +48,13 @@ export const CRMStaffView = ({
             <table className="crm-table">
               <thead>
                 <tr>
-                  <th>Staff Member</th>
-                  <th>Email ID</th>
+                  <th>Staff Member & Designation</th>
+                  <th>Contact & Email</th>
                   <th>System Role</th>
                   <th>Department</th>
                   <th>Security Permissions</th>
+                  <th>Date of Birth</th>
+                  <th>Last Login</th>
                   <th>Account Status</th>
                 </tr>
               </thead>
@@ -48,9 +63,17 @@ export const CRMStaffView = ({
                   <tr key={s._id}>
                     <td>
                       <div className="crm-cell-title">{s.name}</div>
+                      <div className="crm-cell-sub" style={{ color: '#0284C7', fontWeight: 500 }}>
+                        {s.designation || 'Staff Executive'}
+                      </div>
                     </td>
                     <td>
-                      <span className="crm-ref-link">{s.email}</span>
+                      <div className="crm-ref-link">{s.email}</div>
+                      {s.contactNumber && (
+                        <div className="crm-cell-sub" style={{ color: '#475569' }}>
+                          📞 {s.contactNumber}
+                        </div>
+                      )}
                     </td>
                     <td>
                       <span className={`crm-role-badge ${s.role === 'admin' ? 'admin' : 'staff'}`}>
@@ -70,6 +93,20 @@ export const CRMStaffView = ({
                           </span>
                         ))}
                       </div>
+                    </td>
+                    <td>
+                      <span className="crm-cell-sub">
+                        {s.dateOfBirth
+                          ? new Date(s.dateOfBirth).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                          : '—'}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="crm-cell-sub">
+                        {s.lastLoginAt
+                          ? new Date(s.lastLoginAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+                          : 'Never'}
+                      </span>
                     </td>
                     <td>
                       <span className="crm-status-pill crm-status-order-confirmed">
