@@ -1,16 +1,17 @@
-import React, { Suspense, useState, useRef } from 'react';
+import React, { Suspense, useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage, Float } from '@react-three/drei';
+import StudioEnvironment from './StudioEnvironment.jsx';
 import ModelSelector from './ModelSelector.jsx';
 import ProductImage from '../common/ProductImage.jsx';
 
 /**
  * Interactive 3D Canvas Viewer for Lotus Tubes
  * Features:
- * - OrbitControls for full 360-degree technical inspection
- * - Auto-rotation toggle
- * - Reset view button
- * - Clean studio HDR-like lighting with stainless steel specular reflections
+ * - Offline HDR studio environment for physically accurate stainless steel reflections
+ * - Smooth OrbitControls with damping and user-controlled inspection
+ * - Respects prefers-reduced-motion
+ * - Auto-pauses rotation on user interaction
  * - Graceful fallback to genuine product photograph on WebGL failure
  */
 export default function InteractiveCanvas({
@@ -20,9 +21,17 @@ export default function InteractiveCanvas({
   height = '420px',
   enableFloat = false
 }) {
-  const [autoRotate, setAutoRotate] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(false);
   const [hasWebGLError, setHasWebGLError] = useState(false);
   const controlsRef = useRef();
+
+  useEffect(() => {
+    // Check user's motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mediaQuery.matches) {
+      setAutoRotate(false);
+    }
+  }, []);
 
   const handleReset = () => {
     if (controlsRef.current) {
@@ -58,17 +67,20 @@ export default function InteractiveCanvas({
         camera={{ position: [2.5, 2.0, 3.5], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         onError={() => setHasWebGLError(true)}
+        onPointerDown={() => setAutoRotate(false)}
       >
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[5, 8, 5]} intensity={1.8} castShadow shadow-mapSize={1024} />
-        <directionalLight position={[-5, 3, -5]} intensity={1.0} color="#93c5fd" />
-        <directionalLight position={[0, -3, 3]} intensity={0.6} color="#f8fafc" />
+        <StudioEnvironment />
+
+        <ambientLight intensity={1.1} />
+        <directionalLight position={[5, 8, 5]} intensity={2.0} castShadow shadow-mapSize={1024} />
+        <directionalLight position={[-5, 3, -5]} intensity={1.2} color="#93c5fd" />
+        <directionalLight position={[0, -3, 3]} intensity={0.7} color="#f8fafc" />
         <pointLight position={[2, 2, 2]} intensity={0.5} />
 
         <Suspense fallback={null}>
           <Stage environment={null} intensity={0.7} adjustCamera={false}>
             {enableFloat ? (
-              <Float speed={1.5} rotationIntensity={0.6} floatIntensity={0.8}>
+              <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.4}>
                 <ModelSelector product={product} autoRotate={autoRotate} />
               </Float>
             ) : (
@@ -80,12 +92,13 @@ export default function InteractiveCanvas({
         <OrbitControls
           ref={controlsRef}
           autoRotate={autoRotate}
-          autoRotateSpeed={1.8}
+          autoRotateSpeed={1.2}
+          rotateSpeed={0.7}
           enablePan={false}
-          minDistance={2.0}
+          minDistance={1.8}
           maxDistance={7.0}
           enableDamping
-          dampingFactor={0.05}
+          dampingFactor={0.08}
         />
       </Canvas>
 

@@ -1,32 +1,52 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import SanitaryMaterial from './SanitaryMaterial.jsx';
 
 /**
- * Procedural 3D Sanitary Butterfly Valve
- * Conforms to sanitary butterfly valves (SMS / DIN / ISO)
- * Features:
+ * CAD-Accurate Procedural 3D Sanitary Butterfly Valve
+ * Conforms to sanitary butterfly valves (SMS / DIN / ISO) with Tri-Clamp ends.
+ *
+ * Anatomical Components:
  * - Cylindrical valve body with integrated Tri-Clamp end ferrules and open hollow bore
  * - Internal precision rotating valve disc and stem
  * - Multi-position notched lock plate
  * - Iconic high-visibility blue gripper/pull handle
+ *
+ * Interactive Controls:
+ * - Toggle: "Valve Closed (0°)" vs "Valve Open (90°)"
  */
 export default function SanitaryButterflyValve({
   bodyRadius = 0.72,
   bodyLength = 1.6,
   flangeRadius = 0.95,
   wallThickness = 0.08,
-  handleAngle = 0.35, // Open/throttled disc angle
   isElectroPolished = true,
   autoRotate = false
 }) {
   const groupRef = useRef();
   const discStemRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Target angle: 0 = closed (disc perpendicular to bore), PI/2 = full open (disc parallel to bore)
+  const targetAngle = isOpen ? Math.PI / 2 : 0;
+  const currentAngle = useRef(0);
 
   useFrame((state, delta) => {
     if (autoRotate && groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.45;
+      groupRef.current.rotation.y += delta * 0.4;
+    }
+
+    currentAngle.current = THREE.MathUtils.damp(
+      currentAngle.current,
+      targetAngle,
+      8,
+      delta
+    );
+
+    if (discStemRef.current) {
+      discStemRef.current.rotation.y = currentAngle.current;
     }
   });
 
@@ -75,7 +95,7 @@ export default function SanitaryButterflyValve({
       </mesh>
 
       {/* Rotating Stem, Disc, and Blue Handle Group */}
-      <group ref={discStemRef} rotation={[0, handleAngle, 0]}>
+      <group ref={discStemRef}>
         {/* Central Vertical Stem */}
         <mesh position={[0, bodyRadius * 0.5, 0]}>
           <cylinderGeometry args={[0.09, 0.09, bodyRadius * 2.2, 24]} />
@@ -115,6 +135,57 @@ export default function SanitaryButterflyValve({
           </mesh>
         </group>
       </group>
+
+      {/* Interactive Actuation Toggle */}
+      <Html position={[0, -1.05, 0]} center distanceFactor={10}>
+        <div style={{
+          display: 'flex',
+          gap: '6px',
+          background: 'rgba(15, 23, 42, 0.85)',
+          padding: '4px 6px',
+          borderRadius: '9999px',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+          userSelect: 'none',
+          whiteSpace: 'nowrap'
+        }}>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+            style={{
+              padding: '3px 10px',
+              fontSize: '11px',
+              fontWeight: 600,
+              borderRadius: '9999px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              background: !isOpen ? '#dc2626' : 'transparent',
+              color: !isOpen ? '#ffffff' : '#94a3b8'
+            }}
+          >
+            Valve Closed (0°)
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setIsOpen(true); }}
+            style={{
+              padding: '3px 10px',
+              fontSize: '11px',
+              fontWeight: 600,
+              borderRadius: '9999px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              background: isOpen ? '#16a34a' : 'transparent',
+              color: isOpen ? '#ffffff' : '#94a3b8'
+            }}
+          >
+            Valve Open (90°)
+          </button>
+        </div>
+      </Html>
     </group>
   );
 }

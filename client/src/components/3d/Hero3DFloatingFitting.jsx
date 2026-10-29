@@ -1,6 +1,7 @@
 import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage, Float } from '@react-three/drei';
+import StudioEnvironment from './StudioEnvironment.jsx';
 import SanitaryTube from './SanitaryTube.jsx';
 import SanitaryBend90 from './SanitaryBend90.jsx';
 import SanitaryButterflyValve from './SanitaryButterflyValve.jsx';
@@ -76,6 +77,7 @@ export default function Hero3DFloatingFitting() {
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           onPointerDown={() => setIsInteractive(true)}
         >
+          <StudioEnvironment />
           <ambientLight intensity={1.1} />
           <directionalLight position={[6, 9, 6]} intensity={2.0} castShadow shadow-mapSize={1024} />
           <directionalLight position={[-6, 4, -4]} intensity={1.2} color="#38bdf8" />

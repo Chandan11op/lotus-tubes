@@ -9,7 +9,9 @@
  */
 
 export const MODEL_REGISTRY = {
-  // 1. Straight Pipes & Tubing
+  // ============================================================
+  // 1. STRAIGHT PIPES & TUBING
+  // ============================================================
   'ss-316l-ep-pipe': {
     status: 'verified',
     component: 'SanitaryTube',
@@ -42,34 +44,41 @@ export const MODEL_REGISTRY = {
     status: 'verified',
     component: 'SanitaryTube',
     title: 'SS 304 Sanitary Pipe',
-    standard: 'ASTM A270 / DIN 11850'
+    standard: 'ASTM A270 / DIN 11850',
+    verifiedFeatures: ['Hollow cylinder body', 'Standard wall thickness']
   },
   'ss-316l-sanitary-pipe': {
     status: 'verified',
     component: 'SanitaryTube',
     title: 'SS 316L Sanitary Pipe',
-    standard: 'ASTM A270 / ISO 2037'
+    standard: 'ASTM A270 / ISO 2037',
+    verifiedFeatures: ['Hollow cylinder body', 'Standard wall thickness']
   },
   'ss-304-seamless-sanitary-tube': {
     status: 'verified',
     component: 'SanitaryTube',
     title: 'SS 304 Seamless Sanitary Tube',
-    standard: 'ASTM A269 / ASTM A270 Seamless'
+    standard: 'ASTM A269 / ASTM A270 Seamless',
+    verifiedFeatures: ['Seamless cold drawn profile', 'Annealed & pickled/polished finish']
   },
   'ss-316l-seamless-sanitary-tube': {
     status: 'verified',
     component: 'SanitaryTube',
     title: 'SS 316L Seamless Sanitary Tube',
-    standard: 'ASTM A269 / ASTM A270 Seamless Cold Drawn'
+    standard: 'ASTM A269 / ASTM A270 Seamless Cold Drawn',
+    verifiedFeatures: ['Seamless cold drawn profile', 'Bright annealed finish']
   },
   'ss-304-dairy-tube': {
     status: 'verified',
     component: 'SanitaryTube',
     title: 'SS 304 Dairy Tube',
-    standard: 'DIN 11850 / BS 4825 Part 1'
+    standard: 'DIN 11850 / BS 4825 Part 1',
+    verifiedFeatures: ['Dairy hygienic finish', 'Hollow tube geometry']
   },
 
-  // 2. Bends & Elbows
+  // ============================================================
+  // 2. BENDS & ELBOWS
+  // ============================================================
   'ss-sanitary-90-bend': {
     status: 'verified',
     component: 'SanitaryBend90',
@@ -94,7 +103,9 @@ export const MODEL_REGISTRY = {
     ]
   },
 
-  // 3. Tees
+  // ============================================================
+  // 3. TEES & BRANCHES
+  // ============================================================
   'ss-sanitary-equal-tee': {
     status: 'verified',
     component: 'SanitaryEqualTee',
@@ -117,7 +128,9 @@ export const MODEL_REGISTRY = {
     ]
   },
 
-  // 4. Reducers
+  // ============================================================
+  // 4. REDUCERS
+  // ============================================================
   'ss-sanitary-concentric-reducer': {
     status: 'verified',
     component: 'ConcentricReducer',
@@ -141,7 +154,9 @@ export const MODEL_REGISTRY = {
     ]
   },
 
-  // 5. Tri-Clamp Components
+  // ============================================================
+  // 5. TRI-CLAMP COMPONENTS & UNIONS
+  // ============================================================
   'ss-tri-clamp-ferrule': {
     status: 'verified',
     component: 'TriClampFerrule',
@@ -150,7 +165,8 @@ export const MODEL_REGISTRY = {
     verifiedFeatures: [
       'Precision CNC-machined 14-degree clamp face',
       'Standard gasket alignment recess groove',
-      'Straight cylindrical butt-weld tangent'
+      'Straight cylindrical butt-weld tangent',
+      'Interactive Short 14WMP vs Long L14AM toggle'
     ]
   },
   'ss-tri-clamp-clamp': {
@@ -160,12 +176,75 @@ export const MODEL_REGISTRY = {
     standard: '3A Sanitary / ISO 2852 Compatible',
     verifiedFeatures: [
       'Hinged two-segment forged clamp band',
-      'Brass / stainless wing nut and pivot bolt',
-      '14-degree wedge angle interior profile'
+      'Internal 14-degree V-groove channel',
+      'Swinging eyebolt and dual-wing nut',
+      'Interactive Single-Pin vs Double-Pin toggle'
+    ]
+  },
+  'ss-sms-union': {
+    status: 'verified',
+    component: 'SanitarySMSUnion',
+    title: 'SS 304 / SS 316L Sanitary SMS Union Complete Assembly',
+    standard: 'SMS 1145 Dairy Pipe Fittings Standard',
+    verifiedFeatures: [
+      'Four constituent parts: Male Weld Part, EPDM/PTFE Gasket, Weld Liner, SMS Slotted Nut',
+      'Continuous hygienic flow bore',
+      'SMS round nut with 6 spanner tightening slots',
+      'Interactive Assembled vs 4-Part Exploded view toggle'
     ]
   },
 
-  // 6. Valves
+  // ============================================================
+  // 6. SANITARY GASKETS (ELASTOMER & FLUOROPOLYMER)
+  // ============================================================
+  'silicone-tri-clamp-gasket': {
+    status: 'verified',
+    component: 'TriClampGasket',
+    title: 'Silicone Tri-Clamp Gasket (Platinum Cured)',
+    standard: 'FDA 21 CFR 177.2600 & USP Class VI',
+    verifiedFeatures: [
+      'Molded flanged profile with dual locating beads',
+      'Medical-grade translucent silicone finish',
+      'Interactive 4-grade material selector'
+    ]
+  },
+  'epdm-tri-clamp-gasket': {
+    status: 'verified',
+    component: 'TriClampGasket',
+    title: 'EPDM Tri-Clamp Gasket (Food Grade)',
+    standard: 'FDA 21 CFR 177.2600 Compliant',
+    verifiedFeatures: [
+      'Molded flanged profile with dual locating beads',
+      'High-density carbon black EPDM elastomer finish',
+      'Interactive 4-grade material selector'
+    ]
+  },
+  'ptfe-tri-clamp-gasket': {
+    status: 'verified',
+    component: 'TriClampGasket',
+    title: 'PTFE (Teflon) Tri-Clamp Gasket',
+    standard: 'FDA 21 CFR 177.1550 & USP Class VI',
+    verifiedFeatures: [
+      'Solid virgin white machined fluoropolymer profile',
+      'Dual locating beads for ferrule sealing face',
+      'Interactive 4-grade material selector'
+    ]
+  },
+  'viton-tri-clamp-gasket': {
+    status: 'verified',
+    component: 'TriClampGasket',
+    title: 'Viton (FKM) Tri-Clamp Gasket',
+    standard: 'FDA 21 CFR 177.2600',
+    verifiedFeatures: [
+      'High-temperature acid-resistant FKM fluoroelastomer',
+      'Precision molded sealing beads',
+      'Interactive 4-grade material selector'
+    ]
+  },
+
+  // ============================================================
+  // 7. VALVES (MANUAL & AUTOMATED)
+  // ============================================================
   'ss-sanitary-butterfly-valve': {
     status: 'verified',
     component: 'SanitaryButterflyValve',
@@ -173,8 +252,9 @@ export const MODEL_REGISTRY = {
     standard: '3A Sanitary / SMS / DIN Valve Dimensions',
     verifiedFeatures: [
       'Cylindrical sanitary valve body with Tri-Clamp ends',
-      'Disc seat assembly',
-      'Multi-position stainless squeeze/pull trigger handle'
+      'Internal disc seat assembly',
+      'Multi-position stainless squeeze/pull trigger handle',
+      'Interactive Closed (0°) vs Open (90°) disc actuation'
     ]
   },
   'ss-3-piece-ball-valve-tc': {
@@ -184,8 +264,9 @@ export const MODEL_REGISTRY = {
     standard: 'ISO 5211 / ASME BPE Cavity-Filled Valve Body',
     verifiedFeatures: [
       '3-piece bolted valve body with Tri-Clamp ends',
-      'Internal spherical port ball',
-      'Quarter-turn lever handle'
+      '4x High-tensile stainless steel tie-bolts with hex nuts',
+      'Quarter-turn lever handle with blue vinyl sleeve',
+      'Interactive Closed (0°) vs Open (90°) ball actuation'
     ]
   },
   'pneumatic-sanitary-ball-valve': {
@@ -194,9 +275,12 @@ export const MODEL_REGISTRY = {
     title: 'Pneumatic Actuated Sanitary Ball Valve with TC End',
     standard: 'NAMUR / ISO 5211 Direct Mount Pneumatic Actuator',
     verifiedFeatures: [
-      'Sanitary Tri-Clamp valve body',
+      '3-piece bolted SS 316L body with Tri-Clamp ends',
+      'ISO 5211 mounting bracket and drive stem',
       'Anodized dual-piston pneumatic rack & pinion actuator',
-      'Position visual indicator dome'
+      'NAMUR solenoid interface pad with G 1/4" air ports',
+      'Top position visual indicator dome (Yellow/Red)',
+      'Interactive Closed (0°) vs Open (90°) pneumatic actuation'
     ]
   },
   'ss-316l-diaphragm-valve': {
@@ -205,7 +289,7 @@ export const MODEL_REGISTRY = {
     title: 'SS 316L Sanitary Diaphragm Valve',
     standard: 'ASME BPE Weir-Type Zero-Deadleg Valve Body',
     verifiedFeatures: [
-      'Precision investment cast weir body',
+      'Precision investment cast weir body with TC ends',
       'Manual multi-turn stainless handwheel bonnet',
       'EPDM / PTFE diaphragm clamp assembly'
     ]
@@ -217,21 +301,61 @@ export const MODEL_REGISTRY = {
     standard: '3A Sanitary Spring-Assisted Check Valve',
     verifiedFeatures: [
       'Two-piece clamp-body spring check valve',
-      'Sanitary Tri-Clamp ends'
+      'Sanitary Tri-Clamp ends',
+      'Full flow internal conical spring chamber'
+    ]
+  },
+  'ss-sanitary-sampling-valve': {
+    status: 'verified',
+    component: 'SanitarySamplingValve',
+    title: 'SS Sanitary Aseptic Sampling Valve',
+    standard: 'Aseptic Sampling Standards / 3A',
+    verifiedFeatures: [
+      'Mini Tri-Clamp sanitary process connection',
+      'Forged SS 316L valve chamber block',
+      'Rotary screw actuator knob',
+      'Bent downward sample discharge spout with hose barb',
+      'Interactive Aseptic Sealed vs Sampling Draw toggle'
     ]
   },
 
-  // 7. Products WITHOUT genuine 3D models (MUST BE UNAVAILABLE)
-  'ss-316l-fittings-range': { status: 'unavailable', component: null },
-  'silicone-tri-clamp-gasket': { status: 'unavailable', component: null },
-  'epdm-tri-clamp-gasket': { status: 'unavailable', component: null },
-  'ptfe-tri-clamp-gasket': { status: 'unavailable', component: null },
-  'viton-tri-clamp-gasket': { status: 'unavailable', component: null },
-  'ss-sanitary-spray-ball': { status: 'unavailable', component: null },
-  'ss-sms-union': { status: 'unavailable', component: null },
-  'ss-tri-clamp-connection': { status: 'unavailable', component: null },
-  'ss-sanitary-pipe-spool': { status: 'unavailable', component: null },
-  'ss-sanitary-sampling-valve': { status: 'unavailable', component: null }
+  // ============================================================
+  // 8. TANK CLEANING & CUSTOM FABRICATED ASSEMBLIES
+  // ============================================================
+  'ss-sanitary-spray-ball': {
+    status: 'verified',
+    component: 'SanitarySprayBall',
+    title: 'SS Sanitary Rotary & Static Spray Ball',
+    standard: 'CIP Clean-In-Place 360° Coverage Standards',
+    verifiedFeatures: [
+      'Hollow inlet tube with cotter-pin hole',
+      'SS 316L mirror-polished spherical spray head',
+      'CNC-drilled 360° jet orifices across 5 latitude bands',
+      'Interactive Static Inspection vs Rotary 360° Clean toggle'
+    ]
+  },
+  'ss-sanitary-pipe-spool': {
+    status: 'verified',
+    component: 'SanitaryPipeSpool',
+    title: 'SS Sanitary Pipe Spool (Fabricated & Polished)',
+    standard: 'ASME BPE / Custom Isometrics',
+    verifiedFeatures: [
+      'Continuous ASTM A270 SS 316L tube with hollow bore',
+      'Dual orbital-welded Tri-Clamp ferrules with 14° clamp faces',
+      'Passivated and ground orbital weld seams',
+      'Interactive Standard (500mm) vs Extended (1000mm) toggle'
+    ]
+  },
+  'ss-316l-fittings-range': {
+    status: 'verified',
+    component: 'SanitaryPipeSpool',
+    title: 'SS 316L Sanitary Pipe Fittings Range Showcase',
+    standard: 'BS 4825 / ASME BPE / 3A Standards',
+    verifiedFeatures: [
+      'Comprehensive showcase of orbital welded fittings and ferrules',
+      'Mirror electro-polished finish Ra ≤ 0.38 µm'
+    ]
+  }
 };
 
 /**
@@ -257,4 +381,3 @@ export function hasVerified3DModel(product) {
   const status = getProductModelStatus(product);
   return status.status === 'verified';
 }
-

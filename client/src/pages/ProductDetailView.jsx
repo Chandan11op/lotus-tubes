@@ -11,12 +11,12 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
   const is3DVerified = hasVerified3DModel(prod);
-  const [activeMedia, setActiveMedia] = useState(0); // 0 | 1 | 2 | '3d' | 'video'
+  const [activeMedia, setActiveMedia] = useState(is3DVerified ? '3d' : 0); // 0 | 1 | 2 | '3d' | 'video'
   const [activeTab, setActiveTab] = useState('tab-apps');
   const [imgFallbacks, setImgFallbacks] = useState({});
 
   useEffect(() => {
-    setActiveMedia(0);
+    setActiveMedia(is3DVerified ? '3d' : 0);
     setImgFallbacks({});
 
     // Update dynamic technical SEO & Structured Data
