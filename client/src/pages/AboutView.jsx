@@ -1,17 +1,51 @@
 import React from 'react';
 import { createProductSVG } from '../data/siteData';
+import PageHero from '../components/common/PageHero';
 
 export const AboutView = ({ onOpenEnquiry }) => {
   return (
     <>
-      <section className="page-hero">
-        <div className="site-container">
-          <h1 className="page-hero-title">About Lotus Tubes</h1>
-          <p className="page-hero-subtitle">
-            Dedicated supplier and distributor of high-purity stainless steel sanitary pipes, fittings, and hygienic valves based in Mumbai, India.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badge="The Quality Maker • Established in Mumbai"
+        title="Engineered for Purity. Built for Trust."
+        subtitle="Dedicated Stockist & Global Exporter of Stainless Steel Sanitary Solutions"
+        description="Operating from our central Mumbai distribution hub, Lotus Tubes specializes in high-purity SS 304 and SS 316L tubes, fittings, and valves tailored to mission-critical biopharma, dairy, and hygienic process lines."
+        slides={[
+          {
+            image: '/assets/images/company/lotus-tubes-facility.jpg',
+            badge: 'The Quality Maker • Established in Mumbai',
+            title: 'Engineered for Purity. Built for Trust.',
+            subtitle: 'Dedicated Stockist & Global Exporter of Stainless Steel Sanitary Solutions',
+            description: 'Operating from our central Mumbai distribution hub, Lotus Tubes specializes in high-purity SS 304 and SS 316L tubes, fittings, and valves tailored to mission-critical biopharma, dairy, and hygienic process lines.'
+          },
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-006.jpg',
+            badge: 'Zero-Compromise Hygienic Metallurgy',
+            title: 'Certified Surface Smoothness & Traceability',
+            subtitle: 'Ra ≤ 0.38 µm EP Finishes • EN 10204 3.1 Mill Certificates',
+            description: 'Every product batch is tracked by heat number and inspected for smooth, crevice-free internal geometry to eliminate bacterial harborage and ensure effortless CIP/SIP cleanability.'
+          }
+        ]}
+        stats={[
+          { value: 'Mumbai', label: 'Distribution Facility' },
+          { value: 'SS 316L / 304', label: 'Certified Metallurgy' },
+          { value: 'EN 10204 3.1', label: 'Full Heat Traceability' },
+          { value: 'Pan-India & Global', label: 'Export Logistics' }
+        ]}
+        actions={[
+          <button
+            key="rfq"
+            type="button"
+            onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Lotus Tubes Company Introduction & RFQ')}
+            className="btn btn--primary"
+          >
+            Request Sourcing Consultation &rarr;
+          </button>,
+          <a key="cat" href="#products" className="btn btn--outline">
+            Browse Product Range
+          </a>
+        ]}
+      />
 
       <div className="site-container section">
         <div className="about-preview-grid">

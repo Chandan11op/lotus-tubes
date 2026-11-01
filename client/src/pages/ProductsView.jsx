@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
 import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
+import PageHero from '../components/common/PageHero';
 
 const STANDARDS_LIST = [
   { id: 'all', label: 'All Standards' },
@@ -107,20 +108,61 @@ export const ProductsView = ({ onOpenEnquiry }) => {
 
   return (
     <>
-      {/* Catalogue Hero Banner */}
-      <section className="page-hero">
-        <div className="site-container">
-          <div className="max-w-3xl">
-            <span className="inline-block px-3 py-1 mb-3 text-xs font-semibold tracking-wider uppercase bg-white/10 text-cyan-300 rounded-full border border-white/15">
-              Certified B2B Procurement Catalogue
-            </span>
-            <h1 className="page-hero-title">Stainless Steel Sanitary Product Catalogue</h1>
-            <p className="page-hero-subtitle">
-              Engineered sanitary SS 304 and molybdenum-bearing SS 316L pipes, orbital bends, Tri-Clamp components, SMS unions, and hygienic process valves certified with EN 10204 3.1 MTC documentation.
-            </p>
-          </div>
-        </div>
-      </section>
+      {/* Cinematic Catalogue Hero Banner */}
+      <PageHero
+        badge="Certified B2B Procurement Catalogue"
+        title="Stainless Steel Sanitary Product Catalogue"
+        subtitle="Engineered for High-Purity Pharmaceutical & Hygienic Process Lines"
+        description="Explore precision SS 304 and SS 316L pipes, orbital bends, Tri-Clamp components, SMS unions, and hygienic valves certified with EN 10204 3.1 MTC documentation."
+        slides={[
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg',
+            badge: 'Certified B2B Procurement Catalogue',
+            title: 'Stainless Steel Sanitary Product Catalogue',
+            subtitle: 'Engineered for High-Purity Pharmaceutical & Process Lines',
+            description: 'Precision SS 304 and SS 316L pipes, orbital weld bends, Tri-Clamp components, SMS unions, and sanitary valves certified with EN 10204 3.1 MTC documentation.'
+          },
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-004.jpg',
+            badge: 'ASTM A270 & ASME BPE Standards',
+            title: 'High-Purity Electropolished Sanitary Tubing',
+            subtitle: 'Ra ≤ 0.38 µm (15 µin) Mirror Finish with Zero Bacterial Entrapment',
+            description: 'Ready stock range from 1/2" to 4" OD available in Mumbai warehouse for immediate 24-48h dispatch with full chemical and mechanical mill test certificates.'
+          },
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-007.jpg',
+            badge: 'Manual & Pneumatic Sanitary Valves',
+            title: 'Bi-Directional Sanitary Flow Control Solutions',
+            subtitle: 'Butterfly Valves, Diaphragm Valves & Automated Ball Valves',
+            description: '100% hydrostatic and pneumatic leak-tested valves fitted with FDA-compliant food-grade silicone, EPDM, and PTFE seals.'
+          }
+        ]}
+        stats={[
+          { value: '30+ Ready Stock', label: 'Sanitary Components' },
+          { value: 'Ra ≤ 0.38 µm', label: 'Certified Roughness' },
+          { value: 'EN 10204 3.1', label: 'MTC Traceability' },
+          { value: '24-48h', label: 'Mumbai Dispatch Hub' }
+        ]}
+        actions={[
+          <button
+            key="rfq"
+            type="button"
+            onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Full Sanitary Catalogue Enquiry')}
+            className="btn btn--primary"
+          >
+            Request Official Quotation &rarr;
+          </button>,
+          <a
+            key="whatsapp"
+            href="https://wa.me/919820525200?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20catalogue%20ready%20stock."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn--whatsapp"
+          >
+            <span>🟢 WhatsApp Desk</span>
+          </a>
+        ]}
+      />
 
       {/* Main Catalogue Container */}
       <div className="site-container catalogue-layout">

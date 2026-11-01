@@ -76,18 +76,7 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
                 <li><a href="#category/custom-assemblies" onClick={onClose}>Custom Assemblies</a></li>
               </ul>
             </li>
-            <li>
-              <div className="mobile-nav-group-title">{t('nav_industries', 'Industries')}</div>
-              <ul className="mobile-subnav">
-                <li><a href="#industry/pharmaceutical" onClick={onClose}>{t('ind_pharma', 'Pharmaceutical')}</a></li>
-                <li><a href="#industry/biotechnology" onClick={onClose}>{t('ind_biotech', 'Biotechnology')}</a></li>
-                <li><a href="#industry/dairy" onClick={onClose}>{t('ind_dairy', 'Dairy Processing')}</a></li>
-                <li><a href="#industry/food-beverage" onClick={onClose}>{t('ind_food', 'Food & Beverage')}</a></li>
-                <li><a href="#industry/breweries" onClick={onClose}>{t('ind_brew', 'Breweries')}</a></li>
-                <li><a href="#industry/water-treatment" onClick={onClose}>{t('ind_water', 'Water Treatment')}</a></li>
-                <li><a href="#industry/chemical" onClick={onClose}>{t('ind_chemical', 'Chemical Processing')}</a></li>
-              </ul>
-            </li>
+            <li><a href="#industries" onClick={onClose} className="mobile-nav-link">{t('nav_industries', 'Industries')}</a></li>
             <li><a href="#quality" onClick={onClose} className="mobile-nav-link">{t('nav_quality', 'Quality & Documentation')}</a></li>
             <li><a href="#resources" onClick={onClose} className="mobile-nav-link">{t('nav_resources', 'Resources & Datasheets')}</a></li>
             <li><a href="#blog" onClick={onClose} className="mobile-nav-link">{t('nav_blog', 'Technical Blog')}</a></li>

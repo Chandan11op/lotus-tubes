@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CONFIG } from '../data/siteData';
 import { apiService } from '../services/api';
 import { Loader } from '../components/common/Loader';
+import PageHero from '../components/common/PageHero';
 
 export const ContactView = ({ onNotify }) => {
   const [formData, setFormData] = useState({
@@ -66,14 +67,48 @@ export const ContactView = ({ onNotify }) => {
 
   return (
     <div>
-      <section className="page-hero">
-        <div className="site-container">
-          <h1 className="page-hero-title">Contact Lotus Tubes</h1>
-          <p className="page-hero-subtitle">
-            Connect with our Mumbai sales and technical sourcing desk for product availability, quotations, and export inquiries.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badge="Mumbai Sales & Sourcing Desk"
+        title="Connect with Lotus Tubes Specialists"
+        subtitle="Rapid RFQ Turnaround & Technical Sourcing Assistance"
+        description="Reach our central Mumbai sourcing office for ready stock status, custom fabrication drawings, test certificates, and global export inquiries."
+        slides={[
+          {
+            image: '/assets/images/company/lotus-tubes-facility.jpg',
+            badge: 'Mumbai Sales & Sourcing Desk',
+            title: 'Connect with Lotus Tubes Specialists',
+            subtitle: 'Rapid RFQ Turnaround & Technical Sourcing Assistance',
+            description: 'Reach our central Mumbai sourcing office for ready stock status, custom fabrication drawings, test certificates, and global export inquiries.'
+          },
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg',
+            badge: 'Direct Sourcing Support',
+            title: 'Ready Stock Sourcing & Immediate Dispatch',
+            subtitle: 'Conveniently Located in Girgaon / Mumbai Distribution Hub',
+            description: 'Fast delivery across Maharashtra, Gujarat, and pan-India industrial clusters, plus direct international shipping to Africa, Middle East, and Southeast Asia.'
+          }
+        ]}
+        stats={[
+          { value: '< 2 Hours', label: 'RFQ Response Time' },
+          { value: 'Mumbai', label: 'Central Warehouse' },
+          { value: 'WhatsApp', label: 'Instant Desk Support' },
+          { value: 'Pan-India', label: 'Ready Stock Dispatch' }
+        ]}
+        actions={[
+          <a
+            key="whatsapp"
+            href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20sanitary%20stainless%20steel%20products.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn--whatsapp"
+          >
+            <span>🟢 WhatsApp Priority Desk</span>
+          </a>,
+          <a key="call" href={`tel:${CONFIG.phone}`} className="btn btn--outline">
+            Direct Phone: {CONFIG.phone}
+          </a>
+        ]}
+      />
 
       <div className="site-container section">
         <div className="about-preview-grid">

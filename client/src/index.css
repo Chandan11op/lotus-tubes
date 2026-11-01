@@ -2072,6 +2072,7 @@ ol {
 .catalogue-layout {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
+  align-items: start;
   gap: 32px;
   padding: 40px 0 80px;
   width: 100%;
@@ -2120,20 +2121,54 @@ ol {
   background-color: var(--pure-white);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 24px;
   box-shadow: var(--shadow-sm);
-  height: fit-content;
   position: sticky;
-  top: 100px;
+  top: 90px;
+  max-height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  z-index: 20;
 }
 
 .filter-sidebar__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 14px;
+  padding: 18px 20px 14px 20px;
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  background-color: var(--pure-white);
+}
+
+.filter-sidebar__content {
+  padding: 18px 20px 24px 20px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #f1f5f9;
+}
+
+.filter-sidebar__content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-sidebar__content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 9999px;
+}
+
+.filter-sidebar__content::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 9999px;
+}
+
+.filter-sidebar__content::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
 
 .filter-sidebar__title {
@@ -3443,18 +3478,6 @@ ol {
 
   .mobile-filter-toggle:hover {
     background-color: var(--navy-surface);
-  }
-
-  .filter-sidebar {
-    position: static;
-    display: none;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow-md);
-  }
-
-  .filter-sidebar.mobile-open {
-    display: block;
-    animation: fadeIn 0.25s ease-out;
   }
 
   .product-detail-grid {

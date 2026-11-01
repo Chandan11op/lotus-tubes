@@ -1,20 +1,40 @@
 import React from 'react';
 import { BLOG_POSTS, createProductSVG } from '../data/siteData';
+import PageHero from '../components/common/PageHero';
 
 export const BlogView = ({ slug, onOpenEnquiry }) => {
   if (slug) {
     const post = BLOG_POSTS.find((p) => p.slug === slug || p.id === slug) || BLOG_POSTS[0];
     return (
       <>
-        <section className="page-hero">
-          <div className="site-container">
-            <span className="badge badge--pink mb-2">
-              {post.category} • {post.readTime}
-            </span>
-            <h1 className="page-hero-title">{post.title}</h1>
-            <p className="page-hero-subtitle">Published on {post.date} by Lotus Tubes Technical Desk</p>
-          </div>
-        </section>
+        <PageHero
+          badge={`${post.category} • ${post.readTime}`}
+          title={post.title}
+          subtitle={`Technical Article • Published on ${post.date}`}
+          description="In-depth analysis and technical insights from the Lotus Tubes Engineering & Quality desk in Mumbai."
+          slides={[
+            {
+              image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-005.jpg',
+              badge: `${post.category} • ${post.readTime}`,
+              title: post.title,
+              subtitle: `Technical Article • Published on ${post.date}`,
+              description: 'In-depth analysis and technical insights from the Lotus Tubes Engineering & Quality desk in Mumbai.'
+            }
+          ]}
+          actions={[
+            <a key="back" href="#blog" className="btn btn--outline">
+              &larr; Back to All Articles
+            </a>,
+            <button
+              key="rfq"
+              type="button"
+              onClick={() => onOpenEnquiry && onOpenEnquiry(null, post.title)}
+              className="btn btn--primary"
+            >
+              Discuss Your Project &rarr;
+            </button>
+          ]}
+        />
 
         <div className="site-container section" style={{ maxWidth: '860px' }}>
           <article className="form-card" style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-main)' }}>
@@ -47,14 +67,34 @@ export const BlogView = ({ slug, onOpenEnquiry }) => {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="site-container">
-          <h1 className="page-hero-title">Technical Engineering Blog</h1>
-          <p className="page-hero-subtitle">
-            Insights into stainless steel metallurgy, sanitary standards, roughness guidelines, and hygienic process engineering.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badge="Lotus Tubes Knowledge Center"
+        title="Technical Engineering Blog"
+        subtitle="Sanitary Metallurgy, Surface Finish Guidelines & Process Insights"
+        description="Authoritative technical insights into stainless steel grades, surface roughness Ra standards, ASME BPE requirements, and orbital welding best practices."
+        slides={[
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-002.jpg',
+            badge: 'Lotus Tubes Knowledge Center',
+            title: 'Technical Engineering Blog',
+            subtitle: 'Sanitary Metallurgy, Surface Finish Guidelines & Process Insights',
+            description: 'Authoritative technical insights into stainless steel grades, surface roughness Ra standards, ASME BPE requirements, and orbital welding best practices.'
+          },
+          {
+            image: '/assets/images/company/lotus-tubes-facility.jpg',
+            badge: 'Direct Industry Experience',
+            title: 'Hygienic Process Engineering Articles',
+            subtitle: 'Practical Solutions for Pharma, Dairy, and Biotech Equipment Builders',
+            description: 'Learn how to prevent rouging in WFI loops, select certified elastomer gaskets, and choose between EP and MP finishes.'
+          }
+        ]}
+        stats={[
+          { value: 'ASME BPE', label: 'Technical Guidelines' },
+          { value: 'Ra Roughness', label: 'Surface Finish Guides' },
+          { value: 'WFI Loops', label: 'Pharma Case Studies' },
+          { value: 'Weekly', label: 'Engineering Updates' }
+        ]}
+      />
 
       <div className="site-container section">
         <div className="resource-grid">

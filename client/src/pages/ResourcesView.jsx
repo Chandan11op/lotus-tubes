@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FAQS } from '../data/siteData';
+import PageHero from '../components/common/PageHero';
 
 export const ResourcesView = ({ onNotify }) => {
   const [openFaq, setOpenFaq] = useState(null);
@@ -18,14 +19,39 @@ export const ResourcesView = ({ onNotify }) => {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="site-container">
-          <h1 className="page-hero-title">Engineering Resources & Downloads</h1>
-          <p className="page-hero-subtitle">
-            Download technical catalogues, standard pipe dimensional charts, and review sanitary engineering guides.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badge="Engineering Datasheets & Technical Library"
+        title="Engineering Resources & Downloads"
+        subtitle="Hygienic Process Specifications, Dimensional Charts & FAQs"
+        description="Access downloadable technical catalogues, ASTM/ASME dimensional correlation charts, surface finish roughness guides, and engineering documentation."
+        slides={[
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-009.jpg',
+            badge: 'Engineering Datasheets & Technical Library',
+            title: 'Engineering Resources & Downloads',
+            subtitle: 'Hygienic Process Specifications & Dimensional Charts',
+            description: 'Access downloadable technical catalogues, ASTM/ASME dimensional correlation charts, surface finish roughness guides, and engineering documentation.'
+          },
+          {
+            image: '/assets/images/company/lotus-tubes-facility.jpg',
+            badge: 'Direct Mumbai Technical Support',
+            title: 'Material Guidance & CAD Assistance',
+            subtitle: 'Technical Consulting for Hygienic Process Skids',
+            description: 'Speak directly with our technical sourcing specialists to verify sanitary standards, weld tangents, and elastomer chemical compatibility.'
+          }
+        ]}
+        stats={[
+          { value: 'PDF Catalogues', label: 'Ready to Download' },
+          { value: 'ASTM / ASME', label: 'Dimensional Charts' },
+          { value: 'Ra Roughness', label: 'Finishing Standards' },
+          { value: '24h Response', label: 'Technical Sourcing' }
+        ]}
+        actions={[
+          <a key="cat" href="#products" className="btn btn--primary">
+            Explore Product Range &rarr;
+          </a>
+        ]}
+      />
 
       <div className="site-container section">
         <div className="resource-grid mb-3">

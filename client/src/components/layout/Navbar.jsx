@@ -76,34 +76,9 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
               </div>
             </li>
 
-            {/* Industries Dropdown */}
-            <li className="nav-item nav-item--dropdown" id="nav-industries-dropdown">
-              <a href="#industries" className="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                <span>{t('nav_industries', 'Industries')}</span> <span className="nav-arrow">▾</span>
-              </a>
-              <div className="dropdown-menu">
-                <a href="#industry/pharmaceutical" className="dropdown-item">
-                  <span className="dropdown-item__icon">💊</span> <span>{t('ind_pharma', 'Pharmaceutical Processing')}</span>
-                </a>
-                <a href="#industry/biotechnology" className="dropdown-item">
-                  <span className="dropdown-item__icon">🧬</span> <span>{t('ind_biotech', 'Biotechnology & High Purity')}</span>
-                </a>
-                <a href="#industry/dairy" className="dropdown-item">
-                  <span className="dropdown-item__icon">🥛</span> <span>{t('ind_dairy', 'Dairy Processing')}</span>
-                </a>
-                <a href="#industry/food-beverage" className="dropdown-item">
-                  <span className="dropdown-item__icon">🥫</span> <span>{t('ind_food', 'Food & Beverage')}</span>
-                </a>
-                <a href="#industry/breweries" className="dropdown-item">
-                  <span className="dropdown-item__icon">🍺</span> <span>{t('ind_brew', 'Breweries & Distilleries')}</span>
-                </a>
-                <a href="#industry/water-treatment" className="dropdown-item">
-                  <span className="dropdown-item__icon">💧</span> <span>{t('ind_water', 'Ultra-Pure Water & WFI')}</span>
-                </a>
-                <a href="#industry/chemical" className="dropdown-item">
-                  <span className="dropdown-item__icon">⚗️</span> <span>{t('ind_chemical', 'Specialty Chemical & Personal Care')}</span>
-                </a>
-              </div>
+            {/* Industries Direct Link */}
+            <li className="nav-item">
+              <a href="#industries" className="nav-link">{t('nav_industries', 'Industries')}</a>
             </li>
 
             <li className="nav-item">

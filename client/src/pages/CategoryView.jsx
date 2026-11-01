@@ -2,6 +2,7 @@ import React from 'react';
 import { CATEGORIES, PRODUCTS, CONFIG } from '../data/siteData';
 import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
+import PageHero from '../components/common/PageHero';
 
 export const CategoryView = ({ slug, onOpenEnquiry }) => {
   const cat = CATEGORIES.find((c) => c.slug === slug || c.id === slug) || CATEGORIES[0];
@@ -9,13 +10,47 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="site-container">
-          <span className="badge badge--pink mb-2">Sanitary Category</span>
-          <h1 className="page-hero-title">{cat.name}</h1>
-          <p className="page-hero-subtitle">{cat.desc}</p>
-        </div>
-      </section>
+      <PageHero
+        badge="Hygienic Process Category"
+        title={cat.name}
+        subtitle="Precision Engineered Stainless Steel Components"
+        description={cat.desc}
+        slides={[
+          {
+            image: catProducts[0]?.image || '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg',
+            badge: 'Hygienic Process Category',
+            title: cat.name,
+            subtitle: 'ASTM & ASME BPE Certified Metallurgy',
+            description: cat.desc
+          },
+          {
+            image: catProducts[1]?.image || '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-002.jpg',
+            badge: 'Quality & Surface Finish Assurance',
+            title: `Certified ${cat.name} Solutions`,
+            subtitle: 'Electro Polished (Ra ≤ 0.38 µm) & Mechanical Polished (Ra ≤ 0.8 µm)',
+            description: 'Ready stock available in Mumbai distribution facility with 24-48h dispatch for urgent plant maintenance and project skids.'
+          }
+        ]}
+        stats={[
+          { value: `${catProducts.length} Items`, label: 'In This Category' },
+          { value: 'SS 304 / 316L', label: 'Material Grades' },
+          { value: 'EN 10204 3.1', label: 'MTC Supplied' },
+          { value: 'Ready Stock', label: 'Mumbai Sourcing' }
+        ]}
+        actions={[
+          <a key="cat" href="#products" className="btn btn--outline">
+            &larr; Full Catalogue
+          </a>,
+          <button
+            key="rfq"
+            type="button"
+            onClick={() => onOpenEnquiry && onOpenEnquiry(null, `${cat.name} Category Quote`)}
+            className="btn btn--primary"
+          >
+            Request Category RFQ &rarr;
+          </button>
+        ]}
+      />
 
       <div className="site-container section">
         <div className="section-header">

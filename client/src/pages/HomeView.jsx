@@ -4,7 +4,7 @@ import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../d
 import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 import ProductTicker from '../components/layout/ProductTicker';
-import HeroProductShowcase from '../components/common/HeroProductShowcase';
+import HomeCinematicHero from '../components/common/HomeCinematicHero';
 import ManufacturingProcess from '../components/common/ManufacturingProcess';
 import ProductImage from '../components/common/ProductImage';
 
@@ -16,86 +16,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       {/* Hot-Selling Products Ticker (Positioned immediately after Navbar and before Hero) */}
       <ProductTicker />
 
-      {/* A. Hero Section (Matching UI-UX Reference Structure) */}
-      <section className="hero-section" aria-label="Hero Showcase">
-        <div className="site-container">
-          <div className="hero-grid">
-            
-            <div className="hero-content">
-              <span className="hero-eyebrow">{t('hero_eyebrow', 'The Quality Maker')}</span>
-              <h1 className="hero-title">
-                {t('hero_title', 'Stainless Steel Sanitary Pipes, Fittings & Valves')}
-              </h1>
-              <h2 className="hero-subtitle">
-                {t('hero_subtitle', 'Engineered for Hygienic Process Applications')}
-              </h2>
-              <p className="hero-description">
-                {t('hero_desc', 'Explore stainless steel sanitary products in SS 304 and SS 316L, with available surface finishes and configurations suited to pharmaceutical, dairy, food & beverage, and high-purity process industries.')}
-              </p>
-
-              {/* 4 Feature Badges (Matching Reference Layout) */}
-              <div className="hero-badges-grid">
-                <div className="hero-badge-item">
-                  <span className="hero-badge-icon">💎</span>
-                  <div
-                    className="hero-badge-label"
-                    dangerouslySetInnerHTML={{ __html: t('badge_premium', 'Premium<br>SS 304 / 316L') }}
-                  />
-                </div>
-                <div className="hero-badge-item">
-                  <span className="hero-badge-icon">📦</span>
-                  <div
-                    className="hero-badge-label"
-                    dangerouslySetInnerHTML={{ __html: t('badge_stock', 'Ready<br>Stock Range') }}
-                  />
-                </div>
-                <div className="hero-badge-item">
-                  <span className="hero-badge-icon">🌐</span>
-                  <div
-                    className="hero-badge-label"
-                    dangerouslySetInnerHTML={{ __html: t('badge_supply', 'Global & Pan<br>India Supply') }}
-                  />
-                </div>
-                <div className="hero-badge-item">
-                  <span className="hero-badge-icon">📋</span>
-                  <div
-                    className="hero-badge-label"
-                    dangerouslySetInnerHTML={{ __html: t('badge_mtc', 'MTC & Technical<br>Assistance') }}
-                  />
-                </div>
-              </div>
-
-              {/* Primary CTAs */}
-              <div className="hero-actions">
-                <a href="#products" className="btn btn--primary btn--lg">
-                  <span>{t('btn_explore', 'Explore Products')}</span> &rarr;
-                </a>
-                <button
-                  type="button"
-                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Stainless Steel Sanitary Piping')}
-                  className="btn btn--outline-dark btn--lg"
-                >
-                  {t('btn_quote', 'Request a Quote')} &rarr;
-                </button>
-                <a
-                  href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20your%20sanitary%20stainless%20steel%20products.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn--whatsapp btn--lg"
-                >
-                  <span>🟢 {t('top_whatsapp', 'WhatsApp Enquiry')}</span>
-                </a>
-              </div>
-            </div>
-
-            {/* Hero Visual Media (360° Interactive Video Showcase) */}
-            <div className="hero-media">
-              <HeroProductShowcase />
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* A. Cinematic Hex-Inspired Hero Section with Coordinated 360° Visuals */}
+      <HomeCinematicHero onOpenEnquiry={onOpenEnquiry} onOpenVideo={onOpenVideo} />
 
       {/* B. Product Range (Image-Led Cards) */}
       <section className="section section--white" id="section-range" aria-label="Our Product Range">

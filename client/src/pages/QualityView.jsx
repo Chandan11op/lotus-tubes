@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { apiService } from '../services/api';
+import PageHero from '../components/common/PageHero';
 
 export const QualityView = () => {
   const [formData, setFormData] = useState({
@@ -41,14 +42,42 @@ export const QualityView = () => {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="site-container">
-          <h1 className="page-hero-title">Quality Standards & Documentation</h1>
-          <p className="page-hero-subtitle">
-            Surface finish precision, metallurgical compliance, and batch test certification for pharmaceutical and sanitary installations.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        badge="100% Quality & Metallurgy Assurance"
+        title="Quality Standards & Inspection Documentation"
+        subtitle="Surface Roughness Profilometry, Boroscopic QC & Full Batch Traceability"
+        description="Rigorous metallurgical testing and certified EN 10204 3.1 Material Test Certificates ensuring total compliance with ASME BPE, 3-A, SMS, and ASTM sanitary benchmarks."
+        slides={[
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-008.jpg',
+            badge: '100% Quality & Metallurgy Assurance',
+            title: 'Quality Standards & Inspection Documentation',
+            subtitle: 'Surface Roughness Profilometry, Boroscopic QC & Batch Traceability',
+            description: 'Rigorous metallurgical testing and certified EN 10204 3.1 Material Test Certificates ensuring total compliance with ASME BPE, 3-A, SMS, and ASTM sanitary benchmarks.'
+          },
+          {
+            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-004.jpg',
+            badge: 'Ra ≤ 0.38 µm EP Contact Surface',
+            title: 'Electropolished & Mechanically Polished Precision',
+            subtitle: 'Profilometer Verified Surface Finishes Eliminating Biofilm Formation',
+            description: 'Every tube and fitting is measured for surface roughness, dimensional ovality, and hydrostatically tested to guarantee leak-tight integrity.'
+          }
+        ]}
+        stats={[
+          { value: 'EN 10204 3.1', label: 'Mill Certificates' },
+          { value: 'Ra ≤ 0.38 µm', label: 'Electropolished Finish' },
+          { value: '100% Boroscopy', label: 'Internal Bore Inspection' },
+          { value: 'Positive PMI', label: 'Alloy Composition Verified' }
+        ]}
+        actions={[
+          <a key="docs" href="#doc-request" className="btn btn--primary">
+            Request Mill Test Certificates (MTC) &rarr;
+          </a>,
+          <a key="standards" href="#section-standards" className="btn btn--outline">
+            View ASME BPE Benchmark
+          </a>
+        ]}
+      />
 
       <div className="site-container section">
         <div className="about-preview-grid mb-3">
