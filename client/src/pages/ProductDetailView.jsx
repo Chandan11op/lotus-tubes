@@ -3,20 +3,20 @@ import { PRODUCTS, CONFIG } from '../data/siteData';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
 import { Product360Viewer } from '../components/common/Product360Viewer';
 import { ProductVideoPlayer } from '../components/common/ProductVideoPlayer';
-import { hasVerified3DModel } from '../data/modelRegistry.js';
+import { has360Media } from '../data/product360Media.js';
 import { updatePageSEO } from '../utils/seo';
 
 export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
-  const is3DVerified = hasVerified3DModel(prod);
-  const [activeMedia, setActiveMedia] = useState(is3DVerified ? '3d' : 0); // 0 | 1 | 2 | '3d' | 'video'
+  const has360 = has360Media(prod?.id || prod?.slug);
+  const [activeMedia, setActiveMedia] = useState(has360 ? '360' : 0); // 0 | 1 | 2 | '360' | 'video'
   const [activeTab, setActiveTab] = useState('tab-apps');
   const [imgFallbacks, setImgFallbacks] = useState({});
 
   useEffect(() => {
-    setActiveMedia(is3DVerified ? '3d' : 0);
+    setActiveMedia(has360Media(prod?.id || prod?.slug) ? '360' : 0);
     setImgFallbacks({});
 
     // Update dynamic technical SEO & Structured Data
@@ -33,7 +33,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
         { name: prod.name, path: `/product/${prod.slug || prod.id}` }
       ]
     });
-  }, [slug, prod.id]);
+  }, [slug, prod?.id]);
 
   const productImages = prod.images && prod.images.length > 0
     ? prod.images
@@ -60,8 +60,8 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
         {/* Left: Gallery & Primary Interactive Media */}
         <div className="product-gallery-box">
           <div className="product-main-image-wrap" style={{ position: 'relative', overflow: 'hidden', background: '#F8FAFC', borderRadius: '12px', minHeight: '420px' }}>
-            {activeMedia === '3d' && is3DVerified ? (
-              <Product360Viewer product={prod} fallbackImage={productImages[0]} initialMode="3d" />
+            {activeMedia === '360' && has360 ? (
+              <Product360Viewer product={prod} fallbackImage={productImages[0]} height="420px" autoPlay={true} />
             ) : activeMedia === 'video' && prod.video ? (
               <ProductVideoPlayer
                 src={prod.video}
@@ -85,19 +85,19 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             )}
           </div>
 
-          {/* Media Switcher Bar: 3D Model + Video + Photo Thumbnails */}
+          {/* Media Switcher Bar: 360 Rotation + Video + Photo Thumbnails */}
           <div className="gallery-thumbs" style={{ marginTop: '14px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))', gap: '8px' }}>
-            {/* 3D Model Mode Button (Only when verified CAD model exists) */}
-            {is3DVerified && (
+            {/* 360° Interactive View Mode Button (Rendered when genuine 360 media exists) */}
+            {has360 && (
               <button
                 type="button"
-                onClick={() => setActiveMedia('3d')}
-                className={`gallery-thumb-btn ${activeMedia === '3d' ? 'active' : ''}`}
+                onClick={() => setActiveMedia('360')}
+                className={`gallery-thumb-btn ${activeMedia === '360' ? 'active' : ''}`}
                 style={{
                   position: 'relative',
                   height: '64px',
                   borderRadius: '8px',
-                  border: activeMedia === '3d' ? '2px solid #0284C7' : '1px solid #CBD5E1',
+                  border: activeMedia === '360' ? '2px solid #0284C7' : '1px solid #CBD5E1',
                   background: '#0F172A',
                   color: '#FFF',
                   display: 'flex',
@@ -107,10 +107,10 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                   cursor: 'pointer',
                   padding: '4px'
                 }}
-                title="3D Interactive Digital Twin"
+                title="360° Interactive Product Rotation"
               >
                 <span style={{ fontSize: '18px' }}>🔄</span>
-                <span style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>3D DIGITAL TWIN</span>
+                <span style={{ fontSize: '10px', fontWeight: 700, marginTop: '2px' }}>360° VIEW</span>
               </button>
             )}
 
@@ -171,8 +171,8 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           </div>
 
           <div style={{ fontSize: '11px', color: '#64748B', marginTop: '8px', textAlign: 'center' }}>
-            {activeMedia === '3d'
-              ? '3D Interactive Digital Twin: Drag horizontally or vertically to inspect component geometry.'
+            {activeMedia === '360'
+              ? '360° Interactive Product View: Continuous rotation • Click or drag to inspect component geometry.'
               : activeMedia === 'video'
               ? 'Technical Video: Factory inspection and component overview.'
               : 'Genuine Studio Product Photography • EN 10204 3.1 Certified Range'}
@@ -192,8 +192,10 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             <span className="badge badge--navy" style={{ background: '#10263D', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.material}</span>
             <span className="badge badge--pink" style={{ background: '#F00078', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.finish}</span>
             <span className="badge badge--steel" style={{ background: '#E2E8F0', color: '#334155', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>{prod.standard}</span>
-            {is3DVerified && (
-              <span className="badge badge--sky" style={{ background: '#0284C7', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>3D Interactive Model</span>
+            {has360 && (
+              <span className="badge badge--sky" style={{ background: '#0284C7', color: '#FFF', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>
+                🔄 360° Interactive View
+              </span>
             )}
             <span className="badge badge--outline" style={{ border: '1px solid #CBD5E1', color: '#475569', padding: '4px 10px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>EN 10204 3.1 Traceable</span>
           </div>

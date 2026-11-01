@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
+import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 import ProductTicker from '../components/layout/ProductTicker';
-import Hero3DFloatingFitting from '../components/3d/Hero3DFloatingFitting';
-import Manufacturing3DProcess from '../components/3d/Manufacturing3DProcess';
+import HeroProductShowcase from '../components/common/HeroProductShowcase';
+import ManufacturingProcess from '../components/common/ManufacturingProcess';
 import ProductImage from '../components/common/ProductImage';
 
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
@@ -87,9 +88,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </div>
             </div>
 
-            {/* Hero Visual Media (3D Interactive Digital Twin) */}
+            {/* Hero Visual Media (360° Interactive Video Showcase) */}
             <div className="hero-media">
-              <Hero3DFloatingFitting />
+              <HeroProductShowcase />
             </div>
 
           </div>
@@ -167,14 +168,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <div className="product-card__badge-bar">
                   <span className="badge badge--navy">{prod.material}</span>
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
-                  {prod.model3d && (
+                  {has360Media(prod.id) && (
                     <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
-                      3D CAD
+                      🔄 360° View
                     </span>
                   )}
                 </div>
                 <div className="product-card__img-wrap">
-                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
+                  <ProductCardVideo video={product360Videos[prod.id] || prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
                 </div>
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>
@@ -210,8 +211,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         </div>
       </section>
 
-      {/* 3D Manufacturing Process & Engineering Showcase */}
-      <Manufacturing3DProcess />
+      {/* Precision Manufacturing Process & Engineering Showcase */}
+      <ManufacturingProcess />
 
       {/* D. Industries Served (Image-led Cards with Circular Icons) */}
       <section className="section section--white" id="section-industries" aria-label="Industries We Serve">

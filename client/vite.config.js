@@ -9,13 +9,6 @@ export default defineConfig({
     host: true
   },
   build: {
-    chunkSizeWarningLimit: 1000,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'three-vendor': ['three', '@react-three/fiber', '@react-three/drei']
-        }
-      }
-    }
+    chunkSizeWarningLimit: 1000
   }
 });

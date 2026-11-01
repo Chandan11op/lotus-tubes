@@ -1,5 +1,6 @@
 import React from 'react';
 import { INDUSTRIES, PRODUCTS } from '../data/siteData';
+import { product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 
 export const IndustriesView = ({ slug, onOpenEnquiry }) => {
@@ -75,7 +76,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                     <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
                   </div>
                   <div className="product-card__img-wrap">
-                    <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
+                    <ProductCardVideo video={product360Videos[prod.id] || prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
                   </div>
                   <div className="product-card__body">
                     <span className="product-card__category">{prod.category}</span>

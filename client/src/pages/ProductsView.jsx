@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
-import { hasVerified3DModel } from '../data/modelRegistry';
+import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 
 const STANDARDS_LIST = [
@@ -18,7 +18,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [selectedFinish, setSelectedFinish] = useState('all');
   const [selectedStandard, setSelectedStandard] = useState('all');
-  const [only3D, setOnly3D] = useState(false);
+  const [only360, setOnly360] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('featured');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -30,10 +30,10 @@ export const ProductsView = ({ onOpenEnquiry }) => {
     if (selectedMaterial !== 'all') count++;
     if (selectedFinish !== 'all') count++;
     if (selectedStandard !== 'all') count++;
-    if (only3D) count++;
+    if (only360) count++;
     if (searchTerm.trim()) count++;
     return count;
-  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, only3D, searchTerm]);
+  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, only360, searchTerm]);
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((p) => {
@@ -61,8 +61,8 @@ export const ProductsView = ({ onOpenEnquiry }) => {
         if (!stdMatch) return false;
       }
 
-      // 5. 3D Model Verified Filter
-      if (only3D && !hasVerified3DModel(p)) {
+      // 5. 360° Media Available Filter
+      if (only360 && !has360Media(p.id)) {
         return false;
       }
 
@@ -91,14 +91,14 @@ export const ProductsView = ({ onOpenEnquiry }) => {
       }
       return (a.priorityRank || 99) - (b.priorityRank || 99);
     });
-  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, only3D, searchTerm, sortBy]);
+  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, only360, searchTerm, sortBy]);
 
   const handleResetFilters = () => {
     setSelectedCategory('all');
     setSelectedMaterial('all');
     setSelectedFinish('all');
     setSelectedStandard('all');
-    setOnly3D(false);
+    setOnly360(false);
     setSearchTerm('');
     setSortBy('featured');
   };
@@ -353,21 +353,21 @@ export const ProductsView = ({ onOpenEnquiry }) => {
               </select>
             </div>
 
-            {/* 5. 3D Digital Twin Model Toggle */}
-            <div className="filter-group filter-group--3d">
+            {/* 5. 360° Media Available Toggle */}
+            <div className="filter-group filter-group--360">
               <label className="custom-checkbox custom-checkbox--switch">
                 <input
                   type="checkbox"
-                  checked={only3D}
-                  onChange={(e) => setOnly3D(e.target.checked)}
+                  checked={only360}
+                  onChange={(e) => setOnly360(e.target.checked)}
                 />
                 <span className="custom-checkbox__text">
                   <span className="flex items-center gap-1.5 font-semibold text-slate-800">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Verified 3D Models Only
+                    <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
+                    360° View Available Only
                   </span>
                   <span className="text-[11px] text-slate-500 block">
-                    Interactive CAD digital twins
+                    Interactive 360° product rotations
                   </span>
                 </span>
               </label>
@@ -471,10 +471,10 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                 </span>
               )}
 
-              {only3D && (
+              {only360 && (
                 <span className="filter-pill filter-pill--accent">
-                  ⬡ 3D Interactive Twins Only
-                  <button type="button" onClick={() => setOnly3D(false)} aria-label="Remove 3D only filter">✕</button>
+                  🔄 360° Product View
+                  <button type="button" onClick={() => setOnly360(false)} aria-label="Remove 360 view filter">✕</button>
                 </span>
               )}
 
@@ -499,7 +499,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           {filteredProducts.length > 0 ? (
             <div className="featured-products-grid">
               {filteredProducts.map((prod) => {
-                const has3D = hasVerified3DModel(prod);
+                const has360 = has360Media(prod.id);
                 const is316 = prod.material?.includes('316');
 
                 return (
@@ -516,7 +516,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                             {prod.finish.includes('EP') || prod.finish.includes('Electro') ? 'EP Mirror' : 'MP Satin'}
                           </span>
                         )}
-                        {has3D && (
+                        {has360 && (
                           <span
                             className="badge badge--sky"
                             style={{
@@ -525,7 +525,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                               boxShadow: '0 2px 6px rgba(2, 132, 199, 0.35)'
                             }}
                           >
-                            ⬡ 3D Twin
+                            🔄 360° View
                           </span>
                         )}
                       </div>
@@ -533,7 +533,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                       {/* Main Product Image / Visual */}
                       <a href={`#product/${prod.slug}`} className="block w-full h-full" tabIndex="-1">
                         <ProductCardVideo
-                          video={prod.video}
+                          video={product360Videos[prod.id] || prod.video}
                           poster={prod.image}
                           alt={prod.name}
                           categorySlug={prod.categorySlug}

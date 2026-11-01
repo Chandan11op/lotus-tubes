@@ -1,5 +1,6 @@
 import React from 'react';
 import { CATEGORIES, PRODUCTS, CONFIG } from '../data/siteData';
+import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 
 export const CategoryView = ({ slug, onOpenEnquiry }) => {
@@ -36,14 +37,14 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
                 <div className="product-card__badge-bar">
                   <span className="badge badge--navy">{prod.material}</span>
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
-                  {prod.model3d && (
+                  {has360Media(prod.id) && (
                     <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
-                      3D CAD
+                      🔄 360° View
                     </span>
                   )}
                 </div>
                 <div className="product-card__img-wrap">
-                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
+                  <ProductCardVideo video={product360Videos[prod.id] || prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
                 </div>
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>
