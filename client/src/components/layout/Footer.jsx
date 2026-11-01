@@ -4,6 +4,7 @@ import { CONFIG } from '../../data/siteData';
 
 export const Footer = () => {
   const { t } = useLanguage();
+  const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
 
   return (
     <footer className="site-footer" id="site-footer">
@@ -12,7 +13,9 @@ export const Footer = () => {
 
           {/* Col 1: Brand & Sourcing Statement */}
           <div className="footer-col footer-col--brand">
-            <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="footer-logo" />
+            <a href="#home" className="footer-brand-link" aria-label="Lotus Tubes - Return to Home">
+              <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves" className="footer-logo" />
+            </a>
             <p className="footer-description">
               {t(
                 'footer_desc',
@@ -26,18 +29,19 @@ export const Footer = () => {
             </div>
             <div className="footer-socials">
               <a
-                href={`https://wa.me/${CONFIG.whatsappNumber}`}
+                href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20have%20an%20enquiry%20regarding%20sanitary%20stainless%20steel%20products.`}
                 className="social-link"
                 title="WhatsApp Business"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="WhatsApp Business Desk"
               >
                 💬
               </a>
-              <a href={`mailto:${CONFIG.primaryEmail}`} className="social-link" title="Email Sales">
+              <a href={`mailto:${CONFIG.primaryEmail}`} className="social-link" title="Email Sales" aria-label="Email Sales Desk">
                 ✉️
               </a>
-              <a href={`tel:${CONFIG.primaryPhone}`} className="social-link" title="Phone">
+              <a href={`tel:${rawPhone}`} className="social-link" title="Call Lotus Tubes" aria-label="Direct Phone Line">
                 📞
               </a>
             </div>
@@ -98,7 +102,7 @@ export const Footer = () => {
             </p>
             <p className="contact-line">
               <strong>{t('label_direct_sales', 'Direct Sales:')}</strong>{' '}
-              <a href={`tel:${CONFIG.primaryPhone}`}>{CONFIG.primaryPhone}</a><br />
+              <a href={`tel:${rawPhone}`}>{CONFIG.primaryPhone}</a><br />
               <strong>Email:</strong> <a href={`mailto:${CONFIG.primaryEmail}`}>{CONFIG.primaryEmail}</a>
             </p>
             <div className="footer-timing">
@@ -121,8 +125,6 @@ export const Footer = () => {
             <a href="#contact">Privacy Policy</a>
             <span className="sep">•</span>
             <a href="#contact">Terms of Supply</a>
-            <span className="sep">•</span>
-
           </div>
         </div>
       </div>

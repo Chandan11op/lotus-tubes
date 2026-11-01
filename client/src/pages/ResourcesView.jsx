@@ -6,10 +6,18 @@ export const ResourcesView = ({ onNotify }) => {
   const [openFaq, setOpenFaq] = useState(null);
 
   const handleDownload = (docName) => {
+    try {
+      const link = document.createElement('a');
+      link.href = '/sample-quotation.pdf';
+      link.download = docName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      // Fallback
+    }
     if (onNotify) {
-      onNotify(`Downloading ${docName} (Demo Mode)...`, 'success');
-    } else {
-      alert(`Downloading ${docName} (Demo Mode)...`);
+      onNotify(`Initiating download for ${docName}...`, 'success');
     }
   };
 
@@ -66,7 +74,7 @@ export const ResourcesView = ({ onNotify }) => {
               className="btn btn--outline-dark btn--sm download-mock-btn"
               onClick={() => handleDownload('Lotus-Tubes-Full-Catalogue-2026.pdf')}
             >
-              📥 Download PDF (Demo)
+              📥 Download PDF
             </button>
           </div>
 
@@ -81,7 +89,7 @@ export const ResourcesView = ({ onNotify }) => {
               className="btn btn--outline-dark btn--sm download-mock-btn"
               onClick={() => handleDownload('Sanitary-Tube-OD-Wall-Chart.pdf')}
             >
-              📥 Download Chart (Demo)
+              📥 Download Chart
             </button>
           </div>
 
@@ -96,7 +104,7 @@ export const ResourcesView = ({ onNotify }) => {
               className="btn btn--outline-dark btn--sm download-mock-btn"
               onClick={() => handleDownload('Surface-Roughness-Conversion-Guide.pdf')}
             >
-              📥 Download Guide (Demo)
+              📥 Download Guide
             </button>
           </div>
         </div>

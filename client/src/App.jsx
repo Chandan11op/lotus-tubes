@@ -27,8 +27,25 @@ import ContactView from './pages/ContactView';
 import QuoteView from './pages/QuoteView';
 import CRMView from './pages/crm/CRMView';
 import CustomerAccountView from './pages/CustomerAccountView';
+import NotFoundView from './pages/NotFoundView';
 import { PRODUCTS } from './data/siteData';
 import { updatePageSEO } from './utils/seo';
+
+const KNOWN_ROUTES = [
+  'home',
+  'products',
+  'category',
+  'product',
+  'industries',
+  'industry',
+  'about',
+  'quality',
+  'resources',
+  'blog',
+  'contact',
+  'quote',
+  'account'
+];
 
 export const App = () => {
   const parseCurrentLocation = () => {
@@ -100,21 +117,41 @@ export const App = () => {
       title = 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai';
       description = 'Lotus Tubes (Lotus Impex) delivers high-precision stainless steel sanitary tubes and process components from Girgaon, Mumbai to pharmaceutical and food process leaders globally.';
       breadcrumbs.push({ name: 'About Us', path: '/about' });
+    } else if (route === 'industries' || route === 'industry') {
+      title = 'Process Industries We Serve | Lotus Tubes Sanitary Solutions';
+      description = 'Hygienic stainless steel piping, fittings, and valves engineered for pharmaceutical, biotech, dairy, food & beverage, and high-purity water systems.';
+      breadcrumbs.push({ name: 'Industries', path: '/industries' });
     } else if (route === 'quality') {
       title = 'Quality Assurance & Mill Test Certification | Lotus Tubes';
       description = 'Every Lotus Tubes sanitary product complies with ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 MTR inspection certification.';
       breadcrumbs.push({ name: 'Quality Assurance', path: '/quality' });
+    } else if (route === 'resources') {
+      title = 'Engineering Resources & Technical Datasheets | Lotus Tubes';
+      description = 'Download sanitary stainless steel dimensional charts, ASTM/ASME specifications, and surface roughness conversion guides.';
+      breadcrumbs.push({ name: 'Resources', path: '/resources' });
+    } else if (route === 'blog') {
+      title = 'Technical Sanitary Engineering Blog | Lotus Tubes';
+      description = 'Expert engineering articles on electropolishing, Clean-in-Place (CIP) valve automation, and ASME BPE standards.';
+      breadcrumbs.push({ name: 'Blog', path: '/blog' });
     } else if (route === 'contact') {
       title = 'Contact Lotus Tubes | Girgaon Mumbai Sales Office';
-      description = 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 99304 30789.';
+      description = 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.';
       breadcrumbs.push({ name: 'Contact', path: '/contact' });
     } else if (route === 'quote') {
       title = 'Request a Formal B2B Quotation | Lotus Tubes';
       description = 'Submit your Bill of Quantities (BOQ) or technical specifications for instant review and competitive quotation for SS 304 / SS 316L sanitary tubes and valves.';
       breadcrumbs.push({ name: 'Request Quote', path: '/quote' });
+    } else if (route === 'account') {
+      title = 'Customer Account & Quotation History | Lotus Tubes';
+      description = 'View your active quotation inquiries, track dispatch status, and download material test certificates.';
+      breadcrumbs.push({ name: 'Customer Account', path: '/account' });
     } else if (route === 'crm') {
       title = 'Lotus Tubes Staff CRM & Operations Portal';
       description = 'Internal operational management system for Lotus Tubes customer enquiries, quotations, pipeline, and staff RBAC.';
+    } else if (!KNOWN_ROUTES.includes(route)) {
+      title = '404 - Page Not Found | Lotus Tubes Sanitary Solutions';
+      description = 'The requested sanitary stainless steel specification, product catalogue page, or resource could not be found.';
+      breadcrumbs.push({ name: 'Not Found', path: `/${route}` });
     }
 
     updatePageSEO({
@@ -221,6 +258,9 @@ export const App = () => {
                 {route === 'contact' && <ContactView onNotify={addToast} />}
                 {route === 'quote' && <QuoteView onNotify={addToast} />}
                 {route === 'account' && <CustomerAccountView onNotify={addToast} />}
+                {!KNOWN_ROUTES.includes(route) && (
+                  <NotFoundView onOpenEnquiry={handleOpenEnquiry} />
+                )}
               </ErrorBoundary>
             </main>
 

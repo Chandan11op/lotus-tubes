@@ -40,16 +40,19 @@ export const ContactView = ({ onNotify }) => {
     setIsLoading(true);
 
     try {
-      await apiService.submitContact(formData);
-      setIsSubmitted(true);
-      if (onNotify) {
-        onNotify('Your message has been sent successfully. Our team will contact you shortly.', 'success');
+      const res = await apiService.submitContact(formData);
+      if (res?.success !== false) {
+        setIsSubmitted(true);
+        if (onNotify) {
+          onNotify('Your message has been sent successfully. Our team will contact you shortly.', 'success');
+        }
+      } else {
+        throw new Error(res?.message || 'Server did not acknowledge message.');
       }
     } catch (err) {
       console.error('Contact submission error:', err);
-      setIsSubmitted(true);
       if (onNotify) {
-        onNotify('Message recorded locally. Our team will contact you shortly.', 'success');
+        onNotify('Could not submit message to server. Please contact our desk directly via WhatsApp (+91 98205 25200) or email sales@lotustubes.com.', 'danger');
       }
     } finally {
       setIsLoading(false);
@@ -104,8 +107,12 @@ export const ContactView = ({ onNotify }) => {
           >
             <span>🟢 WhatsApp Priority Desk</span>
           </a>,
-          <a key="call" href={`tel:${CONFIG.phone}`} className="btn btn--outline">
-            Direct Phone: {CONFIG.phone}
+          <a
+            key="call"
+            href={`tel:${(CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '')}`}
+            className="btn btn--outline"
+          >
+            Direct Phone: {CONFIG.primaryPhone || '+91 98205 25200'}
           </a>
         ]}
       />

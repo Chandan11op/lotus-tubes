@@ -974,7 +974,7 @@ ol {
   top: 0;
   right: -340px;
   width: min(320px, 85vw);
-  max-width: 100vw;
+  max-width: 100%;
   height: 100vh;
   height: 100dvh;
   background-color: var(--pure-white);
@@ -1600,8 +1600,10 @@ ol {
    -------------------------------------------------------------------------- */
 .industries-scroll-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 16px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .industry-chip-card {
@@ -1614,6 +1616,7 @@ ol {
   transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .industry-chip-card:hover {
@@ -3686,9 +3689,18 @@ ol {
 html,
 body {
   width: 100%;
-  max-width: 100vw;
-  overflow-x: clip;
+  max-width: 100%;
+  overflow-x: hidden;
   position: relative;
+}
+
+/* Utility to cleanly hide scrollbar while preserving scroll behavior */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 *,

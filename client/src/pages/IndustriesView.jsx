@@ -269,7 +269,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
 
             {/* Industry Selector Navigation Pills */}
             <nav
-              className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-none"
+              className="flex items-center lg:flex-wrap gap-2 overflow-x-auto lg:overflow-x-visible pb-3 mb-6 scrollbar-none max-w-full"
               aria-label="Select an Industry"
             >
               {INDUSTRIES.map((ind, idx) => {
@@ -302,7 +302,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
             {/* Main Interactive Stage Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch bg-slate-900/60 rounded-2xl p-6 sm:p-8 border border-slate-800/80 shadow-2xl backdrop-blur-md">
               {/* Left Column: Technical Narrative & Compliance Demands (5 cols) */}
-              <div className="lg:col-span-5 flex flex-col justify-between">
+              <div className="lg:col-span-5 flex flex-col justify-between min-w-0">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-2xl">{currentIndustry.icon}</span>
@@ -370,7 +370,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
               </div>
 
               {/* Right Column: Visual Showcase & Compatible Products (7 cols) */}
-              <div className="lg:col-span-7 flex flex-col justify-between gap-6">
+              <div className="lg:col-span-7 flex flex-col justify-between gap-6 min-w-0">
                 {/* Large High-Definition Visual Stage */}
                 <div className="relative w-full h-[260px] sm:h-[320px] rounded-xl overflow-hidden bg-slate-950 border border-slate-800 group">
                   <img
@@ -424,7 +424,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                         <a
                           key={p.id}
                           href={`#product/${p.slug || p.id}`}
-                          className="group/card flex flex-col p-2.5 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-left"
+                          className="group/card flex flex-col p-2.5 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-left min-w-0"
                         >
                           <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-slate-900 mb-2 flex items-center justify-center p-2">
                             <ProductImage
@@ -488,7 +488,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
             {INDUSTRIES.map((ind, idx) => (
               <article
                 key={ind.id}
-                className="group p-6 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-sky-500/50 transition-all duration-300 flex flex-col justify-between"
+                className="group p-6 rounded-2xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-sky-500/50 transition-all duration-300 flex flex-col justify-between min-w-0"
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">

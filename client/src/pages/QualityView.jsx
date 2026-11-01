@@ -80,7 +80,7 @@ export const QualityView = () => {
       />
 
       <div className="site-container section">
-        <div className="about-preview-grid mb-3">
+        <div id="section-standards" className="about-preview-grid mb-3">
           <div>
             <span className="section-eyebrow">Quality Philosophy</span>
             <h2 className="section-title">Strict Adherence to Hygienic Standards</h2>
@@ -143,7 +143,7 @@ export const QualityView = () => {
         </div>
 
         {/* Technical Document Enquiry Form */}
-        <div className="form-card mt-3">
+        <div id="doc-request" className="form-card mt-3">
           <div className="section-header" style={{ marginBottom: '24px' }}>
             <div>
               <span className="section-eyebrow">Technical Support</span>

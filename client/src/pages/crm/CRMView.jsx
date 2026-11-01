@@ -1191,7 +1191,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                     <strong>LOTUS TUBES (LOTUS IMPEX)</strong><br />
                     Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane<br />
                     Khetwadi, Girgaon, Mumbai - 400004, Maharashtra, India<br />
-                    Phone / WhatsApp: +91 99304 30789 | Email: chirag@lotustubes.com
+                    Phone / WhatsApp: +91 98205 25200 | Email: sales@lotustubes.com
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>

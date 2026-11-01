@@ -110,7 +110,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
 
       <div className="site-container relative z-10 py-12 sm:py-16 lg:py-20">
         {/* Top Slide Indicator Tabs */}
-        <div className="flex items-center justify-between gap-3 pb-6 mb-8 border-b border-slate-800/80 overflow-x-auto">
+        <div className="flex items-center justify-between gap-3 pb-6 mb-8 border-b border-slate-800/80 overflow-x-auto scrollbar-none max-w-full">
           <div className="flex items-center gap-2">
             {slides.map((s, idx) => (
               <button
@@ -143,7 +143,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
           {/* ============================================================ */}
           {/* LEFT: Dynamic Technical Hierarchy & Information             */}
           {/* ============================================================ */}
-          <div className="lg:col-span-6 flex flex-col justify-center">
+          <div className="lg:col-span-6 flex flex-col justify-center min-w-0">
             {/* Eyebrow Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 backdrop-blur-md border border-slate-700/80 text-xs font-semibold tracking-wider text-sky-400 uppercase shadow-lg w-fit mb-4">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -233,7 +233,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
           {/* ============================================================ */}
           {/* RIGHT: High-Impact Visual Panel (360° Videos & Master Line)  */}
           {/* ============================================================ */}
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-6 min-w-0">
             <div className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#10263d] to-slate-950 border border-slate-700/80 shadow-2xl">
               {/* Top Floating Badge & Specs */}
               <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">

@@ -3,7 +3,8 @@
  * Handles canonical URLs, Open Graph, Twitter Cards, and Schema.org JSON-LD injection
  */
 
-const DEFAULT_ORIGIN = 'https://lotus-tubes-react-design.vercel.app';
+const CANONICAL_ORIGIN = 'https://www.lotustubes.com';
+const DEFAULT_ORIGIN = 'https://www.lotustubes.com';
 
 export const updatePageSEO = ({
   title,
@@ -17,7 +18,7 @@ export const updatePageSEO = ({
   if (typeof document === 'undefined') return;
 
   const origin = typeof window !== 'undefined' ? window.location.origin : DEFAULT_ORIGIN;
-  const canonicalUrl = `${origin}${path.startsWith('/') ? path : `/${path}`}`;
+  const canonicalUrl = `${CANONICAL_ORIGIN}${path.startsWith('/') ? path : `/${path}`}`;
   const fullTitle = title.includes('Lotus Tubes') ? title : `${title} | Lotus Tubes`;
   const metaDesc = description || 'Lotus Tubes - Trusted supplier of Stainless Steel Sanitary Pipes, Fittings, and Valves in SS 304 & SS 316L. Electro polished & mechanically polished finishes for pharma and dairy industries.';
   const fullImageUrl = image.startsWith('http') ? image : `${origin}${image.startsWith('/') ? image : `/${image}`}`;
@@ -100,7 +101,7 @@ export const updatePageSEO = ({
       logo: `${origin}/Lotus Tubes Logo.png`,
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+91-9930430789',
+        telephone: '+91-9820525200',
         contactType: 'sales',
         areaServed: ['IN', 'US', 'DE', 'GB', 'SG', 'AE', 'AU', 'CA'],
         availableLanguage: ['English', 'Hindi', 'Gujarati']

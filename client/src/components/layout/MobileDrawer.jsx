@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { CONFIG } from '../../data/siteData';
 
 export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
   const { currentLang, setCurrentLang, languages, t } = useLanguage();
+
+  // Prevent background scrolling and handle Escape key when mobile menu is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -27,7 +48,9 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
       />
       <aside className="mobile-drawer open active" id="mobile-drawer" style={{ right: 0 }} aria-label="Mobile Navigation Menu">
         <div className="mobile-drawer__header">
-          <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="mobile-drawer__logo" />
+          <a href="#home" onClick={onClose} className="brand-logo" aria-label="Lotus Tubes - Return to Home">
+            <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="mobile-drawer__logo" />
+          </a>
           <button
             type="button"
             className="mobile-drawer__close"
@@ -96,7 +119,7 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
               {t('btn_request_quote', 'Request Quick Quote')}
             </button>
             <a
-              href={`https://wa.me/${CONFIG.whatsappNumber}`}
+              href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20have%20an%20enquiry%20regarding%20stainless%20steel%20sanitary%20products.`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--whatsapp btn--block mt-2"
