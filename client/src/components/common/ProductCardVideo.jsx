@@ -104,7 +104,7 @@ export const ProductCardVideo = ({
       playsInline
       preload="metadata"
       onError={() => setVideoFailed(true)}
-      aria-label={`${alt} - 360 degree product view`}
+      aria-label={`${alt} - Product Video`}
     >
       <source
         src={video}

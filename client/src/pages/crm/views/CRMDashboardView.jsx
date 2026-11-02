@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
+import { runSEOAudit, CANONICAL_ORIGIN, GOOGLE_VERIFICATION_FILE } from '../../../utils/seoAudit';
 
 export const CRMDashboardView = ({
   enquiries = [],
@@ -8,6 +9,7 @@ export const CRMDashboardView = ({
   customers = [],
   dashboardMetrics = null,
   searchQuery = '',
+  isSuperAdmin = false,
   onSelectEnquiry,
   onSelectQuote,
   onOpenQuoteBuilder,
@@ -15,6 +17,7 @@ export const CRMDashboardView = ({
   onNavigateTab
 }) => {
   const [periodFilter, setPeriodFilter] = useState('30days'); // 'today' | '7days' | '30days' | 'month' | 'all'
+  const seoData = useMemo(() => runSEOAudit(), []);
 
   // Filter calculations based on period
   const now = new Date();
@@ -292,6 +295,97 @@ export const CRMDashboardView = ({
           </div>
         </div>
       </div>
+
+      {/* Super Admin SEO Optimization & Search Console Health Banner */}
+      {isSuperAdmin && (
+        <div
+          className="crm-card"
+          style={{
+            marginBottom: '20px',
+            padding: '18px 22px',
+            background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%)',
+            border: '1px solid #BAE6FD',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '16px'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            {/* Mini Gauge Ring */}
+            <div style={{ position: 'relative', width: '64px', height: '64px', flexShrink: 0 }}>
+              <svg width="64" height="64" viewBox="0 0 64 64" style={{ transform: 'rotate(-90deg)' }}>
+                <circle cx="32" cy="32" r="26" fill="none" stroke="#E2E8F0" strokeWidth="6" />
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="26"
+                  fill="none"
+                  stroke="#10B981"
+                  strokeWidth="6"
+                  strokeDasharray={2 * Math.PI * 26}
+                  strokeDashoffset={2 * Math.PI * 26 * (1 - seoData.overallScore / 100)}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: '800',
+                  fontSize: '15px',
+                  color: '#10263D'
+                }}
+              >
+                {seoData.overallScore}%
+              </div>
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <h3 style={{ margin: 0, fontSize: '15px', color: '#10263D', fontWeight: '700' }}>
+                  Website SEO Health & Search Console Readiness
+                </h3>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '2px 8px',
+                    borderRadius: '10px',
+                    fontSize: '11px',
+                    fontWeight: '700',
+                    backgroundColor: '#ECFDF5',
+                    color: '#065F46'
+                  }}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                  {seoData.status.toUpperCase()}
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: '12px', color: '#475569' }}>
+                <strong>{seoData.passedChecks}/{seoData.totalChecks}</strong> technical directives verified • Canonical target: <code>{CANONICAL_ORIGIN}</code> • Verification token deployed (<code>{GOOGLE_VERIFICATION_FILE}</code>).
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button
+              type="button"
+              className="crm-btn crm-btn-primary crm-btn-sm"
+              onClick={() => onNavigateTab('seo')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <CRMIcon name="seo" size={14} />
+              <span>Inspect SEO Audit & Directives</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Split Layout: Needs Attention & Sales Pipeline */}
       <div className="crm-dashboard-split">

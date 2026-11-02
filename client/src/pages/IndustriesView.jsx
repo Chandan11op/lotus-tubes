@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { INDUSTRIES, PRODUCTS } from '../data/siteData';
-import { product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 import PageHero from '../components/common/PageHero';
 import ProductImage from '../components/common/ProductImage';
@@ -419,7 +418,6 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                     {matchingProducts.map((p) => {
-                      const has360 = Boolean(product360Videos[p.id]);
                       return (
                         <a
                           key={p.id}
@@ -434,9 +432,9 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                               className="w-full h-full"
                               imgClassName="max-h-full object-contain group-hover/card:scale-105 transition-transform"
                             />
-                            {has360 && (
+                            {p.video && (
                               <span className="absolute top-1 right-1 text-[9px] font-bold bg-sky-500 text-white px-1.5 py-0.5 rounded">
-                                🔄 360°
+                                ▶ Video
                               </span>
                             )}
                           </div>

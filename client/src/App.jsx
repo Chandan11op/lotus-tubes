@@ -22,7 +22,6 @@ import IndustriesView from './pages/IndustriesView';
 import AboutView from './pages/AboutView';
 import QualityView from './pages/QualityView';
 import ResourcesView from './pages/ResourcesView';
-import BlogView from './pages/BlogView';
 import ContactView from './pages/ContactView';
 import QuoteView from './pages/QuoteView';
 import CRMView from './pages/crm/CRMView';
@@ -41,7 +40,6 @@ const KNOWN_ROUTES = [
   'about',
   'quality',
   'resources',
-  'blog',
   'contact',
   'quote',
   'account'
@@ -129,10 +127,6 @@ export const App = () => {
       title = 'Engineering Resources & Technical Datasheets | Lotus Tubes';
       description = 'Download sanitary stainless steel dimensional charts, ASTM/ASME specifications, and surface roughness conversion guides.';
       breadcrumbs.push({ name: 'Resources', path: '/resources' });
-    } else if (route === 'blog') {
-      title = 'Technical Sanitary Engineering Blog | Lotus Tubes';
-      description = 'Expert engineering articles on electropolishing, Clean-in-Place (CIP) valve automation, and ASME BPE standards.';
-      breadcrumbs.push({ name: 'Blog', path: '/blog' });
     } else if (route === 'contact') {
       title = 'Contact Lotus Tubes | Girgaon Mumbai Sales Office';
       description = 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.';
@@ -254,7 +248,6 @@ export const App = () => {
                   <QualityView onOpenVideo={() => setIsVideoOpen(true)} />
                 )}
                 {route === 'resources' && <ResourcesView onNotify={addToast} />}
-                {route === 'blog' && <BlogView slug={param} onOpenEnquiry={handleOpenEnquiry} />}
                 {route === 'contact' && <ContactView onNotify={addToast} />}
                 {route === 'quote' && <QuoteView onNotify={addToast} />}
                 {route === 'account' && <CustomerAccountView onNotify={addToast} />}

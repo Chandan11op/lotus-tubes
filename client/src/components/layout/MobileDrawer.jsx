@@ -102,7 +102,6 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
             <li><a href="#industries" onClick={onClose} className="mobile-nav-link">{t('nav_industries', 'Industries')}</a></li>
             <li><a href="#quality" onClick={onClose} className="mobile-nav-link">{t('nav_quality', 'Quality & Documentation')}</a></li>
             <li><a href="#resources" onClick={onClose} className="mobile-nav-link">{t('nav_resources', 'Resources & Datasheets')}</a></li>
-            <li><a href="#blog" onClick={onClose} className="mobile-nav-link">{t('nav_blog', 'Technical Blog')}</a></li>
             <li><a href="#contact" onClick={onClose} className="mobile-nav-link">{t('nav_contact', 'Contact Us')}</a></li>
             <li><a href="#crm/login" onClick={onClose} className="mobile-nav-link highlight-crm">{t('nav_crm', 'CRM Staff Portal')}</a></li>
           </ul>

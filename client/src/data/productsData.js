@@ -27,8 +27,7 @@ export const MASTER_PRODUCTS = [
     length: "6.0 Meters Standard (Custom cut lengths available)",
     mtc: "EN 10204 3.1 Material Test Certificate supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai warehouse for standard sizes",
-    has360View: false,    image: "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg",
+    leadTime: "Immediate dispatch from Mumbai warehouse for standard sizes",    image: "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg",
     images: [
       "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg",
       "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-002.jpg",
@@ -70,8 +69,7 @@ export const MASTER_PRODUCTS = [
     length: "6.0 Meters standard",
     mtc: "Available upon dispatch",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch for standard 6m lengths",
-    has360View: false,    image: "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-004.jpg",
+    leadTime: "Immediate dispatch for standard 6m lengths",    image: "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-004.jpg",
     images: [
       "/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-004.jpg",
       "/assets/images/products/pipes/ss-304/ss-304-sanitary-pipe-001.jpg",
@@ -112,8 +110,7 @@ export const MASTER_PRODUCTS = [
     length: "6.0 Meters",
     mtc: "Available with chemical & mechanical analysis",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Standard stock available",
-    has360View: false,    image: "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-001.jpg",
+    leadTime: "Standard stock available",    image: "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-001.jpg",
     images: [
       "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-001.jpg",
       "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-002.jpg",
@@ -154,8 +151,7 @@ export const MASTER_PRODUCTS = [
     length: "6.0 Meters",
     mtc: "Available on dispatch",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Ex-stock Mumbai",
-    has360View: false,    image: "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-003.jpg",
+    leadTime: "Ex-stock Mumbai",    image: "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-003.jpg",
     images: [
       "/assets/images/products/pipes/mechanically-polished/ss-sanitary-mechanical-polished-tube-003.jpg",
       "/assets/images/products/pipes/ss-304/ss-304-sanitary-pipe-004.jpg"
@@ -190,8 +186,7 @@ export const MASTER_PRODUCTS = [
     length: "Standard dimensions",
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: false,    image: "/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg",
     images: [
       "/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg",
       "/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-001.jpg",
@@ -222,8 +217,7 @@ export const MASTER_PRODUCTS = [
     length: "Standard centerline radius 1.5D",
     mtc: "EN 10204 3.1 Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: false,    image: "/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg",
     images: [
       "/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg",
       "/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-011.jpg",
@@ -266,8 +260,7 @@ export const MASTER_PRODUCTS = [
     length: "Equal branch & run dimensions",
     mtc: "EN 10204 3.1 Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Ex-stock Mumbai",
-    has360View: false,    image: "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg",
+    leadTime: "Ex-stock Mumbai",    image: "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg",
     images: [
       "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg",
       "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-011.jpg",
@@ -303,8 +296,7 @@ export const MASTER_PRODUCTS = [
     length: "Reducing branch design",
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch for standard reductions",
-    has360View: false,    image: "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg",
+    leadTime: "Immediate dispatch for standard reductions",    image: "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg",
     images: [
       "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg",
       "/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-011.jpg"
@@ -339,8 +331,7 @@ export const MASTER_PRODUCTS = [
     length: "Standard transition slope",
     mtc: "EN 10204 3.1 Certified",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Ready stock Mumbai",
-    has360View: false,    image: "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-001.jpg",
+    leadTime: "Ready stock Mumbai",    image: "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-001.jpg",
     images: [
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-001.jpg",
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-002.jpg",
@@ -376,8 +367,7 @@ export const MASTER_PRODUCTS = [
     length: "Standard flat-side slope",
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Ready stock Mumbai",
-    has360View: false,    image: "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-005.jpg",
+    leadTime: "Ready stock Mumbai",    image: "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-005.jpg",
     images: [
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-005.jpg",
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-006.jpg"
@@ -412,8 +402,7 @@ export const MASTER_PRODUCTS = [
     length: "Short (12.7 mm) / Long (21.5 mm / 28.6 mm)",
     mtc: "EN 10204 3.1 Material Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: false,    image: "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg",
     images: [
       "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg",
       "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-006.jpg",
@@ -449,8 +438,7 @@ export const MASTER_PRODUCTS = [
     length: "Single Pin & Double Pin Hinged",
     mtc: "Material Composition Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch",
-    has360View: true,    image: "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-007.jpg",
+    leadTime: "Immediate dispatch",    image: "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-007.jpg",
     video: "/assets/videos/ss-pipe-holder.mp4",
     images: [
       "/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-007.jpg",
@@ -486,8 +474,7 @@ export const MASTER_PRODUCTS = [
     length: "Temperature range: -50°C to +200°C",
     mtc: "FDA Compliance Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: false,    image: "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
     images: [
       "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
       "/assets/images/products/details/silicone-tri-clamp-gasket-pack.svg",
@@ -522,8 +509,7 @@ export const MASTER_PRODUCTS = [
     length: "Compact union length",
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: false,    image: "/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg",
     images: [
       "/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg",
       "/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-002.jpg",
@@ -558,8 +544,7 @@ export const MASTER_PRODUCTS = [
     length: "Multi-position handle (4 or 12 notch)",
     mtc: "EN 10204 3.1 & Hydrostatic Pressure Test Report",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: true,    image: "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg",
     video: "/assets/videos/ss-butterfly-valves.mp4",
     images: [
       "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg",
@@ -596,8 +581,7 @@ export const MASTER_PRODUCTS = [
     length: "Weir type self-draining body design",
     mtc: "EN 10204 3.1 & FDA Diaphragm Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch for standard sizes",
-    has360View: false,    image: "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-001.jpg",
+    leadTime: "Immediate dispatch for standard sizes",    image: "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-001.jpg",
     images: [
       "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-001.jpg",
       "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-002.jpg",
@@ -633,8 +617,7 @@ export const MASTER_PRODUCTS = [
     length: "Lockable lever handle",
     mtc: "Hydrostatic & Material Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Ready stock Mumbai",
-    has360View: false,    image: "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-006.jpg",
+    leadTime: "Ready stock Mumbai",    image: "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-006.jpg",
     images: [
       "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-006.jpg",
       "/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-007.jpg"
@@ -668,8 +651,7 @@ export const MASTER_PRODUCTS = [
     length: "Spring Return / Double Acting",
     mtc: "Actuator torque & hydrostatic test report",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Assembled & tested within 48-72 hours",
-    has360View: true,    image: "/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg",
+    leadTime: "Assembled & tested within 48-72 hours",    image: "/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg",
     images: [
       "/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg",
       "/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-020.jpg",
@@ -704,8 +686,7 @@ export const MASTER_PRODUCTS = [
     length: "Compact aseptic body",
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch",
-    has360View: false,    image: "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-010.jpg",
+    leadTime: "Immediate dispatch",    image: "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-010.jpg",
     images: [
       "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-010.jpg",
       "/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-012.jpg"
@@ -739,8 +720,7 @@ export const MASTER_PRODUCTS = [
     length: "Compact vessel entry",
     mtc: "EN 10204 3.1 Material Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",
-    has360View: false,    image: "/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg",
     images: [
       "/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg",
       "/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-002.jpg",
@@ -779,7 +759,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Supplied against order",
     availability: "Available on Order / Inquiry Confirmed",
     leadTime: "Ready stock / 2-4 days dispatch",
-    has360View: false,
     image: "/assets/images/products/pipes/ss-304/ss-304-sanitary-pipe-001.jpg",
     overview: "Standard hygienic finish SS 304 stainless steel pipe providing dependable corrosion resistance and easy CIP washdown in commercial food and beverage plants.",
     applications: ["Food plant piping", "Dairy process transfer", "Water purification lines"]
@@ -806,7 +785,6 @@ export const MASTER_PRODUCTS = [
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch for standard runs",
-    has360View: false,
     image: "/assets/images/products/pipes/ss-316l/ss-316l-sanitary-pipe-001.jpg",
     overview: "Corrosion-resistant SS 316L sanitary pipe offering enhanced molybdenum protection against pitting and aggressive CIP sterilizing wash routines.",
     applications: ["Active pharmaceutical ingredients", "Injectables processing", "Acidic food transfer"]
@@ -833,7 +811,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Supplied with mill test report",
     availability: "Available on Order / Inquiry Confirmed",
     leadTime: "3 to 5 business days",
-    has360View: false,
     image: "/assets/images/products/pipes/seamless/ss-sanitary-seamless-tube-001.jpg",
     overview: "Seamless stainless steel 304 tube without longitudinal weld seams, offering uniform burst strength for elevated hygienic process pressure requirements.",
     applications: ["High-pressure hygienic pumping", "Sterile gas distribution", "Hydraulic dairy skids"]
@@ -860,7 +837,6 @@ export const MASTER_PRODUCTS = [
     mtc: "EN 10204 3.1 Certified",
     availability: "Available on Order / Inquiry Confirmed",
     leadTime: "Ready stock for standard ODs; 7 days for heavy walls",
-    has360View: false,
     image: "/assets/images/products/pipes/seamless/ss-sanitary-seamless-tube-003.jpg",
     overview: "Corrosion-resistant seamless SS 316L tube designed for severe duty pharmaceutical, chromatography, and sterile gas sampling lines with zero weld seam risks.",
     applications: ["Chromatography skids", "High-pressure sterile gas lines", "Clean steam manifolds"]
@@ -887,7 +863,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Supplied against order",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch",
-    has360View: false,
     image: "/assets/images/products/pipes/welded/ss-sanitary-welded-tube-001.jpg",
     overview: "Cost-effective, reliable SS 304 dairy tubing built specifically for raw and pasteurized milk transfer, ice cream mix lines, and dairy packaging plants.",
     applications: ["Milk collection stations", "Pasteurizer skids", "Yogurt and cheese processing"]
@@ -914,7 +889,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Food grade certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Ex-stock",
-    has360View: false,
     image: "/assets/images/products/gaskets/epdm-tri-clamp-gasket.svg",
     overview: "Food-grade EPDM sanitary gaskets offering outstanding resistance to hot alkaline CIP washings, steam sterilization, and animal fats in dairy and brewery facilities.",
     applications: ["Dairy pasteurization skids", "Hot caustic CIP wash systems", "Brewery wort boiling circuits"]
@@ -941,7 +915,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Supplied with compliance statement",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch",
-    has360View: false,
     image: "/assets/images/products/gaskets/ptfe-tri-clamp-gasket.svg",
     overview: "Chemically inert virgin PTFE Tri-Clamp gaskets providing universal resistance against aggressive solvents, acids, and ultra-high temperature continuous sterilization.",
     applications: ["Solvent distillation headers", "Aggressive API chemical loops", "Pure steam distribution"]
@@ -968,7 +941,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Available",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "1-2 days dispatch",
-    has360View: false,
     image: "/assets/images/products/gaskets/viton-tri-clamp-gasket.svg",
     overview: "High-performance Viton (FKM) gaskets resistant to oils, organic acids, aromatic hydrocarbons, and elevated operating temperatures in edible oil and fragrance plants.",
     applications: ["Edible oil extraction", "Flavor and fragrance lines", "Hot vegetable oil frying loops"]
@@ -995,7 +967,6 @@ export const MASTER_PRODUCTS = [
     mtc: "Pressure test report & MTC",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Ex-stock Mumbai",
-    has360View: false,
     image: "/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg",
     overview: "Spring-assisted sanitary non-return valve preventing reverse fluid flow, water hammer, and cross-contamination in pump discharges and dosing headers.",
     applications: ["Centrifugal pump discharge protection", "CIP return lines", "Dosing chemical check"]
@@ -1021,8 +992,7 @@ export const MASTER_PRODUCTS = [
     length: "Custom Cut & Welded to Exact Millimeters",
     mtc: "Hydrostatic test report and 3.1 MTC",
     availability: "Custom Sizing Available",
-    leadTime: "Fabricated in 5-7 days against verified drawing",
-    has360View: false,    image: "/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg",
+    leadTime: "Fabricated in 5-7 days against verified drawing",    image: "/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg",
     images: [
       "/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg",
       "/assets/images/products/tri-clamp/connections/ss-tri-clamp-tee-connection-005.jpg"

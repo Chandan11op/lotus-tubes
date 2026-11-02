@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
-import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 import ProductTicker from '../components/layout/ProductTicker';
 import HomeCinematicHero from '../components/common/HomeCinematicHero';
@@ -16,7 +15,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       {/* Hot-Selling Products Ticker (Positioned immediately after Navbar and before Hero) */}
       <ProductTicker />
 
-      {/* A. Cinematic Hex-Inspired Hero Section with Coordinated 360° Visuals */}
+      {/* A. Cinematic Hex-Inspired Hero Section with Coordinated Product Visuals */}
       <HomeCinematicHero onOpenEnquiry={onOpenEnquiry} onOpenVideo={onOpenVideo} />
 
       {/* B. Product Range (Image-Led Cards) */}
@@ -90,14 +89,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <div className="product-card__badge-bar">
                   <span className="badge badge--navy">{prod.material}</span>
                   <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
-                  {has360Media(prod.id) && (
+                  {prod.video && (
                     <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
-                      🔄 360° View
+                      ▶ Video
                     </span>
                   )}
                 </div>
                 <div className="product-card__img-wrap">
-                  <ProductCardVideo video={product360Videos[prod.id] || prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
+                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
                 </div>
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>

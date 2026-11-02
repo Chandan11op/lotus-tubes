@@ -458,6 +458,12 @@
   color: #F87171;
 }
 
+.crm-nav-item__badge.emerald,
+.crm-nav-item__badge.green {
+  background-color: rgba(16, 185, 129, 0.25);
+  color: #34D399;
+}
+
 .crm-nav-item.active .crm-nav-item__badge {
   background-color: rgba(255, 255, 255, 0.25) !important;
   color: #FFFFFF !important;
@@ -2184,4 +2190,18 @@
   .crm-modal-backdrop::before {
     display: none !important;
   }
+}
+
+/* Spinner animation for Live SEO audit and async operations */
+@keyframes crmSpinKeyframes {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.crm-spin {
+  animation: crmSpinKeyframes 0.8s linear infinite;
 }

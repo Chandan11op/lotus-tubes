@@ -43,7 +43,12 @@ export const CRMSidebar = ({
     {
       title: 'ADMINISTRATION',
       items: [
-        ...(isSuperAdmin ? [{ id: 'staff', label: 'Staff Team & RBAC', icon: 'staff', badge: null }] : []),
+        ...(isSuperAdmin
+          ? [
+              { id: 'staff', label: 'Staff Team & RBAC', icon: 'staff', badge: null },
+              { id: 'seo', label: 'SEO Audit & Meter', icon: 'seo', badge: { count: '94%', color: 'emerald' } }
+            ]
+          : []),
         { id: 'reports', label: 'Analytics & Reports', icon: 'reports', badge: null }
       ]
     }

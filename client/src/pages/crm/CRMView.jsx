@@ -18,6 +18,7 @@ import { CRMTasksView } from './views/CRMTasksView';
 import { CRMProductsView } from './views/CRMProductsView';
 import { CRMStaffView } from './views/CRMStaffView';
 import { CRMReportsView } from './views/CRMReportsView';
+import { CRMSeoView } from './views/CRMSeoView';
 import { NewStaffModal } from './components/NewStaffModal';
 
 export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }) => {
@@ -737,6 +738,13 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
             onExportCSV={handleExportCSV}
           />
         );
+      case 'seo':
+        return (
+          <CRMSeoView
+            isSuperAdmin={isSuperAdmin}
+            onNotify={onNotify}
+          />
+        );
       default:
         return (
           <CRMDashboardView
@@ -746,6 +754,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
             customers={customers}
             dashboardMetrics={dashboardMetrics}
             searchQuery={searchQuery}
+            isSuperAdmin={isSuperAdmin}
             onSelectEnquiry={setSelectedEnquiry}
             onSelectQuote={setSelectedQuote}
             onOpenQuoteBuilder={handleOpenQuoteBuilder}

@@ -38,11 +38,6 @@ export const Breadcrumbs = ({ route, param }) => {
     items.push({ label: 'Quality & Certifications', link: '#quality' });
   } else if (route === 'resources') {
     items.push({ label: 'Datasheets & Resources', link: '#resources' });
-  } else if (route === 'blog') {
-    items.push({ label: 'Technical Blog', link: '#blog' });
-    if (param) {
-      items.push({ label: 'Article', link: `#blog/${param}` });
-    }
   } else if (route === 'contact') {
     items.push({ label: 'Contact Us', link: '#contact' });
   } else if (route === 'quote') {

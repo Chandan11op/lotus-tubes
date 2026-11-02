@@ -2557,7 +2557,7 @@ ol {
   margin-bottom: 60px;
 }
 
-/* Gallery & 360 Viewer */
+/* Gallery */
 .product-gallery-box {
   background-color: var(--pure-white);
   border: 1px solid var(--border-color);
@@ -2583,44 +2583,7 @@ ol {
 .product-main-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-
-.viewer-360-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background-color: rgba(7, 28, 48, 0.85);
-  color: var(--pure-white);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.simulated-360-bar {
-  background-color: var(--bg-light);
-  border-radius: var(--radius-md);
-  padding: 10px 14px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.simulated-360-bar label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--deep-navy);
-  text-transform: uppercase;
-}
-
-.simulated-360-bar input[type="range"] {
-  flex: 1;
-  accent-color: var(--primary-blue);
+  object-fit: contain;
 }
 
 .gallery-thumbs {

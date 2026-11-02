@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
-import { has360Media, product360Videos } from '../data/product360Media';
 import ProductCardVideo from '../components/common/ProductCardVideo';
 import PageHero from '../components/common/PageHero';
 
@@ -19,7 +18,6 @@ export const ProductsView = ({ onOpenEnquiry }) => {
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [selectedFinish, setSelectedFinish] = useState('all');
   const [selectedStandard, setSelectedStandard] = useState('all');
-  const [only360, setOnly360] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('featured');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
@@ -31,10 +29,9 @@ export const ProductsView = ({ onOpenEnquiry }) => {
     if (selectedMaterial !== 'all') count++;
     if (selectedFinish !== 'all') count++;
     if (selectedStandard !== 'all') count++;
-    if (only360) count++;
     if (searchTerm.trim()) count++;
     return count;
-  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, only360, searchTerm]);
+  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, searchTerm]);
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((p) => {
@@ -62,12 +59,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
         if (!stdMatch) return false;
       }
 
-      // 5. 360° Media Available Filter
-      if (only360 && !has360Media(p.id)) {
-        return false;
-      }
-
-      // 6. Search Term Filter
+      // Search Term Filter
       if (searchTerm.trim()) {
         const q = searchTerm.toLowerCase().trim();
         const match =
@@ -92,14 +84,13 @@ export const ProductsView = ({ onOpenEnquiry }) => {
       }
       return (a.priorityRank || 99) - (b.priorityRank || 99);
     });
-  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, only360, searchTerm, sortBy]);
+  }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, searchTerm, sortBy]);
 
   const handleResetFilters = () => {
     setSelectedCategory('all');
     setSelectedMaterial('all');
     setSelectedFinish('all');
     setSelectedStandard('all');
-    setOnly360(false);
     setSearchTerm('');
     setSortBy('featured');
   };
@@ -394,26 +385,6 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                 ))}
               </select>
             </div>
-
-            {/* 5. 360° Media Available Toggle */}
-            <div className="filter-group filter-group--360">
-              <label className="custom-checkbox custom-checkbox--switch">
-                <input
-                  type="checkbox"
-                  checked={only360}
-                  onChange={(e) => setOnly360(e.target.checked)}
-                />
-                <span className="custom-checkbox__text">
-                  <span className="flex items-center gap-1.5 font-semibold text-slate-800">
-                    <span className="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
-                    360° View Available Only
-                  </span>
-                  <span className="text-[11px] text-slate-500 block">
-                    Interactive 360° product rotations
-                  </span>
-                </span>
-              </label>
-            </div>
           </div>
 
           {/* Mobile Drawer Sticky Footer */}
@@ -513,13 +484,6 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                 </span>
               )}
 
-              {only360 && (
-                <span className="filter-pill filter-pill--accent">
-                  🔄 360° Product View
-                  <button type="button" onClick={() => setOnly360(false)} aria-label="Remove 360 view filter">✕</button>
-                </span>
-              )}
-
               {searchTerm.trim() && (
                 <span className="filter-pill">
                   Keyword: "{searchTerm.trim()}"
@@ -541,7 +505,6 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           {filteredProducts.length > 0 ? (
             <div className="featured-products-grid">
               {filteredProducts.map((prod) => {
-                const has360 = has360Media(prod.id);
                 const is316 = prod.material?.includes('316');
 
                 return (
@@ -558,16 +521,9 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                             {prod.finish.includes('EP') || prod.finish.includes('Electro') ? 'EP Mirror' : 'MP Satin'}
                           </span>
                         )}
-                        {has360 && (
-                          <span
-                            className="badge badge--sky"
-                            style={{
-                              background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)',
-                              color: '#ffffff',
-                              boxShadow: '0 2px 6px rgba(2, 132, 199, 0.35)'
-                            }}
-                          >
-                            🔄 360° View
+                        {prod.video && (
+                          <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
+                            ▶ Video Available
                           </span>
                         )}
                       </div>
@@ -575,7 +531,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                       {/* Main Product Image / Visual */}
                       <a href={`#product/${prod.slug}`} className="block w-full h-full" tabIndex="-1">
                         <ProductCardVideo
-                          video={product360Videos[prod.id] || prod.video}
+                          video={prod.video}
                           poster={prod.image}
                           alt={prod.name}
                           categorySlug={prod.categorySlug}

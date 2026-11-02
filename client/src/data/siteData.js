@@ -248,59 +248,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
     }
   ];
 
-  const BLOG_POSTS = [
-    {
-      slug: 'demystifying-surface-roughness-ra-sanitary-piping',
-      title: 'Demystifying Surface Roughness (Ra) in Sanitary Stainless Steel Piping',
-      category: 'Technical Standards',
-      date: 'October 12, 2026',
-      readTime: '5 min read',
-      excerpt: 'Why microscopic surface roughness measured in microns (Ra) is the decisive factor preventing bacterial colonization in pharmaceutical water and dairy loops.',
-      content: `
-        <p>In high-purity process applications across the pharmaceutical, biotechnology, and dairy industries, the physical smoothness of stainless steel tubing is not merely an aesthetic choice—it is a critical biological barrier.</p>
-        <h4>What is Ra?</h4>
-        <p>Roughness Average (Ra) is the arithmetic average value of surface profile deviations from the center line. In standard industrial piping, roughness values of 1.6 to 3.2 µm are common. However, in hygienic applications, bacteria measuring 0.5 to 2.0 µm can lodge themselves into surface micro-crevices, forming resistant biofilms that survive ordinary sanitization.</p>
-        <h4>Why Electro-Polishing (EP) is Superior</h4>
-        <p>Electro-polishing chemically removes surface ferrite while smoothing micro-imperfections. This elevates the chromium-to-iron ratio at the contact surface, significantly increasing corrosion resistance and bringing Ra values down to ≤ 0.38 µm (15 µin). For sterile Water For Injection (WFI) lines, ASTM A270-S2 specifications strongly recommend EP tubing.</p>
-      `
-    },
-    {
-      slug: 'ss-304-vs-ss-316l-sanitary-selection-guide',
-      title: 'SS 304 vs SS 316L: Selecting the Correct Grade for Your Hygienic Process',
-      category: 'Material Science',
-      date: 'September 28, 2026',
-      readTime: '6 min read',
-      excerpt: 'A comprehensive chemical composition and cost-performance breakdown between austenitic AISI 304 and molybdenum-bearing 316L.',
-      content: `
-        <p>Choosing between SS 304 and SS 316L is one of the most critical procurement decisions in process plant engineering. While both are austenitic stainless steels exhibiting excellent corrosion resistance and weldability, their performance in aggressive environments diverges significantly.</p>
-        <h4>The Role of Molybdenum</h4>
-        <p>SS 316L contains 2.0% to 3.0% Molybdenum and has a reduced carbon threshold (≤ 0.03%), which dramatically improves resistance to pitting and crevice corrosion caused by chloride ions, acids, and sanitizing chemicals like sodium hypochlorite.</p>
-        <h4>Application Recommendations</h4>
-        <ul>
-          <li><strong>Choose SS 304:</strong> For milk, cheese, general food ingredients, beverage water lines, and brewery fermentation where chloride concentrations are low.</li>
-          <li><strong>Choose SS 316L:</strong> For active pharmaceutical ingredients (APIs), saline solutions, CIP acid-wash circuits, and marine or humid industrial environments.</li>
-        </ul>
-      `
-    },
-    {
-      slug: 'tri-clamp-gasket-selection-silicone-epdm-ptfe-viton',
-      title: 'Tri-Clamp Gasket Selection: Silicone, EPDM, PTFE or Viton?',
-      category: 'Hygienic Sealing',
-      date: 'September 15, 2026',
-      readTime: '4 min read',
-      excerpt: 'How to select the right sanitary gasket elastomer based on temperature, steam cycles, chemical compatibility, and FDA standards.',
-      content: `
-        <p>The sanitary gasket is the primary elastomeric seal in every Tri-Clamp union. Choosing the incorrect elastomer can lead to joint leaks, gasket degradation, and fluid contamination.</p>
-        <h4>Material Comparison:</h4>
-        <p><strong>Silicone:</strong> Offers outstanding temperature flexibility (-50°C to 200°C) and minimal taste transfer, but has limited resistance to repeated steam cycles and caustic washes.</p>
-        <p><strong>EPDM:</strong> Excellent resistance to hot water, steam, and alkaline CIP washes; ideal for breweries and dairy process plants.</p>
-        <p><strong>PTFE (Teflon):</strong> Almost universal chemical inertness and zero absorption; requires precise clamp torque due to its rigid non-elastic nature.</p>
-        <p><strong>Viton (FKM):</strong> Superior tolerance against fats, oils, and harsh organic solvents at elevated temperatures.</p>
-      `
-    }
-  ];
-
-
   const CRM_STORAGE_KEY = 'lotus_tubes_crm_data_v1';
 
   function getInitialCRMData() {
@@ -371,7 +318,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'Industries',
       nav_quality: 'Quality & Docs',
       nav_resources: 'Resources',
-      nav_blog: 'Blog',
       nav_contact: 'Contact Us',
       nav_crm: 'CRM Portal',
       btn_request_quote: 'Request a Quote',
@@ -473,7 +419,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'उद्योग',
       nav_quality: 'गुणवत्ता और दस्तावेज़',
       nav_resources: 'संसाधन',
-      nav_blog: 'तकनीकी ब्लॉग',
       nav_contact: 'संपर्क करें',
       nav_crm: 'सीआरएम पोर्टल',
       btn_request_quote: 'कोटेशन का अनुरोध करें',
@@ -575,7 +520,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'ઉદ્યોગો',
       nav_quality: 'ક્વોલિટી & દસ્તાવેજો',
       nav_resources: 'રિસોર્સિસ',
-      nav_blog: 'બ્લોગ',
       nav_contact: 'સંપર્ક કરો',
       nav_crm: 'સીઆરએમ પોર્ટલ',
       btn_request_quote: 'ભાવ જાણવા વિનંતી કરો',
@@ -677,7 +621,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'الصناعات',
       nav_quality: 'الجودة والشهادات',
       nav_resources: 'الموارد الفنية',
-      nav_blog: 'المدونة الهندسية',
       nav_contact: 'اتصل بنا',
       nav_crm: 'بوابة CRM',
       btn_request_quote: 'طلب عرض أسعار',
@@ -779,7 +722,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'Branchen',
       nav_quality: 'Qualität & Dokus',
       nav_resources: 'Ressourcen',
-      nav_blog: 'Blog',
       nav_contact: 'Kontakt',
       nav_crm: 'CRM-Portal',
       btn_request_quote: 'Angebot anfordern',
@@ -881,7 +823,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'Industries',
       nav_quality: 'Qualité & Docs',
       nav_resources: 'Ressources',
-      nav_blog: 'Blog',
       nav_contact: 'Contact',
       nav_crm: 'Portail CRM',
       btn_request_quote: 'Demander un Devis',
@@ -983,7 +924,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'Industrias',
       nav_quality: 'Calidad & Docs',
       nav_resources: 'Recursos',
-      nav_blog: 'Blog',
       nav_contact: 'Contacto',
       nav_crm: 'Portal CRM',
       btn_request_quote: 'Solicitar Cotización',
@@ -1085,7 +1025,6 @@ import { MASTER_PRODUCTS } from './productsData.js';
       nav_industries: 'Отрасли',
       nav_quality: 'Качество & Документы',
       nav_resources: 'Ресурсы',
-      nav_blog: 'Блог',
       nav_contact: 'Контакты',
       nav_crm: 'CRM-портал',
       btn_request_quote: 'Запросить КП',
@@ -1182,7 +1121,6 @@ export {
   PRODUCTS,
   INDUSTRIES,
   FAQS,
-  BLOG_POSTS,
   CRM_STORAGE_KEY,
   getInitialCRMData,
   loadCRMData,

@@ -83,7 +83,6 @@ export const Footer = () => {
               <li><a href="#about">{t('nav_about', 'About Lotus Tubes')}</a></li>
               <li><a href="#quality">{t('nav_quality', 'Material Grades & MTC Policy')}</a></li>
               <li><a href="#resources">{t('nav_resources', 'Datasheets & Dimension Charts')}</a></li>
-              <li><a href="#blog">{t('nav_blog', 'Technical Engineering Blog')}</a></li>
               <li><a href="#contact">{t('nav_contact', 'Contact & Plant Location')}</a></li>
               <li><a href="#quote">{t('btn_get_quote', 'Submit Detailed BOQ / RFQ')}</a></li>
             </ul>

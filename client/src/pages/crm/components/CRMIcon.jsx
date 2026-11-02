@@ -79,6 +79,14 @@ export const CRMIcon = ({ name, size = 18, className = '', color = 'currentColor
           <line x1="6" y1="20" x2="6" y2="14" />
         </svg>
       );
+    case 'seo':
+      return (
+        <svg {...props}>
+          <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+          <path d="M12 14l3.5-3.5" />
+          <circle cx="12" cy="14" r="2" />
+        </svg>
+      );
     case 'search':
       return (
         <svg {...props}>

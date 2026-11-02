@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { Product360Viewer } from './Product360Viewer';
 import ProductImage from './ProductImage';
 
 /**
@@ -8,8 +7,8 @@ import ProductImage from './ProductImage';
  * High-impact, cinematic homepage hero for Lotus Tubes inspired by Hex India Fasteners.
  *
  * Features:
- * - Coordinated transitions: Left technical copy and Right 360° visual panel change together seamlessly
- * - Seamless integration of actual 360° rotation videos & turntable sequences
+ * - Coordinated transitions: Left technical copy and Right visual panel change together seamlessly
+ * - Seamless integration of verified high-definition imagery & actual product videos
  * - Strong industrial headline, supporting tagline, concise description, and dual CTAs
  * - Trust / quality badges (EN 10204 3.1, ASTM A270, Ra ≤ 0.38 µm, Ready Stock)
  * - Interactive slide progress tabs, numeric counter, and pause-on-hover auto-advance
@@ -18,7 +17,9 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const timerRef = useRef(null);
+  const videoPlayerRef = useRef(null);
 
   const slides = [
     {
@@ -36,13 +37,13 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
     },
     {
       id: 'butterfly-valve',
-      tabLabel: 'Butterfly Valves 360°',
-      badge: '360° Video Rotation Available',
+      tabLabel: 'Sanitary Butterfly Valves',
+      badge: 'Hygienic Flow Precision',
       category: 'Manual Sanitary Valves',
       titleHighlight: 'Sanitary Butterfly Valves',
       desc: 'Precision forged SS 316L butterfly valves with streamlined mirror disc and FDA food-grade silicone/EPDM seals, delivering full bidirectional leak-tight shutoff with low operating torque.',
       specPill: '10 Bar Rated • Ra ≤ 0.4 µm • Tri-Clamp & Weld Ends',
-      mediaType: 'video360',
+      mediaType: 'video',
       productId: 'ss-sanitary-butterfly-valve',
       videoSrc: '/assets/videos/ss-butterfly-valves.mp4',
       poster: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
@@ -51,13 +52,13 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
     },
     {
       id: 'clamp-holder',
-      tabLabel: 'Tri-Clamp Clamps 360°',
-      badge: '360° Video Rotation Available',
+      tabLabel: 'Tri-Clamp Components',
+      badge: 'High-Integrity Joint Closure',
       category: 'Tri-Clamp Fittings & Components',
       titleHighlight: 'Heavy Duty Tri-Clamps',
       desc: 'Investment cast SS 304 heavy-duty Tri-Clamps and pipe hangers engineered to exert uniform circumferential compression across gasket faces for leak-free, tool-free joint closure.',
       specPill: 'Single & Double Pin • 1/2" to 8" • 14° Flange Taper',
-      mediaType: 'video360',
+      mediaType: 'video',
       productId: 'ss-tri-clamp-clamp',
       videoSrc: '/assets/videos/ss-pipe-holder.mp4',
       poster: '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-007.jpg',
@@ -66,15 +67,15 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
     },
     {
       id: 'pneumatic-valve',
-      tabLabel: 'Pneumatic Valves 360°',
-      badge: 'Interactive Turntable Inspection',
+      tabLabel: 'Pneumatic Ball Valves',
+      badge: 'Automated Process Skids',
       category: 'Automated & Pneumatic Valves',
       titleHighlight: 'Pneumatic Ball Valves',
       desc: 'Full-bore sanitary ball valves with encapsulated cavity-filled PTFE seats and double-acting ISO 5211 pneumatic actuators for automated CIP/SIP hygienic processing skids.',
-      specPill: 'ISO 5211 Direct Mount • Cavity Filled • 360° Turntable',
-      mediaType: 'frames360',
+      specPill: 'ISO 5211 Direct Mount • Cavity Filled • High Cycle Life',
+      mediaType: 'image',
       productId: 'pneumatic-sanitary-ball-valve',
-      poster: '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg',
+      image: '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg',
       material: 'SS 316L Actuated',
       primaryProduct: 'pneumatic-sanitary-ball-valve'
     }
@@ -93,6 +94,16 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
 
     return () => clearInterval(timerRef.current);
   }, [isPaused, total]);
+
+  const toggleVideo = () => {
+    if (!videoPlayerRef.current) return;
+    if (videoPlayerRef.current.paused) {
+      videoPlayerRef.current.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+    } else {
+      videoPlayerRef.current.pause();
+      setIsVideoPlaying(false);
+    }
+  };
 
   return (
     <section
@@ -231,7 +242,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
           </div>
 
           {/* ============================================================ */}
-          {/* RIGHT: High-Impact Visual Panel (360° Videos & Master Line)  */}
+          {/* RIGHT: High-Impact Visual Panel (Real Videos & Photography)  */}
           {/* ============================================================ */}
           <div className="lg:col-span-6 min-w-0">
             <div className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#10263d] to-slate-950 border border-slate-700/80 shadow-2xl">
@@ -254,21 +265,30 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
 
               {/* Dynamic Media Stage based on current slide */}
               <div className="relative w-full h-[380px] sm:h-[440px] md:h-[480px] flex items-center justify-center p-4 sm:p-6">
-                {current.mediaType === 'video360' || current.mediaType === 'frames360' ? (
-                  <Product360Viewer
-                    key={current.id}
-                    product={{
-                      id: current.productId,
-                      name: current.titleHighlight,
-                      image: current.poster,
-                      material: current.material,
-                      standard: current.specPill
-                    }}
-                    fallbackImage={current.poster}
-                    height="100%"
-                    autoPlay={true}
-                    className="w-full h-full border-none shadow-none bg-transparent"
-                  />
+                {current.mediaType === 'video' ? (
+                  <div className="relative w-full h-full flex items-center justify-center rounded-xl overflow-hidden bg-slate-950">
+                    <video
+                      ref={videoPlayerRef}
+                      key={current.videoSrc}
+                      src={current.videoSrc}
+                      poster={current.poster}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full h-full object-contain"
+                    />
+                    <div className="absolute bottom-3 right-3 z-10 flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={toggleVideo}
+                        className="p-2 rounded-lg bg-slate-900/85 hover:bg-slate-800 text-white text-xs border border-slate-700 backdrop-blur-sm transition-colors"
+                        aria-label={isVideoPlaying ? 'Pause video' : 'Play video'}
+                      >
+                        {isVideoPlaying ? '⏸ Pause' : '▶ Play'}
+                      </button>
+                    </div>
+                  </div>
                 ) : (
                   <div className="relative w-full h-full flex items-center justify-center">
                     <ProductImage
@@ -305,4 +325,3 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
 };
 
 export default HomeCinematicHero;
-

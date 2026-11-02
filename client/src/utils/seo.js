@@ -97,8 +97,8 @@ export const updatePageSEO = ({
       '@type': 'Organization',
       name: 'Lotus Tubes',
       legalName: 'Lotus Impex',
-      url: origin,
-      logo: `${origin}/Lotus Tubes Logo.png`,
+      url: CANONICAL_ORIGIN,
+      logo: `${CANONICAL_ORIGIN}/Lotus%20Tubes%20Logo.png`,
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+91-9820525200',

@@ -88,9 +88,6 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
               <a href="#resources" className="nav-link">{t('nav_resources', 'Resources')}</a>
             </li>
             <li className="nav-item">
-              <a href="#blog" className="nav-link">{t('nav_blog', 'Blog')}</a>
-            </li>
-            <li className="nav-item">
               <a href="#contact" className="nav-link">{t('nav_contact', 'Contact Us')}</a>
             </li>
           </ul>
