@@ -258,7 +258,7 @@ export const QuoteView = ({ onNotify }) => {
                   <span>🟢 WhatsApp Desk ({successCode})</span>
                 </a>
                 {isAuthenticated && (
-                  <a href="#account" className="btn btn--outline-dark">
+                  <a href="/account" className="btn btn--outline-dark">
                     View in My Customer Account &rarr;
                   </a>
                 )}

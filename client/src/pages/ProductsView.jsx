@@ -529,7 +529,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                       </div>
 
                       {/* Main Product Image / Visual */}
-                      <a href={`#product/${prod.slug}`} className="block w-full h-full" tabIndex="-1">
+                      <a href={`/product/${prod.slug}`} className="block w-full h-full" tabIndex="-1">
                         <ProductCardVideo
                           video={prod.video}
                           poster={prod.image}
@@ -547,7 +547,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                       </div>
 
                       <h3 className="product-card__title">
-                        <a href={`#product/${prod.slug}`} className="hover:text-blue-600 transition-colors">
+                        <a href={`/product/${prod.slug}`} className="hover:text-blue-600 transition-colors">
                           {prod.name}
                         </a>
                       </h3>
@@ -574,7 +574,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                       {/* Action Buttons */}
                       <div className="product-card__actions">
                         <a
-                          href={`#product/${prod.slug}`}
+                          href={`/product/${prod.slug}`}
                           className="btn btn--outline-dark btn--sm flex-1 text-center"
                         >
                           View Details

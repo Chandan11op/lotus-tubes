@@ -55,7 +55,7 @@ export const ResourcesView = ({ onNotify }) => {
           { value: '24h Response', label: 'Technical Sourcing' }
         ]}
         actions={[
-          <a key="cat" href="#products" className="btn btn--primary">
+          <a key="cat" href="/products" className="btn btn--primary">
             Explore Product Range &rarr;
           </a>
         ]}

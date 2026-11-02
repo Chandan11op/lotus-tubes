@@ -8,8 +8,9 @@
  */
 
 import { PRODUCTS } from '../data/siteData.js';
+import { getSiteUrl, getCanonicalUrl, CURRENT_DEPLOYMENT_DOMAIN, OFFICIAL_PRODUCTION_DOMAIN } from './seoConfig.js';
 
-export const CANONICAL_ORIGIN = 'https://www.lotustubes.com';
+export const CANONICAL_ORIGIN = getSiteUrl();
 export const GOOGLE_VERIFICATION_FILE = 'google2c5d311f18436287.html';
 
 export const runSEOAudit = () => {
@@ -46,7 +47,7 @@ export const runSEOAudit = () => {
       status: 'pass',
       impact: 'High',
       weight: 5,
-      detail: `robots.txt is configured in public root. Disallows private paths (/crm/, /account, /api/) and references https://www.lotustubes.com/sitemap.xml.`,
+      detail: `robots.txt is configured in public root. Disallows private paths (/crm/, /account, /api/) and references ${CANONICAL_ORIGIN}/sitemap.xml.`,
       recommendation: null
     },
     {

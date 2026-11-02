@@ -37,7 +37,7 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
           { value: 'Ready Stock', label: 'Mumbai Sourcing' }
         ]}
         actions={[
-          <a key="cat" href="#products" className="btn btn--outline">
+          <a key="cat" href="/products" className="btn btn--outline">
             &larr; Full Catalogue
           </a>,
           <button
@@ -59,7 +59,7 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
               Engineered to strict hygienic specifications. Contact our Mumbai sales desk to confirm ready size availability.
             </p>
           </div>
-          <a href="#products" className="btn btn--outline-dark">
+          <a href="/products" className="btn btn--outline-dark">
             &larr; Back to Full Catalogue
           </a>
         </div>
@@ -83,14 +83,14 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>
                   <h3 className="product-card__title">
-                    <a href={`#product/${prod.slug}`}>{prod.name}</a>
+                    <a href={`/product/${prod.slug}`}>{prod.name}</a>
                   </h3>
                   <p className="product-card__specs">
                     <strong>Roughness:</strong> {prod.roughness || 'Hygienic standard'}<br />
                     <strong>Standard:</strong> {prod.standard}
                   </p>
                   <div className="product-card__actions">
-                    <a href={`#product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
+                    <a href={`/product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
                       View Details
                     </a>
                     <button

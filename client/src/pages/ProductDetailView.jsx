@@ -218,7 +218,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           {/* Category Eyebrow & Sourcing Status */}
           <div className="flex items-center justify-between gap-2 mb-2">
             <a
-              href={`#category/${prod.categorySlug}`}
+              href={`/category/${prod.categorySlug}`}
               className="text-xs font-bold text-sky-600 uppercase tracking-wider hover:underline"
             >
               {prod.category}
@@ -341,7 +341,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             </a>
 
             <a
-              href="#quote"
+              href="/quote"
               className="btn btn--outline py-3.5 px-5 text-sm font-semibold border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               Attach BOQ
@@ -572,7 +572,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 Related Products in {prod.category}
               </h3>
             </div>
-            <a href="#products" className="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+            <a href="/products" className="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1">
               <span>View Full Catalogue</span>
               <span>&rarr;</span>
             </a>
@@ -582,7 +582,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             {related.map((rel) => (
               <a
                 key={rel.id}
-                href={`#product/${rel.slug || rel.id}`}
+                href={`/product/${rel.slug || rel.id}`}
                 className="group flex flex-col p-4 rounded-xl bg-white border border-slate-200 hover:border-sky-500 hover:shadow-lg transition-all"
               >
                 <div className="aspect-square w-full rounded-lg overflow-hidden bg-slate-50 mb-3 flex items-center justify-center p-3">

@@ -75,11 +75,41 @@ export const App = () => {
       window.scrollTo(0, 0);
     };
 
+    const handleLinkClick = (e) => {
+      const anchor = e.target.closest('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href');
+      if (
+        href &&
+        href.startsWith('/') &&
+        !href.startsWith('//') &&
+        !anchor.hasAttribute('download') &&
+        anchor.target !== '_blank'
+      ) {
+        if (
+          href.endsWith('.html') ||
+          href.endsWith('.xml') ||
+          href.endsWith('.pdf') ||
+          href.endsWith('.png') ||
+          href.endsWith('.jpg') ||
+          href.startsWith('/assets/')
+        ) {
+          return;
+        }
+        e.preventDefault();
+        window.history.pushState({}, '', href);
+        handleLocationChange();
+      }
+    };
+
     window.addEventListener('hashchange', handleLocationChange);
     window.addEventListener('popstate', handleLocationChange);
+    document.addEventListener('click', handleLinkClick);
+
     return () => {
       window.removeEventListener('hashchange', handleLocationChange);
       window.removeEventListener('popstate', handleLocationChange);
+      document.removeEventListener('click', handleLinkClick);
     };
   }, []);
 
@@ -88,7 +118,7 @@ export const App = () => {
   // Dynamic Technical SEO & Schema.org JSON-LD structured data injection
   useEffect(() => {
     let title = 'Lotus Tubes | Sanitary Stainless Steel Pipes, Fittings & Valves';
-    let description = 'Leading manufacturer & stockist of SS 304 and SS 316L sanitary tubes, Tri-Clamp fittings, hygienic valves, and gaskets for pharmaceutical and dairy processing.';
+    let description = 'Lotus Tubes supplies SS 304 and SS 316L sanitary pipes, fittings, tri-clamp components and valves for hygienic process industries worldwide.';
     let productData = null;
     let breadcrumbs = [{ name: 'Home', path: '/' }];
 
@@ -100,7 +130,10 @@ export const App = () => {
       const found = PRODUCTS.find((p) => p.slug === param || p.id === param);
       if (found) {
         title = `${found.name} (${found.material}) - Sanitary Specifications | Lotus Tubes`;
-        description = found.overview || `${found.name} manufactured from ${found.material} with ${found.surfaceFinish || 'electropolished'} finish for hygienic applications.`;
+        description = found.overview || `${found.name} in ${found.material} with hygienic finish for pharmaceutical and food process applications.`;
+        if (description.length > 160) {
+          description = description.substring(0, 157) + '...';
+        }
         productData = found;
         breadcrumbs.push({ name: 'Products', path: '/products' });
         breadcrumbs.push({ name: found.name, path: `/product/${found.slug || found.id}` });
@@ -113,7 +146,7 @@ export const App = () => {
       breadcrumbs.push({ name: catName, path: `/category/${param}` });
     } else if (route === 'about') {
       title = 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai';
-      description = 'Lotus Tubes (Lotus Impex) delivers high-precision stainless steel sanitary tubes and process components from Girgaon, Mumbai to pharmaceutical and food process leaders globally.';
+      description = 'Lotus Tubes delivers high-precision stainless steel sanitary tubes and components from Girgaon, Mumbai to pharmaceutical and food process leaders worldwide.';
       breadcrumbs.push({ name: 'About Us', path: '/about' });
     } else if (route === 'industries' || route === 'industry') {
       title = 'Process Industries We Serve | Lotus Tubes Sanitary Solutions';
@@ -125,7 +158,7 @@ export const App = () => {
       breadcrumbs.push({ name: 'Quality Assurance', path: '/quality' });
     } else if (route === 'resources') {
       title = 'Engineering Resources & Technical Datasheets | Lotus Tubes';
-      description = 'Download sanitary stainless steel dimensional charts, ASTM/ASME specifications, and surface roughness conversion guides.';
+      description = 'Download sanitary stainless steel dimensional charts, ASTM A270 specifications, and electropolished surface roughness conversion tables.';
       breadcrumbs.push({ name: 'Resources', path: '/resources' });
     } else if (route === 'contact') {
       title = 'Contact Lotus Tubes | Girgaon Mumbai Sales Office';
@@ -133,11 +166,11 @@ export const App = () => {
       breadcrumbs.push({ name: 'Contact', path: '/contact' });
     } else if (route === 'quote') {
       title = 'Request a Formal B2B Quotation | Lotus Tubes';
-      description = 'Submit your Bill of Quantities (BOQ) or technical specifications for instant review and competitive quotation for SS 304 / SS 316L sanitary tubes and valves.';
+      description = 'Submit your Bill of Quantities (BOQ) for instant review and competitive quotation on SS 304 and SS 316L sanitary pipes, fittings, and valves.';
       breadcrumbs.push({ name: 'Request Quote', path: '/quote' });
     } else if (route === 'account') {
       title = 'Customer Account & Quotation History | Lotus Tubes';
-      description = 'View your active quotation inquiries, track dispatch status, and download material test certificates.';
+      description = 'View your active quotation inquiries, track dispatch status, and download EN 10204 3.1 material test certificates for Lotus Tubes orders.';
       breadcrumbs.push({ name: 'Customer Account', path: '/account' });
     } else if (route === 'crm') {
       title = 'Lotus Tubes Staff CRM & Operations Portal';

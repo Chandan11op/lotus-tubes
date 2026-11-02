@@ -23,15 +23,15 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
         <nav className="main-nav" id="main-nav" aria-label="Main Navigation">
           <ul className="nav-list">
             <li className="nav-item">
-              <a href="#home" className="nav-link">{t('nav_home', 'Home')}</a>
+              <a href="/" className="nav-link">{t('nav_home', 'Home')}</a>
             </li>
             <li className="nav-item">
-              <a href="#about" className="nav-link">{t('nav_about', 'About Us')}</a>
+              <a href="/about" className="nav-link">{t('nav_about', 'About Us')}</a>
             </li>
 
             {/* Products Dropdown */}
             <li className="nav-item nav-item--dropdown" id="nav-products-dropdown">
-              <a href="#products" className="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+              <a href="/products" className="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                 <span>{t('nav_products', 'Products')}</span> <span className="nav-arrow">▾</span>
               </a>
               <div className="mega-menu" aria-label="Product Categories">
@@ -39,29 +39,29 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                   <div className="mega-menu__col">
                     <h4 className="mega-menu__title">{t('mega_pipes', 'Pipes & Tubing')}</h4>
                     <ul className="mega-menu__links">
-                      <li><a href="#category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
-                      <li><a href="#product/ss-316l-ep-pipe">SS 316L EP Sanitary Pipe</a></li>
-                      <li><a href="#product/ss-304-ep-pipe">SS 304 EP Sanitary Pipe</a></li>
-                      <li><a href="#product/ss-316l-mp-pipe">SS 316L MP Sanitary Pipe</a></li>
-                      <li><a href="#product/ss-304-seamless-tube">SS 304 Seamless Tube</a></li>
+                      <li><a href="/category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
+                      <li><a href="/product/ss-316l-ep-pipe">SS 316L EP Sanitary Pipe</a></li>
+                      <li><a href="/product/ss-304-ep-pipe">SS 304 EP Sanitary Pipe</a></li>
+                      <li><a href="/product/ss-316l-mp-pipe">SS 316L MP Sanitary Pipe</a></li>
+                      <li><a href="/product/ss-304-seamless-tube">SS 304 Seamless Tube</a></li>
                     </ul>
                   </div>
                   <div className="mega-menu__col">
                     <h4 className="mega-menu__title">{t('mega_fittings', 'Fittings & Components')}</h4>
                     <ul className="mega-menu__links">
-                      <li><a href="#category/sanitary-fittings">Sanitary Pipe Fittings (Bends, Tees)</a></li>
-                      <li><a href="#category/tri-clamp">Tri-Clamp Fittings & Clamps</a></li>
-                      <li><a href="#category/gaskets">Sanitary Gaskets (Silicone, EPDM, PTFE)</a></li>
-                      <li><a href="#product/ss-sms-union">SS SMS & DIN Unions</a></li>
+                      <li><a href="/category/sanitary-fittings">Sanitary Pipe Fittings (Bends, Tees)</a></li>
+                      <li><a href="/category/tri-clamp">Tri-Clamp Fittings & Clamps</a></li>
+                      <li><a href="/category/gaskets">Sanitary Gaskets (Silicone, EPDM, PTFE)</a></li>
+                      <li><a href="/product/ss-sms-union">SS SMS & DIN Unions</a></li>
                     </ul>
                   </div>
                   <div className="mega-menu__col">
                     <h4 className="mega-menu__title">{t('mega_valves', 'Valves & Assemblies')}</h4>
                     <ul className="mega-menu__links">
-                      <li><a href="#category/manual-valves">Manual Sanitary Valves</a></li>
-                      <li><a href="#category/pneumatic-valves">Pneumatic & Automated Valves</a></li>
-                      <li><a href="#category/tank-cleaning">Tank Cleaning & Spray Balls</a></li>
-                      <li><a href="#category/custom-assemblies">Custom Fabricated Spools & Manifolds</a></li>
+                      <li><a href="/category/manual-valves">Manual Sanitary Valves</a></li>
+                      <li><a href="/category/pneumatic-valves">Pneumatic & Automated Valves</a></li>
+                      <li><a href="/category/tank-cleaning">Tank Cleaning & Spray Balls</a></li>
+                      <li><a href="/category/custom-assemblies">Custom Fabricated Spools & Manifolds</a></li>
                     </ul>
                   </div>
                   <div className="mega-menu__highlight">
@@ -69,7 +69,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                       <span className="badge badge--pink">{t('mega_focus', 'Monopoly Focus')}</span>
                       <h5>{t('mega_certified', 'Hygienic Process Certified')}</h5>
                       <p>{t('mega_desc', 'Available in SS 304 & SS 316L with EP/MP finishes. Fast quotations & MTC documentation.')}</p>
-                      <a href="#products" className="btn btn--sm btn--primary">{t('btn_view_all', 'View All Products →')}</a>
+                      <a href="/products" className="btn btn--sm btn--primary">{t('btn_view_all', 'View All Products →')}</a>
                     </div>
                   </div>
                 </div>
@@ -78,17 +78,17 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
 
             {/* Industries Direct Link */}
             <li className="nav-item">
-              <a href="#industries" className="nav-link">{t('nav_industries', 'Industries')}</a>
+              <a href="/industries" className="nav-link">{t('nav_industries', 'Industries')}</a>
             </li>
 
             <li className="nav-item">
-              <a href="#quality" className="nav-link">{t('nav_quality', 'Quality & Docs')}</a>
+              <a href="/quality" className="nav-link">{t('nav_quality', 'Quality & Docs')}</a>
             </li>
             <li className="nav-item">
-              <a href="#resources" className="nav-link">{t('nav_resources', 'Resources')}</a>
+              <a href="/resources" className="nav-link">{t('nav_resources', 'Resources')}</a>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link">{t('nav_contact', 'Contact Us')}</a>
+              <a href="/contact" className="nav-link">{t('nav_contact', 'Contact Us')}</a>
             </li>
           </ul>
         </nav>

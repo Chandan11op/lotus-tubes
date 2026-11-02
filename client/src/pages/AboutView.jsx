@@ -41,7 +41,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
           >
             Request Sourcing Consultation &rarr;
           </button>,
-          <a key="cat" href="#products" className="btn btn--outline">
+          <a key="cat" href="/products" className="btn btn--outline">
             Browse Product Range
           </a>
         ]}
@@ -86,7 +86,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
               >
                 Request Quotation &rarr;
               </button>
-              <a href="#contact" className="btn btn--outline-dark btn--lg">
+              <a href="/contact" className="btn btn--outline-dark btn--lg">
                 Visit Office / Contact Us
               </a>
             </div>

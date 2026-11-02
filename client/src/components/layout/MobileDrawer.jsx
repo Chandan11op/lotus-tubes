@@ -48,7 +48,7 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
       />
       <aside className="mobile-drawer open active" id="mobile-drawer" style={{ right: 0 }} aria-label="Mobile Navigation Menu">
         <div className="mobile-drawer__header">
-          <a href="#home" onClick={onClose} className="brand-logo" aria-label="Lotus Tubes - Return to Home">
+          <a href="/" onClick={onClose} className="brand-logo" aria-label="Lotus Tubes - Return to Home">
             <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="mobile-drawer__logo" />
           </a>
           <button
@@ -83,26 +83,26 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
           </div>
 
           <ul className="mobile-nav-list">
-            <li><a href="#home" onClick={onClose} className="mobile-nav-link">{t('nav_home', 'Home')}</a></li>
-            <li><a href="#about" onClick={onClose} className="mobile-nav-link">{t('nav_about', 'About Us')}</a></li>
+            <li><a href="/" onClick={onClose} className="mobile-nav-link">{t('nav_home', 'Home')}</a></li>
+            <li><a href="/about" onClick={onClose} className="mobile-nav-link">{t('nav_about', 'About Us')}</a></li>
             <li>
               <div className="mobile-nav-group-title">{t('nav_products', 'Products')}</div>
               <ul className="mobile-subnav">
-                <li><a href="#products" onClick={onClose}>{t('btn_view_all', 'All Products Catalogue')}</a></li>
-                <li><a href="#category/sanitary-pipes" onClick={onClose}>Sanitary Pipes & Tubes</a></li>
-                <li><a href="#category/sanitary-fittings" onClick={onClose}>Sanitary Fittings</a></li>
-                <li><a href="#category/tri-clamp" onClick={onClose}>Tri-Clamp Fittings & Clamps</a></li>
-                <li><a href="#category/gaskets" onClick={onClose}>Sanitary Gaskets</a></li>
-                <li><a href="#category/manual-valves" onClick={onClose}>Manual Sanitary Valves</a></li>
-                <li><a href="#category/pneumatic-valves" onClick={onClose}>Pneumatic Valves</a></li>
-                <li><a href="#category/tank-cleaning" onClick={onClose}>Tank Cleaning Accessories</a></li>
-                <li><a href="#category/custom-assemblies" onClick={onClose}>Custom Assemblies</a></li>
+                <li><a href="/products" onClick={onClose}>{t('btn_view_all', 'All Products Catalogue')}</a></li>
+                <li><a href="/category/sanitary-pipes" onClick={onClose}>Sanitary Pipes & Tubes</a></li>
+                <li><a href="/category/sanitary-fittings" onClick={onClose}>Sanitary Fittings</a></li>
+                <li><a href="/category/tri-clamp" onClick={onClose}>Tri-Clamp Fittings & Clamps</a></li>
+                <li><a href="/category/gaskets" onClick={onClose}>Sanitary Gaskets</a></li>
+                <li><a href="/category/manual-valves" onClick={onClose}>Manual Sanitary Valves</a></li>
+                <li><a href="/category/pneumatic-valves" onClick={onClose}>Pneumatic Valves</a></li>
+                <li><a href="/category/tank-cleaning" onClick={onClose}>Tank Cleaning Accessories</a></li>
+                <li><a href="/category/custom-assemblies" onClick={onClose}>Custom Assemblies</a></li>
               </ul>
             </li>
-            <li><a href="#industries" onClick={onClose} className="mobile-nav-link">{t('nav_industries', 'Industries')}</a></li>
-            <li><a href="#quality" onClick={onClose} className="mobile-nav-link">{t('nav_quality', 'Quality & Documentation')}</a></li>
-            <li><a href="#resources" onClick={onClose} className="mobile-nav-link">{t('nav_resources', 'Resources & Datasheets')}</a></li>
-            <li><a href="#contact" onClick={onClose} className="mobile-nav-link">{t('nav_contact', 'Contact Us')}</a></li>
+            <li><a href="/industries" onClick={onClose} className="mobile-nav-link">{t('nav_industries', 'Industries')}</a></li>
+            <li><a href="/quality" onClick={onClose} className="mobile-nav-link">{t('nav_quality', 'Quality & Documentation')}</a></li>
+            <li><a href="/resources" onClick={onClose} className="mobile-nav-link">{t('nav_resources', 'Resources & Datasheets')}</a></li>
+            <li><a href="/contact" onClick={onClose} className="mobile-nav-link">{t('nav_contact', 'Contact Us')}</a></li>
             <li><a href="#crm/login" onClick={onClose} className="mobile-nav-link highlight-crm">{t('nav_crm', 'CRM Staff Portal')}</a></li>
           </ul>
 

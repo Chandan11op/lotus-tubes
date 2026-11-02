@@ -13,7 +13,7 @@ export const Footer = () => {
 
           {/* Col 1: Brand & Sourcing Statement */}
           <div className="footer-col footer-col--brand">
-            <a href="#home" className="footer-brand-link" aria-label="Lotus Tubes - Return to Home">
+            <a href="/" className="footer-brand-link" aria-label="Lotus Tubes - Return to Home">
               <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves" className="footer-logo" />
             </a>
             <p className="footer-description">
@@ -51,14 +51,14 @@ export const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col__title">{t('footer_col_products', 'Sanitary Products')}</h4>
             <ul className="footer-links">
-              <li><a href="#category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
-              <li><a href="#category/sanitary-fittings">Sanitary Pipe Fittings</a></li>
-              <li><a href="#category/tri-clamp">Tri-Clamp Components & Clamps</a></li>
-              <li><a href="#category/gaskets">Sanitary Food-Grade Gaskets</a></li>
-              <li><a href="#category/manual-valves">Hygienic Butterfly & Ball Valves</a></li>
-              <li><a href="#category/pneumatic-valves">Pneumatic Diaphragm Valves</a></li>
-              <li><a href="#category/tank-cleaning">Tank Cleaning Spray Balls</a></li>
-              <li><a href="#category/custom-assemblies">Custom Hygienic Spools</a></li>
+              <li><a href="/category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
+              <li><a href="/category/sanitary-fittings">Sanitary Pipe Fittings</a></li>
+              <li><a href="/category/tri-clamp">Tri-Clamp Components & Clamps</a></li>
+              <li><a href="/category/gaskets">Sanitary Food-Grade Gaskets</a></li>
+              <li><a href="/category/manual-valves">Hygienic Butterfly & Ball Valves</a></li>
+              <li><a href="/category/pneumatic-valves">Pneumatic Diaphragm Valves</a></li>
+              <li><a href="/category/tank-cleaning">Tank Cleaning Spray Balls</a></li>
+              <li><a href="/category/custom-assemblies">Custom Hygienic Spools</a></li>
             </ul>
           </div>
 
@@ -66,13 +66,13 @@ export const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col__title">{t('footer_col_industries', 'Industries Served')}</h4>
             <ul className="footer-links">
-              <li><a href="#industry/pharmaceutical">{t('ind_pharma', 'Pharmaceutical Processing')}</a></li>
-              <li><a href="#industry/biotechnology">{t('ind_biotech', 'Biotechnology & Sterile')}</a></li>
-              <li><a href="#industry/dairy">{t('ind_dairy', 'Dairy & Milk Processing')}</a></li>
-              <li><a href="#industry/food-beverage">{t('ind_food', 'Food & Beverage Manufacturing')}</a></li>
-              <li><a href="#industry/breweries">{t('ind_brew', 'Breweries & Distilleries')}</a></li>
-              <li><a href="#industry/water-treatment">{t('ind_water', 'WFI & Pure Water Treatment')}</a></li>
-              <li><a href="#industry/chemical">{t('ind_chemical', 'Fine Chemical & Cosmetics')}</a></li>
+              <li><a href="/industries">{t('ind_pharma', 'Pharmaceutical Processing')}</a></li>
+              <li><a href="/industries">{t('ind_biotech', 'Biotechnology & Sterile')}</a></li>
+              <li><a href="/industries">{t('ind_dairy', 'Dairy & Milk Processing')}</a></li>
+              <li><a href="/industries">{t('ind_food', 'Food & Beverage Manufacturing')}</a></li>
+              <li><a href="/industries">{t('ind_brew', 'Breweries & Distilleries')}</a></li>
+              <li><a href="/industries">{t('ind_water', 'WFI & Pure Water Treatment')}</a></li>
+              <li><a href="/industries">{t('ind_chemical', 'Fine Chemical & Cosmetics')}</a></li>
             </ul>
           </div>
 
@@ -80,11 +80,11 @@ export const Footer = () => {
           <div className="footer-col">
             <h4 className="footer-col__title">{t('footer_col_info', 'Information & Portal')}</h4>
             <ul className="footer-links">
-              <li><a href="#about">{t('nav_about', 'About Lotus Tubes')}</a></li>
-              <li><a href="#quality">{t('nav_quality', 'Material Grades & MTC Policy')}</a></li>
-              <li><a href="#resources">{t('nav_resources', 'Datasheets & Dimension Charts')}</a></li>
-              <li><a href="#contact">{t('nav_contact', 'Contact & Plant Location')}</a></li>
-              <li><a href="#quote">{t('btn_get_quote', 'Submit Detailed BOQ / RFQ')}</a></li>
+              <li><a href="/about">{t('nav_about', 'About Lotus Tubes')}</a></li>
+              <li><a href="/quality">{t('nav_quality', 'Material Grades & MTC Policy')}</a></li>
+              <li><a href="/resources">{t('nav_resources', 'Datasheets & Dimension Charts')}</a></li>
+              <li><a href="/contact">{t('nav_contact', 'Contact & Plant Location')}</a></li>
+              <li><a href="/quote">{t('btn_get_quote', 'Submit Detailed BOQ / RFQ')}</a></li>
             </ul>
           </div>
 

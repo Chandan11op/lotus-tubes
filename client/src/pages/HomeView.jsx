@@ -26,7 +26,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               <span className="section-eyebrow">{t('sec_range_eyebrow', 'Our Product Range')}</span>
               <h2 className="section-title">{t('sec_range_title', 'Premium Stainless Steel Solutions')}</h2>
             </div>
-            <a href="#products" className="btn btn--outline-dark">
+            <a href="/products" className="btn btn--outline-dark">
               {t('btn_view_all', 'View All Products')} &rarr;
             </a>
           </div>
@@ -56,7 +56,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     {cat.desc}
                   </p>
                   <div className="range-card__footer mt-4 pt-3 border-t border-slate-100">
-                    <a href={`#category/${cat.slug}`} className="range-card__link text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+                    <a href={`/category/${cat.slug}`} className="range-card__link text-sm font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
                       {t('link_view_products', 'View Products')} <span>&rarr;</span>
                     </a>
                   </div>
@@ -78,7 +78,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 {t('sec_featured_desc', 'Precision components across SS 304 & SS 316L for high-cleanliness applications.')}
               </p>
             </div>
-            <a href="#products" className="btn btn--primary">
+            <a href="/products" className="btn btn--primary">
               {t('btn_browse_catalogue', 'Browse Complete 20+ Catalogue')} &rarr;
             </a>
           </div>
@@ -101,14 +101,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <div className="product-card__body">
                   <span className="product-card__category">{prod.category}</span>
                   <h3 className="product-card__title">
-                    <a href={`#product/${prod.slug}`}>{prod.name}</a>
+                    <a href={`/product/${prod.slug}`}>{prod.name}</a>
                   </h3>
                   <p className="product-card__specs">
                     <strong>{t('label_roughness', 'Roughness:')}</strong> {prod.roughness || 'Hygienic standard'}<br />
                     <strong>{t('label_standard', 'Standard:')}</strong> {prod.standard}
                   </p>
                   <div className="product-card__actions">
-                    <a href={`#product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
+                    <a href={`/product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
                       {t('btn_view_details', 'View Details')}
                     </a>
                     <button
@@ -125,7 +125,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           </div>
 
           <div className="load-more-container mt-3">
-            <a href="#products" className="btn btn--outline-dark btn--lg">
+            <a href="/products" className="btn btn--outline-dark btn--lg">
               {t('btn_view_all_catalogue', 'View All 20+ Industrial Products in Catalogue')} &rarr;
             </a>
           </div>
@@ -143,14 +143,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               <span className="section-eyebrow">{t('sec_industries_eyebrow', 'Industries We Serve')}</span>
               <h2 className="section-title">{t('sec_industries_title', 'Trusted Across Multiple Process Industries')}</h2>
             </div>
-            <a href="#industries" className="btn btn--outline-dark">
+            <a href="/industries" className="btn btn--outline-dark">
               {t('btn_view_all_industries', 'View All Industries')} &rarr;
             </a>
           </div>
 
           <div className="industries-scroll-grid">
             {INDUSTRIES.map((ind) => (
-              <a href={`#industry/${ind.slug}`} className="industry-chip-card" key={ind.slug}>
+              <a href="/industries" className="industry-chip-card" key={ind.slug}>
                 <div className="industry-chip-card__img-wrap">
                   <ProductImage
                     src={ind.image || `/assets/images/industries/${ind.slug}.svg`}
@@ -304,7 +304,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 </div>
               </div>
 
-              <a href="#about" className="btn btn--primary btn--lg">
+              <a href="/about" className="btn btn--primary btn--lg">
                 <span>{t('btn_know_more', 'Know More About Us')}</span> &rarr;
               </a>
             </div>

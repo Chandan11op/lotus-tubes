@@ -3,8 +3,7 @@
  * Handles canonical URLs, Open Graph, Twitter Cards, and Schema.org JSON-LD injection
  */
 
-const CANONICAL_ORIGIN = 'https://www.lotustubes.com';
-const DEFAULT_ORIGIN = 'https://www.lotustubes.com';
+import { getCanonicalUrl, getSiteUrl } from './seoConfig.js';
 
 export const updatePageSEO = ({
   title,
@@ -17,11 +16,11 @@ export const updatePageSEO = ({
 }) => {
   if (typeof document === 'undefined') return;
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : DEFAULT_ORIGIN;
-  const canonicalUrl = `${CANONICAL_ORIGIN}${path.startsWith('/') ? path : `/${path}`}`;
+  const siteUrl = getSiteUrl();
+  const canonicalUrl = getCanonicalUrl(path);
   const fullTitle = title.includes('Lotus Tubes') ? title : `${title} | Lotus Tubes`;
-  const metaDesc = description || 'Lotus Tubes - Trusted supplier of Stainless Steel Sanitary Pipes, Fittings, and Valves in SS 304 & SS 316L. Electro polished & mechanically polished finishes for pharma and dairy industries.';
-  const fullImageUrl = image.startsWith('http') ? image : `${origin}${image.startsWith('/') ? image : `/${image}`}`;
+  const metaDesc = description || 'Lotus Tubes supplies SS 304 and SS 316L sanitary pipes, fittings, tri-clamp components and valves for hygienic process industries worldwide.';
+  const fullImageUrl = image.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? image : `/${image}`}`;
 
   // 1. Document Title
   document.title = fullTitle;
@@ -97,8 +96,8 @@ export const updatePageSEO = ({
       '@type': 'Organization',
       name: 'Lotus Tubes',
       legalName: 'Lotus Impex',
-      url: CANONICAL_ORIGIN,
-      logo: `${CANONICAL_ORIGIN}/Lotus%20Tubes%20Logo.png`,
+      url: siteUrl,
+      logo: `${siteUrl}/Lotus%20Tubes%20Logo.png`,
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+91-9820525200',

@@ -179,7 +179,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
             {/* Primary Action Buttons */}
             <div className="flex flex-wrap items-center gap-3.5 mb-8">
               <a
-                href="#products"
+                href="/products"
                 className="btn btn--primary px-6 py-3 text-sm font-bold shadow-lg shadow-sky-500/25 flex items-center gap-2"
               >
                 <span>{t('btn_explore_products', 'Explore Products')}</span>
@@ -309,7 +309,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
                   {current.specPill}
                 </div>
                 <a
-                  href={`#product/${current.primaryProduct}`}
+                  href={`/product/${current.primaryProduct}`}
                   className="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1 shrink-0 ml-3"
                 >
                   Inspect Specs &rarr;

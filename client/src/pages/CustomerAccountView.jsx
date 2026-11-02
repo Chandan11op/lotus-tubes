@@ -71,7 +71,7 @@ export const CustomerAccountView = ({ onNotify }) => {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <a href="#products" className="btn btn--primary btn--sm">
+            <a href="/products" className="btn btn--primary btn--sm">
               Browse Catalogue
             </a>
             <button
@@ -164,7 +164,7 @@ export const CustomerAccountView = ({ onNotify }) => {
               <p style={{ color: '#667085', maxWidth: '440px', margin: '0 auto 20px auto' }}>
                 You have not submitted any quotation requests under this account. Explore our product catalogue and click "Request Official Quotation".
               </p>
-              <a href="#products" className="btn btn--primary">
+              <a href="/products" className="btn btn--primary">
                 Explore Sanitary Catalogue &rarr;
               </a>
             </div>

@@ -26,11 +26,11 @@ export const NotFoundView = ({ onOpenEnquiry }) => {
 
         {/* Primary Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-3.5 mb-12">
-          <a href="#home" className="btn btn--primary px-6 py-3 text-sm font-bold shadow-lg shadow-sky-500/20">
+          <a href="/" className="btn btn--primary px-6 py-3 text-sm font-bold shadow-lg shadow-sky-500/20">
             Return to Homepage
           </a>
 
-          <a href="#products" className="btn btn--outline px-6 py-3 text-sm font-semibold border-slate-600 text-white hover:bg-slate-850">
+          <a href="/products" className="btn btn--outline px-6 py-3 text-sm font-semibold border-slate-600 text-white hover:bg-slate-850">
             Browse Full Product Catalogue &rarr;
           </a>
 
@@ -52,7 +52,7 @@ export const NotFoundView = ({ onOpenEnquiry }) => {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
             <a
-              href="#category/sanitary-pipes"
+              href="/category/sanitary-pipes"
               className="p-3 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-center"
             >
               <div className="text-lg mb-1">📏</div>
@@ -61,7 +61,7 @@ export const NotFoundView = ({ onOpenEnquiry }) => {
             </a>
 
             <a
-              href="#category/sanitary-fittings"
+              href="/category/sanitary-fittings"
               className="p-3 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-center"
             >
               <div className="text-lg mb-1">🔀</div>
@@ -70,7 +70,7 @@ export const NotFoundView = ({ onOpenEnquiry }) => {
             </a>
 
             <a
-              href="#category/tri-clamp"
+              href="/category/tri-clamp"
               className="p-3 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-center"
             >
               <div className="text-lg mb-1">🔗</div>
@@ -79,7 +79,7 @@ export const NotFoundView = ({ onOpenEnquiry }) => {
             </a>
 
             <a
-              href="#category/manual-valves"
+              href="/category/manual-valves"
               className="p-3 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-center"
             >
               <div className="text-lg mb-1">🚰</div>
