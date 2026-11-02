@@ -1,0 +1,7 @@
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg'
+duration 0.867
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/details/silicone-tri-clamp-gasket-pack.svg'
+duration 0.867
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/details/silicone-tri-clamp-gasket-bore.svg'
+duration 0.867
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg'

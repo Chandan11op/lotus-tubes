@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { PRODUCTS, CONFIG } from '../data/siteData';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
 import { ProductVideoPlayer } from '../components/common/ProductVideoPlayer';
+import { Product360Viewer } from '../components/common/Product360Viewer';
 import { updatePageSEO } from '../utils/seo';
 
 /**
@@ -53,7 +54,11 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     ? prod.images
     : [prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name)];
 
-  const hasVideo = Boolean(prod.video);
+  const video360 = prod.video360 || `/assets/videos/products/${prod.id}/360.mp4`;
+  const video360Webm = prod.video360Webm || `/assets/videos/products/${prod.id}/360.webm`;
+  const videoShowcase = prod.videoShowcase || `/assets/videos/products/${prod.id}/showcase.mp4`;
+  const has360 = Boolean(prod.has360 || prod.video || prod.images?.length > 1 || true);
+  const hasVideo = Boolean(prod.video || videoShowcase);
 
   const handleImageError = (key) => {
     setImgFallbacks((prev) => {
@@ -142,7 +147,27 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               );
             })}
 
-            {/* 2. Video Thumbnail (if product has video) */}
+            {/* 2. Interactive 360° Orbit Button */}
+            <button
+              type="button"
+              onClick={() => setActiveMedia('360')}
+              className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 border-2 transition-all shrink-0 cursor-pointer flex flex-col items-center justify-center text-white ${
+                activeMedia === '360'
+                  ? 'border-sky-500 shadow-md ring-2 ring-sky-100 scale-102'
+                  : 'border-slate-300 hover:border-sky-400 opacity-90 hover:opacity-100'
+              }`}
+              aria-label="View interactive 360 degree product orbit"
+              aria-selected={activeMedia === '360'}
+            >
+              <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-white shadow-sm mb-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                </svg>
+              </div>
+              <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">360° Orbit</span>
+            </button>
+
+            {/* 3. Cinematic Showcase Video Thumbnail */}
             {hasVideo && (
               <button
                 type="button"
@@ -158,24 +183,33 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 <div className="w-7 h-7 rounded-full bg-sky-500/90 flex items-center justify-center text-white shadow-sm mb-0.5">
                   <span className="text-xs ml-0.5">▶</span>
                 </div>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">Video</span>
+                <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">Showcase</span>
               </button>
             )}
           </div>
 
           {/* Main Display Stage */}
-          <div className="relative flex-1 w-full bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[520px] p-6 group">
-            {activeMedia === 'video' && hasVideo ? (
-              <div className="w-full h-full flex items-center justify-center">
+          <div className="relative flex-1 w-full bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[520px] p-0 group">
+            {activeMedia === '360' ? (
+              <Product360Viewer
+                video360={video360}
+                video360Webm={video360Webm}
+                videoShowcase={videoShowcase}
+                poster={productImages[0]}
+                productName={prod.name}
+                category={prod.category}
+              />
+            ) : activeMedia === 'video' && hasVideo ? (
+              <div className="w-full h-full flex items-center justify-center p-6">
                 <ProductVideoPlayer
-                  src={prod.video}
+                  src={videoShowcase || prod.video}
                   poster={productImages[0]}
                   title={`${prod.name} - Technical Overview`}
                 />
               </div>
             ) : (
               <div
-                className="relative w-full h-full flex items-center justify-center cursor-zoom-in"
+                className="relative w-full h-full flex items-center justify-center cursor-zoom-in p-6"
                 onClick={() => setIsLightboxOpen(true)}
                 title="Click to expand high-resolution image"
               >
@@ -248,6 +282,19 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-sky-50 text-sky-700 border border-sky-200">
               EN 10204 3.1 Traceable
             </span>
+            {has360 && (
+              <button
+                type="button"
+                onClick={() => setActiveMedia('360')}
+                className="px-2.5 py-1 text-xs font-bold rounded-md bg-sky-600 hover:bg-sky-700 text-white border border-sky-500 shadow-sm inline-flex items-center gap-1.5 transition cursor-pointer"
+                title="Click to switch to interactive 360° product orbit"
+              >
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                </svg>
+                <span>Interactive 360° View</span>
+              </button>
+            )}
           </div>
 
           {/* Product Concise Overview */}

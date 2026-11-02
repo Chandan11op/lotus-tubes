@@ -125,3 +125,4 @@ export default {
   generateIndustrialPrompt,
   dispatchAiVideoJob
 };
+

@@ -31,3 +31,4 @@ console.log('Running FFmpeg render...');
 execSync(cmd, { stdio: 'inherit' });
 
 console.log('SUCCESS! Video created at:', mp4Out, 'File size:', fs.statSync(mp4Out).size, 'bytes');
+

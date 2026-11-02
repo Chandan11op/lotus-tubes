@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
 import { Loader } from '../../../components/common/Loader';
 import { Product360Viewer } from '../../../components/common/Product360Viewer';
-import manifestData from '../../../data/productVideosManifest.json';
-import { MASTER_PRODUCTS } from '../../../data/productsData';
+import manifestData from '../../../data/productVideosManifest.js';
+import { MASTER_PRODUCTS } from '../../../data/productsData.js';
 
 export const CRMVideoManagerView = ({
   searchQuery = '',

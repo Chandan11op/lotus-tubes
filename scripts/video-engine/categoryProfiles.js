@@ -132,3 +132,4 @@ export const getCategoryProfile = (categorySlug) => {
 };
 
 export default CATEGORY_PROFILES;
+

@@ -4,7 +4,9 @@
  * conforming to ASTM A270, BS 4825, ASME BPE, 3A, DIN 11851, and SMS standards.
  */
 
-export const MASTER_PRODUCTS = [
+import { productVideosManifest } from './productVideosManifest.js';
+
+const RAW_PRODUCTS = [
   // 1. SS 316L EP Pipe (Priority 1)
   {
     id: "ss-316l-ep-pipe",
@@ -1001,3 +1003,18 @@ export const MASTER_PRODUCTS = [
     applications: ["Process skid pre-fabrication", "Modular cleanroom pipe installation", "Rigid transfer line segments"]
   }
 ];
+
+export const MASTER_PRODUCTS = RAW_PRODUCTS.map((prod) => {
+  const vid = productVideosManifest?.products?.[prod.id];
+  return {
+    ...prod,
+    has360: !!(vid?.has360 || vid?.video360),
+    video360: vid?.video360 || null,
+    video360Webm: vid?.video360Webm || null,
+    videoShowcase: vid?.videoShowcase || null,
+    videoPoster: vid?.poster || null,
+    video: vid?.video360 || prod.video || null
+  };
+});
+
+export default MASTER_PRODUCTS;

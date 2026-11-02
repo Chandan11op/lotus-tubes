@@ -76,9 +76,10 @@ function findProductFrames(product) {
     }
   }
 
-  // Check product.images array if multiple exist
+  // Check product.images array if multiple exist (raster image rotation frames only)
   if (product.images && product.images.length > 2) {
     const valid = product.images
+      .filter((img) => !img.endsWith('.svg'))
       .map((img) => path.join('client/public', img))
       .filter((img) => fs.existsSync(img));
     if (valid.length > 2) {
@@ -86,9 +87,15 @@ function findProductFrames(product) {
     }
   }
 
-  // Single primary image fallback
+  // Single primary image fallback (prefer raster PNG if SVG)
   if (product.image) {
-    const singlePath = path.join('client/public', product.image);
+    let singlePath = path.join('client/public', product.image);
+    if (singlePath.endsWith('.svg')) {
+      const pngCandidate = singlePath.replace(/\.svg$/, '.png');
+      if (fs.existsSync(pngCandidate)) {
+        singlePath = pngCandidate;
+      }
+    }
     if (fs.existsSync(singlePath)) {
       return { type: 'single', file: singlePath };
     }
@@ -208,7 +215,16 @@ async function main() {
   manifest.completedCount = Object.values(manifest.products).filter((p) => p.status === 'completed').length;
   manifest.failedCount = Object.values(manifest.products).filter((p) => p.status === 'failed').length;
 
-  fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2), 'utf8');
+  const jsonContent = JSON.stringify(manifest, null, 2);
+  fs.writeFileSync(MANIFEST_PATH, jsonContent, 'utf8');
+
+  // Also write JS module for seamless universal import in Vite and Node
+  const jsManifestPath = MANIFEST_PATH.replace(/\.json$/, '.js');
+  fs.writeFileSync(
+    jsManifestPath,
+    `export const productVideosManifest = ${jsonContent};\nexport default productVideosManifest;\n`,
+    'utf8'
+  );
 
   console.log('\n================================================================');
   console.log('GENERATION RUN COMPLETED');

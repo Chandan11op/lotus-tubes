@@ -521,11 +521,18 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                             {prod.finish.includes('EP') || prod.finish.includes('Electro') ? 'EP Mirror' : 'MP Satin'}
                           </span>
                         )}
-                        {prod.video && (
+                        {prod.has360 ? (
+                          <span className="badge badge--sky inline-flex items-center gap-1" style={{ background: '#0284c7', color: '#fff' }}>
+                            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                            </svg>
+                            360° Orbit
+                          </span>
+                        ) : prod.video ? (
                           <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
                             ▶ Video Available
                           </span>
-                        )}
+                        ) : null}
                       </div>
 
                       {/* Main Product Image / Visual */}
