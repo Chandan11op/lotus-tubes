@@ -12,7 +12,8 @@ export const updatePageSEO = ({
   image = '/Lotus Tubes Logo.png',
   type = 'website',
   productData = null,
-  breadcrumbs = null
+  breadcrumbs = null,
+  noindex = false
 }) => {
   if (typeof document === 'undefined') return;
 
@@ -34,7 +35,23 @@ export const updatePageSEO = ({
   }
   descMeta.setAttribute('content', metaDesc);
 
-  // 3. Canonical Tag
+  // 3. Dynamic Robots Meta Tag (Protects CRM, admin, staff & account routes from indexation)
+  let robotsMeta = document.querySelector('meta[name="robots"]');
+  if (!robotsMeta) {
+    robotsMeta = document.createElement('meta');
+    robotsMeta.setAttribute('name', 'robots');
+    document.head.appendChild(robotsMeta);
+  }
+  const isPrivateArea =
+    path.startsWith('/crm') ||
+    path.startsWith('/account') ||
+    path.startsWith('#crm') ||
+    path.startsWith('#account') ||
+    type === 'private' ||
+    noindex;
+  robotsMeta.setAttribute('content', isPrivateArea ? 'noindex, nofollow' : 'index, follow');
+
+  // 4. Canonical Tag (Self-referencing for current deployment)
   let canonicalLink = document.querySelector('link[rel="canonical"]');
   if (!canonicalLink) {
     canonicalLink = document.createElement('link');
@@ -43,7 +60,7 @@ export const updatePageSEO = ({
   }
   canonicalLink.setAttribute('href', canonicalUrl);
 
-  // 4. Open Graph Tags
+  // 5. Open Graph Tags
   const ogTags = {
     'og:title': fullTitle,
     'og:description': metaDesc,

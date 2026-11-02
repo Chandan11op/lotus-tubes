@@ -23,15 +23,27 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
-  // Gallery State: active media index (0..n for images, or 'video')
-  const [activeMedia, setActiveMedia] = useState(0);
+  // Check if deliberate 360 viewer view was requested via URL query/hash parameter
+  const shouldOpen360Initial = () => {
+    if (typeof window === 'undefined') return 0;
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('view') === '360') return '360';
+      const hash = window.location.hash || '';
+      if (hash.includes('view=360')) return '360';
+    } catch {}
+    return 0;
+  };
+
+  // Gallery State: active media index (0..n for images, '360' for 360 viewer, or 'video')
+  const [activeMedia, setActiveMedia] = useState(shouldOpen360Initial);
   const [activeTab, setActiveTab] = useState('about');
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [imgFallbacks, setImgFallbacks] = useState({});
 
   // Reset gallery on product change
   useEffect(() => {
-    setActiveMedia(0);
+    setActiveMedia(shouldOpen360Initial());
     setImgFallbacks({});
 
     // Update dynamic technical SEO & Structured Data
@@ -54,10 +66,10 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     ? prod.images
     : [prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name)];
 
-  const video360 = prod.video360 || `/assets/videos/products/${prod.id}/360.mp4`;
-  const video360Webm = prod.video360Webm || `/assets/videos/products/${prod.id}/360.webm`;
+  const video360 = prod.video360 || (prod.has360 ? `/assets/videos/products/${prod.id}/360.mp4` : null);
+  const video360Webm = prod.video360Webm || (prod.has360 ? `/assets/videos/products/${prod.id}/360.webm` : null);
   const videoShowcase = prod.videoShowcase || `/assets/videos/products/${prod.id}/showcase.mp4`;
-  const has360 = Boolean(prod.has360 || prod.video || prod.images?.length > 1 || true);
+  const has360 = Boolean(prod.has360 && (prod.video360 || prod.video));
   const hasVideo = Boolean(prod.video || videoShowcase);
 
   const handleImageError = (key) => {
@@ -147,25 +159,27 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               );
             })}
 
-            {/* 2. Interactive 360° Orbit Button */}
-            <button
-              type="button"
-              onClick={() => setActiveMedia('360')}
-              className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 border-2 transition-all shrink-0 cursor-pointer flex flex-col items-center justify-center text-white ${
-                activeMedia === '360'
-                  ? 'border-sky-500 shadow-md ring-2 ring-sky-100 scale-102'
-                  : 'border-slate-300 hover:border-sky-400 opacity-90 hover:opacity-100'
-              }`}
-              aria-label="View interactive 360 degree product orbit"
-              aria-selected={activeMedia === '360'}
-            >
-              <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-white shadow-sm mb-0.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                </svg>
-              </div>
-              <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">360° Orbit</span>
-            </button>
+            {/* 2. Interactive 360° Video Button (Only shown when verified 360 video exists) */}
+            {has360 && (
+              <button
+                type="button"
+                onClick={() => setActiveMedia('360')}
+                className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 border-2 transition-all shrink-0 cursor-pointer flex flex-col items-center justify-center text-white ${
+                  activeMedia === '360'
+                    ? 'border-sky-500 shadow-md ring-2 ring-sky-100 scale-102'
+                    : 'border-slate-300 hover:border-sky-400 opacity-90 hover:opacity-100'
+                }`}
+                aria-label="View interactive 360 degree product rotation video"
+                aria-selected={activeMedia === '360'}
+              >
+                <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-white shadow-sm mb-0.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+                  </svg>
+                </div>
+                <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">360° Video</span>
+              </button>
+            )}
 
             {/* 3. Cinematic Showcase Video Thumbnail */}
             {hasVideo && (

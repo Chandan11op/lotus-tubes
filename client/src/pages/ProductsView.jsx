@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
-import ProductCardVideo from '../components/common/ProductCardVideo';
+import ProductCard from '../components/common/ProductCard';
 import PageHero from '../components/common/PageHero';
+import { filterAndSearchProducts } from '../utils/productSearch';
 
 const STANDARDS_LIST = [
   { id: 'all', label: 'All Standards' },
@@ -14,13 +15,41 @@ const STANDARDS_LIST = [
 ];
 
 export const ProductsView = ({ onOpenEnquiry }) => {
+  // Read initial search query from URL parameters if present
+  const getInitialSearch = () => {
+    if (typeof window === 'undefined') return '';
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const q = sp.get('search') || sp.get('q');
+      if (q) return q;
+      const hash = window.location.hash || '';
+      if (hash.includes('?')) {
+        const hp = new URLSearchParams(hash.split('?')[1]);
+        return hp.get('search') || hp.get('q') || '';
+      }
+    } catch {}
+    return '';
+  };
+
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedMaterial, setSelectedMaterial] = useState('all');
   const [selectedFinish, setSelectedFinish] = useState('all');
   const [selectedStandard, setSelectedStandard] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(getInitialSearch);
   const [sortBy, setSortBy] = useState('featured');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Sync search state if URL changes externally (e.g. back/forward navigation)
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const q = getInitialSearch();
+      if (q && q !== searchTerm) {
+        setSearchTerm(q);
+      }
+    };
+    window.addEventListener('popstate', handleUrlChange);
+    return () => window.removeEventListener('popstate', handleUrlChange);
+  }, [searchTerm]);
 
   // Active filter count (excluding default 'all' / empty values)
   const activeFilterCount = useMemo(() => {
@@ -33,56 +62,15 @@ export const ProductsView = ({ onOpenEnquiry }) => {
     return count;
   }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, searchTerm]);
 
+  // Robust multi-attribute search and filtering engine
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((p) => {
-      // 1. Category Filter
-      if (selectedCategory !== 'all') {
-        const cat = CATEGORIES.find((c) => c.slug === selectedCategory);
-        if (cat && p.categorySlug !== selectedCategory && p.category !== cat.name) {
-          return false;
-        }
-      }
-
-      // 2. Material Grade Filter
-      if (selectedMaterial !== 'all' && !p.material.toLowerCase().includes(selectedMaterial.toLowerCase())) {
-        return false;
-      }
-
-      // 3. Surface Finish Filter
-      if (selectedFinish !== 'all' && !p.finish.toLowerCase().includes(selectedFinish.toLowerCase())) {
-        return false;
-      }
-
-      // 4. Engineering Standard Filter
-      if (selectedStandard !== 'all') {
-        const stdMatch = (p.standard || '').toLowerCase().includes(selectedStandard.toLowerCase());
-        if (!stdMatch) return false;
-      }
-
-      // Search Term Filter
-      if (searchTerm.trim()) {
-        const q = searchTerm.toLowerCase().trim();
-        const match =
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.material.toLowerCase().includes(q) ||
-          (p.overview && p.overview.toLowerCase().includes(q)) ||
-          (p.sizes && p.sizes.toLowerCase().includes(q)) ||
-          (p.standard && p.standard.toLowerCase().includes(q));
-        if (!match) return false;
-      }
-
-      return true;
-    }).sort((a, b) => {
-      if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
-      if (sortBy === 'grade') {
-        const aIs316 = a.material.includes('316');
-        const bIs316 = b.material.includes('316');
-        if (aIs316 && !bIs316) return -1;
-        if (!aIs316 && bIs316) return 1;
-        return a.name.localeCompare(b.name);
-      }
-      return (a.priorityRank || 99) - (b.priorityRank || 99);
+    return filterAndSearchProducts(PRODUCTS, {
+      searchTerm,
+      selectedCategory,
+      selectedMaterial,
+      selectedFinish,
+      selectedStandard,
+      sortBy
     });
   }, [selectedCategory, selectedMaterial, selectedFinish, selectedStandard, searchTerm, sortBy]);
 
@@ -504,116 +492,70 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           {/* Product Grid or Clean Empty State */}
           {filteredProducts.length > 0 ? (
             <div className="featured-products-grid">
-              {filteredProducts.map((prod) => {
-                const is316 = prod.material?.includes('316');
-
-                return (
-                  <article className="product-card group" key={prod.slug}>
-                    {/* Media Container (Consistent 4:3 Ratio) */}
-                    <div className="product-card__img-wrap aspect-[4/3] bg-slate-50 relative overflow-hidden">
-                      {/* Top Badges Bar */}
-                      <div className="product-card__badge-bar">
-                        <span className={`badge ${is316 ? 'badge--navy' : 'badge--slate'}`}>
-                          {is316 ? 'SS 316L' : 'SS 304'}
-                        </span>
-                        {prod.finish && (
-                          <span className="badge badge--pink">
-                            {prod.finish.includes('EP') || prod.finish.includes('Electro') ? 'EP Mirror' : 'MP Satin'}
-                          </span>
-                        )}
-                        {prod.has360 ? (
-                          <span className="badge badge--sky inline-flex items-center gap-1" style={{ background: '#0284c7', color: '#fff' }}>
-                            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                            </svg>
-                            360° Orbit
-                          </span>
-                        ) : prod.video ? (
-                          <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
-                            ▶ Video Available
-                          </span>
-                        ) : null}
-                      </div>
-
-                      {/* Main Product Image / Visual */}
-                      <a href={`/product/${prod.slug}`} className="block w-full h-full" tabIndex="-1">
-                        <ProductCardVideo
-                          video={prod.video}
-                          poster={prod.image}
-                          alt={prod.name}
-                          categorySlug={prod.categorySlug}
-                          className="product-card__img w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </a>
-                    </div>
-
-                    {/* Card Body & Technical Hierarchy */}
-                    <div className="product-card__body">
-                      <div className="product-card__eyebrow">
-                        {prod.category}
-                      </div>
-
-                      <h3 className="product-card__title">
-                        <a href={`/product/${prod.slug}`} className="hover:text-blue-600 transition-colors">
-                          {prod.name}
-                        </a>
-                      </h3>
-
-                      {/* 2-Line Overview Snippet */}
-                      {prod.overview && (
-                        <p className="product-card__overview line-clamp-2">
-                          {prod.overview}
-                        </p>
-                      )}
-
-                      {/* Technical Attributes Row */}
-                      <div className="product-card__specs-table">
-                        <div className="spec-row">
-                          <span className="spec-label">Standard:</span>
-                          <span className="spec-val truncate">{prod.standard || 'ASME BPE / 3A'}</span>
-                        </div>
-                        <div className="spec-row">
-                          <span className="spec-label">Sizes:</span>
-                          <span className="spec-val truncate">{prod.sizes || '1/2" to 4" OD'}</span>
-                        </div>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="product-card__actions">
-                        <a
-                          href={`/product/${prod.slug}`}
-                          className="btn btn--outline-dark btn--sm flex-1 text-center"
-                        >
-                          View Details
-                        </a>
-                        <button
-                          type="button"
-                          className="btn btn--primary btn--sm quick-rfq-btn flex-1"
-                          onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
-                        >
-                          Request RFQ
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
+              {filteredProducts.map((prod) => (
+                <ProductCard
+                  key={prod.slug || prod.id}
+                  product={prod}
+                  onOpenEnquiry={onOpenEnquiry}
+                />
+              ))}
             </div>
           ) : (
-            <div className="empty-state">
-              <div className="empty-state__icon">🔍</div>
-              <h3 className="empty-state__title">No matching products found</h3>
-              <p className="empty-state__desc">
-                We could not find any products matching your selected combination of category, material grade, standard, and search query.
+            <div className="empty-state p-8 sm:p-12 text-center bg-white rounded-xl border border-slate-200 shadow-sm max-w-xl mx-auto my-8">
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center text-2xl shadow-inner">
+                🔍
+              </div>
+              <h3 className="empty-state__title text-xl font-bold text-slate-900 mb-2 font-heading">
+                {searchTerm.trim()
+                  ? `No products found matching "${searchTerm.trim()}"`
+                  : 'No matching products found'}
+              </h3>
+              <p className="empty-state__desc text-sm text-slate-500 max-w-md mx-auto mb-6 leading-relaxed">
+                {searchTerm.trim()
+                  ? 'Check your spelling or try searching for broader keywords like "316L", "butterfly valve", "tri-clamp", "ferrule", "90 bend", or "sanitary gasket".'
+                  : 'We could not find any products matching your selected combination of category, material grade, and engineering standard.'}
               </p>
-              <button
-                type="button"
-                className="btn btn--primary"
-                id="empty-clear-filters"
-                onClick={handleResetFilters}
-              >
-                Reset All Filters
-              </button>
+
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {searchTerm.trim() && (
+                  <button
+                    type="button"
+                    className="btn btn--outline-dark px-4 py-2 text-xs font-semibold"
+                    onClick={() => setSearchTerm('')}
+                  >
+                    Clear Search Query
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="btn btn--primary px-5 py-2 text-xs font-bold shadow-md shadow-sky-500/20"
+                  id="empty-clear-filters"
+                  onClick={handleResetFilters}
+                >
+                  Reset All Filters
+                </button>
+              </div>
+
+              {/* Quick Suggestion Pills */}
+              <div className="mt-6 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-center gap-2">
+                <span className="text-xs text-slate-400 font-medium mr-1">Popular searches:</span>
+                {['SS 316L', 'Butterfly Valve', 'Tri-Clamp', '90 Bend', 'Ferrule', 'Silicone Gasket'].map((term) => (
+                  <button
+                    key={term}
+                    type="button"
+                    onClick={() => {
+                      setSearchTerm(term);
+                      setSelectedCategory('all');
+                      setSelectedMaterial('all');
+                      setSelectedFinish('all');
+                      setSelectedStandard('all');
+                    }}
+                    className="text-xs px-2.5 py-1 rounded-full bg-slate-100 hover:bg-sky-50 hover:text-sky-700 text-slate-600 transition-colors cursor-pointer border border-slate-200/60"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

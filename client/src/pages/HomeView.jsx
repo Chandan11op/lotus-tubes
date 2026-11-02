@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG, CATEGORIES, PRODUCTS, INDUSTRIES, createProductSVG } from '../data/siteData';
-import ProductCardVideo from '../components/common/ProductCardVideo';
+import ProductCard from '../components/common/ProductCard';
 import ProductTicker from '../components/layout/ProductTicker';
 import HomeCinematicHero from '../components/common/HomeCinematicHero';
 import ManufacturingProcess from '../components/common/ManufacturingProcess';
@@ -85,49 +85,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
 
           <div className="featured-products-grid">
             {PRODUCTS.slice(0, 12).map((prod) => (
-              <article className="product-card" key={prod.slug}>
-                <div className="product-card__badge-bar">
-                  <span className="badge badge--navy">{prod.material}</span>
-                  <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
-                  {prod.has360 ? (
-                    <span className="badge badge--sky inline-flex items-center gap-1" style={{ background: '#0284c7', color: '#fff' }}>
-                      <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                      </svg>
-                      360° Orbit
-                    </span>
-                  ) : prod.video ? (
-                    <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
-                      ▶ Video
-                    </span>
-                  ) : null}
-                </div>
-                <div className="product-card__img-wrap">
-                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
-                </div>
-                <div className="product-card__body">
-                  <span className="product-card__category">{prod.category}</span>
-                  <h3 className="product-card__title">
-                    <a href={`/product/${prod.slug}`}>{prod.name}</a>
-                  </h3>
-                  <p className="product-card__specs">
-                    <strong>{t('label_roughness', 'Roughness:')}</strong> {prod.roughness || 'Hygienic standard'}<br />
-                    <strong>{t('label_standard', 'Standard:')}</strong> {prod.standard}
-                  </p>
-                  <div className="product-card__actions">
-                    <a href={`/product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
-                      {t('btn_view_details', 'View Details')}
-                    </a>
-                    <button
-                      type="button"
-                      className="btn btn--primary btn--sm quick-rfq-btn"
-                      onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
-                    >
-                      {t('btn_request_quotation', 'Request Official Quotation')}
-                    </button>
-                  </div>
-                </div>
-              </article>
+              <ProductCard
+                key={prod.slug || prod.id}
+                product={prod}
+                onOpenEnquiry={onOpenEnquiry}
+              />
             ))}
           </div>
 

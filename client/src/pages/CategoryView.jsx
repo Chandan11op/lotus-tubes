@@ -1,6 +1,6 @@
 import React from 'react';
 import { CATEGORIES, PRODUCTS, CONFIG } from '../data/siteData';
-import ProductCardVideo from '../components/common/ProductCardVideo';
+import ProductCard from '../components/common/ProductCard';
 import PageHero from '../components/common/PageHero';
 
 export const CategoryView = ({ slug, onOpenEnquiry }) => {
@@ -67,49 +67,11 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
         <div className="featured-products-grid">
           {catProducts.length > 0 ? (
             catProducts.map((prod) => (
-              <article className="product-card" key={prod.slug}>
-                <div className="product-card__badge-bar">
-                  <span className="badge badge--navy">{prod.material}</span>
-                  <span className="badge badge--pink">{prod.finish?.split(' ')[0]}</span>
-                  {prod.has360 ? (
-                    <span className="badge badge--sky inline-flex items-center gap-1" style={{ background: '#0284c7', color: '#fff' }}>
-                      <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                      </svg>
-                      360° Orbit
-                    </span>
-                  ) : prod.video ? (
-                    <span className="badge badge--sky" style={{ background: '#0284c7', color: '#fff' }}>
-                      ▶ Video
-                    </span>
-                  ) : null}
-                </div>
-                <div className="product-card__img-wrap">
-                  <ProductCardVideo video={prod.video} poster={prod.image} alt={prod.name} categorySlug={prod.categorySlug} />
-                </div>
-                <div className="product-card__body">
-                  <span className="product-card__category">{prod.category}</span>
-                  <h3 className="product-card__title">
-                    <a href={`/product/${prod.slug}`}>{prod.name}</a>
-                  </h3>
-                  <p className="product-card__specs">
-                    <strong>Roughness:</strong> {prod.roughness || 'Hygienic standard'}<br />
-                    <strong>Standard:</strong> {prod.standard}
-                  </p>
-                  <div className="product-card__actions">
-                    <a href={`/product/${prod.slug}`} className="btn btn--outline-dark btn--sm">
-                      View Details
-                    </a>
-                    <button
-                      type="button"
-                      className="btn btn--primary btn--sm quick-rfq-btn"
-                      onClick={() => onOpenEnquiry && onOpenEnquiry(prod.id, prod.name)}
-                    >
-                      Request Official Quotation
-                    </button>
-                  </div>
-                </div>
-              </article>
+              <ProductCard
+                key={prod.slug || prod.id}
+                product={prod}
+                onOpenEnquiry={onOpenEnquiry}
+              />
             ))
           ) : (
             <div className="empty-state" style={{ gridColumn: '1 / -1' }}>

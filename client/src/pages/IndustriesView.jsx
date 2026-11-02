@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { INDUSTRIES, PRODUCTS } from '../data/siteData';
-import ProductCardVideo from '../components/common/ProductCardVideo';
 import PageHero from '../components/common/PageHero';
 import ProductImage from '../components/common/ProductImage';
 

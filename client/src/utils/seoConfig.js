@@ -2,26 +2,31 @@
  * Lotus Tubes - Centralized Environment-Aware SEO Domain Configuration
  * 
  * Supports dynamic detection of the current Vercel deployment URL while preserving
- * a clean switch to the official production domain once purchased and configured.
+ * an effortless single-variable switch to the official production domain once purchased.
  */
 
-// Official production domain (for future transition once DNS is pointed)
+// Toggle flag: set to true ONLY once custom domain is purchased, DNS is pointed, and site is live
+export const IS_CUSTOM_DOMAIN_ACTIVE = false;
+
+// Official production domain (for future transition once custom domain is live)
 export const OFFICIAL_PRODUCTION_DOMAIN = 'https://www.lotustubes.com';
 
-// Current active Vercel deployment URL
+// Current active primary deployment testing URL (Vercel)
 export const CURRENT_DEPLOYMENT_DOMAIN = 'https://lotus-tubes-react-design.vercel.app';
 
 /**
- * Resolves the active base URL for canonical tags, sitemaps, and structured data.
+ * Resolves the active base URL for self-referencing canonical tags, sitemaps, and structured data.
  */
 export const getSiteUrl = () => {
+  // 1. Explicit environment variable override takes precedence
   if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SITE_URL) {
     return import.meta.env.VITE_SITE_URL.replace(/\/+$/, '');
   }
 
+  // 2. Browser runtime self-referencing detection
   if (typeof window !== 'undefined' && window.location && window.location.origin) {
-    const origin = window.location.origin;
-    if (origin.includes('lotustubes.com')) {
+    const origin = window.location.origin.replace(/\/+$/, '');
+    if (IS_CUSTOM_DOMAIN_ACTIVE && origin.includes('lotustubes.com')) {
       return OFFICIAL_PRODUCTION_DOMAIN;
     }
     if (origin.includes('vercel.app')) {
@@ -29,6 +34,7 @@ export const getSiteUrl = () => {
     }
   }
 
+  // 3. Fallback to active current deployment URL
   return CURRENT_DEPLOYMENT_DOMAIN;
 };
 
@@ -46,4 +52,3 @@ export const getCanonicalUrl = (path = '') => {
   const pathWithoutQuery = cleanPath.split('?')[0].split('#')[0];
   return `${base}${pathWithoutQuery}`;
 };
-

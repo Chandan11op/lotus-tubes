@@ -96,7 +96,7 @@ export const Product360Viewer = ({
     const container = containerRef.current;
     if (!video || !container) return;
 
-    const duration = video.duration || 3.0;
+    const duration = video.duration || 8.0;
     const width = container.clientWidth || 600;
     const deltaX = clientX - dragStartX.current;
 

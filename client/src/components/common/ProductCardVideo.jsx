@@ -15,7 +15,7 @@ export const ProductCardVideo = ({
   alt = 'Sanitary Stainless Steel Component',
   categorySlug,
   className = 'product-card__img',
-  has360 = true
+  has360 = false
 }) => {
   const videoRef = useRef(null);
   const [videoFailed, setVideoFailed] = useState(!video);
@@ -99,14 +99,6 @@ export const ProductCardVideo = ({
           loading="lazy"
           onError={handleImageError}
         />
-        {has360 && (
-          <span className="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-sm text-cyan-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-cyan-500/30 shadow-sm flex items-center gap-1 z-10 pointer-events-none tracking-wide">
-            <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-            </svg>
-            360°
-          </span>
-        )}
       </div>
     );
   }
@@ -140,16 +132,6 @@ export const ProductCardVideo = ({
           onError={handleImageError}
         />
       </video>
-
-      {/* Floating 360° indicator badge */}
-      {has360 && (
-        <span className="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-sm text-cyan-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-cyan-500/30 shadow-sm flex items-center gap-1 z-10 pointer-events-none tracking-wide">
-          <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-          </svg>
-          360°
-        </span>
-      )}
     </div>
   );
 };

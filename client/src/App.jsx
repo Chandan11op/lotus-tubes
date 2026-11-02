@@ -194,7 +194,8 @@ export const App = () => {
       description,
       path: route === 'home' ? '/' : `/${route}${param ? `/${param}` : ''}`,
       productData,
-      breadcrumbs
+      breadcrumbs,
+      noindex: route === 'crm' || route === 'account'
     });
   }, [route, param]);
 
