@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
+import { Loader } from '../../../components/common/Loader';
 
 export const CRMEnquiriesView = ({
   enquiries = [],
   searchQuery = '',
+  loading = false,
   onSelectEnquiry,
   onStatusChange,
   onOpenQuoteBuilder,
@@ -160,7 +162,15 @@ export const CRMEnquiriesView = ({
         </div>
 
         <div className="crm-card__body" style={{ padding: 0 }}>
-          {filteredEnquiries.length === 0 ? (
+          {loading ? (
+            <div style={{ padding: '16px' }}>
+              <Loader
+                variant="skeleton-table"
+                rows={6}
+                label="Retrieving inbound enquiries and RFQs..."
+              />
+            </div>
+          ) : filteredEnquiries.length === 0 ? (
             <div className="crm-empty-state" style={{ padding: '48px 24px' }}>
               <CRMIcon name="enquiries" size={40} className="empty-icon" />
               <h4>No enquiries matching current filters</h4>

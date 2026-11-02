@@ -19,6 +19,7 @@ export const CRMHeader = ({
     customers: 'Customer Directory & Accounts',
     tasks: 'Sales Tasks & Action Reminders',
     products: 'Sanitary Product Catalogue',
+    videos: 'Product Videos & Interactive 360° Studio',
     staff: 'Authorized Staff & RBAC',
     reports: 'Sales Analytics & Market Reports'
   };

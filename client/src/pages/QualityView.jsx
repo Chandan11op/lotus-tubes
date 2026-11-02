@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { apiService } from '../services/api';
 import PageHero from '../components/common/PageHero';
+import { Loader } from '../components/common/Loader';
 
 export const QualityView = () => {
   const [formData, setFormData] = useState({
@@ -223,7 +224,11 @@ export const QualityView = () => {
               className="btn btn--primary btn--lg"
               disabled={status.state === 'submitting'}
             >
-              {status.state === 'submitting' ? 'Submitting...' : 'Submit Technical Request →'}
+              {status.state === 'submitting' ? (
+                <Loader variant="button" size="sm" color="#FFFFFF" label="Submitting Technical Request..." />
+              ) : (
+                'Submit Technical Request →'
+              )}
             </button>
           </form>
         </div>

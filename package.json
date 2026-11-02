@@ -1,11 +1,14 @@
 {
   "name": "lotus-tubes",
   "version": "1.0.0",
+  "type": "module",
   "description": "Lotus Tubes Web Application",
   "main": "server/src/server.js",
   "scripts": {
     "start": "npm run server:start",
     "dev": "npm run server:dev",
+    "videos:generate": "node scripts/generate-product-videos.js --all",
+    "videos:force": "node scripts/generate-product-videos.js --all --force",
     "client:dev": "npm --prefix client run dev",
     "client:build": "npm --prefix client run build",
     "client:preview": "npm --prefix client run preview",
@@ -15,5 +18,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ffmpeg-static": "^5.3.0"
+  }
 }

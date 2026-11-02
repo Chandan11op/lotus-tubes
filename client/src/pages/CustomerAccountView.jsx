@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import apiService from '../services/api';
+import { Loader } from '../components/common/Loader';
 
 export const CustomerAccountView = ({ onNotify }) => {
   const { user, logout } = useAuth();
@@ -96,8 +97,12 @@ export const CustomerAccountView = ({ onNotify }) => {
           </div>
 
           {loading ? (
-            <div style={{ padding: '36px', textAlign: 'center', color: '#667085' }}>
-              Loading your quotation records...
+            <div style={{ padding: '16px' }}>
+              <Loader
+                variant="skeleton-table"
+                rows={4}
+                label="Retrieving your submitted quotation requests..."
+              />
             </div>
           ) : allItems.length > 0 ? (
             <div style={{ overflowX: 'auto' }}>

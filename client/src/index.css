@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./components/common/loader.css";
 
 /* Profile outline icon hover transition (250ms pink transition) */
 .nav-profile-btn {

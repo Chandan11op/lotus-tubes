@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
+import { Loader } from '../../../components/common/Loader';
 
 export const CRMQuotationsView = ({
   quotations = [],
   searchQuery = '',
+  loading = false,
   user,
   isSuperAdmin = false,
   onSelectQuote,
@@ -188,7 +190,15 @@ export const CRMQuotationsView = ({
         </div>
 
         <div className="crm-card__body" style={{ padding: 0 }}>
-          {filteredQuotes.length === 0 ? (
+          {loading ? (
+            <div style={{ padding: '16px' }}>
+              <Loader
+                variant="skeleton-table"
+                rows={6}
+                label="Retrieving formal quotations and commercial BOQ records..."
+              />
+            </div>
+          ) : filteredQuotes.length === 0 ? (
             <div className="crm-empty-state" style={{ padding: '48px 24px' }}>
               <CRMIcon name="quotations" size={40} className="empty-icon" />
               <h4>No quotations found in this view</h4>

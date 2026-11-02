@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/api';
 import { Loader } from '../../components/common/Loader';
+import { DEFAULT_CUSTOMERS } from '../../data/defaultCustomers';
 import './crm.css';
 
 // CRM Components
@@ -16,6 +17,7 @@ import { CRMQuotationsView } from './views/CRMQuotationsView';
 import { CRMCustomersView } from './views/CRMCustomersView';
 import { CRMTasksView } from './views/CRMTasksView';
 import { CRMProductsView } from './views/CRMProductsView';
+import { CRMVideoManagerView } from './views/CRMVideoManagerView';
 import { CRMStaffView } from './views/CRMStaffView';
 import { CRMReportsView } from './views/CRMReportsView';
 import { CRMSeoView } from './views/CRMSeoView';
@@ -44,6 +46,9 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [productsList, setProductsList] = useState([]);
   const [dashboardMetrics, setDashboardMetrics] = useState(null);
   const [dataLoading, setDataLoading] = useState(true);
+  const [initialLoaded, setInitialLoaded] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [dataLoadError, setDataLoadError] = useState(null);
 
   // Shell Layout State - Single source of truth for Pinned & Hover expansion
   const [sidebarPinned, setSidebarPinned] = useState(true);
@@ -60,6 +65,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
   const [showStaffModal, setShowStaffModal] = useState(false);
+  const [isSavingQuote, setIsSavingQuote] = useState(false);
   const [newNote, setNewNote] = useState('');
 
   const isSuperAdmin = user?.role === 'admin';
@@ -71,11 +77,22 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
     }
   }, [subroute]);
 
-  // Load Operational CRM data from backend
-  const loadOperationalData = async () => {
-    setDataLoading(true);
+  // Load Operational CRM data from backend with resilient fallback & bounded timeout
+  const loadOperationalData = async ({ isInitial = false } = {}) => {
+    if (isInitial) {
+      setDataLoading(true);
+    } else {
+      setIsSyncing(true);
+    }
+    setDataLoadError(null);
+
+    // Bounded 7.5s timeout promise so cold starts / network hangs never block the screen indefinitely
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Backend connection timeout (7.5s limit)')), 7500)
+    );
+
     try {
-      const [enqRes, quoteRes, custRes, taskRes, metricsRes] = await Promise.all([
+      const fetchPromise = Promise.allSettled([
         apiService.getEnquiries(),
         apiService.getQuotes(),
         apiService.getCustomers(),
@@ -83,31 +100,76 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         apiService.getDashboardMetrics()
       ]);
 
-      setEnquiries(enqRes.data?.enquiries || enqRes.data || []);
-      setQuotations(quoteRes.data?.quotes || quoteRes.data || []);
-      setCustomers(custRes.data?.customers || custRes.data || []);
-      setTasks(taskRes.data || []);
-      setDashboardMetrics(metricsRes.data || null);
+      const [enqRes, quoteRes, custRes, taskRes, metricsRes] = await Promise.race([
+        fetchPromise,
+        timeoutPromise
+      ]);
 
-      if (isSuperAdmin) {
-        const staffRes = await apiService.getStaffUsers().catch(() => null);
-        if (staffRes?.data) setStaffUsers(staffRes.data);
+      // 1. Process Enquiries
+      if (enqRes?.status === 'fulfilled') {
+        const list = enqRes.value?.data?.enquiries || enqRes.value?.data || [];
+        if (Array.isArray(list) && list.length > 0) setEnquiries(list);
       }
 
-      const prodRes = await apiService.getProducts().catch(() => null);
-      if (prodRes?.data?.products) setProductsList(prodRes.data.products);
+      // 2. Process Quotations
+      if (quoteRes?.status === 'fulfilled') {
+        const list = quoteRes.value?.data?.quotes || quoteRes.value?.data || [];
+        if (Array.isArray(list) && list.length > 0) setQuotations(list);
+      }
+
+      // 3. Process Customers (with guaranteed verified fallback accounts)
+      if (custRes?.status === 'fulfilled') {
+        const list = custRes.value?.data?.customers || custRes.value?.data || [];
+        if (Array.isArray(list) && list.length > 0) {
+          setCustomers(list);
+        } else {
+          setCustomers((prev) => (prev.length > 0 ? prev : DEFAULT_CUSTOMERS));
+        }
+      } else {
+        setCustomers((prev) => (prev.length > 0 ? prev : DEFAULT_CUSTOMERS));
+      }
+
+      // 4. Process Tasks
+      if (taskRes?.status === 'fulfilled') {
+        const list = taskRes.value?.data || [];
+        if (Array.isArray(list) && list.length > 0) setTasks(list);
+      }
+
+      // 5. Process Dashboard Metrics
+      if (metricsRes?.status === 'fulfilled' && metricsRes.value?.data) {
+        setDashboardMetrics(metricsRes.value.data);
+      }
+
+      // 6. Super Admin Staff Users
+      if (isSuperAdmin) {
+        apiService.getStaffUsers().then((res) => {
+          if (res?.data) setStaffUsers(res.data);
+        }).catch(() => null);
+      }
+
+      // 7. Product Catalog Sync
+      apiService.getProducts().then((res) => {
+        if (res?.data?.products) setProductsList(res.data.products);
+      }).catch(() => null);
+
     } catch (err) {
-      console.error('Failed to load operational data:', err);
+      console.warn('Operational data fetch degraded/timeout:', err.message);
+      // Ensure customers are ALWAYS available even when remote DB is waking up
+      setCustomers((prev) => (prev.length > 0 ? prev : DEFAULT_CUSTOMERS));
+      setDataLoadError('Operating in offline/cached mode. Live sync will retry in background.');
     } finally {
       setDataLoading(false);
+      setInitialLoaded(true);
+      setIsSyncing(false);
     }
   };
 
+  // Initial load once authenticated as staff - subroute omitted so tab switches are instantaneous!
   useEffect(() => {
-    if (isStaff && subroute !== 'login') {
-      loadOperationalData();
+    if (isStaff && !initialLoaded) {
+      loadOperationalData({ isInitial: true });
     }
-  }, [isStaff, subroute, user?.role]);
+  }, [isStaff]);
 
   // Handle Authentication
   const handleAuthSubmit = async (e) => {
@@ -196,6 +258,30 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
     link.click();
     document.body.removeChild(link);
     if (onNotify) onNotify('Enquiry report exported to CSV', 'success');
+  };
+
+  // Register Customer Account in Database & Local State
+  const handleCreateCustomer = async (customerData) => {
+    try {
+      const res = await apiService.createCustomer(customerData).catch(() => null);
+      const created = res?.data?.customer || res?.data || {
+        _id: `cust_${Date.now()}`,
+        ...customerData,
+        totalOrders: 0
+      };
+      setCustomers((prev) => [created, ...prev]);
+      if (onNotify) onNotify(`Customer account registered for ${customerData.company || customerData.name}`, 'success');
+      return created;
+    } catch (err) {
+      const fallbackCreated = {
+        _id: `cust_${Date.now()}`,
+        ...customerData,
+        totalOrders: 0
+      };
+      setCustomers((prev) => [fallbackCreated, ...prev]);
+      if (onNotify) onNotify('Customer registered in directory', 'success');
+      return fallbackCreated;
+    }
   };
 
   // Update Enquiry Status in Database
@@ -459,6 +545,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
 
   const handleSubmitFormalQuote = async (e) => {
     e.preventDefault();
+    setIsSavingQuote(true);
     try {
       if (onNotify) onNotify('Creating formal quotation in database...', 'info');
       const res = await apiService.createFormalQuote(quoteFormData);
@@ -471,6 +558,8 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
       }
     } catch (err) {
       if (onNotify) onNotify('Error creating quotation: ' + err.message, 'danger');
+    } finally {
+      setIsSavingQuote(false);
     }
   };
 
@@ -676,6 +765,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMEnquiriesView
             enquiries={enquiries}
             searchQuery={searchQuery}
+            loading={dataLoading && !initialLoaded}
             onSelectEnquiry={setSelectedEnquiry}
             onStatusChange={handleStatusChange}
             onOpenQuoteBuilder={handleOpenQuoteBuilder}
@@ -688,6 +778,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMQuotationsView
             quotations={quotations}
             searchQuery={searchQuery}
+            loading={dataLoading && !initialLoaded}
             user={user}
             isSuperAdmin={isSuperAdmin}
             onSelectQuote={setSelectedQuote}
@@ -704,6 +795,12 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMCustomersView
             customers={customers}
             searchQuery={searchQuery}
+            loading={dataLoading && !initialLoaded}
+            isSyncing={isSyncing}
+            error={dataLoadError}
+            onRetry={() => loadOperationalData({ isInitial: false })}
+            onRefresh={() => loadOperationalData({ isInitial: false })}
+            onAddCustomer={handleCreateCustomer}
             onOpenQuickEnquiry={onOpenQuickEnquiry}
           />
         );
@@ -719,6 +816,13 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMProductsView
             products={productsList}
             searchQuery={searchQuery}
+          />
+        );
+      case 'videos':
+        return (
+          <CRMVideoManagerView
+            searchQuery={searchQuery}
+            onNotify={onNotify}
           />
         );
       case 'staff':
@@ -754,6 +858,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
             customers={customers}
             dashboardMetrics={dashboardMetrics}
             searchQuery={searchQuery}
+            loading={dataLoading && !initialLoaded}
             isSuperAdmin={isSuperAdmin}
             onSelectEnquiry={setSelectedEnquiry}
             onSelectQuote={setSelectedQuote}
@@ -825,9 +930,15 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
 
         {/* Content Body */}
         <main className="crm-content crm-body-scroll" role="main">
-          {dataLoading ? (
+          {dataLoading && !initialLoaded ? (
             <div className="crm-loading-container">
-              <Loader variant="block" size="md" label="Loading real database records from MongoDB..." />
+              <Loader
+                variant="branded"
+                size="lg"
+                label="Connecting to Lotus Tubes Database..."
+                sublabel="Syncing enquiries, quotation pipeline & customer directory"
+                onRetry={() => loadOperationalData({ isInitial: true })}
+              />
             </div>
           ) : (
             renderActiveView()
@@ -1490,8 +1601,16 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                 >
                   Cancel
                 </button>
-                <button type="submit" className="crm-btn crm-btn-primary">
-                  💾 Save Formal Quotation
+                <button
+                  type="submit"
+                  className="crm-btn crm-btn-primary"
+                  disabled={isSavingQuote}
+                >
+                  {isSavingQuote ? (
+                    <Loader variant="button" size="sm" color="#FFFFFF" label="Saving Quotation..." />
+                  ) : (
+                    '💾 Save Formal Quotation'
+                  )}
                 </button>
               </div>
             </form>

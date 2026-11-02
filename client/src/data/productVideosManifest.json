@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-11-02T10:16:08.441Z",
+  "totalProducts": 30,
+  "products": {
+    "ss-316l-ep-pipe": {
+      "id": "ss-316l-ep-pipe",
+      "name": "SS 316L Electro Polished (EP) Sanitary Pipe",
+      "category": "Sanitary Pipes & Tubes",
+      "categorySlug": "sanitary-pipes",
+      "has360": true,
+      "video360": "/assets/videos/products/ss-316l-ep-pipe/360.mp4",
+      "video360Webm": "/assets/videos/products/ss-316l-ep-pipe/360.webm",
+      "videoShowcase": "/assets/videos/products/ss-316l-ep-pipe/showcase.mp4",
+      "poster": "/assets/videos/products/ss-316l-ep-pipe/poster.webp",
+      "status": "completed",
+      "mode": "multi-angle-frames",
+      "frameCount": 12,
+      "sizeBytes": 338667,
+      "lastGenerated": "2026-11-02T10:16:08.441Z"
+    }
+  },
+  "completedCount": 1,
+  "failedCount": 0
+}

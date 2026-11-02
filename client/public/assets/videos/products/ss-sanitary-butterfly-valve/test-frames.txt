@@ -1,0 +1,23 @@
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-002.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-003.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-004.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-005.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-006.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-007.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-008.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-009.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-010.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-011.jpg'
+duration 0.22
+file 'E:/Developments/Clients/Chirag Shah/lotus-tubes/client/public/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg'

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CRMIcon } from './CRMIcon';
+import { Loader } from '../../../components/common/Loader';
 
 export const NewStaffModal = ({ isOpen, onClose, onStaffCreated }) => {
   const [formData, setFormData] = useState({
@@ -307,7 +308,11 @@ export const NewStaffModal = ({ isOpen, onClose, onStaffCreated }) => {
               disabled={loading}
               style={{ minWidth: '160px' }}
             >
-              {loading ? 'Appointing...' : '+ Confirm Appointment'}
+              {loading ? (
+                <Loader variant="button" size="sm" color="#FFFFFF" label="Appointing Staff..." />
+              ) : (
+                '+ Confirm Appointment'
+              )}
             </button>
           </div>
         </form>

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
+import { Loader } from '../../../components/common/Loader';
 import { runSEOAudit, CANONICAL_ORIGIN, GOOGLE_VERIFICATION_FILE } from '../../../utils/seoAudit';
 
 export const CRMDashboardView = ({
@@ -9,6 +10,7 @@ export const CRMDashboardView = ({
   customers = [],
   dashboardMetrics = null,
   searchQuery = '',
+  loading = false,
   isSuperAdmin = false,
   onSelectEnquiry,
   onSelectQuote,
@@ -194,7 +196,10 @@ export const CRMDashboardView = ({
       </div>
 
       {/* Primary Actionable KPI Grid */}
-      <div className="crm-kpi-grid">
+      {loading ? (
+        <Loader variant="skeleton-kpi" label="Loading real-time operational metrics..." />
+      ) : (
+        <div className="crm-kpi-grid">
         {/* KPI 1: Inbound Leads */}
         <div
           className="crm-kpi-card"
@@ -295,6 +300,7 @@ export const CRMDashboardView = ({
           </div>
         </div>
       </div>
+      )}
 
       {/* Super Admin SEO Optimization & Search Console Health Banner */}
       {isSuperAdmin && (

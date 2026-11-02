@@ -12,6 +12,7 @@ import VideoModal from './components/modals/VideoModal';
 import Toast from './components/common/Toast';
 import ScrollToTop from './components/common/ScrollToTop';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import { RouteProgressBar } from './components/common/Loader';
 
 // Page Views
 import HomeView from './pages/HomeView';
@@ -63,6 +64,7 @@ export const App = () => {
   };
 
   const [currentLoc, setCurrentLoc] = useState(parseCurrentLocation);
+  const [isNavigating, setIsNavigating] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -70,9 +72,15 @@ export const App = () => {
   const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
+    let navTimer = null;
     const handleLocationChange = () => {
+      setIsNavigating(true);
       setCurrentLoc(parseCurrentLocation());
       window.scrollTo(0, 0);
+      if (navTimer) clearTimeout(navTimer);
+      navTimer = setTimeout(() => {
+        setIsNavigating(false);
+      }, 350);
     };
 
     const handleLinkClick = (e) => {
@@ -220,6 +228,8 @@ export const App = () => {
   return (
     <LanguageProvider>
       <div id="app" className="app-root">
+        {/* Top Viewport Route Transition Indicator */}
+        <RouteProgressBar isNavigating={isNavigating} />
         {isCRM ? (
           <CRMView
             subroute={param || 'dashboard'}

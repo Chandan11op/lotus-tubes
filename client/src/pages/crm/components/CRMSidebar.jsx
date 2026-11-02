@@ -37,7 +37,8 @@ export const CRMSidebar = ({
     {
       title: 'CATALOGUE & SPECS',
       items: [
-        { id: 'products', label: 'Product Administration', icon: 'products', badge: null }
+        { id: 'products', label: 'Product Administration', icon: 'products', badge: null },
+        { id: 'videos', label: '360° Studio & Videos', icon: 'reports', badge: { count: '360°', color: 'blue' } }
       ]
     },
     {
