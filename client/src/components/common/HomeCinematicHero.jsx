@@ -3,26 +3,26 @@ import { useLanguage } from '../../context/LanguageContext';
 
 /**
  * HomeCinematicHero
- * Premium industrial product showcase featuring 8-second 16:9 360° product rotation videos
- * across the four core product subsections:
+ * Premium full-bleed cinematic hero inspired by Hex India Fasteners, featuring
+ * 360° product rotation videos as the dynamic background visual across the four core subsections:
  * 1. Sanitary Pipes & Tubes
  * 2. Sanitary Butterfly Valves
  * 3. Tri-Clamp Components
  * 4. Pneumatic Ball Valves
  *
- * Synchronized with:
- * - Frame-accurate 8.0-second auto-transitions
- * - Interactive subsection tabs with live progress fill bars
- * - 4-segment industrial scrollbar/progress track
- * - Pause on hover/interaction, mobile touch swipe, keyboard navigation
- * - Preloading of next video and IntersectionObserver for viewport pause
+ * Capabilities:
+ * - Full-width background video with smooth crossfade between products
+ * - Left and right vertically centered side navigation buttons (< and >)
+ * - Automatic 8.0-second auto-swipe transitions
+ * - Clean bottom tab pills with subtle progress bars (NO running seconds, NO 01/04 numbers)
+ * - Razor-sharp text contrast with multi-tier cinematic dark overlays
+ * - Pause on hover, mobile touch swipe, and keyboard navigation
  */
 export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t } = useLanguage();
   const [activeSlide, setActiveSlide] = useState(0);
   const [progress, setProgress] = useState(0); // 0 to 100%
   const [isPaused, setIsPaused] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const videoPlayerRef = useRef(null);
@@ -30,78 +30,68 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
   const touchStartXRef = useRef(0);
   const touchEndXRef = useRef(0);
 
-  // The 4 core homepage product subsections with verified 8-second 16:9 360° rotation videos
+  // The 4 core homepage product subsections with real industrial factory manufacturing videos
   const slides = [
     {
       id: 'pipes',
       tabLabel: 'Sanitary Pipes & Tubes',
       category: 'Sanitary Pipes & Tubes',
-      badge: 'ASTM A270 & ASME BPE Certified',
-      titleHighlight: 'Pipes & Tubing',
-      desc: 'Seamless & welded SS 304/316L sanitary tubes featuring mirror electropolished contact surfaces (Ra ≤ 0.38 µm) engineered for critical pharmaceutical WFI loops and biotech processing.',
-      specPill: 'ASTM A270 • Ra ≤ 0.38 µm EP • 1/2" to 4" Ready Stock',
-      mediaType: 'video',
+      badge: 'Automated Factory Fabrication • ASTM A270 & ASME BPE',
+      titleHighlight: 'Precision Roll-Forming & Orbital Laser Welding',
+      desc: 'Manufactured on continuous automated tube rolling mills with clean-bore TIG/laser orbital welding, multi-pass cold drawing, and specialized mirror electropolishing baths achieving certified Ra ≤ 0.38 µm for critical biopharma and WFI loops.',
+      specPill: 'TIG / Laser Welded • Ra ≤ 0.38 µm EP • 100% Eddy Current Tested',
       productId: 'ss-316l-ep-pipe',
-      videoSrc: '/assets/videos/homepage/sanitary-pipes-360.mp4',
-      videoSrcWebm: '/assets/videos/homepage/sanitary-pipes-360.webm',
-      poster: '/assets/videos/homepage/sanitary-pipes-360-poster.webp',
-      material: 'SS 316L / SS 304',
+      videoSrc: '/assets/videos/homepage/sanitary-pipes-factory.mp4',
+      videoSrcWebm: '/assets/videos/homepage/sanitary-pipes-factory.webm',
+      poster: '/assets/videos/homepage/sanitary-pipes-factory-poster.webp',
       primaryProduct: 'ss-316l-ep-pipe'
     },
     {
       id: 'butterfly-valve',
       tabLabel: 'Sanitary Butterfly Valves',
       category: 'Manual Sanitary Valves',
-      badge: 'Hygienic Flow Precision',
-      titleHighlight: 'Sanitary Butterfly Valves',
-      desc: 'Precision forged SS 316L butterfly valves with streamlined mirror disc and FDA food-grade silicone/EPDM seals, delivering full bidirectional leak-tight shutoff with low operating torque.',
-      specPill: '10 Bar Rated • Ra ≤ 0.4 µm • Tri-Clamp & Weld Ends',
-      mediaType: 'video',
+      badge: 'Precision CNC Machining & Zero-Leak Testing',
+      titleHighlight: 'Forged SS 316L Valve Body & Mirror Disc Machining',
+      desc: 'High-precision 5-axis CNC machining of solid forged SS 316L valve bodies, featuring hydro-formed mirror discs and robotic silicone/EPDM seal insertion. Every valve undergoes 10-bar hydrostatic and bubble-tight pneumatic seat testing before dispatch.',
+      specPill: '5-Axis CNC Forged • 10 Bar Pressure Tested • FDA Food-Grade Seals',
       productId: 'ss-sanitary-butterfly-valve',
-      videoSrc: '/assets/videos/homepage/butterfly-valves-360.mp4',
-      videoSrcWebm: '/assets/videos/homepage/butterfly-valves-360.webm',
-      poster: '/assets/videos/homepage/butterfly-valves-360-poster.webp',
-      material: 'SS 316L Mirror EP',
+      videoSrc: '/assets/videos/homepage/butterfly-valves-factory.mp4',
+      videoSrcWebm: '/assets/videos/homepage/butterfly-valves-factory.webm',
+      poster: '/assets/videos/homepage/butterfly-valves-factory-poster.webp',
       primaryProduct: 'ss-sanitary-butterfly-valve'
     },
     {
       id: 'clamp-holder',
       tabLabel: 'Tri-Clamp Components',
       category: 'Tri-Clamp Fittings & Components',
-      badge: 'High-Integrity Joint Closure',
-      titleHighlight: 'Heavy Duty Tri-Clamps',
-      desc: 'Investment cast SS 304 heavy-duty Tri-Clamps and pipe hangers engineered to exert uniform circumferential compression across gasket faces for leak-free, tool-free joint closure.',
-      specPill: 'Single & Double Pin • 1/2" to 8" • 14° Flange Taper',
-      mediaType: 'video',
+      badge: 'Robotic Mirror Buffing & Investment Casting',
+      titleHighlight: 'Precision Cast Heavy-Duty 13MHH Clamps & Ferrules',
+      desc: 'Investment cast in virgin SS 304/316 alloy, multi-station automated robotic buffing produces flawless exterior mirror finishes, while CNC-machined ferrule weld prep bevels ensure 100% concentric alignment and uniform gasket compression across hygienic joints.',
+      specPill: 'Robotic Mirror Polished • 14° Flange Bevel • True-Round Concentricity',
       productId: 'ss-tri-clamp-clamp',
-      videoSrc: '/assets/videos/homepage/tri-clamp-360.mp4',
-      videoSrcWebm: '/assets/videos/homepage/tri-clamp-360.webm',
-      poster: '/assets/videos/homepage/tri-clamp-360-poster.webp',
-      material: 'SS 304 Investment Cast',
+      videoSrc: '/assets/videos/homepage/tri-clamp-factory.mp4',
+      videoSrcWebm: '/assets/videos/homepage/tri-clamp-factory.webm',
+      poster: '/assets/videos/homepage/tri-clamp-factory-poster.webp',
       primaryProduct: 'ss-tri-clamp-clamp'
     },
     {
       id: 'pneumatic-valve',
       tabLabel: 'Pneumatic Ball Valves',
       category: 'Automated & Pneumatic Valves',
-      badge: 'Automated Process Skids',
-      titleHighlight: 'Pneumatic Ball Valves',
-      desc: 'Full-bore sanitary ball valves with encapsulated cavity-filled PTFE seats and double-acting ISO 5211 pneumatic actuators for automated CIP/SIP hygienic processing skids.',
-      specPill: 'ISO 5211 Direct Mount • Cavity Filled • High Cycle Life',
-      mediaType: 'video',
+      badge: 'Cleanroom Automation & Multi-Cycle Calibration',
+      titleHighlight: 'Actuated Process Valves & Pneumatic Bench Testing',
+      desc: 'Engineered with fully encapsulated cavity-filled PTFE seats and double-acting ISO 5211 pneumatic actuators. Calibrated on automated pneumatic test benches with digital cycle endurance counters and NAMUR limit switch feedback for automated processing skids.',
+      specPill: 'ISO 5211 Direct Mount • Cavity-Filled PTFE • 100,000 Cycle Tested',
       productId: 'pneumatic-sanitary-ball-valve',
-      videoSrc: '/assets/videos/homepage/pneumatic-valves-360.mp4',
-      videoSrcWebm: '/assets/videos/homepage/pneumatic-valves-360.webm',
-      poster: '/assets/videos/homepage/pneumatic-valves-360-poster.webp',
-      material: 'SS 316L Actuated',
+      videoSrc: '/assets/videos/homepage/pneumatic-valves-factory.mp4',
+      videoSrcWebm: '/assets/videos/homepage/pneumatic-valves-factory.webm',
+      poster: '/assets/videos/homepage/pneumatic-valves-factory-poster.webp',
       primaryProduct: 'pneumatic-sanitary-ball-valve'
     }
   ];
 
   const total = slides.length;
   const current = slides[activeSlide];
-  const nextSlideIdx = (activeSlide + 1) % total;
-  const nextSlide = slides[nextSlideIdx];
 
   // Navigate to slide with smooth transition
   const goToSlide = useCallback((newIdx) => {
@@ -121,7 +111,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
     goToSlide((activeSlide - 1 + total) % total);
   }, [activeSlide, total, goToSlide]);
 
-  // Master 8-Second Synchronized Progression Timer
+  // Master 8-Second Progression Timer
   const DURATION_MS = 8000;
   const STEP_MS = 50;
 
@@ -142,23 +132,22 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
     return () => clearInterval(interval);
   }, [isPaused, handleNext]);
 
-  // Reset video playback and start cleanly whenever activeSlide changes
+  // Reset video playback cleanly whenever activeSlide changes
   useEffect(() => {
     const video = videoPlayerRef.current;
     if (video) {
       video.currentTime = 0;
-      video.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+      video.play().catch(() => {});
     }
     setProgress(0);
   }, [activeSlide]);
 
-  // Sync progress directly from video time for frame-perfect alignment
+  // Sync progress directly from video time for alignment
   const handleTimeUpdate = (e) => {
     if (isPaused) return;
     const v = e.currentTarget;
     if (v.duration > 0) {
       const syncPercent = (v.currentTime / v.duration) * 100;
-      // Keep state smoothly synchronized without jerky jumps
       if (Math.abs(syncPercent - progress) > 4) {
         setProgress(syncPercent);
       }
@@ -168,22 +157,6 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
   const handleVideoEnded = () => {
     if (!isPaused) {
       handleNext();
-    }
-  };
-
-  // Toggle video play/pause manually
-  const toggleVideo = () => {
-    const video = videoPlayerRef.current;
-    if (!video) return;
-    if (video.paused) {
-      video.play().then(() => {
-        setIsVideoPlaying(true);
-        setIsPaused(false);
-      }).catch(() => {});
-    } else {
-      video.pause();
-      setIsVideoPlaying(false);
-      setIsPaused(true);
     }
   };
 
@@ -244,33 +217,195 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
     touchEndXRef.current = 0;
   };
 
-  const currentSeconds = Math.min(8, Math.max(0, (progress / 100) * 8)).toFixed(1);
-
   return (
     <section
       ref={sectionRef}
-      className="relative w-full bg-slate-950 text-white overflow-hidden border-b border-slate-800 shadow-2xl"
-      aria-label="Lotus Tubes Cinematic Hero Showcase"
+      className="relative w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] flex items-center bg-slate-950 text-white overflow-hidden select-none border-b border-slate-800 shadow-2xl"
+      aria-label="Lotus Tubes Cinematic Product Showcase"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Background Lighting & Radial Accents */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-sky-600/15 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950" />
+      {/* ========================================================================= */}
+      {/* FULL-BLEED BACKGROUND ROTATING VIDEO STAGE WITH SMOOTH CROSSFADE          */}
+      {/* ========================================================================= */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {slides.map((s, idx) => {
+          const isCurrent = activeSlide === idx;
+          return (
+            <div
+              key={s.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                isCurrent ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              }`}
+            >
+              <video
+                ref={isCurrent ? videoPlayerRef : null}
+                key={s.videoSrcWebm}
+                poster={s.poster}
+                autoPlay={isCurrent}
+                muted
+                loop
+                playsInline
+                preload={isCurrent ? 'auto' : 'none'}
+                onTimeUpdate={isCurrent ? handleTimeUpdate : undefined}
+                onEnded={isCurrent ? handleVideoEnded : undefined}
+                className={`w-full h-full object-cover md:object-cover md:object-right transition-transform duration-7000 ease-out ${
+                  isCurrent ? 'scale-105' : 'scale-100'
+                }`}
+                aria-label={`${s.titleHighlight} 360 Product Video`}
+              >
+                <source src={s.videoSrcWebm} type="video/webm" />
+                <source src={s.videoSrc} type="video/mp4" />
+                <img src={s.poster} alt={s.titleHighlight} className="w-full h-full object-cover" />
+              </video>
+            </div>
+          );
+        })}
+
+        {/* Cinematic Multi-Tier Gradient Overlays for High-Contrast Text Legibility */}
+        {/* Left-to-right dark wash so text is crisp on the left while 360 video shines on the right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 sm:via-slate-950/75 to-slate-950/25 z-10" />
+        {/* Top and bottom subtle vignettes */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/60 z-10" />
+        {/* Subtle radial lighting accent */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-sky-500/10 via-transparent to-transparent z-10 pointer-events-none" />
       </div>
 
-      <div className="site-container relative z-10 py-10 sm:py-14 lg:py-18">
-        
-        {/* ========================================================================= */}
-        {/* TOP: 4 SUBSECTION TABS WITH SYNCHRONIZED PROGRESS FILL BARS               */}
-        {/* ========================================================================= */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-slate-800/80">
-          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto">
+      {/* ========================================================================= */}
+      {/* SIDE NAVIGATION BUTTONS (LEFT & RIGHT) — INSPIRED BY HEX INDIA FASTENERS   */}
+      {/* ========================================================================= */}
+      {/* Left Navigation Chevron Button */}
+      <button
+        type="button"
+        onClick={handlePrev}
+        className="absolute left-3 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-slate-900/60 hover:bg-sky-600 text-white backdrop-blur-md border border-white/20 hover:border-sky-400 shadow-2xl transition-all duration-300 flex items-center justify-center cursor-pointer group"
+        aria-label="Previous product slide"
+        title="Previous Product"
+      >
+        <svg className="w-5 h-5 transition-transform group-hover:-translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      {/* Right Navigation Chevron Button */}
+      <button
+        type="button"
+        onClick={handleNext}
+        className="absolute right-3 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-slate-900/60 hover:bg-sky-600 text-white backdrop-blur-md border border-white/20 hover:border-sky-400 shadow-2xl transition-all duration-300 flex items-center justify-center cursor-pointer group"
+        aria-label="Next product slide"
+        title="Next Product"
+      >
+        <svg className="w-5 h-5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      {/* ========================================================================= */}
+      {/* FOREGROUND HERO CONTENT: HIGH-IMPACT TYPOGRAPHY & TECHNICAL CALL-TO-ACTIONS */}
+      {/* ========================================================================= */}
+      <div className="site-container relative z-20 w-full py-20 sm:py-24 lg:py-28 pl-12 pr-12 sm:pl-16 sm:pr-16 lg:pl-20 lg:pr-20">
+        <div
+          className={`max-w-2xl lg:max-w-3xl transition-all duration-500 ${
+            isTransitioning ? 'opacity-40 translate-x-1' : 'opacity-100 translate-x-0'
+          }`}
+        >
+          {/* Eyebrow Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/85 backdrop-blur-md border border-sky-500/30 text-xs font-semibold tracking-wider text-sky-300 uppercase shadow-lg mb-4">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>{current.badge}</span>
+          </div>
+
+          {/* Primary Semantic H1 for SEO */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-3 font-heading">
+            Stainless Steel Sanitary Pipes, Fittings &amp; Valves
+          </h1>
+
+          {/* Dynamic Product Subheading */}
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-200 to-white tracking-normal mb-4">
+            {current.titleHighlight} &mdash; Engineered for Hygienic Process Applications
+          </h2>
+
+          {/* Dynamic Technical Description */}
+          <p className="text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed mb-8 max-w-xl">
+            {current.desc}
+          </p>
+
+          {/* Primary Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3.5 mb-10">
+            <a
+              href="/products"
+              className="btn btn--primary px-7 py-3.5 text-sm sm:text-base font-bold shadow-xl shadow-sky-500/30 flex items-center gap-2.5 rounded-xl hover:shadow-sky-500/50 transition-all"
+            >
+              <span>{t('btn_explore_products', 'Explore Products')}</span>
+              <span>&rarr;</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => onOpenEnquiry && onOpenEnquiry(current.primaryProduct, current.tabLabel)}
+              className="btn btn--outline px-7 py-3.5 text-sm sm:text-base font-semibold border-white/30 text-white hover:bg-white/10 hover:border-white transition-all rounded-xl cursor-pointer backdrop-blur-sm"
+            >
+              {t('btn_request_quote', 'Request a Quote')}
+            </button>
+
+            <a
+              href="https://wa.me/919820525200?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20sanitary%20stainless%20steel%20products."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-300 bg-emerald-950/60 border border-emerald-700/50 hover:bg-emerald-900/60 transition-colors backdrop-blur-sm"
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>WhatsApp Desk</span>
+            </a>
+          </div>
+
+          {/* 4 Trust & Metallurgy Highlights */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-800/80">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">💎</span>
+              <div className="text-xs">
+                <strong className="text-white block font-semibold">SS 304 / 316L</strong>
+                <span className="text-slate-400">High-Purity Alloy</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">📦</span>
+              <div className="text-xs">
+                <strong className="text-white block font-semibold">Ready Stock</strong>
+                <span className="text-slate-400">24-48h Dispatch</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">📜</span>
+              <div className="text-xs">
+                <strong className="text-white block font-semibold">EN 10204 3.1</strong>
+                <span className="text-slate-400">Full Metallurgy MTC</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">⚡</span>
+              <div className="text-xs">
+                <strong className="text-white block font-semibold">Ra ≤ 0.38 µm</strong>
+                <span className="text-slate-400">Mirror EP Finish</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* BOTTOM SUBSECTION INDICATOR PILLS WITH SYNCHRONIZED PROGRESS BARS         */}
+      {/* (NO running seconds countdown, NO 01/04 numbers — clean, elegant UX)      */}
+      {/* ========================================================================= */}
+      <div className="absolute bottom-5 left-0 right-0 z-20 pointer-events-auto">
+        <div className="site-container flex items-center justify-center sm:justify-start pl-4 sm:pl-16 lg:pl-20">
+          <div className="flex items-center gap-2 sm:gap-2.5 bg-slate-900/85 backdrop-blur-md px-3 py-2 rounded-2xl border border-slate-700/60 shadow-xl overflow-x-auto max-w-full scrollbar-none">
             {slides.map((s, idx) => {
               const isActive = activeSlide === idx;
               return (
@@ -278,28 +413,28 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
                   key={s.id}
                   type="button"
                   onClick={() => goToSlide(idx)}
-                  className={`group relative flex flex-col items-start px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all border text-left cursor-pointer overflow-hidden ${
+                  className={`group relative flex flex-col items-start px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
                     isActive
-                      ? 'bg-sky-500/20 border-sky-400 text-sky-200 shadow-lg shadow-sky-500/10 ring-1 ring-sky-400/40'
-                      : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800/80'
+                      ? 'bg-sky-500/25 border-sky-400 text-sky-200 shadow-md ring-1 ring-sky-400/40'
+                      : 'bg-transparent border-transparent text-slate-400 hover:text-white hover:bg-slate-800/60'
                   }`}
                   aria-selected={isActive}
                   aria-label={`View ${s.tabLabel}`}
                 >
-                  <div className="flex items-center gap-2 w-full">
+                  <div className="flex items-center gap-1.5">
                     <span
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        isActive ? 'bg-cyan-400 animate-pulse ring-2 ring-cyan-400/50' : 'bg-slate-600 group-hover:bg-slate-400'
+                      className={`w-1.5 h-1.5 rounded-full transition-all ${
+                        isActive ? 'bg-cyan-400 animate-pulse' : 'bg-slate-600 group-hover:bg-slate-400'
                       }`}
                     />
                     <span className="truncate">{s.tabLabel}</span>
                   </div>
 
-                  {/* Synchronized 8-Second Progress Fill Bar Under Tab */}
-                  <div className="w-full h-1 bg-slate-800/80 rounded-full mt-2 overflow-hidden">
+                  {/* Clean 8-second progress line under active tab */}
+                  <div className="w-full h-0.5 bg-slate-700/80 rounded-full mt-1.5 overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-75 ${
-                        isActive ? 'bg-gradient-to-r from-sky-400 to-cyan-300' : idx < activeSlide ? 'bg-slate-600' : 'w-0'
+                        isActive ? 'bg-gradient-to-r from-sky-400 to-cyan-300' : idx < activeSlide ? 'bg-slate-500' : 'w-0'
                       }`}
                       style={{
                         width: isActive ? `${progress}%` : idx < activeSlide ? '100%' : '0%'
@@ -310,267 +445,9 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
               );
             })}
           </div>
-
-          {/* Numeric Slide Counter & Status */}
-          <div className="flex items-center justify-between sm:justify-end gap-3 text-xs font-mono font-bold text-slate-400">
-            <div className="inline-flex items-center gap-1.5 bg-slate-900/90 px-3 py-1.5 rounded-md border border-slate-800 shadow-inner">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-slate-300">AUTO 8S</span>
-              <span className="text-cyan-400 font-mono ml-1">{currentSeconds}s</span>
-            </div>
-
-            <div className="flex items-center gap-1.5 bg-slate-900/90 px-3 py-1.5 rounded-md border border-slate-800 shadow-inner">
-              <span className="text-sky-400">0{activeSlide + 1}</span>
-              <span className="text-slate-600">/</span>
-              <span>0{total}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* ========================================================================= */}
-        {/* MAIN HERO SPLIT GRID: COORDINATED TECHNICAL HIERARCHY & 16:9 VIDEO STAGE  */}
-        {/* ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
-          {/* LEFT: Dynamic Technical Hierarchy & Information */}
-          <div
-            className={`lg:col-span-6 flex flex-col justify-center min-w-0 transition-all duration-500 ${
-              isTransitioning ? 'opacity-40 translate-x-1' : 'opacity-100 translate-x-0'
-            }`}
-          >
-            {/* Eyebrow Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 backdrop-blur-md border border-sky-500/30 text-xs font-semibold tracking-wider text-sky-300 uppercase shadow-lg w-fit mb-4">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>{current.badge}</span>
-            </div>
-
-            {/* Main Semantic H1 */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.12] mb-3">
-              Stainless Steel Sanitary Pipes, Fittings &amp; Valves
-            </h1>
-
-            {/* Supporting Subheading */}
-            <h2 className="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-200 to-white tracking-normal mb-4">
-              Engineered for Hygienic Process Applications
-            </h2>
-
-            {/* Slide-specific technical description */}
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl mb-6 min-h-[52px]">
-              {current.desc}
-            </p>
-
-            {/* Primary Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 mb-8">
-              <a
-                href="/products"
-                className="btn btn--primary px-6 py-3 text-sm font-bold shadow-lg shadow-sky-500/25 flex items-center gap-2"
-              >
-                <span>{t('btn_explore_products', 'Explore Products')}</span>
-                <span>&rarr;</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={() => onOpenEnquiry && onOpenEnquiry(current.primaryProduct, current.tabLabel)}
-                className="btn btn--outline px-6 py-3 text-sm font-semibold border-slate-600 text-white hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                {t('btn_request_quote', 'Request a Quote')}
-              </button>
-
-              <a
-                href="https://wa.me/919820525200?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20sanitary%20stainless%20steel%20products."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3.5 py-3 rounded-lg text-xs font-semibold text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 hover:bg-emerald-900/60 transition-colors"
-              >
-                <span>🟢</span>
-                <span>WhatsApp Desk</span>
-              </a>
-            </div>
-
-            {/* 4 Trust & Quality Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-slate-800/80">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">💎</span>
-                <div className="text-xs">
-                  <strong className="text-white block">SS 304 / 316L</strong>
-                  <span className="text-slate-400">High-Purity Alloy</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-lg">📦</span>
-                <div className="text-xs">
-                  <strong className="text-white block">Ready Stock</strong>
-                  <span className="text-slate-400">24-48h Dispatch</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-lg">📜</span>
-                <div className="text-xs">
-                  <strong className="text-white block">EN 10204 3.1</strong>
-                  <span className="text-slate-400">Full Metallurgy MTC</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-lg">⚡</span>
-                <div className="text-xs">
-                  <strong className="text-white block">Ra ≤ 0.38 µm</strong>
-                  <span className="text-slate-400">Mirror EP Finish</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT: 16:9 Landscape 360° Video Showcase Stage */}
-          <div className="lg:col-span-6 min-w-0">
-            <div className="relative w-full rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-[#10263d] to-slate-950 border border-slate-700/80 shadow-2xl">
-              
-              {/* Top Floating Badge & Specs Bar */}
-              <div className="absolute top-3.5 left-3.5 right-3.5 z-20 flex items-center justify-between pointer-events-none">
-                <div className="bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-slate-700/70 text-left pointer-events-auto shadow-lg">
-                  <div className="text-[10.5px] font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>{current.category}</span>
-                  </div>
-                  <div className="text-xs sm:text-sm font-semibold text-white tracking-tight truncate">
-                    {current.titleHighlight}
-                  </div>
-                </div>
-
-                {/* 360° Indicator Pill */}
-                <div className="flex items-center gap-2">
-                  <span className="bg-slate-900/90 backdrop-blur-md text-cyan-300 text-xs font-bold px-3 py-1 rounded-full border border-cyan-500/40 shadow-sm flex items-center gap-1.5 tracking-wide">
-                    <svg className="w-3.5 h-3.5 animate-spin-slow text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-                    </svg>
-                    <span>360° Motorized Turntable</span>
-                  </span>
-                </div>
-              </div>
-
-              {/* 16:9 Landscape Video Container with Smooth Fade & Scale Transition */}
-              <div className="relative w-full aspect-video bg-white flex items-center justify-center overflow-hidden">
-                <div
-                  className={`relative w-full h-full transition-all duration-700 ease-out flex items-center justify-center ${
-                    isTransitioning ? 'opacity-30 scale-98 blur-[1px]' : 'opacity-100 scale-100 blur-0'
-                  }`}
-                >
-                  <video
-                    ref={videoPlayerRef}
-                    key={current.videoSrc}
-                    poster={current.poster}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    onTimeUpdate={handleTimeUpdate}
-                    onEnded={handleVideoEnded}
-                    className="w-full h-full object-contain"
-                    aria-label={`${current.titleHighlight} - 8s 360 degree turntable rotation video`}
-                  >
-                    <source src={current.videoSrcWebm} type="video/webm" />
-                    <source src={current.videoSrc} type="video/mp4" />
-                    <img src={current.poster} alt={current.titleHighlight} className="w-full h-full object-contain" />
-                  </video>
-                </div>
-
-                {/* Corner Controls: Play/Pause and Next/Prev Navigation */}
-                <div className="absolute bottom-3 right-3 z-20 flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handlePrev}
-                    className="p-2 rounded-lg bg-slate-900/85 hover:bg-slate-800 text-white text-xs border border-slate-700 backdrop-blur-sm transition-colors cursor-pointer"
-                    aria-label="Previous Subsection"
-                    title="Previous Subsection"
-                  >
-                    &#9664;
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={toggleVideo}
-                    className="px-2.5 py-2 rounded-lg bg-slate-900/85 hover:bg-slate-800 text-white text-xs border border-slate-700 backdrop-blur-sm transition-colors cursor-pointer font-medium flex items-center gap-1.5"
-                    aria-label={isVideoPlaying ? 'Pause 360 Video' : 'Play 360 Video'}
-                  >
-                    <span>{isVideoPlaying ? '⏸' : '▶'}</span>
-                    <span>{isVideoPlaying ? 'Pause' : 'Play'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    className="p-2 rounded-lg bg-slate-900/85 hover:bg-slate-800 text-white text-xs border border-slate-700 backdrop-blur-sm transition-colors cursor-pointer"
-                    aria-label="Next Subsection"
-                    title="Next Subsection"
-                  >
-                    &#9654;
-                  </button>
-                </div>
-
-                {/* Seamless Background Preloader for Next Slide Video */}
-                <video
-                  src={nextSlide.videoSrcWebm}
-                  preload="auto"
-                  muted
-                  playsInline
-                  className="hidden"
-                  aria-hidden="true"
-                />
-              </div>
-
-              {/* Bottom Industrial 4-Segment Scrollbar & Progress Indicator */}
-              <div className="p-3.5 bg-slate-900/95 border-t border-slate-800 flex flex-col gap-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-300 font-medium truncate">
-                    {current.specPill}
-                  </span>
-                  <a
-                    href={`/product/${current.primaryProduct}`}
-                    className="text-xs font-semibold text-sky-400 hover:text-sky-300 flex items-center gap-1 shrink-0 ml-3"
-                  >
-                    Inspect Specs &rarr;
-                  </a>
-                </div>
-
-                {/* 4-Segment Scrollbar Progress Track */}
-                <div className="grid grid-cols-4 gap-2 pt-1">
-                  {slides.map((s, idx) => {
-                    const isSegmentActive = activeSlide === idx;
-                    const isSegmentDone = idx < activeSlide;
-                    return (
-                      <div
-                        key={s.id}
-                        className="h-1.5 bg-slate-800 rounded-full overflow-hidden cursor-pointer"
-                        onClick={() => goToSlide(idx)}
-                        title={`Switch to ${s.tabLabel}`}
-                      >
-                        <div
-                          className={`h-full rounded-full transition-all duration-75 ${
-                            isSegmentActive
-                              ? 'bg-gradient-to-r from-sky-400 to-cyan-300'
-                              : isSegmentDone
-                              ? 'bg-slate-500'
-                              : 'w-0'
-                          }`}
-                          style={{
-                            width: isSegmentActive ? `${progress}%` : isSegmentDone ? '100%' : '0%'
-                          }}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-          </div>
-
         </div>
       </div>
+
     </section>
   );
 };

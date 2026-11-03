@@ -11,11 +11,13 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
       <div className="site-container site-header__inner">
 
         {/* Brand Logo */}
-        <a href="#home" className="brand-logo" aria-label="Lotus Tubes - Return to Home">
+        <a href="/" className="brand-logo" aria-label="Lotus Tubes - Return to Home">
           <img
             src="/Lotus Tubes Logo.png"
             alt="Lotus Tubes Logo - Stainless Steel Sanitary Solutions"
             className="brand-logo__img"
+            width="200"
+            height="48"
           />
         </a>
 
@@ -37,7 +39,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
               <div className="mega-menu" aria-label="Product Categories">
                 <div className="mega-menu__grid">
                   <div className="mega-menu__col">
-                    <h4 className="mega-menu__title">{t('mega_pipes', 'Pipes & Tubing')}</h4>
+                    <div className="mega-menu__title font-bold text-sky-400 mb-2">{t('mega_pipes', 'Pipes & Tubing')}</div>
                     <ul className="mega-menu__links">
                       <li><a href="/category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
                       <li><a href="/product/ss-316l-ep-pipe">SS 316L EP Sanitary Pipe</a></li>
@@ -47,7 +49,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                     </ul>
                   </div>
                   <div className="mega-menu__col">
-                    <h4 className="mega-menu__title">{t('mega_fittings', 'Fittings & Components')}</h4>
+                    <div className="mega-menu__title font-bold text-sky-400 mb-2">{t('mega_fittings', 'Fittings & Components')}</div>
                     <ul className="mega-menu__links">
                       <li><a href="/category/sanitary-fittings">Sanitary Pipe Fittings (Bends, Tees)</a></li>
                       <li><a href="/category/tri-clamp">Tri-Clamp Fittings & Clamps</a></li>
@@ -56,7 +58,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                     </ul>
                   </div>
                   <div className="mega-menu__col">
-                    <h4 className="mega-menu__title">{t('mega_valves', 'Valves & Assemblies')}</h4>
+                    <div className="mega-menu__title font-bold text-sky-400 mb-2">{t('mega_valves', 'Valves & Assemblies')}</div>
                     <ul className="mega-menu__links">
                       <li><a href="/category/manual-valves">Manual Sanitary Valves</a></li>
                       <li><a href="/category/pneumatic-valves">Pneumatic & Automated Valves</a></li>
@@ -67,7 +69,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                   <div className="mega-menu__highlight">
                     <div className="mega-menu__highlight-box">
                       <span className="badge badge--pink">{t('mega_focus', 'Monopoly Focus')}</span>
-                      <h5>{t('mega_certified', 'Hygienic Process Certified')}</h5>
+                      <div className="font-bold text-white text-sm mb-1">{t('mega_certified', 'Hygienic Process Certified')}</div>
                       <p>{t('mega_desc', 'Available in SS 304 & SS 316L with EP/MP finishes. Fast quotations & MTC documentation.')}</p>
                       <a href="/products" className="btn btn--sm btn--primary">{t('btn_view_all', 'View All Products →')}</a>
                     </div>

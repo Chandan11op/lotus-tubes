@@ -125,8 +125,8 @@ export const App = () => {
 
   // Dynamic Technical SEO & Schema.org JSON-LD structured data injection
   useEffect(() => {
-    let title = 'Lotus Tubes | Sanitary Stainless Steel Pipes, Fittings & Valves';
-    let description = 'Lotus Tubes supplies SS 304 and SS 316L sanitary pipes, fittings, tri-clamp components and valves for hygienic process industries worldwide.';
+    let title = 'Lotus Tubes | SS Sanitary Pipes, Fittings & Valves';
+    let description = 'Lotus Tubes supplies SS 316L and SS 304 sanitary pipe, ASTM A270 fittings, tri-clamp components, and valves for pharmaceutical and hygienic process lines.';
     let productData = null;
     let breadcrumbs = [{ name: 'Home', path: '/' }];
 

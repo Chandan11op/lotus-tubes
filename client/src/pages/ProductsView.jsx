@@ -89,33 +89,11 @@ export const ProductsView = ({ onOpenEnquiry }) => {
     <>
       {/* Cinematic Catalogue Hero Banner */}
       <PageHero
+        image="/assets/images/hero/hero-products-warehouse-logistics.jpg"
         badge="Certified B2B Procurement Catalogue"
         title="Stainless Steel Sanitary Product Catalogue"
         subtitle="Engineered for High-Purity Pharmaceutical & Hygienic Process Lines"
         description="Explore precision SS 304 and SS 316L pipes, orbital bends, Tri-Clamp components, SMS unions, and hygienic valves certified with EN 10204 3.1 MTC documentation."
-        slides={[
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg',
-            badge: 'Certified B2B Procurement Catalogue',
-            title: 'Stainless Steel Sanitary Product Catalogue',
-            subtitle: 'Engineered for High-Purity Pharmaceutical & Process Lines',
-            description: 'Precision SS 304 and SS 316L pipes, orbital weld bends, Tri-Clamp components, SMS unions, and sanitary valves certified with EN 10204 3.1 MTC documentation.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-004.jpg',
-            badge: 'ASTM A270 & ASME BPE Standards',
-            title: 'High-Purity Electropolished Sanitary Tubing',
-            subtitle: 'Ra ≤ 0.38 µm (15 µin) Mirror Finish with Zero Bacterial Entrapment',
-            description: 'Ready stock range from 1/2" to 4" OD available in Mumbai warehouse for immediate 24-48h dispatch with full chemical and mechanical mill test certificates.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-007.jpg',
-            badge: 'Manual & Pneumatic Sanitary Valves',
-            title: 'Bi-Directional Sanitary Flow Control Solutions',
-            subtitle: 'Butterfly Valves, Diaphragm Valves & Automated Ball Valves',
-            description: '100% hydrostatic and pneumatic leak-tested valves fitted with FDA-compliant food-grade silicone, EPDM, and PTFE seals.'
-          }
-        ]}
         stats={[
           { value: '30+ Ready Stock', label: 'Sanitary Components' },
           { value: 'Ra ≤ 0.38 µm', label: 'Certified Roughness' },

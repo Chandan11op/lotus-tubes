@@ -44,26 +44,11 @@ export const QualityView = () => {
   return (
     <>
       <PageHero
+        image="/assets/images/hero/hero-quality-documentation-desk.jpg"
         badge="100% Quality & Metallurgy Assurance"
         title="Quality Standards & Inspection Documentation"
         subtitle="Surface Roughness Profilometry, Boroscopic QC & Full Batch Traceability"
         description="Rigorous metallurgical testing and certified EN 10204 3.1 Material Test Certificates ensuring total compliance with ASME BPE, 3-A, SMS, and ASTM sanitary benchmarks."
-        slides={[
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-008.jpg',
-            badge: '100% Quality & Metallurgy Assurance',
-            title: 'Quality Standards & Inspection Documentation',
-            subtitle: 'Surface Roughness Profilometry, Boroscopic QC & Batch Traceability',
-            description: 'Rigorous metallurgical testing and certified EN 10204 3.1 Material Test Certificates ensuring total compliance with ASME BPE, 3-A, SMS, and ASTM sanitary benchmarks.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-004.jpg',
-            badge: 'Ra ≤ 0.38 µm EP Contact Surface',
-            title: 'Electropolished & Mechanically Polished Precision',
-            subtitle: 'Profilometer Verified Surface Finishes Eliminating Biofilm Formation',
-            description: 'Every tube and fitting is measured for surface roughness, dimensional ovality, and hydrostatically tested to guarantee leak-tight integrity.'
-          }
-        ]}
         stats={[
           { value: 'EN 10204 3.1', label: 'Mill Certificates' },
           { value: 'Ra ≤ 0.38 µm', label: 'Electropolished Finish' },

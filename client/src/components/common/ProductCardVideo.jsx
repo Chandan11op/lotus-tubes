@@ -97,6 +97,9 @@ export const ProductCardVideo = ({
           alt={alt}
           className={className}
           loading="lazy"
+          decoding="async"
+          width="400"
+          height="300"
           onError={handleImageError}
         />
       </div>
@@ -115,7 +118,7 @@ export const ProductCardVideo = ({
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         onError={() => setVideoFailed(true)}
         aria-label={`${alt} - 360 Product Video`}
       >
@@ -129,6 +132,10 @@ export const ProductCardVideo = ({
           src={currentPoster}
           alt={alt}
           className={className}
+          loading="lazy"
+          decoding="async"
+          width="400"
+          height="300"
           onError={handleImageError}
         />
       </video>

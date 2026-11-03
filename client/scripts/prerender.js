@@ -185,7 +185,7 @@ const routes = [
           Submit your required pipe schedules, fitting dimensions, clamp quantities, or valve specifications. Our sales team prepares detailed commercial quotations complete with technical parameters, payment terms, and delivery schedules.
         </p>
         <h2 style="font-size: 1.3rem; color: #10263D; margin-bottom: 8px;">Direct RFQ Support</h2>
-        <p style="color: #475569; margin-bottom: 16px;">Call our commercial desk at <strong>+91 98205 25200</strong> or email your BOQ spreadsheet directly to <strong>sales@lotustubes.com</strong>.</p>
+        <p style="color: #475569; margin-bottom: 16px;">Call our commercial desk at <strong>+91 98205 25200</strong> or email your BOQ spreadsheet directly to <strong>sales&#64;lotustubes&#46;com</strong>.</p>
         <a href="/products" style="color: #0284C7; font-weight: 600; text-decoration: none;">Browse Catalogue to Select Items &rarr;</a>
       </section>
     `
@@ -216,7 +216,7 @@ for (const r of routes) {
   // Replace the <main> block inside #root with page-specific content while keeping header and footer
   const mainRegex = /<main[\s\S]*?<\/main>/i;
   if (mainRegex.test(html)) {
-    html = html.replace(mainRegex, `<main style="max-width: 1200px; margin: 0 auto; padding: 32px 24px; font-family: 'Inter', sans-serif; color: #1E293B; line-height: 1.6;">${r.content}</main>`);
+    html = html.replace(mainRegex, `<main class="ssr-main">${r.content}</main>`);
   }
 
   const outFilePath = path.join(targetDir, 'index.html');

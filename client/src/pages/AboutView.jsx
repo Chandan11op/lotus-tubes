@@ -6,26 +6,11 @@ export const AboutView = ({ onOpenEnquiry }) => {
   return (
     <>
       <PageHero
+        image="/assets/images/hero/hero-about-commercial-factory.jpg"
         badge="The Quality Maker • Established in Mumbai"
         title="Engineered for Purity. Built for Trust."
         subtitle="Dedicated Stockist & Global Exporter of Stainless Steel Sanitary Solutions"
         description="Operating from our central Mumbai distribution hub, Lotus Tubes specializes in high-purity SS 304 and SS 316L tubes, fittings, and valves tailored to mission-critical biopharma, dairy, and hygienic process lines."
-        slides={[
-          {
-            image: '/assets/images/company/lotus-tubes-facility.jpg',
-            badge: 'The Quality Maker • Established in Mumbai',
-            title: 'Engineered for Purity. Built for Trust.',
-            subtitle: 'Dedicated Stockist & Global Exporter of Stainless Steel Sanitary Solutions',
-            description: 'Operating from our central Mumbai distribution hub, Lotus Tubes specializes in high-purity SS 304 and SS 316L tubes, fittings, and valves tailored to mission-critical biopharma, dairy, and hygienic process lines.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-006.jpg',
-            badge: 'Zero-Compromise Hygienic Metallurgy',
-            title: 'Certified Surface Smoothness & Traceability',
-            subtitle: 'Ra ≤ 0.38 µm EP Finishes • EN 10204 3.1 Mill Certificates',
-            description: 'Every product batch is tracked by heat number and inspected for smooth, crevice-free internal geometry to eliminate bacterial harborage and ensure effortless CIP/SIP cleanability.'
-          }
-        ]}
         stats={[
           { value: 'Mumbai', label: 'Distribution Facility' },
           { value: 'SS 316L / 304', label: 'Certified Metallurgy' },

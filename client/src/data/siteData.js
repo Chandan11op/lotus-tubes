@@ -148,7 +148,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'pharmaceutical',
       slug: 'pharmaceutical',
-      image: '/assets/images/industries/pharmaceutical.svg',
+      image: '/assets/images/industries/pharmaceutical.jpg',
       name: 'Pharmaceutical Processing',
       icon: '💊',
       summary: 'Ultra-pure SS 316L electro-polished tubing and diaphragm valves for sterile APIs, injectables, and vaccine manufacturing.',
@@ -159,7 +159,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'biotechnology',
       slug: 'biotechnology',
-      image: '/assets/images/industries/biotechnology.svg',
+      image: '/assets/images/industries/biotechnology.jpg',
       name: 'Biotechnology & Sterile Process',
       icon: '🧬',
       summary: 'High-purity hygienic transfer lines for cell culture, fermentation, monoclonal antibodies, and sterile buffer preparation.',
@@ -170,7 +170,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'dairy',
       slug: 'dairy',
-      image: '/assets/images/industries/dairy.svg',
+      image: '/assets/images/industries/dairy.jpg',
       name: 'Dairy Processing',
       icon: '🥛',
       summary: 'SS 304 and SS 316L pipes, SMS/DIN unions, butterfly valves, and 90° bends engineered for milk, butter, cheese, and yogurt processing.',
@@ -181,7 +181,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'food-beverage',
       slug: 'food-beverage',
-      image: '/assets/images/industries/food-beverage.svg',
+      image: '/assets/images/industries/food-beverage.jpg',
       name: 'Food & Beverage Manufacturing',
       icon: '🥫',
       summary: 'Hygienic piping solutions for sauces, syrups, confectioneries, edible oils, and packaged beverages.',
@@ -192,7 +192,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'breweries',
       slug: 'breweries',
-      image: '/assets/images/industries/breweries.svg',
+      image: '/assets/images/industries/breweries.jpg',
       name: 'Breweries & Distilleries',
       icon: '🍺',
       summary: 'Complete hygienic piping, Tri-Clamp connections, spray balls, and valves for brewhouses, fermentation cellars, and bottling skids.',
@@ -203,7 +203,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'water-treatment',
       slug: 'water-treatment',
-      image: '/assets/images/industries/water-treatment.svg',
+      image: '/assets/images/industries/water-treatment.jpg',
       name: 'Ultra-Pure Water & WFI Treatment',
       icon: '💧',
       summary: 'Orbital weldable tubes and fittings for Reverse Osmosis (RO), Water for Injection (WFI), and High-Purity Water loops.',
@@ -214,7 +214,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     {
       id: 'chemical',
       slug: 'chemical',
-      image: '/assets/images/industries/chemical.svg',
+      image: '/assets/images/industries/chemical.jpg',
       name: 'Specialty Chemical & Cosmetics',
       icon: '⚗️',
       summary: 'Corrosion-resistant SS 316L fittings and valves for cosmetics, fine chemicals, fragrances, and personal care products.',

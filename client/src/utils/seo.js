@@ -20,7 +20,7 @@ export const updatePageSEO = ({
   const siteUrl = getSiteUrl();
   const canonicalUrl = getCanonicalUrl(path);
   const fullTitle = title.includes('Lotus Tubes') ? title : `${title} | Lotus Tubes`;
-  const metaDesc = description || 'Lotus Tubes supplies SS 304 and SS 316L sanitary pipes, fittings, tri-clamp components and valves for hygienic process industries worldwide.';
+  const metaDesc = description || 'Lotus Tubes supplies SS 316L and SS 304 sanitary pipe, ASTM A270 fittings, tri-clamp components, and valves for pharmaceutical and hygienic process lines.';
   const fullImageUrl = image.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? image : `/${image}`}`;
 
   // 1. Document Title

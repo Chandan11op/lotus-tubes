@@ -142,6 +142,73 @@ const sitemapContent = fs.readFileSync(sitemapFile, 'utf8');
 assert(!sitemapContent.includes('www.lotustubes.com'), 'sitemap.xml contains NO premature www.lotustubes.com URLs');
 assert(sitemapContent.includes('https://lotus-tubes-react-design.vercel.app/products'), 'sitemap.xml contains public products catalogue');
 
+// -----------------------------------------------------------------------------
+// 5. CINEMATIC HERO & SEO QUALITY AUDIT VALIDATION
+// -----------------------------------------------------------------------------
+console.log('\n5. Testing Cinematic Hero Section & SEO Audit Fixes:');
+
+const heroFile = path.resolve('client/src/components/common/HomeCinematicHero.jsx');
+assert(fs.existsSync(heroFile), 'HomeCinematicHero.jsx exists');
+const heroContent = fs.readFileSync(heroFile, 'utf8');
+
+// Hero checks
+assert(!heroContent.includes('AUTO 8S'), 'Running seconds countdown (AUTO 8S) removed from hero');
+assert(!heroContent.includes('01 / 04'), 'Slide index counter (01 / 04) removed from hero');
+assert(heroContent.includes('handlePrev'), 'Left side navigation button (<) present');
+assert(heroContent.includes('handleNext'), 'Right side navigation button (>) present');
+assert(heroContent.includes('videoPlayerRef'), 'Dynamic background video player present');
+assert(heroContent.includes('sanitary-pipes-factory'), 'Pipes factory video mapped');
+assert(heroContent.includes('butterfly-valves-factory'), 'Butterfly valves factory video mapped');
+assert(heroContent.includes('tri-clamp-factory'), 'Tri-clamp factory video mapped');
+assert(heroContent.includes('pneumatic-valves-factory'), 'Pneumatic valves factory video mapped');
+
+// HomeView checks for removed video box & bright title
+const homeFile = path.resolve('client/src/pages/HomeView.jsx');
+const homeContent = fs.readFileSync(homeFile, 'utf8');
+assert(!homeContent.includes('why-video-bar'), '"Watch Sourcing & Quality Inspection Overview" box completely removed from website');
+assert(!homeContent.includes('Watch Sourcing & Quality Inspection Overview'), '"Watch Sourcing & Quality Inspection Overview" text removed');
+assert(homeContent.includes('!text-white') || homeContent.includes('text-white'), '"Quality. Stock. Service. Always." has bright high-contrast text styling');
+
+// Section Page Heroes (Single image with smooth transitions)
+const heroDir = 'client/public/assets/images/hero';
+assert(fs.existsSync(path.join(heroDir, 'hero-about-commercial-factory.jpg')), 'About Us single hero image exists');
+assert(fs.existsSync(path.join(heroDir, 'hero-products-warehouse-logistics.jpg')), 'Products single hero image exists');
+assert(fs.existsSync(path.join(heroDir, 'hero-industries-collage.jpg')), 'Industries single collage hero image exists');
+assert(fs.existsSync(path.join(heroDir, 'hero-quality-documentation-desk.jpg')), 'Quality & Docs single hero image exists');
+assert(fs.existsSync(path.join(heroDir, 'hero-resources-factory-raw-materials.jpg')), 'Resources single hero image exists');
+assert(fs.existsSync(path.join(heroDir, 'hero-contact-calling-team-office.jpg')), 'Contact Us single hero image exists');
+
+// Industries Real Images
+const indDir = 'client/public/assets/images/industries';
+const indNames = ['pharmaceutical', 'biotechnology', 'dairy', 'food-beverage', 'breweries', 'water-treatment', 'chemical'];
+for (const ind of indNames) {
+  assert(fs.existsSync(path.join(indDir, `${ind}.jpg`)), `Industries real photo exists: ${ind}.jpg`);
+}
+
+// Navbar headings check (Mega Menu should not introduce H4/H5 before Hero H1)
+const navFile = path.resolve('client/src/components/layout/Navbar.jsx');
+const navContent = fs.readFileSync(navFile, 'utf8');
+assert(!navContent.includes('<h4') && !navContent.includes('<h5'), 'Mega menu contains no <h4> or <h5> tags (Hero H1 is first semantic heading)');
+assert(!navContent.includes('href="#home"'), 'Navbar logo does not use hash #home (uses clean /)');
+
+// Index.html SEO checks
+const indexFile = path.resolve('client/index.html');
+const indexContent = fs.readFileSync(indexFile, 'utf8');
+const titleMatch = indexContent.match(/<title>(.*?)<\/title>/);
+const titleText = titleMatch ? titleMatch[1] : '';
+assert(titleText.length >= 50 && titleText.length <= 60, `Title tag length is optimal 50-60 chars (actual: ${titleText.length} chars -> "${titleText}")`);
+
+const descMatch = indexContent.match(/<meta\s+name="description"\s+content="(.*?)"/i);
+const descText = descMatch ? descMatch[1] : '';
+assert(descText.length >= 130 && descText.length <= 165, `Meta description length is optimal (actual: ${descText.length} chars)`);
+
+assert(indexContent.includes('"LocalBusiness"'), 'JSON-LD contains LocalBusiness schema type');
+assert(indexContent.includes('googletagmanager.com/gtag/js'), 'Google Analytics GA4 integration tag present');
+
+const rootMatch = indexContent.match(/<div id="root">([\s\S]*?)<\/div>\s*<script/i);
+const rootInner = rootMatch ? rootMatch[1] : '';
+assert(!rootInner.includes('style="'), 'Fallback pre-rendered DOM contains ZERO inline CSS styles (extracted into <style id="ssr-shell-styles">)');
+
 console.log('\n================================================================');
 if (allPassed) {
   console.log('ALL VERIFICATION CHECKS PASSED SUCCESSFULLY! (0 Failures)');

@@ -28,26 +28,11 @@ export const ResourcesView = ({ onNotify }) => {
   return (
     <>
       <PageHero
+        image="/assets/images/hero/hero-resources-factory-raw-materials.jpg"
         badge="Engineering Datasheets & Technical Library"
         title="Engineering Resources & Downloads"
         subtitle="Hygienic Process Specifications, Dimensional Charts & FAQs"
         description="Access downloadable technical catalogues, ASTM/ASME dimensional correlation charts, surface finish roughness guides, and engineering documentation."
-        slides={[
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-009.jpg',
-            badge: 'Engineering Datasheets & Technical Library',
-            title: 'Engineering Resources & Downloads',
-            subtitle: 'Hygienic Process Specifications & Dimensional Charts',
-            description: 'Access downloadable technical catalogues, ASTM/ASME dimensional correlation charts, surface finish roughness guides, and engineering documentation.'
-          },
-          {
-            image: '/assets/images/company/lotus-tubes-facility.jpg',
-            badge: 'Direct Mumbai Technical Support',
-            title: 'Material Guidance & CAD Assistance',
-            subtitle: 'Technical Consulting for Hygienic Process Skids',
-            description: 'Speak directly with our technical sourcing specialists to verify sanitary standards, weld tangents, and elastomer chemical compatibility.'
-          }
-        ]}
         stats={[
           { value: 'PDF Catalogues', label: 'Ready to Download' },
           { value: 'ASTM / ASME', label: 'Dimensional Charts' },

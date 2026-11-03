@@ -30,8 +30,8 @@ export const TopBar = () => {
         </div>
 
         <div className="top-bar__right">
-          <a href={`mailto:${CONFIG.primaryEmail}`} className="top-bar__link" title="Official Sales Email">
-            <span className="top-bar__icon" aria-hidden="true">✉</span> {CONFIG.primaryEmail}
+          <a href={`mailto:${'sales' + '@' + 'lotustubes.com'}`} className="top-bar__link" title="Official Sales Email">
+            <span className="top-bar__icon" aria-hidden="true">✉</span> <span>sales</span>&#64;<span>lotustubes</span>&#46;<span>com</span>
           </a>
           <span className="top-bar__divider" aria-hidden="true">|</span>
           <a href={`tel:${CONFIG.primaryPhone}`} className="top-bar__link" title="Call Lotus Tubes Desk">

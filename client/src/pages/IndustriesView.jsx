@@ -158,33 +158,11 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
     <div className="industries-page-root bg-slate-950 text-white min-h-screen">
       {/* 1. CINEMATIC HERO SECTION */}
       <PageHero
+        image="/assets/images/hero/hero-industries-collage.jpg"
         badge="Mission-Critical Sanitary Systems"
         title="Industries We Serve"
         subtitle="Hygienic Process Piping for Pharmaceutical, Biotech, Dairy & Food Processing"
         description="Every industry imposes distinct regulatory hygiene standards. From ASME BPE electropolished lines for sterile injectable loops to heavy-duty SMS/DIN dairy unions and CIP spray balls, Lotus Tubes provides tested components with verified metallurgy."
-        slides={[
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-005.jpg',
-            badge: 'Pharmaceutical & Biotechnology',
-            title: 'Ultra-Pure Sanitary Piping for Life Sciences',
-            subtitle: 'ASTM A270-S2 & ASME BPE Certified • Ra ≤ 0.38 µm EP',
-            description: 'Full heat-traceable SS 316L tubes, diaphragm valves, and TC ferrules engineered to prevent bacterial harborage in sterile bulk active manufacturing.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg',
-            badge: 'Dairy, Food & Beverage',
-            title: 'Hygienic Flow Systems for Dairy & Beverage Lines',
-            subtitle: '3-A Sanitary Standards • SMS 1145 Compatibility • Food-Grade Seals',
-            description: 'Rugged stainless steel butterfly valves, bends, tees, and sanitary unions built for intensive daily CIP/SIP washdowns without flavor cross-contamination.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg',
-            badge: 'Ultra-Pure Water & Clean Steam Loops',
-            title: 'WFI & High-Purity Water Loop Components',
-            subtitle: 'Passivated Chromium-Rich Oxide Layer • Zero Rouging Design',
-            description: 'Supplying orbital-welded tubes, concentric reducers, and sampling valves certified with EN 10204 3.1 MTC inspection documents.'
-          }
-        ]}
         stats={[
           { value: '7 Core Sectors', label: 'Specialized Ranges' },
           { value: 'Ra ≤ 0.38 µm', label: 'Electropolished Contact' },

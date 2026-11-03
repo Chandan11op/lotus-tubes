@@ -71,26 +71,11 @@ export const ContactView = ({ onNotify }) => {
   return (
     <div>
       <PageHero
+        image="/assets/images/hero/hero-contact-calling-team-office.jpg"
         badge="Mumbai Sales & Sourcing Desk"
         title="Connect with Lotus Tubes Specialists"
         subtitle="Rapid RFQ Turnaround & Technical Sourcing Assistance"
         description="Reach our central Mumbai sourcing office for ready stock status, custom fabrication drawings, test certificates, and global export inquiries."
-        slides={[
-          {
-            image: '/assets/images/company/lotus-tubes-facility.jpg',
-            badge: 'Mumbai Sales & Sourcing Desk',
-            title: 'Connect with Lotus Tubes Specialists',
-            subtitle: 'Rapid RFQ Turnaround & Technical Sourcing Assistance',
-            description: 'Reach our central Mumbai sourcing office for ready stock status, custom fabrication drawings, test certificates, and global export inquiries.'
-          },
-          {
-            image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg',
-            badge: 'Direct Sourcing Support',
-            title: 'Ready Stock Sourcing & Immediate Dispatch',
-            subtitle: 'Conveniently Located in Girgaon / Mumbai Distribution Hub',
-            description: 'Fast delivery across Maharashtra, Gujarat, and pan-India industrial clusters, plus direct international shipping to Africa, Middle East, and Southeast Asia.'
-          }
-        ]}
         stats={[
           { value: '< 2 Hours', label: 'RFQ Response Time' },
           { value: 'Mumbai', label: 'Central Warehouse' },

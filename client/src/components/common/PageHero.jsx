@@ -11,6 +11,7 @@ import React, { useState, useEffect, useRef } from 'react';
  * - 100% responsive, high-contrast, accessible, and respecting prefers-reduced-motion
  */
 export const PageHero = ({
+  image,
   badge = 'Sanitary Stainless Steel Engineering',
   title,
   subtitle,
@@ -23,19 +24,27 @@ export const PageHero = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const timerRef = useRef(null);
 
-  // Normalize slides
-  const activeSlides = slides.length > 0
-    ? slides
-    : [
-        {
-          image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-005.jpg',
-          title,
-          subtitle,
-          description
-        }
-      ];
+  useEffect(() => {
+    const t = setTimeout(() => setIsLoaded(true), 50);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Normalize slides - prioritize single image prop if supplied
+  const activeSlides = image
+    ? [{ image, title, subtitle, description, badge }]
+    : (slides.length > 0
+        ? slides
+        : [
+            {
+              image: '/assets/images/hero/hero-about-commercial-factory.jpg',
+              title,
+              subtitle,
+              description
+            }
+          ]);
 
   const total = activeSlides.length;
   const slide = activeSlides[currentSlide] || activeSlides[0];
@@ -58,7 +67,7 @@ export const PageHero = ({
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background Visual Showcase with Smooth Crossfade & Subtle Zoom */}
+      {/* Background Visual Showcase with Smooth Crossfade & Cinematic Ken Burns Motion */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {activeSlides.map((s, idx) => (
           <div
@@ -70,9 +79,12 @@ export const PageHero = ({
             <img
               src={s.image}
               alt={s.title || title || 'Lotus Tubes Industrial Facility'}
-              className={`w-full h-full object-cover object-center transition-transform duration-7000 ease-out ${
-                currentSlide === idx ? 'scale-105' : 'scale-100'
+              className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out ${
+                isLoaded ? 'opacity-100' : 'opacity-0 scale-105'
               }`}
+              style={{
+                animation: total === 1 ? 'kenBurnsHero 24s ease-out infinite alternate' : undefined
+              }}
               loading={idx === 0 ? 'eager' : 'lazy'}
             />
           </div>

@@ -122,8 +122,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               <a href="/industries" className="industry-chip-card" key={ind.slug}>
                 <div className="industry-chip-card__img-wrap">
                   <ProductImage
-                    src={ind.image || `/assets/images/industries/${ind.slug}.svg`}
-                    fallbackSrc="/assets/images/hero/sanitary-hero-pipes.svg"
+                    src={`/assets/images/industries/${ind.slug}.jpg`}
+                    fallbackSrc={ind.image || `/assets/images/industries/${ind.slug}.svg`}
                     alt={ind.name}
                     className="w-full h-full"
                     imgClassName="industry-chip-card__img"
@@ -140,13 +140,15 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         </div>
       </section>
 
-      {/* E. Why Lotus Tubes (Dark Navy Industrial Section with Line Icons & Video Modal) */}
-      <section className="why-section" id="section-why" aria-label="Why Lotus Tubes">
+      {/* E. Why Lotus Tubes (Dark Navy Industrial Section with Line Icons) */}
+      <section className="why-section section--dark" id="section-why" aria-label="Why Lotus Tubes">
         <div className="site-container">
           <div className="section-header section-header--center">
-            <span className="section-eyebrow">{t('sec_why_eyebrow', 'Why Choose Lotus Tubes')}</span>
-            <h2 className="section-title">{t('sec_why_title', 'Quality. Stock. Service. Always.')}</h2>
-            <p className="section-subtitle">
+            <span className="section-eyebrow text-sky-400 font-bold uppercase tracking-wider">{t('sec_why_eyebrow', 'Why Choose Lotus Tubes')}</span>
+            <h2 className="section-title text-white font-extrabold text-3xl sm:text-4xl tracking-tight !text-white">
+              {t('sec_why_title', 'Quality. Stock. Service. Always.')}
+            </h2>
+            <p className="section-subtitle text-slate-300 max-w-2xl mx-auto">
               {t('sec_why_desc', 'Dedicated supplier of hygienic stainless steel components, engineered for integrity and traceability.')}
             </p>
           </div>
@@ -195,34 +197,6 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </p>
             </div>
           </div>
-
-          {/* Video Tour Bar (Matching UI Reference) */}
-          <div className="why-video-bar">
-            <div className="why-video-bar__left">
-              <button
-                type="button"
-                className="play-btn-circle"
-                id="open-process-video"
-                aria-label="Play Process Demonstration"
-                onClick={onOpenVideo}
-              >
-                ▶
-              </button>
-              <div className="why-video-bar__text">
-                <h4>{t('why_video_title', 'Watch Sourcing & Quality Inspection Overview')}</h4>
-                <p>{t('why_video_desc', 'See our multi-stage electro-polishing verification, surface Ra testing, and packaging protocol.')}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              className="btn btn--outline-light"
-              id="open-process-video-btn"
-              onClick={onOpenVideo}
-            >
-              {t('btn_video_demo', 'Explore Quality Demo')} &rarr;
-            </button>
-          </div>
-
         </div>
       </section>
 
