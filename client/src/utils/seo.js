@@ -9,7 +9,7 @@ export const updatePageSEO = ({
   title,
   description,
   path = '',
-  image = '/Lotus Tubes Logo.png',
+  image = '/new-logo-lotus-tubes-opt.png',
   type = 'website',
   productData = null,
   breadcrumbs = null,
@@ -121,7 +121,7 @@ export const updatePageSEO = ({
       name: 'Lotus Tubes',
       legalName: 'Lotus Impex',
       url: siteUrl,
-      logo: `${siteUrl}/Lotus%20Tubes%20Logo.png`,
+      logo: `${siteUrl}/new-logo-lotus-tubes-opt.png`,
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+91-9820525200',
@@ -141,7 +141,7 @@ export const updatePageSEO = ({
   ];
 
   if (productData) {
-    structuredData.push({
+    const productItem = {
       '@context': 'https://schema.org',
       '@type': 'Product',
       name: productData.name,
@@ -153,19 +153,27 @@ export const updatePageSEO = ({
         name: 'Lotus Tubes'
       },
       material: productData.material,
-      category: productData.category,
-      offers: {
-        '@type': 'AggregateOffer',
-        priceCurrency: 'INR',
-        priceSpecification: {
-          '@type': 'UnitPriceSpecification',
-          priceType: 'https://schema.org/InvoicePrice',
-          description: 'Custom B2B quotation based on size, length, and quantity requirements'
-        },
-        availability: 'https://schema.org/InStock',
-        url: canonicalUrl
+      category: productData.category
+    };
+
+    if (productData.standard) {
+      productItem.additionalProperty = [
+        {
+          '@type': 'PropertyValue',
+          name: 'Manufacturing Standard',
+          value: productData.standard
+        }
+      ];
+      if (productData.finish) {
+        productItem.additionalProperty.push({
+          '@type': 'PropertyValue',
+          name: 'Surface Finish',
+          value: productData.finish
+        });
       }
-    });
+    }
+
+    structuredData.push(productItem);
   }
 
   if (Array.isArray(breadcrumbs) && breadcrumbs.length > 0) {

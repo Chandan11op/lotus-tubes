@@ -11,10 +11,10 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  color: var(--deep-navy, #10263D);
-  background: #F8FAFC;
-  border: 1.5px solid var(--border-color, #E3E8EF);
-  transition: color 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+  color: #E2E8F0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  transition: color 250ms ease, border-color 250ms ease, box-shadow 250ms ease, background-color 250ms ease;
   cursor: pointer;
   text-decoration: none;
 }
@@ -28,15 +28,15 @@
 
 .nav-profile-btn:hover,
 .nav-profile-btn:focus-visible {
-  color: #F00078 !important;
-  border-color: #F00078 !important;
-  box-shadow: 0 0 0 3px rgba(240, 0, 120, 0.15);
+  color: var(--primary-pink, #E83E83) !important;
+  border-color: var(--primary-pink, #E83E83) !important;
+  box-shadow: 0 0 0 3px rgba(232, 62, 131, 0.15);
   outline: none;
 }
 
 .nav-profile-btn:hover svg,
 .nav-profile-btn:focus-visible svg {
-  stroke: #F00078 !important;
+  stroke: var(--primary-pink, #E83E83) !important;
 }
 
 /* ==========================================================================
@@ -48,44 +48,50 @@
    1. CSS CUSTOM PROPERTIES / DESIGN SYSTEM TOKENS
    -------------------------------------------------------------------------- */
 :root {
-  /* Brand Palette (Retained for Header & Footer) */
-  --primary-pink: #F00078;
-  --primary-pink-hover: #D00067;
-  --primary-pink-active: #B00057;
-  --pink-light: #FCE7F1;
-  --pink-subtle: #FFF0F6;
+  /* Restrained Accent Pink (Highlights, focus badges, active indicators) */
+  --primary-pink: #E83E83;
+  --primary-pink-hover: #D02B6F;
+  --primary-pink-active: #B81B5B;
+  --pink-light: #FCE8F0;
+  --pink-subtle: #FDF2F7;
 
-  /* Primary Blue Palette (Applied across the entire website content) */
-  --primary-blue: #0284C7;
-  --primary-blue-hover: #0369A1;
-  --primary-blue-active: #075985;
-  --blue-light: #E0F2FE;
-  --blue-subtle: #F0F9FF;
-  --blue-shadow: rgba(2, 132, 199, 0.28);
-  --blue-shadow-hover: rgba(2, 132, 199, 0.38);
+  /* Primary Royal Blue Palette (High authority engineering blue) */
+  --primary-blue: #163A70;
+  --primary-blue-hover: #122F5A;
+  --primary-blue-active: #0D2241;
+  --steel-blue: #3478C8;
+  --steel-blue-hover: #2864A8;
+  --soft-blue: #EAF2FC;
+  --blue-light: #EAF2FC;
+  --blue-subtle: #F4F8FD;
+  --blue-shadow: rgba(22, 58, 112, 0.22);
+  --blue-shadow-hover: rgba(22, 58, 112, 0.34);
 
-  --deep-navy: #10263D;
-  --dark-industrial: #071C30;
-  --navy-surface: #173552;
-  --navy-border: #224364;
+  /* Deep Navy (Navigation, headers, dark engineering contrast surfaces) */
+  --deep-navy: #0B1F3A;
+  --dark-industrial: #061224;
+  --navy-surface: #122847;
+  --navy-border: #1D3B63;
 
+  /* Clean White Foundation & Light Steel Grays */
   --pure-white: #FFFFFF;
-  --bg-light: #F4F6F8;
+  --bg-light: #F4F6F9;
   --bg-card: #FFFFFF;
-  --steel-silver: #C7CED5;
-  --steel-light: #EBEFF3;
-  --steel-dark: #8E9BAE;
+  --steel-silver: #CBD5E1;
+  --steel-light: #F1F5F9;
+  --steel-dark: #64748B;
 
-  --text-main: #202B38;
-  --text-secondary: #667085;
-  --text-muted: #98A2B3;
+  /* High Contrast B2B Engineering Typography */
+  --text-main: #182335;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
   --text-inverse: #FFFFFF;
 
-  --border-color: #E3E8EF;
-  --border-light: #EEF2F6;
+  --border-color: #E2E8F0;
+  --border-light: #F1F5F9;
 
   /* Status Colors */
-  --status-new: #0284C7;
+  --status-new: #163A70;
   --status-contacted: #8B5CF6;
   --status-quoted: #F59E0B;
   --status-followup: #D97706;
@@ -282,8 +288,8 @@ ol {
 }
 
 .header-quote-btn {
-  background-color: var(--primary-pink) !important;
-  box-shadow: 0 4px 12px rgba(240, 0, 120, 0.28) !important;
+  background-color: var(--primary-pink, #E83E83) !important;
+  box-shadow: 0 4px 12px rgba(232, 62, 131, 0.28) !important;
 }
 
 .btn--primary:hover {
@@ -293,8 +299,8 @@ ol {
 }
 
 .header-quote-btn:hover {
-  background-color: var(--primary-pink-hover) !important;
-  box-shadow: 0 6px 16px rgba(240, 0, 120, 0.38) !important;
+  background-color: var(--primary-pink-hover, #D02B6F) !important;
+  box-shadow: 0 6px 16px rgba(232, 62, 131, 0.38) !important;
 }
 
 .btn--secondary {
@@ -704,9 +710,9 @@ ol {
   position: sticky;
   top: 0;
   z-index: 900;
-  background-color: var(--pure-white);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(16, 38, 61, 0.05);
+  background-color: var(--deep-navy, #0B1F3A);
+  border-bottom: 2px solid var(--steel-blue, #3478C8);
+  box-shadow: 0 4px 16px rgba(11, 31, 58, 0.18);
   transition: padding var(--transition-fast);
 }
 
@@ -720,18 +726,15 @@ ol {
 /* Brand Logo */
 .brand-logo {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   text-decoration: none;
 }
 
 .brand-logo__img {
-  height: 48px;
+  height: 44px;
   width: auto;
   object-fit: contain;
-  /* Backing drop shadow to enhance contrast for white "TUBES" against light header */
-  filter: drop-shadow(0px 1px 2px rgba(16, 38, 61, 0.45));
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
 .brand-logo:hover .brand-logo__img {
@@ -741,7 +744,7 @@ ol {
 .brand-logo__subtext {
   font-size: 0.65rem;
   font-weight: 700;
-  color: var(--deep-navy);
+  color: #94A3B8;
   letter-spacing: 0.12em;
   margin-top: 2px;
 }
@@ -766,18 +769,18 @@ ol {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 10px 14px;
-  font-size: 0.95rem;
+  padding: 8px 14px;
+  font-size: 0.92rem;
   font-weight: 600;
-  color: var(--deep-navy);
+  color: #E2E8F0;
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: var(--primary-pink);
-  background-color: var(--pink-subtle);
+  color: #FFFFFF;
+  background-color: rgba(52, 120, 200, 0.22);
 }
 
 .nav-arrow {
@@ -919,15 +922,16 @@ ol {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  color: var(--deep-navy);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #E2E8F0;
+  background-color: rgba(255, 255, 255, 0.08);
   transition: all var(--transition-fast);
 }
 
 .action-btn:hover {
-  border-color: var(--primary-pink);
-  color: var(--primary-pink);
-  background-color: var(--pink-subtle);
+  border-color: var(--steel-blue, #3478C8);
+  color: #FFFFFF;
+  background-color: rgba(52, 120, 200, 0.25);
 }
 
 .action-btn--crm {

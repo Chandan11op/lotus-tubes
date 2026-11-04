@@ -310,6 +310,42 @@ async function runTests() {
     createdQcRef = res.data.data.reference;
   });
 
+  // 12. AI Business Agents Architecture & Registry
+  await test('AI Agents Registry returns all 7 designated business workflow agents', async () => {
+    const res = await makeRequest('/agents', {
+      headers: { Authorization: `Bearer ${staffToken}` }
+    });
+    if (res.status !== 200 || !res.data.success || !Array.isArray(res.data.data)) {
+      throw new Error(`Failed to retrieve AI agents: ${JSON.stringify(res.data)}`);
+    }
+    const agents = res.data.data;
+    if (agents.length !== 7) {
+      throw new Error(`Expected 7 AI Business Agents, got ${agents.length}`);
+    }
+    const ids = agents.map((a) => a.id);
+    const expected = ['dom-sales-1', 'dom-sales-2', 'dom-sales-3', 'intl-sales-1', 'intl-sales-2', 'mktg-comm-1', 'mktg-lead-2'];
+    for (const exp of expected) {
+      if (!ids.includes(exp)) {
+        throw new Error(`Missing expected agent: ${exp}`);
+      }
+    }
+  });
+
+  // 13. Super Admin Approval Security Rule: Unapproved document dispatch blocked at backend level
+  await test('Super Admin Approval Rule: Unapproved quote blocked with 403 Forbidden on dispatch attempt', async () => {
+    // Look up the created quote document
+    const quote = await Quote.findOne({ quotationNumber: createdQuoteRef });
+    if (!quote) throw new Error('Created quote not found for approval check');
+
+    const res = await makeRequest(`/quotes/${quote._id}/send-email`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${staffToken}` }
+    });
+    if (res.status !== 403) {
+      throw new Error(`Expected 403 Forbidden for unapproved quote dispatch, got ${res.status}: ${JSON.stringify(res.data)}`);
+    }
+  });
+
   // Clean up test records
   if (createdEnquiryRef) await Enquiry.deleteOne({ reference: createdEnquiryRef });
   if (createdQuoteRef) await Quote.deleteOne({ quotationNumber: createdQuoteRef });

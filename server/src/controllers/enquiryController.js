@@ -80,86 +80,7 @@ export const createEnquiry = async (req, res, next) => {
       await customer.save();
     }
 
-    // 1. Send customer confirmation email with safely escaped HTML
-    const customerEmailHtml = `
-      <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-        <div style="background: #10263D; padding: 20px; text-align: center;">
-          <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
-          <p style="color: #CBD5E1; margin: 4px 0 0 0; font-size: 13px;">Stainless Steel Sanitary Solutions &bull; Mumbai, India</p>
-        </div>
-        <div style="padding: 24px;">
-          <h3 style="color: #0284C7; margin-top: 0;">Quotation Request Confirmation</h3>
-          <p>Dear <strong>${escapeHtml(name)}</strong>,</p>
-          <p>Thank you for submitting your quotation request for <strong>${escapeHtml(safeProductName)}</strong>. Your official reference number is <strong>${escapeHtml(reference)}</strong>.</p>
-          
-          <div style="background: #F8FAFC; border: 1px solid #E3E8EF; border-radius: 6px; padding: 16px; margin: 20px 0;">
-            <h4 style="margin: 0 0 10px 0; color: #10263D;">Summary of Requested Specifications:</h4>
-            <p style="margin: 4px 0;"><strong>Product:</strong> ${escapeHtml(safeProductName)}</p>
-            <p style="margin: 4px 0;"><strong>Material Grade:</strong> ${escapeHtml(safeGrade)}</p>
-            <p style="margin: 4px 0;"><strong>Surface Finish:</strong> ${escapeHtml(safeFinish)}</p>
-            ${safeSizes ? `<p style="margin: 4px 0;"><strong>Size / Diameter:</strong> ${escapeHtml(safeSizes)}</p>` : ''}
-            <p style="margin: 4px 0;"><strong>Requested Quantity:</strong> ${escapeHtml(safeQuantity)}</p>
-            <p style="margin: 4px 0;"><strong>Delivery Location:</strong> ${escapeHtml(safeLocation)}</p>
-            ${safeNotes ? `<p style="margin: 4px 0;"><strong>Special Requirements:</strong> ${escapeHtml(safeNotes)}</p>` : ''}
-          </div>
-
-          <p><strong>Sample Quotation Document:</strong></p>
-          <p>You can inspect our standard commercial quotation format here: <a href="https://lotustubes.com/sample-quotation.pdf" style="color: #F00078; font-weight: bold;">Download Sample Quotation PDF</a></p>
-
-          <div style="background: #FFF0F6; border-left: 4px solid #F00078; padding: 12px; margin: 20px 0; font-size: 13px; color: #831843;">
-            <strong>Commercial Notice:</strong> A Lotus Tubes sales engineer will review your specification requirements and provide a formal priced quotation including MTC availability, ready stock dispatch status, and delivery lead time.
-          </div>
-
-          <p style="font-size: 13px; color: #64748B;">
-            Sales Desk: +91 99304 30789 | Email: sales@lotustubes.com<br>
-            Office: Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, Khetwadi, Girgaon, Mumbai 400004
-          </p>
-        </div>
-      </div>
-    `;
-
-    const customerEmailResult = await sendEmail({
-      to: email,
-      subject: `[Quotation Request ${reference}] Lotus Tubes - ${safeProductName}`,
-      html: customerEmailHtml,
-      replyTo: 'sales@lotustubes.com'
-    });
-
-    const emailStatus = customerEmailResult.delivered ? 'sent' : customerEmailResult.demoMode ? 'pending' : 'failed';
-
-    // 2. Send internal sales desk notification with safely escaped HTML
-    const internalEmailHtml = `
-      <h2>New Website Quotation Request (${escapeHtml(reference)})</h2>
-      <p><strong>Customer Name:</strong> ${escapeHtml(name)}</p>
-      <p><strong>Company:</strong> ${escapeHtml(company)}</p>
-      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-      <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
-      <p><strong>Product:</strong> ${escapeHtml(safeProductName)}</p>
-      <p><strong>Grade:</strong> ${escapeHtml(safeGrade)}</p>
-      <p><strong>Quantity:</strong> ${escapeHtml(safeQuantity)}</p>
-      <p><strong>Delivery Location:</strong> ${escapeHtml(safeLocation)}</p>
-      <p><strong>Notes:</strong> ${escapeHtml(safeNotes || 'None')}</p>
-    `;
-
-    await sendEmail({
-      subject: `[New Lead ${reference}] ${company} - ${safeProductName}`,
-      html: internalEmailHtml,
-      replyTo: email
-    });
-
-    // 3. Trigger WhatsApp delivery integration
-    const whatsappResult = await sendWhatsAppQuotation({
-      phone,
-      customerName: name,
-      reference,
-      productName: safeProductName,
-      quantity: safeQuantity,
-      samplePdfUrl: 'https://lotustubes.com/sample-quotation.pdf'
-    });
-
-    const whatsappStatus = whatsappResult.status || 'not_configured';
-
-    // 4. Persist in MongoDB
+    // 1. Persist immediately to MongoDB Atlas to ensure zero data loss & instant response
     const savedEnquiry = await Enquiry.create({
       reference,
       productId: productId || '',
@@ -188,8 +109,8 @@ export const createEnquiry = async (req, res, next) => {
       userId,
       customerId: customer._id,
       samplePdfUrl,
-      emailStatus,
-      whatsappStatus,
+      emailStatus: 'pending',
+      whatsappStatus: 'pending',
       activityHistory: [
         {
           action: 'Created',
@@ -215,6 +136,99 @@ export const createEnquiry = async (req, res, next) => {
       ip: req.ip
     });
 
+    // 2. Prepare HTML Templates
+    const customerEmailHtml = `
+      <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
+        <div style="background: #10263D; padding: 20px; text-align: center;">
+          <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
+          <p style="color: #CBD5E1; margin: 4px 0 0 0; font-size: 13px;">Stainless Steel Sanitary Solutions &bull; Mumbai, India</p>
+        </div>
+        <div style="padding: 24px;">
+          <h3 style="color: #0284C7; margin-top: 0;">Quotation Request Confirmation</h3>
+          <p>Dear <strong>${escapeHtml(name)}</strong>,</p>
+          <p>Thank you for submitting your quotation request for <strong>${escapeHtml(safeProductName)}</strong>. Your official reference number is <strong>${escapeHtml(reference)}</strong>.</p>
+          
+          <div style="background: #F8FAFC; border: 1px solid #E3E8EF; border-radius: 6px; padding: 16px; margin: 20px 0;">
+            <h4 style="margin: 0 0 10px 0; color: #10263D;">Summary of Requested Specifications:</h4>
+            <p style="margin: 4px 0;"><strong>Product:</strong> ${escapeHtml(safeProductName)}</p>
+            <p style="margin: 4px 0;"><strong>Material Grade:</strong> ${escapeHtml(safeGrade)}</p>
+            <p style="margin: 4px 0;"><strong>Surface Finish:</strong> ${escapeHtml(safeFinish)}</p>
+            ${safeSizes ? `<p style="margin: 4px 0;"><strong>Size / Diameter:</strong> ${escapeHtml(safeSizes)}</p>` : ''}
+            <p style="margin: 4px 0;"><strong>Requested Quantity:</strong> ${escapeHtml(safeQuantity)}</p>
+            <p style="margin: 4px 0;"><strong>Delivery Location:</strong> ${escapeHtml(safeLocation)}</p>
+            ${safeNotes ? `<p style="margin: 4px 0;"><strong>Special Requirements:</strong> ${escapeHtml(safeNotes)}</p>` : ''}
+          </div>
+
+          <p><strong>Sample Quotation Document:</strong></p>
+          <p>You can inspect our standard commercial quotation format here: <a href="https://lotustubes.com/sample-quotation.pdf" style="color: #E83E83; font-weight: bold;">Download Sample Quotation PDF</a></p>
+
+          <div style="background: #FFF0F6; border-left: 4px solid #E83E83; padding: 12px; margin: 20px 0; font-size: 13px; color: #831843;">
+            <strong>Commercial Notice:</strong> A Lotus Tubes sales engineer will review your specification requirements and provide a formal priced quotation including MTC availability, ready stock dispatch status, and delivery lead time.
+          </div>
+
+          <p style="font-size: 13px; color: #64748B;">
+            Sales Desk: +91 99304 30789 | Email: sales@lotustubes.com<br>
+            Office: Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, Khetwadi, Girgaon, Mumbai 400004
+          </p>
+        </div>
+      </div>
+    `;
+
+    const internalEmailHtml = `
+      <h2>New Website Quotation Request (${escapeHtml(reference)})</h2>
+      <p><strong>Customer Name:</strong> ${escapeHtml(name)}</p>
+      <p><strong>Company:</strong> ${escapeHtml(company)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
+      <p><strong>Product:</strong> ${escapeHtml(safeProductName)}</p>
+      <p><strong>Grade:</strong> ${escapeHtml(safeGrade)}</p>
+      <p><strong>Quantity:</strong> ${escapeHtml(safeQuantity)}</p>
+      <p><strong>Delivery Location:</strong> ${escapeHtml(safeLocation)}</p>
+      <p><strong>Notes:</strong> ${escapeHtml(safeNotes || 'None')}</p>
+    `;
+
+    // 3. Asynchronously decouple external notifications to eliminate timeouts
+    setImmediate(async () => {
+      try {
+        const customerEmailResult = await sendEmail({
+          to: email,
+          subject: `[Quotation Request ${reference}] Lotus Tubes - ${safeProductName}`,
+          html: customerEmailHtml,
+          replyTo: 'sales@lotustubes.com'
+        });
+
+        const emailStatus = customerEmailResult.delivered
+          ? 'sent'
+          : customerEmailResult.demoMode
+          ? 'pending'
+          : 'failed';
+
+        await sendEmail({
+          subject: `[New Lead ${reference}] ${company} - ${safeProductName}`,
+          html: internalEmailHtml,
+          replyTo: email
+        });
+
+        const whatsappResult = await sendWhatsAppQuotation({
+          phone,
+          customerName: name,
+          reference,
+          productName: safeProductName,
+          quantity: safeQuantity,
+          samplePdfUrl: 'https://lotustubes.com/sample-quotation.pdf'
+        });
+
+        const whatsappStatus = whatsappResult.status || 'not_configured';
+
+        await Enquiry.findByIdAndUpdate(savedEnquiry._id, {
+          emailStatus,
+          whatsappStatus
+        });
+      } catch (bgError) {
+        console.error('Async notification dispatch error for RFQ', reference, bgError.message);
+      }
+    });
+
     return successResponse(
       res,
       {
@@ -222,10 +236,7 @@ export const createEnquiry = async (req, res, next) => {
         reference,
         status: savedEnquiry.status,
         persisted: true,
-        samplePdfUrl,
-        emailStatus,
-        whatsappStatus,
-        whatsappDirectLink: whatsappResult.directLink || null
+        samplePdfUrl
       },
       'Quotation request submitted and saved successfully',
       201

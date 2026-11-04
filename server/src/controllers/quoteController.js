@@ -196,11 +196,18 @@ export const submitQuote = async (req, res, next) => {
       </div>
     `;
 
-    await sendEmail({
-      to: safeEmail,
-      subject: `[BOQ Received ${reference}] Lotus Tubes - ${safeCompany}`,
-      html: emailHtml,
-      replyTo: 'sales@lotustubes.com'
+    // Asynchronously dispatch confirmation email without blocking or timing out the HTTP response
+    setImmediate(async () => {
+      try {
+        await sendEmail({
+          to: safeEmail,
+          subject: `[BOQ Received ${reference}] Lotus Tubes - ${safeCompany}`,
+          html: emailHtml,
+          replyTo: 'sales@lotustubes.com'
+        });
+      } catch (emailErr) {
+        console.error('Async email dispatch failed for BOQ', reference, emailErr.message);
+      }
     });
 
     return successResponse(

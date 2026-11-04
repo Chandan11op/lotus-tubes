@@ -276,7 +276,7 @@ export const Loader = ({
         {/* Center Disc with Lotus Tubes Brand Icon */}
         <div className={`lotus-loader-logo-disc lotus-loader-logo-disc--${size}`}>
           <img
-            src="/Lotus Tubes Logo.png"
+            src="/new-logo-lotus-tubes-opt.png"
             alt="Lotus Tubes"
             className="lotus-loader-logo-img"
           />

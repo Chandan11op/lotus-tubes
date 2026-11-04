@@ -15,7 +15,7 @@ export const Footer = () => {
           <div className="footer-col footer-col--brand">
             <a href="/" className="footer-brand-link" aria-label="Lotus Tubes - Return to Home">
               <img
-                src="/Lotus Tubes Logo.png"
+                src="/new-logo-lotus-tubes-opt.png"
                 alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves"
                 className="footer-logo"
                 width="180"

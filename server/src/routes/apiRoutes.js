@@ -54,6 +54,13 @@ import {
   deleteTask
 } from '../controllers/taskController.js';
 import { getDashboardMetrics } from '../controllers/reportController.js';
+import {
+  getAgents,
+  getAgentTasks,
+  triggerAgentEnquiryProcessing,
+  approveTask,
+  rejectTask
+} from '../controllers/agentController.js';
 import { validateEnquiry, validateContact, validateQuote } from '../middleware/validateRequest.js';
 import { authenticate, requireStaff, requireSuperAdmin, optionalAuth } from '../middleware/authMiddleware.js';
 import { requireTurnstileForAnonymous } from '../middleware/turnstileMiddleware.js';
@@ -132,5 +139,12 @@ router.post('/contact', publicFormLimiter, validateContact, submitContact);
 
 // Technical Quality Documentation / MTC Request
 router.post('/quality-request', publicFormLimiter, submitQualityRequest);
+
+// AI Business Agents & Super Admin Approval Workflows
+router.get('/agents', authenticate, requireStaff, getAgents);
+router.get('/agents/tasks', authenticate, requireStaff, getAgentTasks);
+router.post('/agents/process-enquiry/:id', authenticate, requireStaff, triggerAgentEnquiryProcessing);
+router.post('/agents/tasks/:id/approve', authenticate, requireSuperAdmin, approveTask);
+router.post('/agents/tasks/:id/reject', authenticate, requireSuperAdmin, rejectTask);
 
 export default router;

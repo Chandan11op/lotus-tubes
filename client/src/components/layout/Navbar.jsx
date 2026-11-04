@@ -13,8 +13,8 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
         {/* Brand Logo */}
         <a href="/" className="brand-logo" aria-label="Lotus Tubes - Return to Home">
           <img
-            src="/Lotus Tubes Logo.png"
-            alt="Lotus Tubes Logo - Stainless Steel Sanitary Solutions"
+            src="/new-logo-lotus-tubes-opt.png"
+            alt="Lotus Tubes - Stainless Steel Sanitary Solutions"
             className="brand-logo__img"
             width="200"
             height="48"

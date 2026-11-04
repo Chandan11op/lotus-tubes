@@ -49,7 +49,7 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
       <aside className="mobile-drawer open active" id="mobile-drawer" style={{ right: 0 }} aria-label="Mobile Navigation Menu">
         <div className="mobile-drawer__header">
           <a href="/" onClick={onClose} className="brand-logo" aria-label="Lotus Tubes - Return to Home">
-            <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="mobile-drawer__logo" />
+            <img src="/new-logo-lotus-tubes-opt.png" alt="Lotus Tubes" className="mobile-drawer__logo" />
           </a>
           <button
             type="button"

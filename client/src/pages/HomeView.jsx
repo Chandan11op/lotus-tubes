@@ -213,7 +213,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 loading="lazy"
               />
               <div className="about-building-overlay" style={{ top: 'auto', bottom: '20px', left: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <img src="/Lotus Tubes Logo.png" alt="Lotus Tubes" className="about-building-logo" style={{ height: '32px' }} />
+                <img src="/new-logo-lotus-tubes-opt.png" alt="Lotus Tubes" className="about-building-logo" style={{ height: '32px' }} />
                 <span style={{ color: '#FFFFFF', fontSize: '11px', fontWeight: 600, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
                   Mumbai Distribution Hub
                 </span>

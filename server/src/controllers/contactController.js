@@ -81,10 +81,17 @@ export const submitContact = async (req, res, next) => {
       </div>
     `;
 
-    await sendEmail({
-      subject: `[Contact Us ${reference}] ${safeSubject} from ${safeName} (${safeCompany})`,
-      html: emailHtml,
-      replyTo: safeEmail
+    // Asynchronously dispatch notification without blocking response
+    setImmediate(async () => {
+      try {
+        await sendEmail({
+          subject: `[Contact Us ${reference}] ${safeSubject} from ${safeName} (${safeCompany})`,
+          html: emailHtml,
+          replyTo: safeEmail
+        });
+      } catch (err) {
+        console.error('Async contact email failed', reference, err.message);
+      }
     });
 
     return successResponse(
@@ -171,10 +178,17 @@ export const submitQualityRequest = async (req, res, next) => {
       </div>
     `;
 
-    await sendEmail({
-      subject: `[Quality Document Request ${reference}] ${safeDocType} - ${safeCompany}`,
-      html: emailHtml,
-      replyTo: safeEmail
+    // Asynchronously dispatch quality doc request notification
+    setImmediate(async () => {
+      try {
+        await sendEmail({
+          subject: `[Quality Document Request ${reference}] ${safeDocType} - ${safeCompany}`,
+          html: emailHtml,
+          replyTo: safeEmail
+        });
+      } catch (err) {
+        console.error('Async quality email failed', reference, err.message);
+      }
     });
 
     return successResponse(
