@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 const DIST_DIR = path.resolve(__dirname, '../dist');
 const BASE_HTML_FILE = path.join(DIST_DIR, 'index.html');
 
-const CANONICAL_BASE = 'https://lotus-tubes-react-design.vercel.app';
+const CANONICAL_BASE = 'https://lotustubes.com';
 
 if (!fs.existsSync(BASE_HTML_FILE)) {
   console.error('Error: dist/index.html does not exist. Run vite build first.');

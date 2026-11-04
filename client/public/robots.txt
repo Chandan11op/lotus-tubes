@@ -4,4 +4,4 @@ Disallow: /crm/
 Disallow: /account
 Disallow: /api/
 
-Sitemap: https://lotus-tubes-react-design.vercel.app/sitemap.xml
+Sitemap: https://lotustubes.com/sitemap.xml

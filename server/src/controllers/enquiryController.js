@@ -104,7 +104,7 @@ export const createEnquiry = async (req, res, next) => {
           </div>
 
           <p><strong>Sample Quotation Document:</strong></p>
-          <p>You can inspect our standard commercial quotation format here: <a href="https://lotus-tubes-react-design.vercel.app/sample-quotation.pdf" style="color: #F00078; font-weight: bold;">Download Sample Quotation PDF</a></p>
+          <p>You can inspect our standard commercial quotation format here: <a href="https://lotustubes.com/sample-quotation.pdf" style="color: #F00078; font-weight: bold;">Download Sample Quotation PDF</a></p>
 
           <div style="background: #FFF0F6; border-left: 4px solid #F00078; padding: 12px; margin: 20px 0; font-size: 13px; color: #831843;">
             <strong>Commercial Notice:</strong> A Lotus Tubes sales engineer will review your specification requirements and provide a formal priced quotation including MTC availability, ready stock dispatch status, and delivery lead time.
@@ -154,7 +154,7 @@ export const createEnquiry = async (req, res, next) => {
       reference,
       productName: safeProductName,
       quantity: safeQuantity,
-      samplePdfUrl: 'https://lotus-tubes-react-design.vercel.app/sample-quotation.pdf'
+      samplePdfUrl: 'https://lotustubes.com/sample-quotation.pdf'
     });
 
     const whatsappStatus = whatsappResult.status || 'not_configured';

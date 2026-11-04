@@ -7,7 +7,7 @@ import {
   updateEnquiry,
   deleteEnquiry
 } from '../controllers/enquiryController.js';
-import { submitContact } from '../controllers/contactController.js';
+import { submitContact, submitQualityRequest } from '../controllers/contactController.js';
 import {
   submitQuote,
   getQuotes,
@@ -129,5 +129,8 @@ router.get('/reports/dashboard', authenticate, requireStaff, getDashboardMetrics
 
 // Contact Us Form
 router.post('/contact', publicFormLimiter, validateContact, submitContact);
+
+// Technical Quality Documentation / MTC Request
+router.post('/quality-request', publicFormLimiter, submitQualityRequest);
 
 export default router;

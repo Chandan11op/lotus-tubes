@@ -20,23 +20,22 @@ export const QualityView = () => {
     }
     setStatus({ state: 'submitting', message: 'Submitting request...' });
     try {
-      await apiService.submitEnquiry({
-        name: formData.company,
-        email: formData.email,
-        phone: 'N/A',
+      const res = await apiService.submitQualityRequest({
         company: formData.company,
-        productName: formData.product || 'Quality Documentation Request',
-        notes: `Document Type Requested: ${formData.docType}`
+        email: formData.email,
+        product: formData.product || 'General Technical Certification',
+        docType: formData.docType
       });
       setStatus({
         state: 'success',
-        message: 'Your technical document request has been received. Our QC desk will verify and dispatch within 24 hours.'
+        message: res?.message || 'Your technical document request has been received. Our QC desk will verify and dispatch within 24 hours.'
       });
       setFormData({ company: '', email: '', product: '', docType: 'EN 10204 3.1 MTC' });
     } catch (err) {
+      console.error('Quality document request error:', err);
       setStatus({
         state: 'error',
-        message: 'Error submitting your request. Please email us directly at sales@lotustubes.com.'
+        message: err.message || 'Error submitting your request. Please email us directly at sales@lotustubes.com.'
       });
     }
   };

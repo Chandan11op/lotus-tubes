@@ -3,26 +3,56 @@
  * Reusable communication layer with authentication, quotation dispatch, and real backend calls
  */
 
-const resolveApiBaseUrl = () => {
-  const envUrl = import.meta.env.VITE_API_BASE_URL;
-  if (envUrl && typeof envUrl === 'string' && envUrl.trim() && !envUrl.includes('localhost:5000')) {
-    return envUrl.trim().replace(/\/$/, '');
+const PRODUCTION_API_URL = 'https://chocolate-goldfinch-515434.hostingersite.com/api';
+const LOCAL_DEV_API_URL = 'http://localhost:5000/api';
+
+/**
+ * Normalizes an API base URL ensuring no trailing slashes and consistent /api mounting
+ */
+export const normalizeApiUrl = (url) => {
+  if (!url || typeof url !== 'string') return '';
+  let cleaned = url.trim().replace(/\/+$/, '');
+  if (!cleaned.endsWith('/api')) {
+    cleaned = `${cleaned}/api`;
   }
+  return cleaned;
+};
+
+export const resolveApiBaseUrl = () => {
+  const envUrl = import.meta.env?.VITE_API_BASE_URL;
 
   // Runtime browser check: never silently default to localhost in production
   if (typeof window !== 'undefined') {
     const host = window.location.hostname;
-    if (host === 'localhost' || host === '127.0.0.1' || host === '::1' || host.startsWith('192.168.') || host.startsWith('10.') || host.startsWith('172.')) {
-      return envUrl ? envUrl.trim().replace(/\/$/, '') : 'http://localhost:5000/api';
+    const isLocal =
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host === '::1' ||
+      host.startsWith('192.168.') ||
+      host.startsWith('10.') ||
+      host.startsWith('172.');
+
+    if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+      const normalized = normalizeApiUrl(envUrl);
+      // In production browsers, do not allow localhost URLs to leak through
+      if (!isLocal && (normalized.includes('localhost') || normalized.includes('127.0.0.1'))) {
+        return PRODUCTION_API_URL;
+      }
+      return normalized;
     }
-    // Deployed environment (Vercel / custom domain)
-    return 'https://lotus-tubes.onrender.com/api';
+
+    return isLocal ? LOCAL_DEV_API_URL : PRODUCTION_API_URL;
   }
 
-  return 'https://lotus-tubes.onrender.com/api';
+  // Node.js / SSG / prerender environment
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+    return normalizeApiUrl(envUrl);
+  }
+
+  return PRODUCTION_API_URL;
 };
 
-const API_BASE_URL = resolveApiBaseUrl();
+export const API_BASE_URL = resolveApiBaseUrl();
 
 const TOKEN_KEY = 'lotus_auth_token';
 const USER_KEY = 'lotus_auth_user';
@@ -71,6 +101,7 @@ async function request(endpoint, options = {}) {
 
   const headers = {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options.headers || {})
   };
@@ -418,6 +449,16 @@ export const apiService = {
     return await request('/contact', {
       method: 'POST',
       body: JSON.stringify(contactData)
+    });
+  },
+
+  /**
+   * Technical Document / Quality Request
+   */
+  async submitQualityRequest(qualityData) {
+    return await request('/quality-request', {
+      method: 'POST',
+      body: JSON.stringify(qualityData)
     });
   }
 };

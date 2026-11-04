@@ -16,7 +16,7 @@ export const config = {
   port: parseInt(process.env.PORT, 10) || 5000,
   nodeEnv,
   isProduction,
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  clientUrl: process.env.CLIENT_URL || 'https://lotustubes.com,https://www.lotustubes.com,http://localhost:5173,http://localhost:5174',
   renderApi: process.env.RENDER_API || 'https://lotus-tubes.onrender.com',
   vercelApi: process.env.VERCEL_API || 'https://lotus-tubes-react-design.vercel.app',
   mongoUri: process.env.MONGODB_URI || (isProduction ? '' : 'mongodb://localhost:27017/lotus_tubes'),

@@ -66,10 +66,41 @@ async function runTests() {
   console.log(`Server listening for tests on port ${PORT}...\n`);
 
   // 2. Health Check
-  await test('Health Check Endpoint (/api/health) returns 200 and DB Connected', async () => {
+  await test('Health Check Endpoint (/api/health) returns 200, status: success, message: Lotus Tubes API is running, and DB Connected', async () => {
     const res = await makeRequest('/health');
-    if (res.status !== 200 || !res.data.success || res.data.data?.database?.status !== 'connected') {
-      throw new Error(`Health check failed: ${JSON.stringify(res.data)}`);
+    if (res.status !== 200) {
+      throw new Error(`Expected status 200, got ${res.status}`);
+    }
+    if (res.data?.status !== 'success') {
+      throw new Error(`Expected status 'success', got '${res.data?.status}'`);
+    }
+    if (res.data?.message !== 'Lotus Tubes API is running') {
+      throw new Error(`Expected message 'Lotus Tubes API is running', got '${res.data?.message}'`);
+    }
+    if (res.data?.database?.status !== 'connected' && res.data?.data?.database?.status !== 'connected') {
+      throw new Error(`Database is not connected: ${JSON.stringify(res.data?.database)}`);
+    }
+  });
+
+  // 2b. CORS Headers for production domain
+  await test('CORS allows requests from https://lotustubes.com and https://www.lotustubes.com', async () => {
+    const res = await makeRequest('/health', {
+      headers: { Origin: 'https://lotustubes.com' }
+    });
+    const allowOrigin = res.headers.get('access-control-allow-origin');
+    if (allowOrigin !== 'https://lotustubes.com') {
+      throw new Error(`CORS did not allow https://lotustubes.com. Got: ${allowOrigin}`);
+    }
+    const allowCredentials = res.headers.get('access-control-allow-credentials');
+    if (allowCredentials !== 'true') {
+      throw new Error(`CORS missing Access-Control-Allow-Credentials. Got: ${allowCredentials}`);
+    }
+
+    const resWww = await makeRequest('/health', {
+      headers: { Origin: 'https://www.lotustubes.com' }
+    });
+    if (resWww.headers.get('access-control-allow-origin') !== 'https://www.lotustubes.com') {
+      throw new Error('CORS did not allow https://www.lotustubes.com');
     }
   });
 
@@ -260,9 +291,29 @@ async function runTests() {
     }
   });
 
+  // 11. Technical Quality Document Request
+  let createdQcRef = null;
+  await test('Quality Documentation Request endpoint generates reference and stores in DB', async () => {
+    const payload = {
+      company: 'Biocon Biologics QC Dept',
+      email: 'qc.verify@biocon.example.com',
+      product: 'SS 316L EP Sanitary Pipe',
+      docType: 'EN 10204 3.1 MTC'
+    };
+    const res = await makeRequest('/quality-request', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    if (res.status !== 201 || !res.data.success || !res.data.data.reference.startsWith('LT-QC-')) {
+      throw new Error(`Quality request failed: ${JSON.stringify(res.data)}`);
+    }
+    createdQcRef = res.data.data.reference;
+  });
+
   // Clean up test records
   if (createdEnquiryRef) await Enquiry.deleteOne({ reference: createdEnquiryRef });
   if (createdQuoteRef) await Quote.deleteOne({ quotationNumber: createdQuoteRef });
+  if (createdQcRef) await Enquiry.deleteOne({ reference: createdQcRef });
 
   // Finish
   server.close();

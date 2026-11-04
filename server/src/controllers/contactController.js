@@ -2,9 +2,10 @@ import { Contact } from '../models/Contact.js';
 import { Customer } from '../models/Customer.js';
 import { Enquiry } from '../models/Enquiry.js';
 import { sendEmail } from '../services/emailService.js';
-import { successResponse } from '../utils/responseHandler.js';
+import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
+import { validateEmail } from '../middleware/validateRequest.js';
 
 export const submitContact = async (req, res, next) => {
   try {
@@ -94,6 +95,95 @@ export const submitContact = async (req, res, next) => {
         persisted: !!savedContact
       },
       'Thank you for contacting Lotus Tubes. Our team will get back to you shortly.',
+      201
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const submitQualityRequest = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { company, email, product, docType, phone } = req.body;
+
+    const safeCompany = sanitizeText(company || '', 120);
+    const safeEmail = (email || '').toLowerCase().trim();
+    const safeProduct = sanitizeText(product || 'General Sanitary Component', 120);
+    const safeDocType = sanitizeText(docType || 'EN 10204 3.1 MTC', 100);
+    const safePhone = sanitizeText(phone || '', 30);
+    const reference = generateReference('LT-QC');
+
+    if (!safeCompany || !safeEmail || !validateEmail(safeEmail)) {
+      return errorResponse(res, 'Company name and a valid email address are required', 422);
+    }
+
+    // Save into customer CRM database
+    let customer = await Customer.findOne({ email: safeEmail });
+    if (!customer) {
+      customer = await Customer.create({
+        name: safeCompany,
+        company: safeCompany,
+        email: safeEmail,
+        phone: safePhone || 'N/A',
+        status: 'Lead',
+        notes: [{ content: `Quality document requested (${reference}): ${safeDocType} for ${safeProduct}`, author: 'QC Portal' }]
+      });
+    } else {
+      customer.notes.push({
+        content: `Quality document requested (${reference}): ${safeDocType} for ${safeProduct}`,
+        author: 'QC Portal'
+      });
+      await customer.save();
+    }
+
+    // Persist as enquiry in CRM
+    await Enquiry.create({
+      reference,
+      productName: `Document Request: ${safeDocType}`,
+      name: safeCompany,
+      company: safeCompany,
+      email: safeEmail,
+      phone: safePhone || 'N/A',
+      location: 'Website Quality Documentation Page',
+      quantity: '1 Document Set',
+      notes: `Requested Document: ${safeDocType}\nProduct/Heat No: ${safeProduct}`,
+      sourceChannel: 'Website RFQ',
+      priority: 'High',
+      status: 'New',
+      customerId: customer._id
+    });
+
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
+        <div style="background: #10263D; padding: 20px; text-align: center;">
+          <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
+          <p style="color: #CBD5E1; margin: 4px 0 0 0; font-size: 13px;">Technical Document & MTC Request</p>
+        </div>
+        <div style="padding: 24px;">
+          <h3>Quality Document Request (${escapeHtml(reference)})</h3>
+          <p><strong>Company:</strong> ${escapeHtml(safeCompany)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(safeEmail)}</p>
+          <p><strong>Phone / WhatsApp:</strong> ${escapeHtml(safePhone || 'N/A')}</p>
+          <p><strong>Requested Document:</strong> ${escapeHtml(safeDocType)}</p>
+          <p><strong>Product / Heat No.:</strong> ${escapeHtml(safeProduct)}</p>
+        </div>
+      </div>
+    `;
+
+    await sendEmail({
+      subject: `[Quality Document Request ${reference}] ${safeDocType} - ${safeCompany}`,
+      html: emailHtml,
+      replyTo: safeEmail
+    });
+
+    return successResponse(
+      res,
+      {
+        received: true,
+        reference
+      },
+      'Your technical document request has been received. Our QC desk will verify and dispatch within 24 hours.',
       201
     );
   } catch (error) {

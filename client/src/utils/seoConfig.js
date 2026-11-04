@@ -5,14 +5,14 @@
  * an effortless single-variable switch to the official production domain once purchased.
  */
 
-// Toggle flag: set to true ONLY once custom domain is purchased, DNS is pointed, and site is live
-export const IS_CUSTOM_DOMAIN_ACTIVE = false;
+// Toggle flag: true for official live custom domain
+export const IS_CUSTOM_DOMAIN_ACTIVE = true;
 
-// Official production domain (for future transition once custom domain is live)
-export const OFFICIAL_PRODUCTION_DOMAIN = 'https://www.lotustubes.com';
+// Official production domain
+export const OFFICIAL_PRODUCTION_DOMAIN = 'https://lotustubes.com';
 
-// Current active primary deployment testing URL (Vercel)
-export const CURRENT_DEPLOYMENT_DOMAIN = 'https://lotus-tubes-react-design.vercel.app';
+// Current active primary deployment domain
+export const CURRENT_DEPLOYMENT_DOMAIN = 'https://lotustubes.com';
 
 /**
  * Resolves the active base URL for self-referencing canonical tags, sitemaps, and structured data.

@@ -45,7 +45,7 @@ export const sendWhatsAppQuotation = async ({ phone, customerName, reference, pr
       type: 'text',
       text: {
         preview_url: true,
-        body: `Dear ${customerName || 'Customer'},\n\nThank you for your interest in Lotus Tubes sanitary products.\n\nYour Quotation Request (Ref: ${reference}) for *${productName || 'Sanitary Component'}* (Qty: ${quantity}) has been registered.\n\nA sample quotation document is available for initial specification review: ${samplePdfUrl || 'https://lotus-tubes-react-design.vercel.app/sample-quotation.pdf'}\n\nOur sales desk will verify final pricing and stock availability shortly.\n\n*Lotus Tubes (Lotus Impex)*\nSales Desk: +91 99304 30789\nEmail: sales@lotustubes.com`
+        body: `Dear ${customerName || 'Customer'},\n\nThank you for your interest in Lotus Tubes sanitary products.\n\nYour Quotation Request (Ref: ${reference}) for *${productName || 'Sanitary Component'}* (Qty: ${quantity}) has been registered.\n\nA sample quotation document is available for initial specification review: ${samplePdfUrl || 'https://lotustubes.com/sample-quotation.pdf'}\n\nOur sales desk will verify final pricing and stock availability shortly.\n\n*Lotus Tubes (Lotus Impex)*\nSales Desk: +91 99304 30789\nEmail: sales@lotustubes.com`
       }
     };
 
