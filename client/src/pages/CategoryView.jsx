@@ -1,29 +1,48 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS, CONFIG } from '../data/siteData';
 import ProductCard from '../components/common/ProductCard';
 import PageHero from '../components/common/PageHero';
 
 export const CategoryView = ({ slug, onOpenEnquiry }) => {
   const cat = CATEGORIES.find((c) => c.slug === slug || c.id === slug) || CATEGORIES[0];
-  const catProducts = PRODUCTS.filter((p) => p.categorySlug === cat.slug || p.category === cat.name);
+  const allCatProducts = useMemo(() => {
+    return PRODUCTS.filter((p) => p.categorySlug === cat.slug || p.category === cat.name);
+  }, [cat]);
+
+  const [selectedGrade, setSelectedGrade] = useState('all');
+  const [selectedFinish, setSelectedFinish] = useState('all');
+
+  const filteredProducts = useMemo(() => {
+    return allCatProducts.filter((p) => {
+      if (selectedGrade !== 'all' && !p.material?.toLowerCase().includes(selectedGrade.toLowerCase())) {
+        return false;
+      }
+      if (selectedFinish !== 'all') {
+        if (selectedFinish === 'EP' && !p.finish?.toLowerCase().includes('electro')) return false;
+        if (selectedFinish === 'MP' && !p.finish?.toLowerCase().includes('mechanical')) return false;
+      }
+      return true;
+    });
+  }, [allCatProducts, selectedGrade, selectedFinish]);
 
   return (
-    <>
+    <div className="category-archive-view">
+      {/* 1. Cinematic Category Hero */}
       <PageHero
-        badge="Hygienic Process Category"
+        badge="Hygienic Process Engineering Category"
         title={cat.name}
-        subtitle="Precision Engineered Stainless Steel Components"
+        subtitle="ASTM A270 &amp; ASME BPE Certified Sanitary Components"
         description={cat.desc}
         slides={[
           {
-            image: catProducts[0]?.image || '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg',
+            image: allCatProducts[0]?.image || '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-003.jpg',
             badge: 'Hygienic Process Category',
             title: cat.name,
             subtitle: 'ASTM & ASME BPE Certified Metallurgy',
             description: cat.desc
           },
           {
-            image: catProducts[1]?.image || '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-002.jpg',
+            image: allCatProducts[1]?.image || '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-002.jpg',
             badge: 'Quality & Surface Finish Assurance',
             title: `Certified ${cat.name} Solutions`,
             subtitle: 'Electro Polished (Ra ≤ 0.38 µm) & Mechanical Polished (Ra ≤ 0.8 µm)',
@@ -31,14 +50,14 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
           }
         ]}
         stats={[
-          { value: `${catProducts.length} Items`, label: 'In This Category' },
+          { value: `${allCatProducts.length} Items`, label: 'In This Collection' },
           { value: 'SS 304 / 316L', label: 'Material Grades' },
           { value: 'EN 10204 3.1', label: 'MTC Supplied' },
-          { value: 'Ready Stock', label: 'Mumbai Sourcing' }
+          { value: 'Girgaon Hub', label: 'Mumbai Stocking' }
         ]}
         actions={[
           <a key="cat" href="/products" className="btn btn--outline">
-            &larr; Full Catalogue
+            &larr; View Full Catalogue
           </a>,
           <button
             key="rfq"
@@ -51,62 +70,130 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
         ]}
       />
 
-      <div className="site-container section">
-        <div className="section-header">
+      {/* 2. Category Specification Bar & In-Category Filter Controls */}
+      <div className="bg-slate-900 border-b border-slate-800 text-slate-300 py-4">
+        <div className="site-container flex flex-wrap items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-slate-400 uppercase tracking-wider">Refine Within Category:</span>
+            
+            {/* Grade Filter Pills */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setSelectedGrade('all')}
+                className={`px-2.5 py-1 rounded text-xs font-mono transition-colors ${
+                  selectedGrade === 'all'
+                    ? 'bg-sky-600 text-white font-semibold'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                All Grades
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedGrade('316')}
+                className={`px-2.5 py-1 rounded text-xs font-mono transition-colors ${
+                  selectedGrade === '316'
+                    ? 'bg-sky-600 text-white font-semibold'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                SS 316L Only
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedGrade('304')}
+                className={`px-2.5 py-1 rounded text-xs font-mono transition-colors ${
+                  selectedGrade === '304'
+                    ? 'bg-sky-600 text-white font-semibold'
+                    : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                SS 304 Only
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400">Showing</span>
+            <span className="font-mono font-bold text-white bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
+              {filteredProducts.length} of {allCatProducts.length}
+            </span>
+            <span className="text-slate-400">items</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Product Grid */}
+      <section className="site-container py-12 sm:py-16">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="section-title">Available {cat.name} Collection</h2>
-            <p className="section-subtitle">
-              Engineered to strict hygienic specifications. Contact our Mumbai sales desk to confirm ready size availability.
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              {cat.name} Engineering Collection
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Precision manufactured to strict hygienic standards. Ready stock in Mumbai with 24-48h dispatch.
             </p>
           </div>
-          <a href="/products" className="btn btn--outline-dark">
-            &larr; Back to Full Catalogue
+          <a href="/products" className="text-xs font-semibold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+            <span>Explore All 30+ Products</span>
+            <span>&rarr;</span>
           </a>
         </div>
 
-        <div className="featured-products-grid">
-          {catProducts.length > 0 ? (
-            catProducts.map((prod) => (
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredProducts.map((prod) => (
               <ProductCard
                 key={prod.slug || prod.id}
                 product={prod}
                 onOpenEnquiry={onOpenEnquiry}
               />
-            ))
-          ) : (
-            <div className="empty-state" style={{ gridColumn: '1 / -1' }}>
-              <p>
-                Additional items in this category are supplied based on customized drawings. Please contact us to confirm availability.
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Technical Buying Guidance Box */}
-        <div className="tech-tabs-section mt-3">
-          <div className="tab-headers">
-            <button type="button" className="tab-btn active">
-              Technical Buying Notes for {cat.name}
+            ))}
+          </div>
+        ) : (
+          <div className="p-12 text-center bg-slate-50 rounded-2xl border border-slate-200">
+            <p className="text-sm text-slate-600">
+              No products match the selected grade filter. Click &ldquo;All Grades&rdquo; to view the complete collection.
+            </p>
+            <button
+              type="button"
+              onClick={() => { setSelectedGrade('all'); setSelectedFinish('all'); }}
+              className="mt-4 btn btn--outline-dark"
+            >
+              Reset Filters
             </button>
           </div>
-          <div className="tab-content-panel active">
-            <h4>Important Sourcing Criteria:</h4>
-            <p>
-              Customers purchasing hygienic components must ensure their requirements match the designated pipe outside diameter (OD) rather than nominal bore (NB) standard pipes. Furthermore, surface finish Ra tolerances and connection type (Tri-Clamp, SMS Union, or Butt Weld) should be confirmed against process operating pressures.
+        )}
+
+        {/* 4. Technical Buying Guidance Callout */}
+        <div className="mt-14 bg-gradient-to-r from-slate-900 to-slate-950 text-white rounded-2xl p-8 sm:p-10 border border-slate-800 shadow-xl">
+          <div className="max-w-3xl">
+            <span className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">
+              Engineering Specification Notes
+            </span>
+            <h3 className="text-xl sm:text-2xl font-bold mt-1 text-white">
+              Sourcing Criteria for {cat.name}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 mt-3 leading-relaxed">
+              When specifying {cat.name} for hygienic process lines, engineers must verify the connection standard (Tri-Clamp, Orbital Butt-Weld, or SMS Union) and confirm that sizing corresponds to <strong>Tube Outside Diameter (OD)</strong> rather than Nominal Bore (NB) pipe schedule dimensions.
             </p>
-            <div className="hero-actions mt-2">
+            <div className="flex flex-wrap gap-3 mt-6">
               <button
                 type="button"
-                className="btn btn--primary quick-rfq-btn"
-                onClick={() => onOpenEnquiry && onOpenEnquiry(cat.slug, cat.name)}
+                onClick={() => onOpenEnquiry && onOpenEnquiry(null, `${cat.name} Technical RFQ`)}
+                className="btn btn--primary"
               >
-                Request Official Quotation
+                Request Quotation for {cat.name} &rarr;
               </button>
+              <a href="/quote" className="btn btn--outline">
+                Submit Detailed Bill of Quantities (BOQ)
+              </a>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 

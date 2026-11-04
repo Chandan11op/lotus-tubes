@@ -1,0 +1,341 @@
+/**
+ * LOTUS TUBES - Custom Animated Logo Loader Styles
+ * Precision Bottom-to-Top Masked Reveal with Animated Architectural Outline Layer
+ */
+
+/* ==============================================================================
+   1. KEYFRAME ANIMATIONS FOR PROGRESSIVE REVEAL & OUTLINE TRACE
+   ============================================================================== */
+
+/* Progressive Bottom-to-Top Fill Reveal Cycle (Indeterminate Mode) */
+@keyframes lotusRevealFromBottom {
+  0% {
+    clip-path: inset(100% 0% 0% 0%);
+    opacity: 0.15;
+  }
+  15% {
+    clip-path: inset(85% 0% 0% 0%);
+    opacity: 0.5;
+  }
+  30% {
+    clip-path: inset(70% 0% 0% 0%);
+  }
+  50% {
+    clip-path: inset(50% 0% 0% 0%);
+    opacity: 0.85;
+  }
+  70% {
+    clip-path: inset(30% 0% 0% 0%);
+  }
+  85% {
+    clip-path: inset(15% 0% 0% 0%);
+  }
+  95%, 100% {
+    clip-path: inset(0% 0% 0% 0%);
+    opacity: 1;
+  }
+}
+
+/* Ascending Laser / Scanline Marker at the Fill Boundary */
+@keyframes lotusScanlineAscend {
+  0% {
+    top: 100%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  98%, 100% {
+    top: 0%;
+    opacity: 0;
+  }
+}
+
+/* Animated Outline Tracing Stroke */
+@keyframes lotusTraceOutline {
+  0% {
+    stroke-dashoffset: 1400;
+    opacity: 0.4;
+  }
+  50% {
+    stroke-dashoffset: 700;
+    opacity: 0.9;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Gentle Ambient Breathing Glow */
+@keyframes lotusAmbientPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 4px 14px rgba(22, 58, 112, 0.15));
+  }
+  50% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 8px 24px rgba(52, 120, 200, 0.35));
+  }
+}
+
+/* ==============================================================================
+   2. LOADER CONTAINER WRAPPERS & VARIANTS
+   ============================================================================== */
+
+.lotus-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+}
+
+/* Fullpage Overlay Modal */
+.lotus-loader-wrapper--fullpage {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(11, 31, 58, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 24px;
+}
+
+/* Inline Section / Container */
+.lotus-loader-wrapper--inline {
+  width: 100%;
+  padding: 48px 24px;
+}
+
+/* Button Embedded (Within RFQ Submit Button) */
+.lotus-loader-wrapper--button {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  width: auto;
+}
+
+/* ==============================================================================
+   3. LOGO REVEAL COMPOSITOR & LAYERS
+   ============================================================================== */
+
+.lotus-loader-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lotusAmbientPulse 3.5s ease-in-out infinite;
+}
+
+/* Sizing Matrix for the Lotus Stage */
+.lotus-loader-stage--sm {
+  width: 72px;
+  height: 48px;
+}
+
+.lotus-loader-stage--md {
+  width: 140px;
+  height: 92px;
+}
+
+.lotus-loader-stage--lg {
+  width: 220px;
+  height: 144px;
+}
+
+.lotus-loader-stage--xl {
+  width: 320px;
+  height: 210px;
+}
+
+.lotus-loader-stage--btn {
+  width: 32px;
+  height: 22px;
+}
+
+/* Layer 1: Background Silhouette Base */
+.lotus-loader-base-silhouette {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.12;
+  filter: grayscale(100%) brightness(1.6);
+  pointer-events: none;
+}
+
+/* Layer 2: Progressive Bottom-to-Top Fill Layer */
+.lotus-loader-fill-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: clip-path 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  will-change: clip-path, opacity;
+}
+
+/* Indeterminate Animation Loop (Bottom to Top Reveal Cycle) */
+.lotus-loader-fill-layer--animated {
+  animation: lotusRevealFromBottom 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+/* Layer 3: Ascending Liquid / Laser Boundary Indicator */
+.lotus-loader-scanline {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3478C8 30%, #E83E83 50%, #3478C8 70%, transparent);
+  box-shadow: 0 0 10px #3478C8, 0 0 18px rgba(232, 62, 131, 0.7);
+  pointer-events: none;
+  animation: lotusScanlineAscend 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+/* Layer 4: Architectural Vector Outline Overlay */
+.lotus-loader-outline-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.lotus-loader-outline-path {
+  fill: none;
+  stroke: var(--steel-blue, #3478C8);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 0;
+  animation: lotusTraceOutline 3.2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 4px rgba(52, 120, 200, 0.6));
+}
+
+.lotus-loader-outline-path--accent {
+  stroke: var(--primary-pink, #E83E83);
+  stroke-width: 2.6;
+  filter: drop-shadow(0 0 6px rgba(232, 62, 131, 0.75));
+}
+
+/* ==============================================================================
+   4. LABELS, STATUS METRICS & PROGRESS RUNNER
+   ============================================================================== */
+
+.lotus-loader-meta {
+  margin-top: 18px;
+  text-align: center;
+  max-width: 380px;
+}
+
+.lotus-loader-brand-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  margin: 0 0 4px 0;
+  text-transform: uppercase;
+}
+
+.lotus-loader-wrapper--inline .lotus-loader-brand-title {
+  color: var(--deep-navy, #0B1F3A);
+}
+
+.lotus-loader-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #E2E8F0;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.lotus-loader-wrapper--inline .lotus-loader-label {
+  color: var(--text-main, #182335);
+}
+
+.lotus-loader-sublabel {
+  font-size: 0.8rem;
+  color: #94A3B8;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Slim Brand Progress Bar */
+.lotus-loader-progress-track {
+  width: 180px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 12px auto 0 auto;
+  position: relative;
+}
+
+.lotus-loader-wrapper--inline .lotus-loader-progress-track {
+  background: #E2E8F0;
+}
+
+.lotus-loader-progress-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, #163A70, #3478C8, #E83E83);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.lotus-loader-progress-fill--indeterminate {
+  width: 45%;
+  animation: lotusProgressRunner 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes lotusProgressRunner {
+  0% {
+    left: -10%;
+    width: 30%;
+  }
+  50% {
+    width: 60%;
+  }
+  100% {
+    left: 80%;
+    width: 30%;
+  }
+}
+
+/* Button variant typography */
+.lotus-loader-btn-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: currentColor;
+}
+
+/* Reduced Motion Override for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .lotus-loader-fill-layer--animated,
+  .lotus-loader-scanline,
+  .lotus-loader-outline-path,
+  .lotus-loader-stage,
+  .lotus-loader-progress-fill--indeterminate {
+    animation: none !important;
+  }
+  .lotus-loader-fill-layer {
+    clip-path: inset(0% 0% 0% 0%) !important;
+    opacity: 1 !important;
+  }
+}
+

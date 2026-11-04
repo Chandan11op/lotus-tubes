@@ -99,7 +99,7 @@ export const CRMSidebar = ({
           <a href="#home" className="crm-sidebar__brand" title="Lotus Tubes - Return to Website">
             <div className="crm-sidebar__brand-logo">
               <img
-                src="/new-logo-lotus-tubes-opt.png"
+                src="/banner-image-opt.png"
                 alt="Lotus Tubes"
               />
             </div>

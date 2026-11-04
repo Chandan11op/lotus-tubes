@@ -575,7 +575,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
       <div className="crm-login-wrapper">
         <div className="crm-login-box">
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <img src="/new-logo-lotus-tubes-opt.png" alt="Lotus Tubes" style={{ maxHeight: '44px', margin: '0 auto 12px auto' }} />
+            <img src="/banner-image-opt.png" alt="Lotus Tubes" style={{ maxHeight: '44px', margin: '0 auto 12px auto' }} />
             <h3 style={{ color: 'var(--crm-navy-dark)', fontSize: '1.35rem', marginBottom: '4px' }}>
               Lotus Tubes Secure Portal
             </h3>
@@ -1303,7 +1303,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               <div className="crm-letterhead-header">
                 <div>
                   <img
-                    src="/new-logo-lotus-tubes-opt.png"
+                    src="/banner-image-opt.png"
                     alt="Lotus Tubes"
                     style={{ maxHeight: '46px', marginBottom: '8px' }}
                   />

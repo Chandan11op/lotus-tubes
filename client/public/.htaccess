@@ -1,28 +1,39 @@
 # ==============================================================================
 # Lotus Tubes - Hostinger Apache / LiteSpeed Web Server Configuration
-# Enables SPA Routing, HTTPS Enforcement, Browser Caching, and Security Headers
+# Enforces Canonical Domain (Non-WWW), HTTPS, UTF-8 Charset, and Security Headers
 # ==============================================================================
+
+# Charset & MIME Encoding Policy (Fixes Seobility Charset Header Issue)
+AddDefaultCharset UTF-8
+
+<IfModule mod_mime.c>
+  AddCharset UTF-8 .html .css .js .xml .json .rss
+</IfModule>
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # 1. Enforce HTTPS redirect
+  # 1. Canonical Domain Enforcement: Redirect www.lotustubes.com -> https://lotustubes.com (301 Permanent)
+  RewriteCond %{HTTP_HOST} ^www\.lotustubes\.com$ [NC]
+  RewriteRule ^(.*)$ https://lotustubes.com/$1 [L,R=301]
+
+  # 2. HTTPS Enforcement: Redirect http://lotustubes.com -> https://lotustubes.com (301 Permanent)
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteRule ^(.*)$ https://lotustubes.com/$1 [L,R=301]
 
-  # 2. Serve directory index.html directly without trailing-slash redirect
+  # 3. Serve physical directory index.html directly without trailing-slash redirect
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteCond %{REQUEST_FILENAME}/index.html -f
   RewriteRule ^(.*[^/])$ $1/index.html [L]
 
-  # 3. Allow existing physical files and directories to be served directly
+  # 4. Allow existing physical files and directories to be served directly
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # 4. Route all other requests to index.html for React Router client-side routing
+  # 5. Route all other requests to index.html for React Router client-side routing
   RewriteRule ^ index.html [L]
 </IfModule>
 
@@ -40,11 +51,13 @@
   ExpiresByType application/pdf "access plus 1 month"
 </IfModule>
 
-# Security Headers
+# Security & Content-Type Headers
 <IfModule mod_headers.c>
+  <FilesMatch "\.(html|htm)$">
+    Header set Content-Type "text/html; charset=UTF-8"
+  </FilesMatch>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
-

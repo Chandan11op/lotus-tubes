@@ -731,7 +731,8 @@ ol {
 }
 
 .brand-logo__img {
-  height: 44px;
+  height: 52px;
+  max-height: 54px;
   width: auto;
   object-fit: contain;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
@@ -3929,5 +3930,1602 @@ video {
 @media (max-width: 360px) {
   .industries-scroll-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==============================================================================
+   LOTUS TUBES — COMPLETE FROM-SCRATCH REDESIGN STYLES
+   Executive Navigation, Asymmetric Editorial Hero & Metallurgy Suites
+   ============================================================================== */
+
+/* 1. EXECUTIVE HEADER & UTILITY BAR */
+.executive-header {
+  position: sticky;
+  top: 0;
+  z-index: 950;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  box-shadow: 0 4px 20px rgba(11, 31, 58, 0.05);
+  transition: all 0.25s ease;
+}
+
+.executive-header--scrolled {
+  box-shadow: 0 10px 30px rgba(11, 31, 58, 0.09);
+  border-bottom-color: #CBD5E1;
+}
+
+.header-utility-bar {
+  background: #0B1F3A;
+  color: #94A3B8;
+  font-size: 12px;
+  line-height: 1;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-utility-bar__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-utility-left,
+.header-utility-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.utility-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #F1F5F9;
+  font-weight: 600;
+}
+
+.utility-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 6px #10B981;
+}
+
+.utility-divider {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.utility-standards {
+  color: #94A3B8;
+  letter-spacing: 0.02em;
+}
+
+.utility-contact-link,
+.utility-auth-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #CBD5E1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.utility-contact-link:hover,
+.utility-auth-link:hover {
+  color: #FFFFFF;
+}
+
+.utility-auth-link {
+  color: #38BDF8;
+  font-weight: 600;
+}
+
+/* 2. MAIN NAV CONTAINER & SIGNIFICANTLY LARGER LOGO */
+.executive-nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 84px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  gap: 20px;
+}
+
+.executive-brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.executive-brand__logo-box {
+  display: flex;
+  align-items: center;
+  /* Noticeably larger, prominent sizing with ample breathing room */
+  padding: 4px 0;
+}
+
+.executive-brand__img {
+  height: 62px;
+  width: auto;
+  max-width: 250px;
+  object-fit: contain;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 2px 4px rgba(11, 31, 58, 0.08));
+}
+
+.executive-brand:hover .executive-brand__img {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* DESKTOP NAV LINKS */
+.executive-nav {
+  display: flex;
+  align-items: center;
+}
+
+.executive-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.executive-nav-item {
+  position: relative;
+}
+
+.executive-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #182335;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.executive-nav-link:hover,
+.executive-nav-item.is-open .executive-nav-link {
+  color: #163A70;
+  background-color: #EAF2FC;
+}
+
+.executive-nav-arrow {
+  transition: transform 0.2s ease;
+}
+
+.executive-nav-item.is-open .executive-nav-arrow {
+  transform: rotate(180deg);
+}
+
+/* 3. EXECUTIVE MEGA MENU */
+.executive-mega-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: -200px;
+  width: 960px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  box-shadow: 0 20px 45px rgba(11, 31, 58, 0.12);
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.executive-nav-item.is-open .executive-mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.executive-mega-menu__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.mega-tagline {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #163A70;
+}
+
+.mega-view-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3478C8;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mega-view-all:hover {
+  color: #163A70;
+  text-decoration: underline;
+}
+
+.executive-mega-menu__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.2fr;
+  gap: 20px;
+}
+
+.executive-mega-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.mega-col-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin-bottom: 12px;
+}
+
+.mega-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mega-link-item {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  padding: 4px 0;
+  border-radius: 4px;
+  transition: transform 0.15s ease;
+}
+
+.mega-link-item:hover {
+  transform: translateX(3px);
+}
+
+.mega-link-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #182335;
+  line-height: 1.3;
+}
+
+.mega-link-item:hover .mega-link-title {
+  color: #163A70;
+}
+
+.mega-link-desc {
+  font-size: 11px;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.mega-link-all {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3478C8;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.executive-mega-feature {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mega-feature-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: #EAF2FC;
+  color: #163A70;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.mega-feature-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+
+.mega-feature-text {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 14px 0;
+}
+
+.mega-feature-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #163A70;
+  color: #FFFFFF;
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.mega-feature-btn:hover {
+  background: #0B1F3A;
+}
+
+/* 4. ACTIONS & PROMINENT BOQ CTA */
+.executive-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.executive-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #182335;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.executive-action-btn:hover {
+  border-color: #3478C8;
+  color: #163A70;
+  background: #EAF2FC;
+}
+
+.profile-active-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border: 1.5px solid #FFFFFF;
+  border-radius: 50%;
+}
+
+.executive-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #163A70;
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(22, 58, 112, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.executive-cta-btn:hover {
+  background: #0B1F3A;
+  box-shadow: 0 6px 20px rgba(11, 31, 58, 0.35);
+  transform: translateY(-1px);
+}
+
+.executive-mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.executive-mobile-toggle span {
+  width: 100%;
+  height: 2.5px;
+  background: #0B1F3A;
+  border-radius: 2px;
+}
+
+/* ==============================================================================
+   5. ASYMMETRIC EDITORIAL HERO SECTION
+   ============================================================================== */
+.editorial-hero {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F4F6F9 100%);
+  padding: 64px 0 54px;
+  border-bottom: 1px solid #E2E8F0;
+  position: relative;
+  overflow: hidden;
+}
+
+.editorial-hero__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.editorial-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #EAF2FC;
+  color: #163A70;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border: 1px solid rgba(52, 120, 200, 0.2);
+}
+
+.eyebrow-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E83E83;
+  box-shadow: 0 0 8px #E83E83;
+}
+
+.editorial-hero__headline {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.12;
+  color: #0B1F3A;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.02em;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(135deg, #163A70 0%, #3478C8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.editorial-hero__lead {
+  font-size: 1.1rem;
+  color: #475569;
+  line-height: 1.65;
+  margin: 0 0 32px 0;
+  max-width: 620px;
+}
+
+.editorial-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #163A70;
+  color: #FFFFFF;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(22, 58, 112, 0.28);
+  transition: all 0.25s ease;
+}
+
+.btn-hero-primary:hover {
+  background: #0B1F3A;
+  box-shadow: 0 8px 24px rgba(11, 31, 58, 0.38);
+  transform: translateY(-2px);
+}
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: #FFFFFF;
+  color: #0B1F3A;
+  border: 1.5px solid #CBD5E1;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-hero-secondary:hover {
+  border-color: #163A70;
+  color: #163A70;
+  background: #F8FAFC;
+}
+
+/* SPEC CALCULATOR INSIDE HERO */
+.hero-spec-calculator {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(11, 31, 58, 0.06);
+  margin-bottom: 28px;
+}
+
+.calc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.calc-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0B1F3A;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.calc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calc-group label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+.calc-select {
+  padding: 8px 10px;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #182335;
+  background: #F8FAFC;
+}
+
+.calc-result-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #EEF2F6;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.calc-metrics {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  color: #475569;
+  flex-wrap: wrap;
+}
+
+.calc-metrics strong {
+  color: #163A70;
+}
+
+.calc-submit-btn {
+  background: #E83E83;
+  color: #FFFFFF;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calc-submit-btn:hover {
+  background: #D02B6F;
+}
+
+.editorial-hero__metrics {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0B1F3A;
+}
+
+.metric-lbl {
+  font-size: 0.8rem;
+  color: #64748B;
+}
+
+.metric-divider {
+  width: 1px;
+  height: 32px;
+  background: #CBD5E1;
+}
+
+/* METALLIC DISPLAY CARD WITH HOTSPOTS */
+.metallic-card-container {
+  position: relative;
+}
+
+.metallic-card {
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 16px;
+  box-shadow: 0 20px 45px rgba(11, 31, 58, 0.1);
+  overflow: hidden;
+}
+
+.metallic-card__header {
+  background: #0B1F3A;
+  color: #FFFFFF;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge-metallic {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #38BDF8;
+}
+
+.badge-heat-code {
+  font-size: 11px;
+  font-family: monospace;
+  color: #94A3B8;
+}
+
+.metallic-card__media {
+  position: relative;
+  background: #F1F5F9;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.metallic-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.metallic-card:hover .metallic-card__img {
+  transform: scale(1.03);
+}
+
+.hotspot-pin {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hotspot-pin--1 { top: 35%; left: 30%; }
+.hotspot-pin--2 { top: 60%; left: 60%; }
+.hotspot-pin--3 { top: 25%; left: 75%; }
+
+.hotspot-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #163A70;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+.hotspot-ping {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(52, 120, 200, 0.45);
+  animation: hotspotPingAnim 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes hotspotPingAnim {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.hotspot-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0B1F3A;
+  color: #FFFFFF;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  width: 220px;
+  line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+}
+
+.hotspot-tooltip strong {
+  display: block;
+  color: #38BDF8;
+  margin-bottom: 2px;
+}
+
+.hotspot-pin:hover .hotspot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  bottom: calc(100% + 12px);
+}
+
+.metallic-card__footer {
+  padding: 16px 20px;
+  background: #FFFFFF;
+  border-top: 1px solid #E2E8F0;
+}
+
+.footer-spec-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.footer-spec-key {
+  font-size: 12px;
+  color: #64748B;
+  display: block;
+}
+
+.footer-spec-val {
+  font-size: 13px;
+  color: #0B1F3A;
+}
+
+.footer-badges-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pill-tag {
+  background: #EAF2FC;
+  color: #163A70;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.floating-cert-badge {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 30px rgba(11, 31, 58, 0.12);
+  max-width: 300px;
+}
+
+.cert-badge-icon {
+  font-size: 24px;
+}
+
+.cert-badge-text strong {
+  display: block;
+  font-size: 12px;
+  color: #0B1F3A;
+}
+
+.cert-badge-text span {
+  font-size: 11px;
+  color: #64748B;
+  line-height: 1.3;
+}
+
+/* ==============================================================================
+   6. STANDARDS STRIP & CERTIFICATION BAR
+   ============================================================================== */
+.standards-strip {
+  background: #0B1F3A;
+  color: #FFFFFF;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.standards-strip__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.standards-strip__title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94A3B8;
+}
+
+.standards-strip__logos {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.standard-item {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #FFFFFF;
+  transition: transform 0.2s ease;
+}
+
+.standard-item:hover {
+  transform: translateY(-2px);
+}
+
+.standard-code {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #38BDF8;
+  letter-spacing: 0.04em;
+}
+
+.standard-desc {
+  font-size: 11px;
+  color: #94A3B8;
+}
+
+/* ==============================================================================
+   7. EDITORIAL SECTION HEADERS
+   ============================================================================== */
+.section-header-editorial {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 48px auto;
+}
+
+.editorial-kicker {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #163A70;
+  margin-bottom: 8px;
+  background: #EAF2FC;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.editorial-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  color: #0B1F3A;
+  line-height: 1.15;
+  margin: 0 0 14px 0;
+  letter-spacing: -0.01em;
+}
+
+.editorial-subtitle {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ==============================================================================
+   8. ASEPTIC FLOW ARCHITECTURE (5-STAGE PIPELINE)
+   ============================================================================== */
+.section-aseptic-flow {
+  padding: 80px 0;
+}
+
+.flow-pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.flow-step-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 24px 18px;
+  box-shadow: 0 4px 14px rgba(11, 31, 58, 0.04);
+  position: relative;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.flow-step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(11, 31, 58, 0.09);
+  border-color: #3478C8;
+}
+
+.flow-step-number {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #CBD5E1;
+  margin-bottom: 8px;
+}
+
+.flow-step-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.flow-step-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.flow-step-desc {
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+  flex-grow: 1;
+}
+
+.flow-step-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: #163A70;
+  background: #EAF2FC;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* ==============================================================================
+   9. CORE COMPONENT SUITES (LARGE PRODUCT CARDS)
+   ============================================================================== */
+.section-component-suites {
+  padding: 84px 0;
+  background: #F4F6F9;
+}
+
+.suites-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.suite-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(11, 31, 58, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.suite-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(11, 31, 58, 0.1);
+  border-color: #3478C8;
+}
+
+.suite-card__media {
+  position: relative;
+  height: 240px;
+  background: #EEF2F6;
+  overflow: hidden;
+}
+
+.suite-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.suite-card:hover .suite-card__img {
+  transform: scale(1.05);
+}
+
+.suite-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #163A70;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.suite-card__body {
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.suite-cat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #3478C8;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.suite-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
+}
+
+.suite-desc {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+}
+
+.suite-specs-list {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.suite-specs-list strong {
+  color: #0B1F3A;
+}
+
+.suite-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #EAF2FC;
+  color: #163A70;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.suite-link:hover {
+  background: #163A70;
+  color: #FFFFFF;
+}
+
+/* ==============================================================================
+   10. METALLURGY COMPARATOR (SS 316L vs SS 304)
+   ============================================================================== */
+.section-comparator {
+  padding: 84px 0;
+  background: #FFFFFF;
+}
+
+.comparator-container {
+  max-width: 960px;
+  margin: 0 auto;
+  border: 1px solid #CBD5E1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(11, 31, 58, 0.06);
+}
+
+.comparator-tabs {
+  display: flex;
+  border-bottom: 1px solid #CBD5E1;
+  background: #F1F5F9;
+}
+
+.comparator-tab {
+  flex: 1;
+  padding: 18px 24px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #475569;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comparator-tab.active {
+  background: #FFFFFF;
+  color: #163A70;
+  border-bottom-color: #163A70;
+}
+
+.comparator-body {
+  padding: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  background: #FFFFFF;
+}
+
+.comparator-badge {
+  display: inline-block;
+  background: #FCE8F0;
+  color: #E83E83;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.comparator-badge--blue {
+  background: #EAF2FC;
+  color: #163A70;
+}
+
+.comparator-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin: 0 0 14px 0;
+}
+
+.comparator-desc {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.65;
+  margin: 0 0 18px 0;
+}
+
+.comparator-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: #334155;
+}
+
+.comparator-bullets li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.comparator-bullets li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #10B981;
+  font-weight: 800;
+}
+
+.btn-comparator-rfq {
+  display: inline-flex;
+  align-items: center;
+  background: #163A70;
+  color: #FFFFFF;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.btn-comparator-rfq:hover {
+  background: #0B1F3A;
+}
+
+.table-heading {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin: 0 0 12px 0;
+}
+
+.metallurgy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.metallurgy-table th {
+  background: #F8FAFC;
+  color: #475569;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid #E2E8F0;
+}
+
+.metallurgy-table td {
+  padding: 12px;
+  border-bottom: 1px solid #EEF2F6;
+  color: #182335;
+}
+
+.highlight-pass {
+  color: #163A70;
+  font-weight: 700;
+}
+
+/* ==============================================================================
+   11. FACILITY & STOCKHUB SECTION
+   ============================================================================== */
+.section-facility {
+  padding: 84px 0;
+  background: #F4F6F9;
+}
+
+.facility-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.facility-media {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(11, 31, 58, 0.1);
+}
+
+.facility-img {
+  width: 100%;
+  height: 440px;
+  object-fit: cover;
+}
+
+.facility-badge-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(11, 31, 58, 0.92);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.facility-badge-inner strong {
+  display: block;
+  font-size: 15px;
+  color: #38BDF8;
+  margin-bottom: 4px;
+}
+
+.facility-badge-inner span {
+  font-size: 12px;
+  color: #E2E8F0;
+  line-height: 1.4;
+}
+
+.facility-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.facility-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.feat-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #EAF2FC;
+  color: #163A70;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.facility-feat strong {
+  font-size: 14px;
+  color: #0B1F3A;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.facility-feat p {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.facility-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ==============================================================================
+   12. INDUSTRIES EDITORIAL GRID
+   ============================================================================== */
+.section-industries {
+  padding: 84px 0;
+  background: #FFFFFF;
+}
+
+.industries-editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.ind-editorial-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(11, 31, 58, 0.04);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.ind-editorial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(11, 31, 58, 0.09);
+  border-color: #3478C8;
+}
+
+.ind-card-img-wrap {
+  position: relative;
+  height: 170px;
+  background: #EEF2F6;
+}
+
+.ind-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.ind-editorial-card:hover .ind-card-img {
+  transform: scale(1.05);
+}
+
+.ind-card-icon {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #0B1F3A;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.ind-card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.ind-card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin: 0 0 6px 0;
+}
+
+.ind-card-desc {
+  font-size: 13px;
+  color: #64748B;
+  line-height: 1.5;
+  margin: 0 0 14px 0;
+  flex-grow: 1;
+}
+
+.ind-card-link {
+  font-size: 13px;
+  font-weight: 700;
+  color: #163A70;
+}
+
+/* ==============================================================================
+   13. RESPONSIVE BREAKPOINTS FOR THE REDESIGN
+   ============================================================================== */
+@media (max-width: 1100px) {
+  .editorial-hero__grid,
+  .facility-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .flow-pipeline-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .industries-editorial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .suites-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .executive-nav {
+    display: none;
+  }
+  .executive-mobile-toggle {
+    display: flex;
+  }
+  .executive-brand__img {
+    height: 48px;
+  }
+  .comparator-body {
+    grid-template-columns: 1fr;
+  }
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .flow-pipeline-grid,
+  .industries-editorial-grid {
+    grid-template-columns: 1fr;
+  }
+  .header-utility-bar {
+    display: none;
+  }
+  .editorial-hero__headline {
+    font-size: 2.2rem;
+  }
+  .editorial-hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .editorial-hero__metrics {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .metric-divider {
+    display: none;
   }
 }

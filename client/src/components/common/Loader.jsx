@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { LotusTubesLoader } from './LotusTubesLoader';
 import './loader.css';
+
+export { LotusTubesLoader };
 
 /**
  * LOTUS TUBES - Unified Branded Animated Loader & Skeleton Suite
@@ -49,26 +52,15 @@ export const Loader = ({
   }, [timeoutMs, variant]);
 
   // ---------------------------------------------------------------------------
-  // Variant: Button Spinner
+  // Variant: Button Spinner (Phase 2 Custom Branded Lotus Reveal)
   // ---------------------------------------------------------------------------
   if (variant === 'button') {
     return (
-      <span
-        role="status"
-        aria-live="polite"
-        className={`lotus-loader-button ${className}`}
-      >
-        <span
-          className="lotus-loader-btn-spinner"
-          style={{
-            borderColor: color === 'currentColor' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(2, 132, 199, 0.25)',
-            borderTopColor: color
-          }}
-          aria-hidden="true"
-        />
-        {label && <span className="lotus-loader-btn-label">{label}</span>}
-        <span className="sr-only">{label || 'Processing action'}</span>
-      </span>
+      <LotusTubesLoader
+        variant="button"
+        label={label || 'Processing...'}
+        className={className}
+      />
     );
   }
 
@@ -276,7 +268,7 @@ export const Loader = ({
         {/* Center Disc with Lotus Tubes Brand Icon */}
         <div className={`lotus-loader-logo-disc lotus-loader-logo-disc--${size}`}>
           <img
-            src="/new-logo-lotus-tubes-opt.png"
+            src="/banner-image-opt.png"
             alt="Lotus Tubes"
             className="lotus-loader-logo-img"
           />
@@ -330,7 +322,13 @@ export const Loader = ({
   if (variant === 'block' || variant === 'branded') {
     return (
       <div className={`lotus-loader-block ${className}`}>
-        {brandedCore}
+        <LotusTubesLoader
+          variant="inline"
+          size={size}
+          label={label}
+          sublabel={sublabel}
+          showBrandTitle={true}
+        />
       </div>
     );
   }
@@ -338,9 +336,14 @@ export const Loader = ({
   // Variant: Fullpage Fixed Overlay
   if (variant === 'fullpage') {
     return (
-      <div className={`lotus-loader-fullpage ${className}`}>
-        {brandedCore}
-      </div>
+      <LotusTubesLoader
+        variant="fullpage"
+        size={size === 'md' ? 'lg' : size}
+        label={label}
+        sublabel={sublabel}
+        showBrandTitle={true}
+        className={className}
+      />
     );
   }
 
@@ -348,12 +351,27 @@ export const Loader = ({
   if (variant === 'overlay') {
     return (
       <div className={`lotus-loader-overlay ${className}`}>
-        {brandedCore}
+        <LotusTubesLoader
+          variant="inline"
+          size={size}
+          label={label}
+          sublabel={sublabel}
+          showBrandTitle={true}
+        />
       </div>
     );
   }
 
-  return brandedCore;
+  return (
+    <LotusTubesLoader
+      variant="inline"
+      size={size}
+      label={label}
+      sublabel={sublabel}
+      showBrandTitle={true}
+      className={className}
+    />
+  );
 };
 
 /**

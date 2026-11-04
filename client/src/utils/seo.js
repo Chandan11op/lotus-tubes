@@ -9,7 +9,7 @@ export const updatePageSEO = ({
   title,
   description,
   path = '',
-  image = '/new-logo-lotus-tubes-opt.png',
+  image = '/banner-image-opt.png',
   type = 'website',
   productData = null,
   breadcrumbs = null,
@@ -121,7 +121,7 @@ export const updatePageSEO = ({
       name: 'Lotus Tubes',
       legalName: 'Lotus Impex',
       url: siteUrl,
-      logo: `${siteUrl}/new-logo-lotus-tubes-opt.png`,
+      logo: `${siteUrl}/banner-image-opt.png`,
       contactPoint: {
         '@type': 'ContactPoint',
         telephone: '+91-9820525200',

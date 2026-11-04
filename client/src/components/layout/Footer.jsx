@@ -7,144 +7,278 @@ export const Footer = () => {
   const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
 
   return (
-    <footer className="site-footer" id="site-footer">
-      <div className="site-container site-footer__main">
-        <div className="footer-grid">
+    <footer className="site-footer bg-slate-950 text-slate-300 relative border-t border-slate-800/80 overflow-hidden" id="site-footer">
+      {/* Decorative ambient metallic background gradient */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-25"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 15% 20%, rgba(2, 132, 199, 0.18) 0%, transparent 45%), radial-gradient(circle at 85% 80%, rgba(224, 75, 124, 0.12) 0%, transparent 50%)'
+        }}
+        aria-hidden="true"
+      />
 
-          {/* Col 1: Brand & Sourcing Statement */}
-          <div className="footer-col footer-col--brand">
-            <a href="/" className="footer-brand-link" aria-label="Lotus Tubes - Return to Home">
-              <img
-                src="/new-logo-lotus-tubes-opt.png"
-                alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves"
-                className="footer-logo"
-                width="180"
-                height="42"
-              />
+      {/* Industrial Dispatch & Standards Ticker Bar */}
+      <div className="border-b border-slate-800 bg-slate-900/90 py-3.5 backdrop-blur-md relative z-10">
+        <div className="site-container flex flex-wrap items-center justify-between gap-4 text-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span className="font-semibold text-slate-200 tracking-wide uppercase">
+              Mumbai Central Stockhub:
+            </span>
+            <span className="text-slate-400 hidden sm:inline">
+              Ready stock for immediate 24-48h dispatch across India & International Ports
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Certified Benchmark:</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">ASTM A270</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">ASME BPE</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">3-A Sanitary</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">EN 10204 3.1 MTC</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="site-container py-14 sm:py-16 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+
+          {/* Col 1: Brand & Sourcing Statement (Cols 1-4) */}
+          <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
+            <div>
+              <a href="/" className="inline-block group mb-5" aria-label="Lotus Tubes - Return to Home">
+                <img
+                  src="/banner-image.png"
+                  alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves"
+                  className="h-14 sm:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-102"
+                  width="240"
+                  height="64"
+                />
+              </a>
+
+              <p className="text-sm text-slate-400 leading-relaxed max-w-sm mb-6">
+                {t(
+                  'footer_desc',
+                  'Lotus Tubes is a premier manufacturer and stockist of stainless steel sanitary tubes, precision fittings, and hygienic valves in SS 304 and SS 316L. Delivering certified Ra ≤ 0.38 µm finishes for sterile pharmaceutical, biotech, dairy, food, and beverage processes.'
+                )}
+              </p>
+
+              {/* Direct Metallurgy Badges */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono font-medium text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span> SS 316L &amp; SS 304
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono font-medium text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> EP &amp; MP Finishes
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono font-medium text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> EN 10204 3.1 MTC
+                </span>
+              </div>
+            </div>
+
+            {/* Social & Contact Channels */}
+            <div className="pt-2">
+              <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-3">
+                Direct Channels &amp; Verification
+              </div>
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://www.linkedin.com/company/lotus-tubes"
+                  className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:bg-sky-600 hover:border-sky-500 transition-all duration-200"
+                  title="LinkedIn Official Company Profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Lotus Tubes LinkedIn Profile"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.64a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28z" />
+                  </svg>
+                </a>
+                <a
+                  href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20have%20an%20enquiry%20regarding%20sanitary%20stainless%20steel%20products.`}
+                  className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 hover:text-white hover:bg-emerald-600 hover:border-emerald-500 transition-all duration-200"
+                  title="WhatsApp Business Direct Desk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp Business Desk"
+                >
+                  <span className="text-base">💬</span>
+                </a>
+                <a
+                  href={`mailto:${'sales' + '@' + 'lotustubes.com'}`}
+                  className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-sky-400 hover:text-white hover:bg-sky-600 hover:border-sky-500 transition-all duration-200"
+                  title="Email Sales Engineering"
+                  aria-label="Email Sales Desk"
+                >
+                  <span className="text-base">✉️</span>
+                </a>
+                <a
+                  href={`tel:${rawPhone}`}
+                  className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-amber-400 hover:text-white hover:bg-amber-600 hover:border-amber-500 transition-all duration-200"
+                  title="Call Lotus Tubes Direct"
+                  aria-label="Direct Phone Line"
+                >
+                  <span className="text-base">📞</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Col 2: Sanitary Product Catalog (Cols 5-7) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">
+              {t('footer_col_products', 'Sanitary Product Suites')}
+            </h4>
+            <ul className="space-y-2.5 text-sm text-slate-400">
+              <li>
+                <a href="/category/sanitary-pipes" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Sanitary Pipes &amp; Tubes (ASTM A270)
+                </a>
+              </li>
+              <li>
+                <a href="/category/sanitary-fittings" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Sanitary Bends, Tees &amp; Reducers
+                </a>
+              </li>
+              <li>
+                <a href="/category/tri-clamp" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Tri-Clamp Ferrules, Clamps &amp; Blanks
+                </a>
+              </li>
+              <li>
+                <a href="/category/gaskets" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  USP Class VI &amp; FDA Sanitary Gaskets
+                </a>
+              </li>
+              <li>
+                <a href="/category/manual-valves" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Hygienic Butterfly &amp; Ball Valves
+                </a>
+              </li>
+              <li>
+                <a href="/category/pneumatic-valves" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Aseptic Diaphragm &amp; Control Valves
+                </a>
+              </li>
+              <li>
+                <a href="/category/tank-cleaning" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Rotary CIP Tank Cleaning Spray Balls
+                </a>
+              </li>
+              <li>
+                <a href="/category/custom-assemblies" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Custom Fabrication &amp; Hygienic Spools
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 3: Industries & Technical Standards (Cols 8-9) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h4 className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">
+              {t('footer_col_industries', 'Sectors & Standards')}
+            </h4>
+            <ul className="space-y-2.5 text-sm text-slate-400">
+              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_pharma', 'Biopharma Processing')}</a></li>
+              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_dairy', 'Dairy & Milk Processing')}</a></li>
+              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_food', 'Food & Beverage Skids')}</a></li>
+              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_brew', 'Breweries & Distilleries')}</a></li>
+              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_water', 'WFI High-Purity Water')}</a></li>
+              <li className="pt-2 border-t border-slate-800/80">
+                <a href="/quality" className="hover:text-white text-xs font-semibold text-slate-300 transition-colors block">
+                  Material Test Certificates (3.1)
+                </a>
+              </li>
+              <li>
+                <a href="/resources" className="hover:text-white text-xs font-semibold text-slate-300 transition-colors block">
+                  Dimensional Specification Charts
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 4: Corporate & Mumbai Desk (Cols 10-12) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">
+              {t('footer_col_office', 'Mumbai Sourcing Hub')}
+            </h4>
+            
+            <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-3">
+              <div>
+                <span className="text-slate-400 block text-[11px] uppercase font-mono mb-1">
+                  {t('label_office', 'Registered Office & Stockhub:')}
+                </span>
+                <p className="text-slate-200 leading-snug">{CONFIG.officeAddress}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 font-mono text-[11px]">
+                <div>
+                  <span className="text-slate-400 block text-[10px]">GSTIN</span>
+                  <span className="text-sky-300 font-medium">{CONFIG.gstin}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block text-[10px]">IEC CODE</span>
+                  <span className="text-sky-300 font-medium">{CONFIG.iec}</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-slate-800">
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">
+                  {t('label_direct_sales', 'Direct Sales Hotline:')}
+                </span>
+                <a href={`tel:${rawPhone}`} className="text-sm font-semibold text-white hover:text-sky-400 transition-colors">
+                  {CONFIG.primaryPhone}
+                </a>
+              </div>
+
+              <div>
+                <span className="text-slate-400 block text-[10px] uppercase font-mono">Sales Desk Email:</span>
+                <a href={`mailto:${'sales' + '@' + 'lotustubes.com'}`} className="text-xs text-slate-300 hover:text-sky-400 transition-colors break-all">
+                  <span>sales</span>&#64;<span>lotustubes</span>&#46;<span>com</span>
+                </a>
+              </div>
+            </div>
+
+            <a
+              href="/quote"
+              className="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs tracking-wide uppercase transition-all shadow-md shadow-sky-900/30"
+            >
+              Request Project BOQ Quote &rarr;
             </a>
-            <p className="footer-description">
-              {t(
-                'footer_desc',
-                'Lotus Tubes is a trusted supplier of premium stainless steel sanitary pipes, fittings, and valves in SS 304 and SS 316L. Supporting hygienic process applications across dairy, pharmaceutical, food, brewery, and water purification sectors worldwide.'
-              )}
-            </p>
-            <div className="footer-badges">
-              <span className="cert-tag">SS 304 • SS 316L</span>
-              <span className="cert-tag">EP • MP Finishes</span>
-              <span className="cert-tag">ASTM A270 / A269 Standards</span>
-            </div>
-            <div className="footer-socials">
-              <a
-                href="https://www.linkedin.com/company/lotus-tubes"
-                className="social-link"
-                title="LinkedIn Company Page"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Lotus Tubes LinkedIn"
-              >
-                <svg className="w-4 h-4 fill-current inline-block" viewBox="0 0 24 24" width="16" height="16">
-                  <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.64a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28z" />
-                </svg>
-              </a>
-              <a
-                href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20have%20an%20enquiry%20regarding%20sanitary%20stainless%20steel%20products.`}
-                className="social-link"
-                title="WhatsApp Business"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp Business Desk"
-              >
-                💬
-              </a>
-              <a href={`mailto:${'sales' + '@' + 'lotustubes.com'}`} className="social-link" title="Email Sales" aria-label="Email Sales Desk">
-                ✉️
-              </a>
-              <a href={`tel:${rawPhone}`} className="social-link" title="Call Lotus Tubes" aria-label="Direct Phone Line">
-                📞
-              </a>
-            </div>
-          </div>
-
-          {/* Col 2: Product Categories */}
-          <div className="footer-col">
-            <h4 className="footer-col__title">{t('footer_col_products', 'Sanitary Products')}</h4>
-            <ul className="footer-links">
-              <li><a href="/category/sanitary-pipes">Sanitary Pipes & Tubes</a></li>
-              <li><a href="/category/sanitary-fittings">Sanitary Pipe Fittings</a></li>
-              <li><a href="/category/tri-clamp">Tri-Clamp Components & Clamps</a></li>
-              <li><a href="/category/gaskets">Sanitary Food-Grade Gaskets</a></li>
-              <li><a href="/category/manual-valves">Hygienic Butterfly & Ball Valves</a></li>
-              <li><a href="/category/pneumatic-valves">Pneumatic Diaphragm Valves</a></li>
-              <li><a href="/category/tank-cleaning">Tank Cleaning Spray Balls</a></li>
-              <li><a href="/category/custom-assemblies">Custom Hygienic Spools</a></li>
-            </ul>
-          </div>
-
-          {/* Col 3: Industries Served */}
-          <div className="footer-col">
-            <h4 className="footer-col__title">{t('footer_col_industries', 'Industries Served')}</h4>
-            <ul className="footer-links">
-              <li><a href="/industries">{t('ind_pharma', 'Pharmaceutical Processing')}</a></li>
-              <li><a href="/industries">{t('ind_biotech', 'Biotechnology & Sterile')}</a></li>
-              <li><a href="/industries">{t('ind_dairy', 'Dairy & Milk Processing')}</a></li>
-              <li><a href="/industries">{t('ind_food', 'Food & Beverage Manufacturing')}</a></li>
-              <li><a href="/industries">{t('ind_brew', 'Breweries & Distilleries')}</a></li>
-              <li><a href="/industries">{t('ind_water', 'WFI & Pure Water Treatment')}</a></li>
-              <li><a href="/industries">{t('ind_chemical', 'Fine Chemical & Cosmetics')}</a></li>
-            </ul>
-          </div>
-
-          {/* Col 4: Corporate & Compliance */}
-          <div className="footer-col">
-            <h4 className="footer-col__title">{t('footer_col_info', 'Information & Portal')}</h4>
-            <ul className="footer-links">
-              <li><a href="/about">{t('nav_about', 'About Lotus Tubes')}</a></li>
-              <li><a href="/quality">{t('nav_quality', 'Material Grades & MTC Policy')}</a></li>
-              <li><a href="/resources">{t('nav_resources', 'Datasheets & Dimension Charts')}</a></li>
-              <li><a href="/contact">{t('nav_contact', 'Contact & Plant Location')}</a></li>
-              <li><a href="/quote">{t('btn_get_quote', 'Submit Detailed BOQ / RFQ')}</a></li>
-            </ul>
-          </div>
-
-          {/* Col 5: Registered Office & Details */}
-          <div className="footer-col footer-col--contact">
-            <h4 className="footer-col__title">{t('footer_col_office', 'Supply & Office Desk')}</h4>
-            <p className="contact-line">
-              <strong>{t('label_office', 'Registered Office:')}</strong><br />
-              {CONFIG.officeAddress}
-            </p>
-            <p className="contact-line">
-              <strong>GSTIN:</strong> {CONFIG.gstin}<br />
-              <strong>IEC:</strong> {CONFIG.iec}
-            </p>
-            <p className="contact-line">
-              <strong>{t('label_direct_sales', 'Direct Sales:')}</strong>{' '}
-              <a href={`tel:${rawPhone}`}>{CONFIG.primaryPhone}</a><br />
-              <strong>Email:</strong>{' '}
-              <a href={`mailto:${'sales' + '@' + 'lotustubes.com'}`}>
-                <span>sales</span>&#64;<span>lotustubes</span>&#46;<span>com</span>
-              </a>
-            </p>
-            <div className="footer-timing">
-              <span>{t('footer_timing', 'Working Hours: Mon - Sat: 9:30 AM - 7:00 PM IST')}</span>
-            </div>
           </div>
 
         </div>
       </div>
 
-      <div className="site-footer__bottom">
-        <div className="site-container site-footer__bottom-inner">
-          <p>
+      {/* Bottom Bar: Copyright & Compliance */}
+      <div className="border-t border-slate-800/80 bg-slate-950/90 py-6 relative z-10">
+        <div className="site-container flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+          <p className="text-center md:text-left">
             &copy; <span>{new Date().getFullYear()}</span> Lotus Tubes ({CONFIG.companyLegalName}).{' '}
-            <span>{t('footer_rights', 'All rights reserved. Stainless Steel Sanitary Solutions.')}</span>
+            <span className="text-slate-400">All rights reserved. Precision Stainless Steel Sanitary Engineering.</span>
           </p>
-          <div className="footer-bottom-links">
-            <a href="/quality">Quality Disclaimer</a>
-            <span className="sep">•</span>
-            <a href="/contact">Privacy Policy</a>
-            <span className="sep">•</span>
-            <a href="/contact">Terms of Supply</a>
+
+          <div className="flex items-center gap-4 flex-wrap justify-center text-slate-400">
+            <a href="/quality" className="hover:text-white transition-colors">Quality Assurance Policy</a>
+            <span className="text-slate-700">•</span>
+            <a href="/contact" className="hover:text-white transition-colors">Privacy Policy</a>
+            <span className="text-slate-700">•</span>
+            <a href="/contact" className="hover:text-white transition-colors">Terms of Supply</a>
+            <span className="text-slate-700">•</span>
+            <a href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</a>
           </div>
         </div>
       </div>
