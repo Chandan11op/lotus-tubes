@@ -1,14 +1,17 @@
 /**
- * Lotus Tubes - Static Route Pre-renderer for Vite & Vercel
+ * Lotus Tubes - Static Route Pre-renderer & SEO Publisher
  * 
- * Generates SEO-optimized, crawlable static HTML files for all core public routes
- * in client/dist/ so search engine crawlers (Seobility, Googlebot, Bingbot)
- * receive 100% semantic HTML, meaningful H1s, rich paragraphs, and crawlable links.
+ * Generates SEO-optimized, crawlable static HTML files for all core public routes,
+ * category archives, and product detail pages in client/dist/ so search engine
+ * crawlers (Googlebot, Bingbot, Seobility) receive 100% semantic HTML with
+ * correct canonical tags, titles, OpenGraph tags, and structured JSON-LD.
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { CATEGORIES, PRODUCTS } from '../src/data/siteData.js';
+import { generateSitemap } from './generateSitemap.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,8 +28,8 @@ if (!fs.existsSync(BASE_HTML_FILE)) {
 
 const baseHtml = fs.readFileSync(BASE_HTML_FILE, 'utf8');
 
-// Public routes with authentic B2B content
-const routes = [
+// 1. Core Public Routes
+const coreRoutes = [
   {
     path: 'products',
     title: 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes',
@@ -192,9 +195,57 @@ const routes = [
   }
 ];
 
+// 2. Category Routes
+const categoryRoutes = CATEGORIES.map((c) => ({
+  path: `category/${c.slug}`,
+  title: `${c.name} | Sanitary Stainless Steel Components | Lotus Tubes`,
+  description: c.description || `Certified sanitary ${c.name} in high-purity SS 304 and SS 316L grades with Ra <= 0.4 µm surface finish for pharmaceutical, food, and dairy process lines.`,
+  h1: `${c.name} — Sanitary Specifications & Standards`,
+  content: `
+    <section style="padding: 32px 0;">
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${c.name}</h1>
+      <p style="font-size: 1.1rem; color: #475569; max-width: 900px; margin-bottom: 24px;">
+        ${c.description || `High-purity sanitary ${c.name} supplied in ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 Mill Test Reports.`}
+      </p>
+      <div style="margin-top: 24px;">
+        <a href="/quote" style="display: inline-block; background: #0284C7; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; margin-right: 16px;">Request Quotation for ${c.name}</a>
+        <a href="/products" style="color: #0284C7; font-weight: 600; text-decoration: none;">&larr; Back to Full Product Catalogue</a>
+      </div>
+    </section>
+  `
+}));
+
+// 3. Product Routes
+const productRoutes = PRODUCTS.map((p) => ({
+  path: `product/${p.slug}`,
+  title: `${p.name} (${p.material}) - Sanitary Specifications | Lotus Tubes`,
+  description: p.overview || `${p.name} in ${p.material} with hygienic finish for pharmaceutical and food process applications.`,
+  h1: `${p.name}`,
+  content: `
+    <section style="padding: 32px 0;">
+      <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${p.name}</h1>
+      <p style="font-size: 1.1rem; color: #475569; max-width: 900px; margin-bottom: 24px;">
+        ${p.overview || `${p.name} engineered for high-purity sanitary process systems.`}
+      </p>
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 20px; border-radius: 8px; margin-bottom: 24px; max-width: 700px;">
+        <h2 style="font-size: 1.25rem; color: #10263D; margin-bottom: 12px;">Technical Specifications</h2>
+        <p style="margin: 4px 0; color: #475569;"><strong>Material Grade:</strong> ${p.material || 'SS 304 / SS 316L'}</p>
+        <p style="margin: 4px 0; color: #475569;"><strong>Standards:</strong> ${p.standard || 'ASTM A270, ASME BPE, 3-A'}</p>
+        <p style="margin: 4px 0; color: #475569;"><strong>Surface Finish:</strong> ${p.finish || 'Ra ≤ 0.4 µm (EP) / Ra ≤ 0.8 µm (MP)'}</p>
+        <p style="margin: 4px 0; color: #475569;"><strong>Category:</strong> ${p.category || 'Sanitary Components'}</p>
+      </div>
+      <div>
+        <a href="/quote" style="display: inline-block; background: #0284C7; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; margin-right: 16px;">Request Formal Quotation</a>
+        <a href="/category/${p.categorySlug}" style="color: #0284C7; font-weight: 600; text-decoration: none;">View Category Range &rarr;</a>
+      </div>
+    </section>
+  `
+}));
+
+const allRoutes = [...coreRoutes, ...categoryRoutes, ...productRoutes];
 let generatedCount = 0;
 
-for (const r of routes) {
+for (const r of allRoutes) {
   const canonicalUrl = `${CANONICAL_BASE}/${r.path}`;
   const targetDir = path.join(DIST_DIR, r.path);
   
@@ -222,8 +273,9 @@ for (const r of routes) {
   const outFilePath = path.join(targetDir, 'index.html');
   fs.writeFileSync(outFilePath, html, 'utf8');
   generatedCount++;
-  console.log(`Pre-rendered route: /${r.path} -> ${path.relative(DIST_DIR, outFilePath)}`);
 }
 
 console.log(`Pre-rendering complete. ${generatedCount} static routes generated in dist/.`);
 
+// Generate and sync updated production sitemap
+generateSitemap();

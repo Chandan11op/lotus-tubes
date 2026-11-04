@@ -23,19 +23,8 @@ export const getSiteUrl = () => {
     return import.meta.env.VITE_SITE_URL.replace(/\/+$/, '');
   }
 
-  // 2. Browser runtime self-referencing detection
-  if (typeof window !== 'undefined' && window.location && window.location.origin) {
-    const origin = window.location.origin.replace(/\/+$/, '');
-    if (IS_CUSTOM_DOMAIN_ACTIVE && origin.includes('lotustubes.com')) {
-      return OFFICIAL_PRODUCTION_DOMAIN;
-    }
-    if (origin.includes('vercel.app')) {
-      return origin;
-    }
-  }
-
-  // 3. Fallback to active current deployment URL
-  return CURRENT_DEPLOYMENT_DOMAIN;
+  // 2. Authoritative primary canonical production domain (https://lotustubes.com)
+  return OFFICIAL_PRODUCTION_DOMAIN;
 };
 
 /**

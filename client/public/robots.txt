@@ -1,7 +1,12 @@
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /sample-quotation.pdf
+Disallow: /crm
 Disallow: /crm/
 Disallow: /account
+Disallow: /account/
+Disallow: /api
 Disallow: /api/
 
 Sitemap: https://lotustubes.com/sitemap.xml

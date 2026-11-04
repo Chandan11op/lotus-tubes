@@ -71,6 +71,17 @@ export const App = () => {
   const [enquiryProduct, setEnquiryProduct] = useState(null);
   const [toasts, setToasts] = useState([]);
 
+  // Client-side domain migration redirect safeguard (secondary defense alongside vercel.json 308)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location) {
+      const hostname = window.location.hostname;
+      if (hostname.includes('vercel.app')) {
+        const target = `https://lotustubes.com${window.location.pathname}${window.location.search}${window.location.hash}`;
+        window.location.replace(target);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     let navTimer = null;
     const handleLocationChange = () => {

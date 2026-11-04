@@ -110,6 +110,13 @@ export const updatePageSEO = ({
   const structuredData = [
     {
       '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Lotus Tubes',
+      alternateName: 'Lotus Impex',
+      url: siteUrl
+    },
+    {
+      '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'Lotus Tubes',
       legalName: 'Lotus Impex',
@@ -169,7 +176,7 @@ export const updatePageSEO = ({
         '@type': 'ListItem',
         position: idx + 1,
         name: b.name,
-        item: `${origin}${b.path}`
+        item: `${siteUrl}${b.path.startsWith('/') ? b.path : `/${b.path}`}`
       }))
     });
   }
