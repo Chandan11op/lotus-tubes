@@ -18,7 +18,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         name: `${selectedGrade} ${selectedCategory}`,
         material: selectedGrade,
         category: selectedCategory,
-        sizes: selectedSize,
+        sizes: selectedSize || 'To be confirmed',
         finish: 'EP / MP, subject to product availability'
       });
     } else {
@@ -449,10 +449,10 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           </div>
           <div className="lt-team-heading">
             <div>
-              <span className="editorial-kicker">Our Team</span>
+              <span className="editorial-kicker">Our AI Team</span>
               <h3>People behind every enquiry.</h3>
             </div>
-            <p>Team responsibilities are being finalised. Individual role descriptions will be published once assigned.</p>
+            <p>These AI team profiles are being configured. Individual role descriptions will be added once responsibilities are assigned.</p>
           </div>
           <div className="lt-team-grid">
             {[
