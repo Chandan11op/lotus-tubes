@@ -45,25 +45,25 @@ export default {
   hero_desc_lead: 'Direct-from-manufacturer hygienic stainless steel process components calibrated to ASTM A270 & ASME BPE standards. Stocked for rapid international dispatch from our central Mumbai warehouse.',
   btn_explore_catalogue: 'Inspect Complete Catalogue',
   btn_fast_rfq: 'Submit Quick BOQ Enquiry',
-  badge_asme: 'ASME BPE COMPLIANT',
-  badge_heat_code: 'HEAT TRACEABLE: LT-316L-9402',
+  badge_asme: 'SS 304 / SS 316L',
+  badge_heat_code: 'PRODUCT DETAILS ON REQUEST',
   badge_mumbai: 'MUMBAI WAREHOUSE STOCK',
 
   // Hero Cutaway Card & Hotspots
-  hotspot_finish_title: 'Ultra-Smooth Finish',
-  hotspot_finish_desc: 'Ra ≤ 0.38 µm (15 µin) Mirror Polish prevents bacterial biofilm growth',
-  hotspot_chem_title: 'Molybdenum Chemistry',
-  hotspot_chem_desc: '2.5% Mo + 17% Cr for maximum pitting and chloride corrosion resistance',
-  hotspot_dim_title: 'Precision Calibration',
-  hotspot_dim_desc: 'Eddy-Current tested with strict ASTM A270 wall thickness consistency',
+  hotspot_finish_title: 'Surface Finish Options',
+  hotspot_finish_desc: 'Electropolished or mechanically polished finish, subject to product availability.',
+  hotspot_chem_title: 'Material Grade Options',
+  hotspot_chem_desc: 'SS 304 and SS 316L grade options, confirmed against the requested product.',
+  hotspot_dim_title: 'Product Specifications',
+  hotspot_dim_desc: 'Dimensions and applicable specifications are confirmed against the supplied product.',
 
   // Core Metrics
-  metric_ra_val: 'Ra ≤ 0.38 µm',
-  metric_ra_lbl: 'Electro-Polished Internal Bore',
-  metric_od_val: '1/2" to 4.0"',
-  metric_od_lbl: 'Ready Stock Sanitary OD',
-  metric_mtc_val: '100% Traceable',
-  metric_mtc_lbl: 'EN 10204 3.1 Test Certificates',
+  metric_ra_val: 'EP / MP',
+  metric_ra_lbl: 'Surface finish options',
+  metric_od_val: 'SS 304 / SS 316L',
+  metric_od_lbl: 'Material grades',
+  metric_mtc_val: 'Product-specific',
+  metric_mtc_lbl: 'Documentation availability',
   metric_stock_val: '24-48 Hours',
   metric_stock_lbl: 'Rapid Mumbai Warehouse Dispatch',
 
@@ -223,7 +223,7 @@ export default {
   quality_step_6: '6. Cleanroom Passivation & End-Capping',
 
   // Footer
-  footer_desc: 'Premier manufacturer and exporter of stainless steel sanitary tubes, ASME BPE hygienic fittings, and biopharma process valves. Direct factory supply from Mumbai.',
+  footer_desc: 'Lotus Tubes supplies stainless steel sanitary pipes, tubes, fittings and valves in SS 304 and SS 316L for pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications. Product specifications and documentation are confirmed against each enquiry.',
   footer_quick_links: 'Quick Navigation',
   footer_core_products: 'Core Product Lines',
   footer_contact_info: 'Contact Sales Desk',
