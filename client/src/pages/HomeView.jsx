@@ -439,7 +439,6 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               <span className="lt-person-label">Founder &amp; CEO</span>
               <h3>Chirag Shah</h3>
               <p>Guiding the business through customer relationships, commercial coordination and stainless steel sanitary product sourcing.</p>
-              <span className="lt-person-note">A fuller personal introduction can be added after the founder approves the final biography.</span>
             </div>
             <div className="lt-founder-side">
               <span className="lt-side-overline">Business base</span>
