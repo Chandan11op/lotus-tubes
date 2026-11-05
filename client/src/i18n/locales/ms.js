@@ -40,10 +40,10 @@ export default {
   mega_desc: 'Tersedia dalam gred SS 304 & SS 316L dengan kemasan kilap cermin EP/MP. Sebut harga pantas dan sijil MTC EN 10204 3.1.',
 
   // Hero Section
-  hero_eyebrow: 'PEMBUATAN ASEPTIK KETEPATAN TINGGI & EKSPORT GLOBAL',
-  hero_title_1: 'Paip Sanitari Keluli Tahan Karat SS 316L / 304, Kelengkapan Tri-Clamp & Injap Proses',
+  hero_eyebrow: 'SS 304 & SS 316L • SISTEM ALIRAN SANITARI KELULI TAHAN KARAT',
+  hero_title_1: 'Paip, Kelengkapan & Injap Sanitari Keluli Tahan Karat',
   hero_subtitle: 'Direka khusus untuk aplikasi pemprosesan higienik dan berketulenan tinggi',
-  hero_desc_lead: 'Komponen paip sanitari terus dari kilang yang ditentukur mengikut piawaian ASTM A270 & ASME BPE. Stok bersedia untuk penghantaran antarabangsa segera dari gudang utama kami di Mumbai.',
+  hero_desc_lead: 'Lotus Tubes membekalkan paip dan tiub sanitari SS 304 dan SS 316L, kelengkapan paip, komponen tri-clamp dan injap higienik untuk aplikasi farmaseutikal, tenusu, makanan dan minuman, kilang bir, kimia dan rawatan air.',
   btn_explore_catalogue: 'Lihat Katalog Lengkap',
   btn_fast_rfq: 'Hantar Permintaan Sebut Harga Pantas',
   badge_asme: 'PATUH ASME BPE',

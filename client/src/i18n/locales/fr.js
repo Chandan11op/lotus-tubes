@@ -40,10 +40,10 @@ export default {
   mega_desc: 'Disponible en nuances SS 304 & SS 316L avec finition polissage miroir EP/MP. Devis rapides et certificats MTC EN 10204 3.1.',
 
   // Hero Section
-  hero_eyebrow: 'FABRICATION DE PRÉCISION POUR PROCÉDÉS ASEPTIQUES & EXPORT MONDIAL',
-  hero_title_1: 'Tubes Sanitaires Inox 316L / 304, Raccords Tri-Clamp & Vannes Hygiéniques',
+  hero_eyebrow: 'INOX 304 • INOX 316L • SYSTÈMES FLUIDIQUES SANITAIRES',
+  hero_title_1: 'Tubes, Raccords et Vannes Sanitaires en Acier Inoxydable',
   hero_subtitle: 'Conçus pour les applications de procédés hygiéniques et ultra-purs',
-  hero_desc_lead: 'Composants de tuyauterie hygiénique en acier inoxydable direct usine, calibrés selon les normes ASTM A270 & ASME BPE. Stock important à Mumbai pour expédition internationale immédiate.',
+  hero_desc_lead: 'Lotus Tubes fournit des tubes sanitaires, des raccords, des composants Tri-Clamp et des vannes hygiéniques en inox SS 304 et SS 316L pour les applications pharmaceutiques, laitières, agroalimentaires, brassicoles, chimiques et de traitement de l’eau.',
   btn_explore_catalogue: 'Consulter le catalogue complet',
   btn_fast_rfq: 'Demander une cotation rapide',
   badge_asme: 'CONFORME ASME BPE',

@@ -332,24 +332,26 @@ for (const langConfig of SUPPORTED_LANGUAGES) {
       `<script type="application/ld+json">\n${jsonLdString}\n  </script>`
     );
 
-    // 7. Inject localized semantic fallback in <main>
-    const mainContent = `
-      <section style="padding: 32px 0;">
-        <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${pageH1}</h1>
-        <p style="font-size: 1.1rem; color: #475569; max-width: 900px; margin-bottom: 24px;">
-          ${pageDesc}
-        </p>
-        <div style="margin-top: 20px;">
-          <a href="${localizePath('/quote', lang)}" style="display: inline-block; background: #0284C7; color: #ffffff; padding: 12px 24px; border-radius: 6px; font-weight: 600; text-decoration: none;">
-            ${t('btn_request_quote', lang, 'Request Quotation')} &rarr;
-          </a>
-        </div>
-      </section>
-    `;
+    // 7. Inject localized semantic fallback in <main> (preserving rich homepage semantic body for root English)
+    if (r.path !== '' || lang !== DEFAULT_LANGUAGE) {
+      const mainContent = `
+        <section style="padding: 32px 0;">
+          <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${pageH1}</h1>
+          <p style="font-size: 1.1rem; color: #475569; max-width: 900px; margin-bottom: 24px;">
+            ${pageDesc}
+          </p>
+          <div style="margin-top: 20px;">
+            <a href="${localizePath('/quote', lang)}" style="display: inline-block; background: #0284C7; color: #ffffff; padding: 12px 24px; border-radius: 6px; font-weight: 600; text-decoration: none;">
+              ${t('btn_request_quote', lang, 'Request Quotation')} &rarr;
+            </a>
+          </div>
+        </section>
+      `;
 
-    const mainRegex = /<main[\s\S]*?<\/main>/i;
-    if (mainRegex.test(html)) {
-      html = html.replace(mainRegex, `<main class="ssr-main">${mainContent}</main>`);
+      const mainRegex = /<main[\s\S]*?<\/main>/i;
+      if (mainRegex.test(html)) {
+        html = html.replace(mainRegex, `<main class="ssr-main">${mainContent}</main>`);
+      }
     }
 
     // 8. For non-default languages, localize SSR header & footer internal links

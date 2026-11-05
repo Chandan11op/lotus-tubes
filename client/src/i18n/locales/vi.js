@@ -40,10 +40,10 @@ export default {
   mega_desc: 'Có sẵn mác inox SS 304 & SS 316L với độ bóng gương EP/MP. Báo giá nhanh kèm chứng chỉ CO/CQ & MTC EN 10204 3.1.',
 
   // Hero Section
-  hero_eyebrow: 'CHẾ TẠO CHÍNH XÁC CHO QUY TRÌNH VÔ TRÙNG & XUẤT KHẨU TOÀN CẦU',
-  hero_title_1: 'Ống Vi Sinh Inox SS 316L / 304, Phụ Kiện Tri-Clamp & Van Vô Trùng',
+  hero_eyebrow: 'INOX SS 304 & SS 316L • HỆ THỐNG DẪN DÒNG VI SINH ĐỘ TINH KHIẾT CAO',
+  hero_title_1: 'Ống, Phụ Kiện & Van Vi Sinh Bằng Thép Không Gỉ',
   hero_subtitle: 'Được thiết kế cho các quy trình chế biến vô trùng và độ tinh khiết cao',
-  hero_desc_lead: 'Phụ kiện và đường ống vi sinh bằng thép không gỉ xuất xưởng trực tiếp, chuẩn hóa theo tiêu chuẩn ASTM A270 & ASME BPE. Lưu kho sẵn sàng tại Mumbai cho các chuyến hàng quốc tế nhanh chóng.',
+  hero_desc_lead: 'Lotus Tubes cung cấp ống vi sinh inox SS 304 và SS 316L, phụ kiện đường ống, khớp nối Tri-Clamp và van vệ sinh cho các ngành dược phẩm, sữa, thực phẩm, đồ uống, nhà máy bia, hóa chất và xử lý nước.',
   btn_explore_catalogue: 'Khám Phá Toàn Bộ Danh Mục',
   btn_fast_rfq: 'Gửi Yêu Cầu Báo Giá Nhanh',
   badge_asme: 'CHUẨN ASME BPE',

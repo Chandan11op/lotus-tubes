@@ -40,10 +40,10 @@ export default {
   mega_desc: 'Verfügbar in 1.4404 (316L) & 1.4301 (304) mit EP/MP Spiegelschliff. Schnelle Angebote & EN 10204 3.1 Prüfzeugnisse.',
 
   // Hero Section
-  hero_eyebrow: 'PRÄZISIONSHERSTELLUNG FÜR ASEPTISCHE PROZESSE & WELTWEITER EXPORT',
-  hero_title_1: 'Edelstahl 316L / 304 Sanitärrohre, Tri-Clamp Formstücke & Hygieneventile',
-  hero_subtitle: 'Entwickelt für aseptische und hochreine Prozessanwendungen',
-  hero_desc_lead: 'Hygienische Edelstahlkomponenten direkt vom Hersteller, kalibriert nach ASTM A270 & ASME BPE. Großes Lager in Mumbai für schnellen internationalen Versand.',
+  hero_eyebrow: 'SS 304 • SS 316L • HYGIENISCHE EDELSTAHL-ROHRSYSTEME',
+  hero_title_1: 'Edelstahl Sanitärrohre, Formstücke & Ventile',
+  hero_subtitle: 'Entwickelt für hygienische und aseptische Prozessanwendungen',
+  hero_desc_lead: 'Lotus Tubes liefert Sanitärrohre, Formstücke, Tri-Clamp-Komponenten und Hygieneventile aus Edelstahl 1.4404 (316L) und 1.4301 (304) für Pharma-, Molkerei-, Lebensmittel-, Brauerei-, Chemie- und Wasseraufbereitungsanlagen.',
   btn_explore_catalogue: 'Gesamten Katalog ansehen',
   btn_fast_rfq: 'Schnelle Preisanfrage senden',
   badge_asme: 'ASME BPE KONFORM',

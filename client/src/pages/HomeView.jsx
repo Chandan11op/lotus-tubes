@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { CATEGORIES, PRODUCTS, INDUSTRIES } from '../data/siteData';
+import { CONFIG, PRODUCTS, INDUSTRIES, LEADERSHIP, AI_TEAM_MEMBERS } from '../data/siteData';
 import ProductImage from '../components/common/ProductImage';
 
-export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
-  const { t } = useLanguage();
+export const HomeView = ({ onOpenEnquiry }) => {
+  const { t, currentLang, localizePath } = useLanguage();
 
   // Interactive Quick Spec Finder State
   const [selectedGrade, setSelectedGrade] = useState('SS 316L');
   const [selectedCategory, setSelectedCategory] = useState('Sanitary Pipes');
-  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedSize, setSelectedSize] = useState('');
+
+  // Core Product Lines Filter Tab State
+  const [activeProductTab, setActiveProductTab] = useState('all');
 
   const handleQuickQuoteClick = (e) => {
     e.preventDefault();
@@ -18,18 +21,90 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         name: `${selectedGrade} ${selectedCategory}`,
         material: selectedGrade,
         category: selectedCategory,
-        sizes: selectedSize || 'To be confirmed',
+        sizes: selectedSize || 'Customer specified dimensions',
         finish: 'EP / MP, subject to product availability'
       });
     } else {
-      window.location.href = '/quote';
+      window.location.href = localizePath('/quote', currentLang);
     }
   };
+
+  const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
+    'Hello Lotus Tubes, I would like to enquire about stainless steel sanitary pipes, fittings and valves.'
+  )}`;
+
+  // Prioritized product selections per section requirements
+  const prioritizedProducts = useMemo(() => {
+    const pipeIds = [
+      'ss-316l-ep-pipe',
+      'ss-304-ep-pipe',
+      'ss-316l-mp-pipe',
+      'ss-304-mp-pipe',
+      'ss-316l-sanitary-pipe',
+      'ss-304-sanitary-pipe',
+      'ss-316l-seamless-sanitary-tube',
+      'ss-304-seamless-sanitary-tube'
+    ];
+    const fittingIds = [
+      'ss-sanitary-90-bend',
+      'ss-sanitary-equal-tee',
+      'ss-sanitary-reducing-tee',
+      'ss-sanitary-concentric-reducer',
+      'ss-sanitary-eccentric-reducer',
+      'ss-316l-fittings-range'
+    ];
+    const triclampIds = [
+      'ss-tri-clamp-ferrule',
+      'ss-tri-clamp-clamp',
+      'silicone-tri-clamp-gasket',
+      'epdm-tri-clamp-gasket',
+      'ptfe-tri-clamp-gasket',
+      'ss-sms-union'
+    ];
+    const valveIds = [
+      'ss-sanitary-butterfly-valve',
+      'ss-316l-diaphragm-valve',
+      'ss-3-piece-ball-valve-tc',
+      'pneumatic-sanitary-ball-valve',
+      'ss-sanitary-non-return-valve',
+      'ss-sanitary-sampling-valve'
+    ];
+
+    if (activeProductTab === 'pipes') {
+      return PRODUCTS.filter((p) => pipeIds.includes(p.id));
+    }
+    if (activeProductTab === 'fittings') {
+      return PRODUCTS.filter((p) => fittingIds.includes(p.id));
+    }
+    if (activeProductTab === 'triclamp') {
+      return PRODUCTS.filter((p) => triclampIds.includes(p.id));
+    }
+    if (activeProductTab === 'valves') {
+      return PRODUCTS.filter((p) => valveIds.includes(p.id));
+    }
+
+    // Default 'all' tab: balanced showcase of flagship items across all 4 categories
+    const allPriorityIds = [
+      'ss-316l-ep-pipe',
+      'ss-304-ep-pipe',
+      'ss-sanitary-90-bend',
+      'ss-sanitary-equal-tee',
+      'ss-tri-clamp-ferrule',
+      'ss-tri-clamp-clamp',
+      'ss-sanitary-butterfly-valve',
+      'ss-316l-diaphragm-valve',
+      'pneumatic-sanitary-ball-valve',
+      'silicone-tri-clamp-gasket',
+      'ss-sanitary-concentric-reducer',
+      'ss-316l-seamless-sanitary-tube'
+    ];
+    return PRODUCTS.filter((p) => allPriorityIds.includes(p.id));
+  }, [activeProductTab]);
 
   return (
     <div className="modern-home-wrapper">
       {/* =========================================================================
-          1. ASYMMETRIC EDITORIAL ENGINEERING HERO SECTION
+          SECTION 1 — HERO SECTION
           ========================================================================= */}
       <section className="editorial-hero" aria-label="Lotus Tubes Executive Overview">
         <div className="site-container editorial-hero__grid">
@@ -38,26 +113,35 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           <div className="editorial-hero__content">
             <div className="editorial-hero__eyebrow">
               <span className="eyebrow-pulse" />
-              <span>SS 304 &bull; SS 316L &bull; EP / MP Finish Options</span>
+              <span>SS 304 &bull; SS 316L &bull; High-Purity Sanitary Flow Systems</span>
             </div>
 
             <h1 className="editorial-hero__headline">
               Stainless Steel <br />
-              <span className="text-gradient-blue">Sanitary Flow Systems.</span>
+              <span className="text-gradient-blue">Sanitary Pipes, Fittings &amp; Valves</span>
             </h1>
 
             <p className="editorial-hero__lead">
-              Lotus Tubes supplies <strong>SS 304 and SS 316L</strong> sanitary pipes and tubes, pipe fittings, tri-clamp components and hygienic valves for pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications.
+              Lotus Tubes supplies SS 304 and SS 316L sanitary pipes and tubes, pipe fittings, tri-clamp components and hygienic valves for pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications.
             </p>
 
-            {/* Action Buttons */}
+            {/* 3 Primary Action Buttons */}
             <div className="editorial-hero__actions">
-              <a href="/quote" className="btn-hero-primary" id="hero-quote-btn">
-                <span>Request Formal BOQ Quotation</span>
+              <a href={localizePath('/products', currentLang)} className="btn-hero-primary" id="hero-explore-btn">
+                <span>Explore Products</span>
                 <span className="btn-arrow">&rarr;</span>
               </a>
-              <a href="/products" className="btn-hero-secondary">
-                <span>Explore Product Catalogue</span>
+              <a href={localizePath('/quote', currentLang)} className="btn-hero-secondary" id="hero-quote-btn">
+                <span>Request a Quote</span>
+              </a>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-hero-whatsapp"
+                id="hero-whatsapp-btn"
+              >
+                <span>🟢 Enquire on WhatsApp</span>
               </a>
             </div>
 
@@ -65,7 +149,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             <div className="hero-spec-calculator">
               <div className="calc-header">
                 <span className="calc-icon">⚡</span>
-                <span className="calc-title">Instant Technical Specification Configurator</span>
+                <span className="calc-title">Interactive Technical Specification Configurator</span>
               </div>
 
               <div className="calc-grid">
@@ -76,8 +160,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     onChange={(e) => setSelectedGrade(e.target.value)}
                     className="calc-select"
                   >
-                    <option value="SS 316L">SS 316L</option>
-                    <option value="SS 304">SS 304</option>
+                    <option value="SS 316L">SS 316L (High Corrosion Resistance)</option>
+                    <option value="SS 304">SS 304 (Standard Hygienic Grade)</option>
                   </select>
                 </div>
 
@@ -89,19 +173,19 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     className="calc-select"
                   >
                     <option value="Sanitary Pipes">Sanitary Pipes &amp; Tubes</option>
-                    <option value="Tri-Clamp Ferrules">Tri-Clamp Ferrules & Clamps</option>
-                    <option value="Pipe Fittings">Sanitary Bends & Equal Tees</option>
-                    <option value="Process Valves">Diaphragm & Butterfly Valves</option>
+                    <option value="Pipe Fittings">Sanitary Pipe Fittings (Bends / Tees / Reducers)</option>
+                    <option value="Tri-Clamp Ferrules">Tri-Clamp Ferrules &amp; Clamps</option>
+                    <option value="Process Valves">Hygienic Process Valves</option>
                   </select>
                 </div>
 
                 <div className="calc-group">
-                  <label>Required Outside Diameter / Size</label>
+                  <label>Required Outside Diameter / Dimensions</label>
                   <input
                     type="text"
                     value={selectedSize}
                     onChange={(e) => setSelectedSize(e.target.value)}
-                    placeholder="Enter your required size"
+                    placeholder='e.g. 1.5" OD, 38mm, or DN40'
                     className="calc-select"
                   />
                 </div>
@@ -109,7 +193,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
 
               <div className="calc-result-bar">
                 <div className="calc-metrics">
-                  <span>Surface Finish: <strong>EP / MP, as available</strong></span>
+                  <span>Surface Finish: <strong>EP / MP, confirmed per enquiry</strong></span>
                   <span>Standard: <strong>Confirmed per product</strong></span>
                   <span>MTC: <strong>Availability confirmed</strong></span>
                 </div>
@@ -119,7 +203,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                   className="calc-submit-btn"
                   id="calc-fast-quote-btn"
                 >
-                  Get Quote for this Spec &rarr;
+                  Request Specification Quote &rarr;
                 </button>
               </div>
             </div>
@@ -146,11 +230,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           {/* Right Column: High-End Industrial Stainless Steel Cutaway Display */}
           <div className="editorial-hero__visual">
             <div className="metallic-card-container">
-              {/* Central Metallic Tube / Component Showcase */}
+              {/* Central Metallic Component Showcase */}
               <div className="metallic-card">
                 <div className="metallic-card__header">
-                  <span className="badge-metallic">{t('badge_asme', 'SS 304 / SS 316L')}</span>
-                  <span className="badge-heat-code">{t('badge_heat_code', 'PRODUCT DETAILS ON REQUEST')}</span>
+                  <span className="badge-metallic">SS 304 / SS 316L</span>
+                  <span className="badge-heat-code">SPECIFICATIONS CONFIRMED ON ENQUIRY</span>
                 </div>
 
                 <div className="metallic-card__media">
@@ -227,244 +311,264 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          2. INTERNATIONAL STANDARDS & ACCREDITATION BANNER
+          SECTION 2 — END-TO-END FLUID HANDLING (3 LOGICAL STAGES: CARRY, CONNECT, CONTROL)
           ========================================================================= */}
-{/* Standards strip removed from homepage layout as requested */}
-
-
-
-      {/* =========================================================================
-          3. ASEPTIC FLOW ARCHITECTURE (INTERACTIVE 5-STAGE PIPELINE)
-          ========================================================================= */}
-      <section className="section-aseptic-flow section--white" aria-label="Hygienic Flow System Overview">
+      <section className="section-aseptic-flow section--white" aria-label="End-to-End Fluid Handling">
         <div className="site-container">
           <div className="section-header-editorial">
             <span className="editorial-kicker">End-to-End Fluid Handling</span>
-            <h2 className="editorial-title">The Complete Hygienic Flow Architecture</h2>
+            <h2 className="editorial-title">The Complete Hygienic Flow Ecosystem</h2>
             <p className="editorial-subtitle">
-              From sanitary tubing to fittings and flow-control components, Lotus Tubes brings the product families used to build, connect and control hygienic process lines into one sourcing conversation.
+              From sanitary tubing to fittings and flow-control components, Lotus Tubes organizes your fluid handling requirements into three logical stages: Carry, Connect, and Control.
             </p>
           </div>
 
-          <div className="flow-pipeline-grid">
-            {/* Step 1 */}
+          <div className="flow-pipeline-grid flow-pipeline-grid--3cols">
+            {/* Stage 01: Carry */}
             <div className="flow-step-card">
-              <div className="flow-step-number">01</div>
-              <div className="flow-step-icon">💧</div>
-              <h3 className="flow-step-title">High-Purity Generation</h3>
-              <p className="flow-step-desc">WFI, purified water, and clean steam lines demanding electrochemically polished internal contact surfaces.</p>
-              <div className="flow-step-pill">SS 316L sanitary tube options</div>
+              <div className="flow-step-top">
+                <span className="flow-step-number">01</span>
+                <span className="flow-step-icon">🚚</span>
+              </div>
+              <h3 className="flow-step-title">Carry</h3>
+              <p className="flow-step-lead">Sanitary stainless steel pipes and tubes.</p>
+              <p className="flow-step-desc">
+                High-purity seamless and welded tubes in SS 304 and SS 316L with EP (electropolished) and MP (mechanically polished) mirror finishes engineered for sterile fluid conveyance without microscopic bacterial crevices.
+              </p>
+              <div className="flow-step-pill">SS 304 &bull; SS 316L &bull; Welded &amp; Seamless</div>
+              <div className="flow-step-action">
+                <a href={localizePath('/category/sanitary-pipes', currentLang)} className="flow-step-link">
+                  <span>Explore Sanitary Tubes</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
             </div>
 
-            {/* Step 2 */}
+            {/* Stage 02: Connect */}
             <div className="flow-step-card">
-              <div className="flow-step-number">02</div>
-              <div className="flow-step-icon">🔄</div>
-              <h3 className="flow-step-title">Process Distribution</h3>
-              <p className="flow-step-desc">Seamless and welded tubes carrying media without microscopic micro-crevices or rough weld roots.</p>
-              <div className="flow-step-pill">EP / MP finishes</div>
+              <div className="flow-step-top">
+                <span className="flow-step-number">02</span>
+                <span className="flow-step-icon">🔗</span>
+              </div>
+              <h3 className="flow-step-title">Connect</h3>
+              <p className="flow-step-lead">Sanitary bends, tees, reducers, ferrules, clamps, unions and gaskets.</p>
+              <p className="flow-step-desc">
+                Precision hygienic fittings ensuring smooth flow transitions and leak-free sterile connections: orbital 90° &amp; 45° bends, equal tees, concentric/eccentric reducers, heavy-duty 13MHH clamps, and medical-grade USP Class VI gaskets.
+              </p>
+              <div className="flow-step-pill">Bends &amp; Tees &bull; Tri-Clamp Ferrules &bull; Gaskets</div>
+              <div className="flow-step-action">
+                <a href={localizePath('/category/sanitary-fittings', currentLang)} className="flow-step-link">
+                  <span>Explore Fittings &amp; Tri-Clamp</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
             </div>
 
-            {/* Step 3 */}
+            {/* Stage 03: Control */}
             <div className="flow-step-card">
-              <div className="flow-step-number">03</div>
-              <div className="flow-step-icon">🔀</div>
-              <h3 className="flow-step-title">Directional Manifolds</h3>
-              <p className="flow-step-desc">Short and long-radius 90° bends, equal tees, and concentric reducers with matched wall thickness.</p>
-              <div className="flow-step-pill">Butt-Weld &amp; Clamp Ends</div>
-            </div>
-
-            {/* Step 4 */}
-            <div className="flow-step-card">
-              <div className="flow-step-number">04</div>
-              <div className="flow-step-icon">🛡️</div>
-              <h3 className="flow-step-title">Aseptic Isolation</h3>
-              <p className="flow-step-desc">Manual and pneumatic valve options for hygienic process applications, subject to model and availability.</p>
-              <div className="flow-step-pill">Gasket materials confirmed per product</div>
-            </div>
-
-            {/* Step 5 */}
-            <div className="flow-step-card">
-              <div className="flow-step-number">05</div>
-              <div className="flow-step-icon">🔗</div>
-              <h3 className="flow-step-title">Quick-Release Coupling</h3>
-              <p className="flow-step-desc">Tri-clamp ferrules, clamps and compatible gasket options for sanitary connections.</p>
-              <div className="flow-step-pill">Connection options confirmed per product</div>
+              <div className="flow-step-top">
+                <span className="flow-step-number">03</span>
+                <span className="flow-step-icon">🎛️</span>
+              </div>
+              <h3 className="flow-step-title">Control</h3>
+              <p className="flow-step-lead">Manual and pneumatic valves for hygienic process applications.</p>
+              <p className="flow-step-desc">
+                Aseptic process regulation with forged SS 316L manual butterfly valves, aseptic diaphragm valves, sanitary ball valves, non-return check valves, and automated pneumatic actuators for sterile CIP/SIP environments.
+              </p>
+              <div className="flow-step-pill">Butterfly &bull; Diaphragm &bull; Pneumatic Actuators</div>
+              <div className="flow-step-action">
+                <a href={localizePath('/category/manual-valves', currentLang)} className="flow-step-link">
+                  <span>Explore Process Valves</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          4. CORE PRODUCT LINES: THREE ARCHITECTURAL COMPONENT SUITES
+          SECTION 3 — CORE PRODUCT LINES
           ========================================================================= */}
-      <section className="section-component-suites section--light" aria-label="Core Component Ranges">
+      <section className="section-component-suites section--light" aria-label="Core Product Lines">
         <div className="site-container">
           <div className="section-header-editorial">
             <span className="editorial-kicker">Core Product Lines</span>
             <h2 className="editorial-title">Engineered for Aseptic Integrity</h2>
             <p className="editorial-subtitle">
-              Explore the principal product groups available through Lotus Tubes. Sizes, finishes, material documents and dispatch timelines are confirmed for each enquiry.
+              Explore the principal product lines available through Lotus Tubes. Specifications, finishes, material test documents, and dispatch timelines are confirmed for each specific enquiry.
             </p>
           </div>
 
-          <div className="suites-grid">
-            {/* Suite 1: Sanitary Tubes */}
-            <div className="suite-card">
-              <div className="suite-card__media">
-                <img
-                  src="/assets/images/categories/sanitary-pipes.jpg"
-                  alt="Sanitary Stainless Steel Pipes & Tubes"
-                  width="600"
-                  height="400"
-                  loading="lazy"
-                  decoding="async"
-                  className="suite-card__img"
-                />
-                <span className="suite-badge">Priority Line</span>
-              </div>
-              <div className="suite-card__body">
-                <span className="suite-cat-label">Product options</span>
-                <h3 className="suite-title">Sanitary Pipes &amp; Tubes</h3>
-                <p className="suite-desc">
-                  SS 304 and SS 316L sanitary pipes and tubes in welded or seamless options, with EP and MP finishes as available.
-                </p>
-                <div className="suite-specs-list">
-                  <div><strong>Grades:</strong> SS 316L / SS 304</div>
-                  <div><strong>Sizes:</strong> 1/2&quot; to 4.0&quot; OD (12.7 to 101.6 mm)</div>
-                  <div><strong>Finish:</strong> EP / MP, as available</div>
-                </div>
-                <div className="suite-actions">
-                  <a href="/category/sanitary-pipes" className="suite-link">
-                    <span>Inspect Sanitary Tubing Catalogue</span>
-                    <span>&rarr;</span>
-                  </a>
-                </div>
-              </div>
-            </div>
+          {/* Interactive Category Navigation Tabs */}
+          <div className="core-tabs-bar" role="tablist" aria-label="Product Categories">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeProductTab === 'all'}
+              className={`core-tab-btn ${activeProductTab === 'all' ? 'is-active' : ''}`}
+              onClick={() => setActiveProductTab('all')}
+            >
+              All Core Products
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeProductTab === 'pipes'}
+              className={`core-tab-btn ${activeProductTab === 'pipes' ? 'is-active' : ''}`}
+              onClick={() => setActiveProductTab('pipes')}
+            >
+              Sanitary Pipes &amp; Tubes
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeProductTab === 'fittings'}
+              className={`core-tab-btn ${activeProductTab === 'fittings' ? 'is-active' : ''}`}
+              onClick={() => setActiveProductTab('fittings')}
+            >
+              Sanitary Pipe Fittings
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeProductTab === 'triclamp'}
+              className={`core-tab-btn ${activeProductTab === 'triclamp' ? 'is-active' : ''}`}
+              onClick={() => setActiveProductTab('triclamp')}
+            >
+              Tri-Clamp Components &amp; Gaskets
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeProductTab === 'valves'}
+              className={`core-tab-btn ${activeProductTab === 'valves' ? 'is-active' : ''}`}
+              onClick={() => setActiveProductTab('valves')}
+            >
+              Hygienic Process Valves
+            </button>
+          </div>
 
-            {/* Suite 2: Sanitary Pipe Fittings & Tri-Clamp */}
-            <div className="suite-card">
-              <div className="suite-card__media">
-                <img
-                  src="/assets/images/categories/sanitary-fittings.jpg"
-                  alt="Sanitary Pipe Fittings, Bends & Tri-Clamps"
-                  width="600"
-                  height="400"
-                  loading="lazy"
-                  decoding="async"
-                  className="suite-card__img"
-                />
-                <span className="suite-badge">Check Availability</span>
-              </div>
-              <div className="suite-card__body">
-                <span className="suite-cat-label">Hygienic Flow Components</span>
-                <h3 className="suite-title">Pipe Fittings &amp; Tri-Clamp Systems</h3>
-                <p className="suite-desc">
-                  90° and 45° bends, equal tees, reducing tees, concentric &amp; eccentric reducers, precision heavy-duty 13MHH clamps, and medical-grade silicone gaskets.
-                </p>
-                <div className="suite-specs-list">
-                  <div><strong>Standards:</strong> 3-A, SMS, DIN, ISO</div>
-                  <div><strong>Ends:</strong> Butt-Weld, Tri-Clamp, SMS/DIN Union</div>
-                  <div><strong>Gaskets:</strong> Silicone, EPDM, Viton, PTFE</div>
-                </div>
-                <div className="suite-actions">
-                  <a href="/category/sanitary-fittings" className="suite-link">
-                    <span>Inspect Fittings &amp; Ferrules Range</span>
-                    <span>&rarr;</span>
-                  </a>
-                </div>
-              </div>
-            </div>
+          {/* Responsive Core Products Grid */}
+          <div className="core-products-grid">
+            {prioritizedProducts.map((p) => {
+              const productUrl = localizePath(`/product/${p.slug || p.id}`, currentLang);
+              return (
+                <article key={p.id} className="core-product-card">
+                  <div className="core-product-card__media">
+                    <a href={productUrl} tabIndex="-1" aria-hidden="true">
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        width="300"
+                        height="225"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </a>
+                  </div>
 
-            {/* Suite 3: Sanitary Valves & Actuation */}
-            <div className="suite-card">
-              <div className="suite-card__media">
-                <img
-                  src="/assets/images/categories/manual-valves.jpg"
-                  alt="Sanitary Butterfly & Diaphragm Process Valves"
-                  width="600"
-                  height="400"
-                  loading="lazy"
-                  decoding="async"
-                  className="suite-card__img"
-                />
-                <span className="suite-badge">Aseptic Control</span>
-              </div>
-              <div className="suite-card__body">
-                <span className="suite-cat-label">Sterile Flow Regulation</span>
-                <h3 className="suite-title">Hygienic Process Valves</h3>
-                <p className="suite-desc">
-                  Product options include manual and pneumatic butterfly valves, diaphragm valves, ball valves, non-return valves and sampling valves, subject to availability.
-                </p>
-                <div className="suite-specs-list">
-                  <div><strong>Body:</strong> Forged / Investment Cast SS 316L</div>
-                  <div><strong>Operation:</strong> Manual Multi-Position / Pneumatic</div>
-                  <div><strong>Pressure:</strong> Up to 10 Bar (145 PSI) WOG</div>
-                </div>
-                <div className="suite-actions">
-                  <a href="/category/manual-valves" className="suite-link">
-                    <span>Inspect Process Valves Catalogue</span>
-                    <span>&rarr;</span>
-                  </a>
-                </div>
-              </div>
-            </div>
+                  <div className="core-product-card__body">
+                    <div className="core-product-card__tags">
+                      <span className="core-tag core-tag--grade">{p.material || 'SS 316L / 304'}</span>
+                      {p.finish && (
+                        <span className="core-tag core-tag--finish">{p.finish.split(' ')[0]}</span>
+                      )}
+                    </div>
+
+                    <h3 className="core-product-card__title">
+                      <a href={productUrl}>{p.name}</a>
+                    </h3>
+
+                    <p className="core-product-card__specs">
+                      {p.standard ? `Standard: ${p.standard}` : 'Specification confirmed on enquiry'}
+                    </p>
+
+                    <div className="core-product-card__actions">
+                      <a href={productUrl} className="core-btn-explore">
+                        <span>Explore</span>
+                        <span>&rarr;</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => onOpenEnquiry && onOpenEnquiry(p, p.name)}
+                        className="core-btn-rfq"
+                      >
+                        Request Quote
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          {/* Section Footer Callout */}
+          <div className="text-center mt-10">
+            <a href={localizePath('/products', currentLang)} className="btn-hero-primary inline-flex">
+              <span>View Full 30+ Sanitary Component Catalogue</span>
+              <span className="btn-arrow">&rarr;</span>
+            </a>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          5. INTERACTIVE METALLURGY & FINISH COMPARATOR (SS 316L vs SS 304)
+          SECTION 4 — ABOUT US & OUR AI TEAM
           ========================================================================= */}
-{/* Material Engineering comparator removed from homepage layout as requested */}
-
-
-
-      {/* =========================================================================
-          6. IMMEDIATE AVAILABILITY & ENQUIRY COORDINATION
-          ========================================================================= */}
-      {/* ABOUT LOTUS TUBES — LEADERSHIP & TEAM */}
       <section className="lt-about-section" id="about-lotus-tubes" aria-labelledby="lt-about-title">
         <div className="site-container">
+          {/* Company Introduction */}
           <div className="lt-about-intro">
             <span className="editorial-kicker">About Lotus Tubes</span>
-            <h2 className="editorial-title" id="lt-about-title">A focused team for dependable sanitary flow sourcing.</h2>
-            <p>Lotus Tubes supplies stainless steel sanitary pipes, tubes, fittings and valves in SS 304 and SS 316L. Based in Mumbai, we support hygienic process requirements across pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications.</p>
-            <p>Our approach is straightforward: understand the application, confirm material and dimensions, and provide a clear quotation based on actual availability. Specifications, finishes, sizes, applicable standards and documentation are confirmed for each supply.</p>
+            <h2 className="editorial-title" id="lt-about-title">
+              A focused team for dependable sanitary flow sourcing.
+            </h2>
+            <p>
+              Lotus Tubes supplies stainless steel sanitary pipes and tubes, fittings and valves in SS 304 and SS 316L. Based in Mumbai, India, the company supports hygienic process requirements across pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment industries.
+            </p>
+            <p>
+              Our approach is focused on understanding customer requirements, confirming product specifications and providing suitable sourcing and quotation options based on actual availability.
+            </p>
           </div>
+
+          {/* Founder / CEO Profile Card */}
           <div className="lt-founder-panel">
             <div className="lt-founder-mark" aria-hidden="true">LT</div>
             <div className="lt-founder-copy">
-              <span className="lt-person-label">Founder &amp; CEO</span>
-              <h3>Chirag Shah</h3>
-              <p>Guiding the business through customer relationships, commercial coordination and stainless steel sanitary product sourcing.</p>
+              <span className="lt-person-label">{LEADERSHIP.designation}</span>
+              <h3>{LEADERSHIP.name}</h3>
+              <p>{LEADERSHIP.summary}</p>
             </div>
             <div className="lt-founder-side">
-              <span className="lt-side-overline">Business base</span>
-              <strong>Mumbai, Maharashtra</strong>
-              <span>India</span>
+              <span className="lt-side-overline">Business Base</span>
+              <strong>{LEADERSHIP.location.split(',')[0]}</strong>
+              <span>{LEADERSHIP.location.split(',').slice(1).join(',')}</span>
             </div>
           </div>
+
+          {/* Our AI Team Subsection */}
           <div className="lt-team-heading">
             <div>
               <span className="editorial-kicker">Our AI Team</span>
               <h3>AI agents supporting Lotus Tubes.</h3>
             </div>
-            <p>These AI team profiles are being configured. Individual role descriptions will be added once responsibilities are assigned.</p>
+            <p>
+              These AI team profiles are being configured. Individual role descriptions will be added once responsibilities are assigned.
+            </p>
           </div>
+
+          {/* AI Team 4-Card Responsive Grid */}
           <div className="lt-team-grid">
-            {[
-              { name: 'Ananya Mehta', email: 'ananyamehta@lotustubes.com', initial: 'AM' },
-              { name: 'Riya Shah', email: 'riyashah@lotustubes.com', initial: 'RS' },
-              { name: 'Neha Desai', email: 'nehadesai@lotustubes.com', initial: 'ND' },
-              { name: 'Arjun Yada', email: 'arjunyadav@lotustubes.com', initial: 'AY' }
-            ].map((member) => (
-              <article className="lt-team-card" key={member.email}>
+            {AI_TEAM_MEMBERS.map((member) => (
+              <article className="lt-team-card" key={member.id}>
                 <div className="lt-team-avatar" aria-hidden="true">{member.initial}</div>
                 <div className="lt-team-info">
                   <h4>{member.name}</h4>
-                  <a href={`mailto:${member.email}`}>{member.email}</a>
+                  {/* Role left completely blank per strict requirement */}
+                  {/* Email rendered as clean text without misleading active mailto link */}
+                  <span className="lt-team-email">{member.email}</span>
+                  <span className="lt-team-tag">Account Setup in Progress</span>
                 </div>
               </article>
             ))}
@@ -472,6 +576,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         </div>
       </section>
 
+      {/* =========================================================================
+          SECTION 5 — IMMEDIATE AVAILABILITY
+          ========================================================================= */}
       <section className="section-facility section--light" aria-label="Immediate product availability">
         <div className="site-container facility-grid">
           <div className="facility-media">
@@ -479,6 +586,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               src="/assets/images/categories/sanitary-pipes.jpg"
               alt="Stainless steel sanitary pipes available through Lotus Tubes"
               className="facility-img"
+              width="600"
+              height="450"
+              loading="lazy"
             />
             <div className="facility-badge-overlay">
               <div className="facility-badge-inner">
@@ -499,14 +609,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               <div className="facility-feat">
                 <span className="feat-check">✓</span>
                 <div>
-                  <strong>Material &amp; Product Confirmation:</strong>
+                  <strong>Product Availability Confirmation:</strong>
                   <p>Confirm the required product family and SS 304 or SS 316L grade against your application.</p>
                 </div>
               </div>
               <div className="facility-feat">
                 <span className="feat-check">✓</span>
                 <div>
-                  <strong>Size &amp; Finish Verification:</strong>
+                  <strong>Size &amp; Specification Verification:</strong>
                   <p>Outside diameter, wall thickness, length, connection type and EP or MP finish are checked against the requested supply.</p>
                 </div>
               </div>
@@ -519,13 +629,21 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </div>
             </div>
 
+            {/* 3 Call-To-Action Options */}
             <div className="facility-actions">
-              <a href="/contact" className="btn-hero-primary">
-                <span>Connect with Mumbai Sales Desk</span>
+              <button
+                type="button"
+                onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Immediate Availability & Stock Verification')}
+                className="btn-hero-primary"
+              >
+                <span>Check Availability</span>
                 <span>&rarr;</span>
+              </button>
+              <a href={localizePath('/quote', currentLang)} className="btn-hero-secondary">
+                <span>Request a Quote</span>
               </a>
-              <a href="/quality" className="btn-hero-secondary">
-                <span>Inspect Quality Verification Protocol</span>
+              <a href={localizePath('/contact', currentLang)} className="btn-hero-secondary">
+                <span>Contact Sales</span>
               </a>
             </div>
           </div>
@@ -533,21 +651,21 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          7. PROCESS INDUSTRIES WE SERVE
+          SECTION 6 — INDUSTRIAL APPLICATIONS (8 HYGIENIC PROCESS SECTORS)
           ========================================================================= */}
-      <section className="section-industries section--white" aria-label="Industries Served">
+      <section className="section-industries section--white" aria-label="Industrial Applications">
         <div className="site-container">
           <div className="section-header-editorial">
             <span className="editorial-kicker">Industrial Applications</span>
             <h2 className="editorial-title">Product options for hygienic process industries</h2>
             <p className="editorial-subtitle">
-              Product categories support hygienic process requirements across pharmaceutical, biotechnology, dairy, food and beverage, brewery, chemical and water-treatment applications.
+              Product categories support hygienic process requirements across pharmaceutical, biotechnology, dairy processing, food processing, food &amp; beverage, breweries, chemical processing and water treatment applications.
             </p>
           </div>
 
           <div className="industries-editorial-grid">
             {INDUSTRIES.map((ind) => (
-              <a href="/industries" key={ind.slug} className="ind-editorial-card">
+              <a href={localizePath('/industries', currentLang)} key={ind.slug} className="ind-editorial-card">
                 <div className="ind-card-img-wrap">
                   <ProductImage
                     src={`/assets/images/industries/${ind.slug}.jpg`}
@@ -561,7 +679,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 </div>
                 <div className="ind-card-body">
                   <h3 className="ind-card-title">{ind.name}</h3>
-                  <p className="ind-card-desc">{ind.desc || 'Sanitary fluid handling product options for hygienic process applications.'}</p>
+                  <p className="ind-card-desc">
+                    {ind.summary || ind.desc || 'Sanitary fluid handling product options for hygienic process applications.'}
+                  </p>
                   <span className="ind-card-link">View Application Standards &rarr;</span>
                 </div>
               </a>

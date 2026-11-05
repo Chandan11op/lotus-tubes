@@ -39,10 +39,10 @@ export default {
   mega_desc: 'Available in SS 304 & SS 316L with EP/MP finishes. Fast quotations & MTC documentation.',
 
   // Hero Section
-  hero_eyebrow: 'PRECISION ASEPTIC MANUFACTURING & GLOBAL SUPPLY',
-  hero_title_1: 'SS 316L / 304 Sanitary Pipes, Fittings & High-Purity Valves',
+  hero_eyebrow: 'SS 304 • SS 316L • High-Purity Sanitary Flow Systems',
+  hero_title_1: 'Stainless Steel Sanitary Pipes, Fittings & Valves',
   hero_subtitle: 'Engineered for Hygienic & Aseptic Process Applications',
-  hero_desc_lead: 'Direct-from-manufacturer hygienic stainless steel process components calibrated to ASTM A270 & ASME BPE standards. Stocked for rapid international dispatch from our central Mumbai warehouse.',
+  hero_desc_lead: 'Lotus Tubes supplies SS 304 and SS 316L sanitary pipes and tubes, pipe fittings, tri-clamp components and hygienic valves for pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications.',
   btn_explore_catalogue: 'Inspect Complete Catalogue',
   btn_fast_rfq: 'Submit Quick BOQ Enquiry',
   badge_asme: 'SS 304 / SS 316L',

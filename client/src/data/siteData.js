@@ -179,10 +179,21 @@ import { MASTER_PRODUCTS } from './productsData.js';
       standards: ['3-A Sanitary Standards', 'SMS 1145 Compatibility', 'BS 4825 Dimensional Accuracy']
     },
     {
+      id: 'food-processing',
+      slug: 'food-processing',
+      image: '/assets/images/industries/food-processing.jpg',
+      name: 'Food Processing',
+      icon: '🍲',
+      summary: 'Sanitary flow lines, ingredient mixing manifolds, and washdown systems for food manufacturing plants.',
+      overview: 'Food processing facilities require robust stainless steel alloys that prevent bacterial harborage and resist frequent caustic sanitization.',
+      products: ['ss-304-ep-pipe', 'ss-sanitary-90-bend', 'ss-sanitary-butterfly-valve', 'silicone-tri-clamp-gasket'],
+      standards: ['FDA Food Contact Compliant', 'Smooth ID Finish', 'Self-draining geometry']
+    },
+    {
       id: 'food-beverage',
       slug: 'food-beverage',
       image: '/assets/images/industries/food-beverage.jpg',
-      name: 'Food & Beverage Manufacturing',
+      name: 'Food & Beverage',
       icon: '🥫',
       summary: 'Hygienic piping solutions for sauces, syrups, confectioneries, edible oils, and packaged beverages.',
       overview: 'Food processors require robust corrosion resistance and high-cleanability materials. Our precision stainless fittings and cavity-filled ball valves handle sticky, viscous foods and high-temperature cleaning agents with utmost reliability.',
@@ -204,7 +215,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       id: 'water-treatment',
       slug: 'water-treatment',
       image: '/assets/images/industries/water-treatment.jpg',
-      name: 'Ultra-Pure Water & WFI Treatment',
+      name: 'Water Treatment',
       icon: '💧',
       summary: 'Orbital weldable tubes and fittings for Reverse Osmosis (RO), Water for Injection (WFI), and High-Purity Water loops.',
       overview: 'High-purity water is aggressively hungry for ions. SS 316L electro-polished tubing passivates chromium-rich oxide layers that withstand ultra-pure deionized water without leaching or rouging.',
@@ -215,7 +226,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       id: 'chemical',
       slug: 'chemical',
       image: '/assets/images/industries/chemical.jpg',
-      name: 'Specialty Chemical & Cosmetics',
+      name: 'Chemical Processing',
       icon: '⚗️',
       summary: 'Corrosion-resistant SS 316L fittings and valves for cosmetics, fine chemicals, fragrances, and personal care products.',
       overview: 'Handles aggressive surfactants, alcohol solvents, and aromatic compounds. SS 316L with precision elastomer gaskets ensures zero cross-contamination between product production campaigns.',
@@ -1113,6 +1124,53 @@ import { MASTER_PRODUCTS } from './productsData.js';
     }
   };
 
+
+export const LEADERSHIP = {
+  name: 'Chirag Shah',
+  designation: 'Founder & CEO',
+  location: 'Mumbai, Maharashtra, India',
+  summary: 'Guiding the business through customer relationships, commercial coordination and stainless steel sanitary product sourcing.',
+  photo: null
+};
+
+export const AI_TEAM_MEMBERS = [
+  {
+    id: 'ananya-mehta',
+    name: 'Ananya Mehta',
+    email: 'ananyamehta@lotustubes.com',
+    initial: 'AM',
+    role: '',
+    isEmailActive: false,
+    status: 'AI Team Profile'
+  },
+  {
+    id: 'riya-shah',
+    name: 'Riya Shah',
+    email: 'riyashah@lotustubes.com',
+    initial: 'RS',
+    role: '',
+    isEmailActive: false,
+    status: 'AI Team Profile'
+  },
+  {
+    id: 'neha-desai',
+    name: 'Neha Desai',
+    email: 'nehasdesai@lotustubes.com',
+    initial: 'ND',
+    role: '',
+    isEmailActive: false,
+    status: 'AI Team Profile'
+  },
+  {
+    id: 'arjun-yada',
+    name: 'Arjun Yada',
+    email: 'arjunyadav@lotustubes.com',
+    initial: 'AY',
+    role: '',
+    isEmailActive: false,
+    status: 'AI Team Profile'
+  }
+];
 
 export {
   CONFIG,
