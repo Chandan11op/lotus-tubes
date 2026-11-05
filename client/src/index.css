@@ -5622,3 +5622,8 @@ video {
  .lt-team-heading { align-items: flex-start; flex-direction: column; gap: 10px; margin-top: 42px; }
 }
 @media (max-width: 520px) { .lt-team-grid { grid-template-columns: 1fr; } }
+
+/* Requested Lotus Tubes navigation colour */
+.executive-header,
+.executive-header .header-utility-bar,
+.executive-header .executive-nav-container { background-color: #030810 !important; }
