@@ -133,7 +133,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                         <li>
                           <a href="/product/ss-316l-ep-pipe" className="mega-link-item">
                             <span className="mega-link-title">SS 316L EP Sanitary Pipe</span>
-                            <span className="mega-link-desc">ASTM A270 &bull; Ra ≤ 0.38µm Mirror Finish</span>
+                            <span className="mega-link-desc">EP / MP Finish Options &bull; Confirmed per product</span>
                           </a>
                         </li>
                         <li>
@@ -205,7 +205,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                         <li>
                           <a href="/category/manual-valves" className="mega-link-item">
                             <span className="mega-link-title">Aseptic Diaphragm Valves</span>
-                            <span className="mega-link-desc">Zero Deadleg &bull; Pharma Sterile Control</span>
+                            <span className="mega-link-desc">Manual / Pneumatic Options &bull; Check Availability</span>
                           </a>
                         </li>
                         <li>
@@ -224,10 +224,10 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
 
                     {/* Col 4: Featured Metallurgy Callout */}
                     <div className="executive-mega-feature">
-                      <div className="mega-feature-badge">MTR 3.1 Traceability</div>
-                      <h4 className="mega-feature-title">Stocked in High Purity SS 316L &amp; SS 304</h4>
+                      <div className="mega-feature-badge">Product Documentation</div>
+                      <h4 className="mega-feature-title">SS 316L &amp; SS 304 Product Options</h4>
                       <p className="mega-feature-text">
-                        Every single tube, ferrule, and valve supplied with authentic EN 10204 3.1 Mill Test Reports stating chemical chemistry and pressure test results.
+                        Applicable standards and material test documentation can be confirmed for the selected product and supply.
                       </p>
                       <a href="/quote" className="mega-feature-btn">
                         <span>Get Instant BOQ Quote</span>
