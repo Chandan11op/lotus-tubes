@@ -232,7 +232,7 @@ export default {
 
   // SEO Localized Titles & Descriptions
   seo_home_title: 'Lotus Tubes | SS Sanitary Pipes, Fittings & Valves Mumbai',
-  seo_home_desc: 'Manufacturer & exporter of SS 316L and SS 304 sanitary pipes, ASTM A270 fittings, tri-clamps, and hygienic valves for pharma, food, and biotech applications.',
+  seo_home_desc: 'Lotus Tubes supplies SS 304 and SS 316L sanitary pipes, tubes, fittings, tri-clamp components and hygienic valves for pharmaceutical, dairy, food, beverage, brewery, chemical and water-treatment applications.',
   seo_products_title: 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes',
   seo_products_desc: 'Explore Lotus Tubes comprehensive range of SS 304 and SS 316L sanitary pipes, electropolished tubing, Tri-Clamp fittings, and hygienic valves.',
   seo_about_title: 'About Lotus Tubes | Stainless Steel Hygienic Tubing Manufacturer',
