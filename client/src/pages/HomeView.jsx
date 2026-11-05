@@ -9,10 +9,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   // Interactive Quick Spec Finder State
   const [selectedGrade, setSelectedGrade] = useState('SS 316L');
   const [selectedCategory, setSelectedCategory] = useState('Sanitary Pipes');
-  const [selectedSize, setSelectedSize] = useState('2.0" (50.8 mm OD)');
-
-  // Metallurgy Tab State
-  const [activeMetalTab, setActiveMetalTab] = useState('316L');
+  const [selectedSize, setSelectedSize] = useState("");
 
   const handleQuickQuoteClick = (e) => {
     e.preventDefault();
@@ -22,7 +19,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         material: selectedGrade,
         category: selectedCategory,
         sizes: selectedSize,
-        finish: selectedGrade === 'SS 316L' ? 'Electro-Polished (EP Ra ≤ 0.38µm)' : 'Mechanical Mirror Polish (MP Ra ≤ 0.8µm)'
+        finish: 'EP / MP, subject to product availability'
       });
     } else {
       window.location.href = '/quote';
@@ -45,7 +42,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             </div>
 
             <h1 className="editorial-hero__headline">
-              Aseptic Stainless Steel <br />
+              Stainless Steel <br />
               <span className="text-gradient-blue">Sanitary Flow Systems.</span>
             </h1>
 
@@ -79,8 +76,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     onChange={(e) => setSelectedGrade(e.target.value)}
                     className="calc-select"
                   >
-                    <option value="SS 316L">SS 316L (Molybdenum Pharma Grade)</option>
-                    <option value="SS 304">SS 304 (Hygienic Dairy & Food Grade)</option>
+                    <option value="SS 316L">SS 316L</option>
+                    <option value="SS 304">SS 304</option>
                   </select>
                 </div>
 
@@ -91,7 +88,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     className="calc-select"
                   >
-                    <option value="Sanitary Pipes">ASTM A270 Sanitary Tubes</option>
+                    <option value="Sanitary Pipes">Sanitary Pipes &amp; Tubes</option>
                     <option value="Tri-Clamp Ferrules">Tri-Clamp Ferrules & Clamps</option>
                     <option value="Pipe Fittings">Sanitary Bends & Equal Tees</option>
                     <option value="Process Valves">Diaphragm & Butterfly Valves</option>
@@ -99,20 +96,14 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 </div>
 
                 <div className="calc-group">
-                  <label>Nominal Outside Diameter</label>
-                  <select
+                  <label>Required Outside Diameter / Size</label>
+                  <input
+                    type="text"
                     value={selectedSize}
                     onChange={(e) => setSelectedSize(e.target.value)}
+                    placeholder="Enter your required size"
                     className="calc-select"
-                  >
-                    <option value="0.5&quot; (12.7 mm OD)">0.5&quot; (12.7 mm OD)</option>
-                    <option value="1.0&quot; (25.4 mm OD)">1.0&quot; (25.4 mm OD)</option>
-                    <option value="1.5&quot; (38.1 mm OD)">1.5&quot; (38.1 mm OD)</option>
-                    <option value="2.0&quot; (50.8 mm OD)">2.0&quot; (50.8 mm OD)</option>
-                    <option value="2.5&quot; (63.5 mm OD)">2.5&quot; (63.5 mm OD)</option>
-                    <option value="3.0&quot; (76.2 mm OD)">3.0&quot; (76.2 mm OD)</option>
-                    <option value="4.0&quot; (101.6 mm OD)">4.0&quot; (101.6 mm OD)</option>
-                  </select>
+                  />
                 </div>
               </div>
 
@@ -136,8 +127,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             {/* Quick Metrics Ticker */}
             <div className="editorial-hero__metrics">
               <div className="metric-item">
-                <span className="metric-val">{t('metric_od_val', '1/2" to 4.0"')}</span>
-                <span className="metric-lbl">{t('metric_od_lbl', 'Size options confirmed per enquiry')}</span>
+                <span className="metric-val">{t('metric_od_val', 'SS 304 / SS 316L')}</span>
+                <span className="metric-lbl">{t('metric_od_lbl', 'Material grades')}</span>
               </div>
               <div className="metric-divider" />
               <div className="metric-item">
@@ -183,11 +174,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     </div>
                   </div>
 
-                  <div className="hotspot-pin hotspot-pin--2" title={t('hotspot_chem_title', 'Material Chemistry Integrity')}>
+                  <div className="hotspot-pin hotspot-pin--2" title={t('hotspot_chem_title', 'Material Grade Options')}>
                     <span className="hotspot-ping" />
                     <span className="hotspot-dot">2</span>
                     <div className="hotspot-tooltip">
-                      <strong>{t('hotspot_chem_title', 'Molybdenum Chemistry')}</strong>
+                      <strong>{t('hotspot_chem_title', 'Material Grade Options')}</strong>
                       <span>{t('hotspot_chem_desc', 'SS 316L grade option for applications requiring added corrosion resistance.')}</span>
                     </div>
                   </div>
@@ -196,7 +187,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                     <span className="hotspot-ping" />
                     <span className="hotspot-dot">3</span>
                     <div className="hotspot-tooltip">
-                      <strong>{t('hotspot_dim_title', 'Precision Calibration')}</strong>
+                      <strong>{t('hotspot_dim_title', 'Product Specifications')}</strong>
                       <span>{t('hotspot_dim_desc', 'Dimensions and applicable specifications confirmed against the supplied product.')}</span>
                     </div>
                   </div>
@@ -431,7 +422,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
 
 
       {/* =========================================================================
-          6. WAREHOUSE & STOCKHUB STATEMENT (GIRGAON, MUMBAI FACILITY)
+          6. IMMEDIATE AVAILABILITY & ENQUIRY COORDINATION
           ========================================================================= */}
       {/* ABOUT LOTUS TUBES — LEADERSHIP & TEAM */}
       <section className="lt-about-section" id="about-lotus-tubes" aria-labelledby="lt-about-title">
@@ -483,7 +474,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
         </div>
       </section>
 
-      <section className="section-facility section--light" aria-label="Lotus Tubes Stockhub Mumbai">
+      <section className="section-facility section--light" aria-label="Immediate product availability">
         <div className="site-container facility-grid">
           <div className="facility-media">
             <img
@@ -572,7 +563,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 </div>
                 <div className="ind-card-body">
                   <h3 className="ind-card-title">{ind.name}</h3>
-                  <p className="ind-card-desc">{ind.desc || 'Certified sanitary fluid transfer lines meeting international hygiene codes.'}</p>
+                  <p className="ind-card-desc">{ind.desc || 'Sanitary fluid handling product options for hygienic process applications.'}</p>
                   <span className="ind-card-link">View Application Standards &rarr;</span>
                 </div>
               </a>
