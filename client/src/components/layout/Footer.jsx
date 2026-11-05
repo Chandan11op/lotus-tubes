@@ -26,19 +26,19 @@ export const Footer = () => {
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
             <span className="font-semibold text-slate-200 tracking-wide uppercase">
-              Mumbai Central Stockhub:
+              Mumbai Business Desk:
             </span>
             <span className="text-slate-400 hidden sm:inline">
-              Ready stock for immediate 24-48h dispatch across India & International Ports
+              Product availability and delivery timelines confirmed per enquiry
             </span>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Certified Benchmark:</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">ASTM A270</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">ASME BPE</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">3-A Sanitary</span>
-            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">EN 10204 3.1 MTC</span>
+            <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Product Range:</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">SS 304 / SS 316L</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">EP / MP Finishes</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">Sanitary Fittings</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 text-sky-400 font-mono text-[11px] border border-slate-700/80">Hygienic Valves</span>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ export const Footer = () => {
               <p className="text-sm text-slate-400 leading-relaxed max-w-sm mb-6">
                 {t(
                   'footer_desc',
-                  'Lotus Tubes is a premier manufacturer and stockist of stainless steel sanitary tubes, precision fittings, and hygienic valves in SS 304 and SS 316L. Delivering certified Ra ≤ 0.38 µm finishes for sterile pharmaceutical, biotech, dairy, food, and beverage processes.'
+                  'Lotus Tubes supplies stainless steel sanitary pipes, tubes, fittings and valves in SS 304 and SS 316L for pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications. Product specifications and documentation are confirmed against each enquiry.'
                 )}
               </p>
 
@@ -75,9 +75,7 @@ export const Footer = () => {
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono font-medium text-slate-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> EP &amp; MP Finishes
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] font-mono font-medium text-slate-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span> EN 10204 3.1 MTC
-                </span>
+                
               </div>
             </div>
 
@@ -138,7 +136,7 @@ export const Footer = () => {
               <li>
                 <a href={localizePath('/category/sanitary-pipes', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
-                  Sanitary Pipes &amp; Tubes (ASTM A270)
+                  Sanitary Pipes &amp; Tubes
                 </a>
               </li>
               <li>
