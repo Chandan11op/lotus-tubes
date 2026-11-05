@@ -36,26 +36,26 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           <div className="header-utility-left">
             <span className="utility-badge">
               <span className="utility-badge__dot" />
-              Direct Factory Stock &bull; Mumbai Hub
+              Mumbai, India &bull; Stainless Steel Sanitary Products
             </span>
             <span className="utility-divider">|</span>
-            <span className="utility-standards">ASTM A270 &bull; ASME BPE &bull; EN 10204 3.1 MTR Certified</span>
+            <span className="utility-standards">SS 304 &bull; SS 316L &bull; Specifications confirmed per enquiry</span>
           </div>
 
           <div className="header-utility-right">
-            <a href="tel:+919820525200" className="utility-contact-link" title="Call Lotus Tubes Sales Desk">
+            <a href="tel:+919930430789" className="utility-contact-link" title="Call Lotus Tubes Sales Desk">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
-              <span>+91 98205 25200</span>
+              <span>+91 99304 30789</span>
             </a>
             <span className="utility-divider">|</span>
-            <a href="mailto:sales@lotustubes.com" className="utility-contact-link" title="Email Technical Quotation Desk">
+            <a href="mailto:info@lotustubes.com" className="utility-contact-link" title="Email Technical Quotation Desk">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              <span>sales@lotustubes.com</span>
+              <span>info@lotustubes.com</span>
             </a>
             <span className="utility-divider">|</span>
             <a
@@ -368,5 +368,11 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
     </header>
   );
 };
+
+
+/* Revised primary navigation colour requested for Lotus Tubes */
+.executive-header,
+.executive-header .header-utility-bar,
+.executive-header .executive-nav-container { background-color: #030810 !important; }
 
 export default Navbar;
