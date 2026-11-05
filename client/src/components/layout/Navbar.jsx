@@ -50,12 +50,12 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
               <span>+91 99304 30789</span>
             </a>
             <span className="utility-divider">|</span>
-            <a href="mailto:info@lotustubes.com" className="utility-contact-link" title="Email Technical Quotation Desk">
+            <a href="mailto:sales@lotustubes.com" className="utility-contact-link" title="Email Technical Quotation Desk">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
-              <span>info@lotustubes.com</span>
+              <span>sales@lotustubes.com</span>
             </a>
             <span className="utility-divider">|</span>
             <a
@@ -368,11 +368,5 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
     </header>
   );
 };
-
-
-/* Revised primary navigation colour requested for Lotus Tubes */
-.executive-header,
-.executive-header .header-utility-bar,
-.executive-header .executive-nav-container { background-color: #030810 !important; }
 
 export default Navbar;
