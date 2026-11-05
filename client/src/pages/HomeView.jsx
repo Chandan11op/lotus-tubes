@@ -597,6 +597,56 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       {/* =========================================================================
           6. WAREHOUSE & STOCKHUB STATEMENT (GIRGAON, MUMBAI FACILITY)
           ========================================================================= */}
+      {/* ABOUT LOTUS TUBES — LEADERSHIP & TEAM */}
+      <section className="lt-about-section" id="about-lotus-tubes" aria-labelledby="lt-about-title">
+        <div className="site-container">
+          <div className="lt-about-intro">
+            <span className="editorial-kicker">About Lotus Tubes</span>
+            <h2 className="editorial-title" id="lt-about-title">A focused team for dependable sanitary flow sourcing.</h2>
+            <p>Lotus Tubes supplies stainless steel sanitary pipes, tubes, fittings and valves in SS 304 and SS 316L. Based in Mumbai, we support hygienic process requirements across pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications.</p>
+            <p>Our approach is straightforward: understand the application, confirm material and dimensions, and provide a clear quotation based on actual availability. Specifications, finishes, sizes, applicable standards and documentation are confirmed for each supply.</p>
+          </div>
+          <div className="lt-founder-panel">
+            <div className="lt-founder-mark" aria-hidden="true">LT</div>
+            <div className="lt-founder-copy">
+              <span className="lt-person-label">Founder / Business Lead</span>
+              <h3>Chirag Shah</h3>
+              <p>Guiding the business through customer relationships, commercial coordination and stainless steel sanitary product sourcing.</p>
+              <span className="lt-person-note">A fuller personal introduction can be added after the founder approves the final biography.</span>
+            </div>
+            <div className="lt-founder-side">
+              <span className="lt-side-overline">Business base</span>
+              <strong>Mumbai, Maharashtra</strong>
+              <span>India</span>
+            </div>
+          </div>
+          <div className="lt-team-heading">
+            <div>
+              <span className="editorial-kicker">Our Team</span>
+              <h3>People behind every enquiry.</h3>
+            </div>
+            <p>Team responsibilities are being finalised. Individual role descriptions will be published once assigned.</p>
+          </div>
+          <div className="lt-team-grid">
+            {[
+              { name: 'Ananya Mehta', email: 'ananyamehta@lotustubes.com', initial: 'AM' },
+              { name: 'Riya Shah', email: 'riyashah@lotustubes.com', initial: 'RS' },
+              { name: 'Neha Desai', email: 'nehadesai@lotustubes.com', initial: 'ND' },
+              { name: 'Arjun Yadav', email: 'arjunyadav@lotustubes.com', initial: 'AY' }
+            ].map((member) => (
+              <article className="lt-team-card" key={member.email}>
+                <div className="lt-team-avatar" aria-hidden="true">{member.initial}</div>
+                <div className="lt-team-info">
+                  <h4>{member.name}</h4>
+                  <span className="lt-team-role">Role to be assigned</span>
+                  <a href={`mailto:${member.email}`}>{member.email}</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section-facility section--light" aria-label="Lotus Tubes Stockhub Mumbai">
         <div className="site-container facility-grid">
           <div className="facility-media">
