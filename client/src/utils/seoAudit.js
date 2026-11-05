@@ -238,12 +238,12 @@ export const runSEOAudit = () => {
     },
     {
       id: 'schema-product',
-      name: 'Dynamic Product & Offer Schema',
+      name: 'B2B Quotation Schema Compliance',
       category: 'Structured Data',
       status: 'pass',
       impact: 'High',
       weight: 4,
-      detail: 'Dynamic Product schema with AggregateOffer, material grade specifications, and SKU identification on all product detail pages.',
+      detail: 'Quotation-based products cleanly omit unsupported Product rich-result schema without verifiable retail offers or ratings, eliminating Google Search Console "offers, review, or aggregateRating" errors while supplying BreadcrumbList, ItemList, and Organization schema.',
       recommendation: null
     },
     {

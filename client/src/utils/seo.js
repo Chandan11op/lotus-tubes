@@ -1,6 +1,10 @@
 /**
  * Lotus Tubes - Dynamic SEO & Technical Meta Tag Manager
  * Handles canonical URLs, Open Graph, Twitter Cards, and Schema.org JSON-LD injection
+ * 
+ * Strict B2B Compliance: Quotation-based products do not generate invalid Product rich-result schema
+ * without verifiable offers/reviews. Instead, clean BreadcrumbList, Organization, ItemList, and ItemPage
+ * schemas are used according to Google's Structured Data guidelines.
  */
 
 import { getCanonicalUrl, getSiteUrl } from './seoConfig.js';
@@ -12,6 +16,7 @@ export const updatePageSEO = ({
   image = '/banner-image-opt.png',
   type = 'website',
   productData = null,
+  itemList = null,
   breadcrumbs = null,
   noindex = false
 }) => {
@@ -80,7 +85,7 @@ export const updatePageSEO = ({
     tag.setAttribute('content', content);
   });
 
-  // 5. Twitter Card Tags
+  // 6. Twitter Card Tags
   const twitterTags = {
     'twitter:card': 'summary_large_image',
     'twitter:title': fullTitle,
@@ -98,7 +103,7 @@ export const updatePageSEO = ({
     tag.setAttribute('content', content);
   });
 
-  // 6. Schema.org JSON-LD Structured Data
+  // 7. Schema.org JSON-LD Structured Data
   let ldScript = document.getElementById('schema-jsonld');
   if (!ldScript) {
     ldScript = document.createElement('script');
@@ -117,7 +122,7 @@ export const updatePageSEO = ({
     },
     {
       '@context': 'https://schema.org',
-      '@type': 'Organization',
+      '@type': ['Organization', 'IndustrialBusiness'],
       name: 'Lotus Tubes',
       legalName: 'Lotus Impex',
       url: siteUrl,
@@ -140,42 +145,18 @@ export const updatePageSEO = ({
     }
   ];
 
+  // Specific ItemPage definition for product detail pages (omits invalid Product rich-result schema without offers)
   if (productData) {
-    const productItem = {
+    structuredData.push({
       '@context': 'https://schema.org',
-      '@type': 'Product',
-      name: productData.name,
-      description: productData.overview,
-      image: fullImageUrl,
-      sku: productData.sku || productData.id,
-      brand: {
-        '@type': 'Brand',
-        name: 'Lotus Tubes'
-      },
-      material: productData.material,
-      category: productData.category
-    };
-
-    if (productData.standard) {
-      productItem.additionalProperty = [
-        {
-          '@type': 'PropertyValue',
-          name: 'Manufacturing Standard',
-          value: productData.standard
-        }
-      ];
-      if (productData.finish) {
-        productItem.additionalProperty.push({
-          '@type': 'PropertyValue',
-          name: 'Surface Finish',
-          value: productData.finish
-        });
-      }
-    }
-
-    structuredData.push(productItem);
+      '@type': 'ItemPage',
+      name: fullTitle,
+      description: metaDesc,
+      url: canonicalUrl
+    });
   }
 
+  // BreadcrumbList for Enhanced Search Snippets (Google Breadcrumb Rich Results)
   if (Array.isArray(breadcrumbs) && breadcrumbs.length > 0) {
     structuredData.push({
       '@context': 'https://schema.org',
@@ -184,7 +165,24 @@ export const updatePageSEO = ({
         '@type': 'ListItem',
         position: idx + 1,
         name: b.name,
-        item: `${siteUrl}${b.path.startsWith('/') ? b.path : `/${b.path}`}`
+        item: b.path.startsWith('http') ? b.path : `${siteUrl}${b.path.startsWith('/') ? b.path : `/${b.path}`}`
+      }))
+    });
+  }
+
+  // ItemList for Category and Catalog Listing Pages
+  if (Array.isArray(itemList) && itemList.length > 0) {
+    structuredData.push({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: fullTitle,
+      description: metaDesc,
+      numberOfItems: itemList.length,
+      itemListElement: itemList.map((item, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: item.name,
+        url: item.url.startsWith('http') ? item.url : `${siteUrl}${item.url.startsWith('/') ? item.url : `/${item.url}`}`
       }))
     });
   }

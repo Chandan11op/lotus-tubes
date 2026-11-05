@@ -139,12 +139,17 @@ export const App = () => {
     let title = 'Lotus Tubes | SS Sanitary Pipes, Fittings & Valves';
     let description = 'Lotus Tubes supplies SS 316L and SS 304 sanitary pipe, ASTM A270 fittings, tri-clamp components, and valves for pharmaceutical and hygienic process lines.';
     let productData = null;
+    let itemList = null;
     let breadcrumbs = [{ name: 'Home', path: '/' }];
 
     if (route === 'products') {
       title = 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes';
       description = 'Explore Lotus Tubes comprehensive range of SS 304 and SS 316L sanitary pipes, electropolished tubing, Tri-Clamp fittings, and hygienic valves.';
       breadcrumbs.push({ name: 'Products', path: '/products' });
+      itemList = PRODUCTS.map((p) => ({
+        name: p.name,
+        url: `/product/${p.slug || p.id}`
+      }));
     } else if (route === 'product' && param) {
       const found = PRODUCTS.find((p) => p.slug === param || p.id === param);
       if (found) {
@@ -155,14 +160,24 @@ export const App = () => {
         }
         productData = found;
         breadcrumbs.push({ name: 'Products', path: '/products' });
+        if (found.categorySlug && found.category) {
+          breadcrumbs.push({ name: found.category, path: `/category/${found.categorySlug}` });
+        }
         breadcrumbs.push({ name: found.name, path: `/product/${found.slug || found.id}` });
       }
     } else if (route === 'category' && param) {
       const catName = param.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
       title = `${catName} | Sanitary Stainless Steel Components | Lotus Tubes`;
       description = `Certified sanitary ${catName} in high purity SS 304 and SS 316L grades with Ra < 0.4µm surface finish for pharmaceutical and food process lines.`;
-      breadcrumbs.push({ name: 'Categories', path: '/products' });
+      breadcrumbs.push({ name: 'Products', path: '/products' });
       breadcrumbs.push({ name: catName, path: `/category/${param}` });
+      const catProducts = PRODUCTS.filter((p) => p.categorySlug === param || p.category?.toLowerCase() === catName.toLowerCase());
+      if (catProducts.length > 0) {
+        itemList = catProducts.map((p) => ({
+          name: p.name,
+          url: `/product/${p.slug || p.id}`
+        }));
+      }
     } else if (route === 'about') {
       title = 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai';
       description = 'Lotus Tubes delivers high-precision stainless steel sanitary tubes and components from Girgaon, Mumbai to pharmaceutical and food process leaders worldwide.';
@@ -205,6 +220,7 @@ export const App = () => {
       description,
       path: route === 'home' ? '/' : `/${route}${param ? `/${param}` : ''}`,
       productData,
+      itemList,
       breadcrumbs,
       noindex: route === 'crm' || route === 'account'
     });

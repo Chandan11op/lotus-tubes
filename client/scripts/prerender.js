@@ -5,6 +5,11 @@
  * category archives, and product detail pages in client/dist/ so search engine
  * crawlers (Googlebot, Bingbot, Seobility) receive 100% semantic HTML with
  * correct canonical tags, titles, OpenGraph tags, and structured JSON-LD.
+ * 
+ * B2B Quotation Structured Data Policy:
+ * In compliance with Google's Search Central Structured Data guidelines, quotation-based
+ * products omit unsupported Product rich-result schema without verifiable retail offers/reviews.
+ * Instead, clean Organization, WebSite, BreadcrumbList, ItemList, and ItemPage schemas are generated.
  */
 
 import fs from 'fs';
@@ -35,6 +40,14 @@ const coreRoutes = [
     title: 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes',
     description: 'Explore Lotus Tubes comprehensive range of SS 304 and SS 316L sanitary pipes, electropolished tubing, Tri-Clamp fittings, and hygienic valves.',
     h1: 'Stainless Steel Sanitary Product Catalogue',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Products', path: '/products' }
+    ],
+    itemList: PRODUCTS.map((p) => ({
+      name: p.name,
+      url: `/product/${p.slug}`
+    })),
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">Stainless Steel Sanitary Product Catalogue</h1>
@@ -71,6 +84,10 @@ const coreRoutes = [
     title: 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai',
     description: 'Lotus Tubes delivers high-precision stainless steel sanitary tubes and components from Girgaon, Mumbai to pharmaceutical and food process leaders worldwide.',
     h1: 'About Lotus Tubes — Precision Sanitary Flow Solutions',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'About Us', path: '/about' }
+    ],
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">About Lotus Tubes — Precision Sanitary Flow Solutions</h1>
@@ -93,6 +110,10 @@ const coreRoutes = [
     title: 'Quality Assurance & Mill Test Certification | Lotus Tubes',
     description: 'Every Lotus Tubes sanitary product complies with ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 MTR inspection certification.',
     h1: 'Quality Assurance & MTC 3.1 Inspection Standards',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Quality Assurance', path: '/quality' }
+    ],
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">Quality Assurance &amp; MTC 3.1 Inspection Standards</h1>
@@ -115,6 +136,10 @@ const coreRoutes = [
     title: 'Process Industries We Serve | Lotus Tubes Sanitary Solutions',
     description: 'Hygienic stainless steel piping, fittings, and valves engineered for pharmaceutical, biotech, dairy, food & beverage, and high-purity water systems.',
     h1: 'Hygienic Process Industries Served by Lotus Tubes',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Industries', path: '/industries' }
+    ],
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">Hygienic Process Industries Served by Lotus Tubes</h1>
@@ -143,6 +168,10 @@ const coreRoutes = [
     title: 'Engineering Resources & Technical Datasheets | Lotus Tubes',
     description: 'Download sanitary stainless steel dimensional charts, ASTM A270 specifications, and electropolished surface roughness conversion tables.',
     h1: 'Engineering Technical Resources & Dimensional Charts',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Resources', path: '/resources' }
+    ],
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">Engineering Technical Resources &amp; Dimensional Charts</h1>
@@ -160,6 +189,10 @@ const coreRoutes = [
     title: 'Contact Lotus Tubes | Girgaon Mumbai Sales Office',
     description: 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.',
     h1: 'Contact Lotus Tubes — Sales & Engineering Inquiries',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Contact', path: '/contact' }
+    ],
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">Contact Lotus Tubes — Sales &amp; Engineering Inquiries</h1>
@@ -181,6 +214,10 @@ const coreRoutes = [
     title: 'Request a Formal B2B Quotation | Lotus Tubes',
     description: 'Submit your Bill of Quantities (BOQ) for instant review and competitive quotation on SS 304 and SS 316L sanitary pipes, fittings, and valves.',
     h1: 'Request Official Commercial Quotation & BOQ Pricing',
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Request Quote', path: '/quote' }
+    ],
     content: `
       <section style="padding: 32px 0;">
         <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">Request Official Commercial Quotation &amp; BOQ Pricing</h1>
@@ -196,31 +233,50 @@ const coreRoutes = [
 ];
 
 // 2. Category Routes
-const categoryRoutes = CATEGORIES.map((c) => ({
-  path: `category/${c.slug}`,
-  title: `${c.name} | Sanitary Stainless Steel Components | Lotus Tubes`,
-  description: c.description || `Certified sanitary ${c.name} in high-purity SS 304 and SS 316L grades with Ra <= 0.4 µm surface finish for pharmaceutical, food, and dairy process lines.`,
-  h1: `${c.name} — Sanitary Specifications & Standards`,
-  content: `
-    <section style="padding: 32px 0;">
-      <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${c.name}</h1>
-      <p style="font-size: 1.1rem; color: #475569; max-width: 900px; margin-bottom: 24px;">
-        ${c.description || `High-purity sanitary ${c.name} supplied in ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 Mill Test Reports.`}
-      </p>
-      <div style="margin-top: 24px;">
-        <a href="/quote" style="display: inline-block; background: #0284C7; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; margin-right: 16px;">Request Quotation for ${c.name}</a>
-        <a href="/products" style="color: #0284C7; font-weight: 600; text-decoration: none;">&larr; Back to Full Product Catalogue</a>
-      </div>
-    </section>
-  `
-}));
+const categoryRoutes = CATEGORIES.map((c) => {
+  const catProducts = PRODUCTS.filter((p) => p.categorySlug === c.slug || p.category === c.name);
+  return {
+    path: `category/${c.slug}`,
+    title: `${c.name} | Sanitary Stainless Steel Components | Lotus Tubes`,
+    description: c.description || `Certified sanitary ${c.name} in high-purity SS 304 and SS 316L grades with Ra <= 0.4 µm surface finish for pharmaceutical, food, and dairy process lines.`,
+    h1: `${c.name} — Sanitary Specifications & Standards`,
+    breadcrumbs: [
+      { name: 'Home', path: '/' },
+      { name: 'Products', path: '/products' },
+      { name: c.name, path: `/category/${c.slug}` }
+    ],
+    itemList: catProducts.map((p) => ({
+      name: p.name,
+      url: `/product/${p.slug}`
+    })),
+    content: `
+      <section style="padding: 32px 0;">
+        <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${c.name}</h1>
+        <p style="font-size: 1.1rem; color: #475569; max-width: 900px; margin-bottom: 24px;">
+          ${c.description || `High-purity sanitary ${c.name} supplied in ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 Mill Test Reports.`}
+        </p>
+        <div style="margin-top: 24px;">
+          <a href="/quote" style="display: inline-block; background: #0284C7; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-weight: 600; text-decoration: none; margin-right: 16px;">Request Quotation for ${c.name}</a>
+          <a href="/products" style="color: #0284C7; font-weight: 600; text-decoration: none;">&larr; Back to Full Product Catalogue</a>
+        </div>
+      </section>
+    `
+  };
+});
 
-// 3. Product Routes
+// 3. Product Routes (Strict B2B ItemPage with BreadcrumbList; omits unsupported Product rich-result schema without offers)
 const productRoutes = PRODUCTS.map((p) => ({
   path: `product/${p.slug}`,
   title: `${p.name} (${p.material}) - Sanitary Specifications | Lotus Tubes`,
   description: p.overview || `${p.name} in ${p.material} with hygienic finish for pharmaceutical and food process applications.`,
   h1: `${p.name}`,
+  isProduct: true,
+  breadcrumbs: [
+    { name: 'Home', path: '/' },
+    { name: 'Products', path: '/products' },
+    ...(p.categorySlug && p.category ? [{ name: p.category, path: `/category/${p.categorySlug}` }] : []),
+    { name: p.name, path: `/product/${p.slug}` }
+  ],
   content: `
     <section style="padding: 32px 0;">
       <h1 style="font-size: 2.2rem; font-weight: 800; color: #10263D; margin-bottom: 16px;">${p.name}</h1>
@@ -263,6 +319,104 @@ for (const r of allRoutes) {
   html = html.replace(/<meta\s+property="og:url"\s+content=".*?"\s*\/?>/i, `<meta property="og:url" content="${canonicalUrl}">`);
   html = html.replace(/<meta\s+name="twitter:title"\s+content=".*?"\s*\/?>/i, `<meta name="twitter:title" content="${r.title}">`);
   html = html.replace(/<meta\s+name="twitter:description"\s+content=".*?"\s*\/?>/i, `<meta name="twitter:description" content="${r.description}">`);
+
+  // Build route-specific JSON-LD graph
+  const routeLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Lotus Tubes',
+      alternateName: 'Lotus Impex',
+      url: CANONICAL_BASE
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': ['LocalBusiness', 'IndustrialBusiness', 'Organization'],
+      name: 'Lotus Tubes',
+      legalName: 'Lotus Impex',
+      url: CANONICAL_BASE,
+      logo: `${CANONICAL_BASE}/banner-image-opt.png`,
+      image: `${CANONICAL_BASE}/banner-image-opt.png`,
+      description: 'Supplier and stockist of stainless steel sanitary pipes, pipe fittings, tri-clamp components, and hygienic valves in SS 304 and SS 316L.',
+      telephone: '+91-9820525200',
+      email: 'sales@lotustubes.com',
+      taxID: '27AIIPS0303A1ZU',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Shop no 9, Jain bhavan chsl, Dr Bhajekar Ln, opp. to 11th Lane, Charni Road East, Khetwadi, Girgaon',
+        addressLocality: 'Mumbai',
+        addressRegion: 'Maharashtra',
+        postalCode: '400004',
+        addressCountry: 'IN'
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: 18.9567,
+        longitude: 72.8219
+      },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          opens: '09:30',
+          closes: '19:00'
+        }
+      ],
+      sameAs: [
+        'https://www.linkedin.com/company/lotus-tubes',
+        'https://wa.me/919820525200'
+      ]
+    }
+  ];
+
+  // Specific ItemPage for Product Detail Pages (omits invalid Product rich-result schema without offers)
+  if (r.isProduct) {
+    routeLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'ItemPage',
+      name: r.title,
+      description: r.description,
+      url: canonicalUrl
+    });
+  }
+
+  // BreadcrumbList for Enhanced Google Search Snippets
+  if (Array.isArray(r.breadcrumbs) && r.breadcrumbs.length > 0) {
+    routeLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: r.breadcrumbs.map((b, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: b.name,
+        item: b.path.startsWith('http') ? b.path : `${CANONICAL_BASE}${b.path.startsWith('/') ? b.path : `/${b.path}`}`
+      }))
+    });
+  }
+
+  // ItemList for Category and Catalog Listing Pages
+  if (Array.isArray(r.itemList) && r.itemList.length > 0) {
+    routeLd.push({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: r.h1 || r.title,
+      description: r.description,
+      numberOfItems: r.itemList.length,
+      itemListElement: r.itemList.map((item, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: item.name,
+        url: item.url.startsWith('http') ? item.url : `${CANONICAL_BASE}${item.url.startsWith('/') ? item.url : `/${item.url}`}`
+      }))
+    });
+  }
+
+  // Replace default base JSON-LD in HTML with route-specific structured data
+  const jsonLdString = JSON.stringify(routeLd, null, 2);
+  html = html.replace(
+    /<script\s+type="application\/ld\+json">[\s\S]*?<\/script>/i,
+    `<script type="application/ld+json">\n${jsonLdString}\n  </script>`
+  );
 
   // Replace the <main> block inside #root with page-specific content while keeping header and footer
   const mainRegex = /<main[\s\S]*?<\/main>/i;
