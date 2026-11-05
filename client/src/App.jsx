@@ -154,7 +154,7 @@ export const App = () => {
   // Dynamic Technical SEO & Schema.org JSON-LD structured data injection
   useEffect(() => {
     let title = t('seo_home_title', 'Lotus Tubes | SS Sanitary Pipes, Fittings & Valves');
-    let description = t('seo_home_desc', 'Lotus Tubes supplies SS 316L and SS 304 sanitary pipe, ASTM A270 fittings, tri-clamp components, and valves for pharmaceutical and hygienic process lines.');
+    let description = t('seo_home_desc', 'Lotus Tubes supplies SS 304 and SS 316L stainless steel sanitary pipes, tubes, fittings, tri-clamp components and hygienic valves for hygienic process industries.');
     let productData = null;
     let itemList = null;
     let breadcrumbs = [{ name: t('nav_home', 'Home'), path: '/' }];
@@ -350,7 +350,7 @@ export const App = () => {
             </main>
 
             {/* Dual Split Pre-Footer Action Banner */}
-            <PreFooterBanner onOpenEnquiry={handleOpenEnquiry} />
+            {route !== 'home' && <PreFooterBanner onOpenEnquiry={handleOpenEnquiry} />}
 
             {/* Global Public Footer */}
             <Footer />
