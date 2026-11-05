@@ -272,6 +272,8 @@ export const Product360Viewer = ({
           muted
           loop={activeMode === '360'}
           autoPlay
+          preload="metadata"
+          aria-label="360 Degree Product Rotation View"
           className="max-h-[460px] w-full h-full object-contain pointer-events-none"
           onEnded={() => {
             if (activeMode === 'showcase') setIsPlaying(false);

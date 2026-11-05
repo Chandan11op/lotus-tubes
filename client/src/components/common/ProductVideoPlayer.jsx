@@ -76,6 +76,8 @@ export const ProductVideoPlayer = ({
           playsInline
           muted={isMuted}
           controls
+          preload="metadata"
+          aria-label="Lotus Tubes Product Video"
           style={{
             position: 'absolute',
             top: 0,

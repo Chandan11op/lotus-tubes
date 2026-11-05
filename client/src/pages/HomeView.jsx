@@ -165,7 +165,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <div className="metallic-card__media">
                   <img
                     src="/assets/images/products/ss-316l-ep-pipe.jpg"
-                    alt="SS 316L Electro Polished Sanitary Tube"
+                    alt="SS 316L Electro Polished Sanitary Tube Cutaway Inspection"
+                    width="600"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
                     className="metallic-card__img"
                   />
                   
@@ -344,6 +348,10 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <img
                   src="/assets/images/categories/sanitary-pipes.jpg"
                   alt="Sanitary Stainless Steel Pipes & Tubes"
+                  width="600"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
                   className="suite-card__img"
                 />
                 <span className="suite-badge">Priority Line</span>
@@ -374,6 +382,10 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <img
                   src="/assets/images/categories/sanitary-fittings.jpg"
                   alt="Sanitary Pipe Fittings, Bends & Tri-Clamps"
+                  width="600"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
                   className="suite-card__img"
                 />
                 <span className="suite-badge">Stocked Ready</span>
@@ -404,6 +416,10 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <img
                   src="/assets/images/categories/manual-valves.jpg"
                   alt="Sanitary Butterfly & Diaphragm Process Valves"
+                  width="600"
+                  height="400"
+                  loading="lazy"
+                  decoding="async"
                   className="suite-card__img"
                 />
                 <span className="suite-badge">Aseptic Control</span>

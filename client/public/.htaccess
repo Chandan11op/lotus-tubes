@@ -8,6 +8,13 @@ AddDefaultCharset UTF-8
 
 <IfModule mod_mime.c>
   AddCharset UTF-8 .html .css .js .xml .json .rss
+  AddType text/css .css
+  AddType application/javascript .js .mjs
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddType font/woff .woff
+  AddType video/mp4 .mp4
+  AddType video/webm .webm
 </IfModule>
 
 <IfModule mod_rewrite.c>
@@ -23,17 +30,26 @@ AddDefaultCharset UTF-8
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://lotustubes.com/$1 [L,R=301]
 
-  # 3. Serve physical directory index.html directly without trailing-slash redirect
+  # 3. Backward Compatibility: Map legacy/cached stylesheet requested by Googlebot to current bundle
+  RewriteRule ^assets/index-B9RX-gnX\.css$ /assets/index.css [NC,L,R=301]
+
+  # 4. Serve physical directory index.html directly without trailing-slash redirect
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteCond %{REQUEST_FILENAME}/index.html -f
   RewriteRule ^(.*[^/])$ $1/index.html [L]
 
-  # 4. Allow existing physical files and directories to be served directly
+  # 5. Allow existing physical files and directories to be served directly
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # 5. Route all other requests to index.html for React Router client-side routing
+  # 6. Static Asset Guard: Never rewrite missing static assets, images, fonts, scripts, or media to index.html
+  # Return HTTP 404 directly to prevent invalid text/html MIME type errors on missing assets
+  RewriteCond %{REQUEST_URI} \.(css|js|mjs|json|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|eot|otf|mp4|webm|pdf|map)$ [NC,OR]
+  RewriteCond %{REQUEST_URI} ^/assets/ [NC]
+  RewriteRule ^ - [R=404,L]
+
+  # 7. Route all other clean URL requests to index.html for React Router client-side routing
   RewriteRule ^ index.html [L]
 </IfModule>
 
@@ -48,6 +64,10 @@ AddDefaultCharset UTF-8
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 month"
+  ExpiresByType video/webm "access plus 1 month"
   ExpiresByType application/pdf "access plus 1 month"
 </IfModule>
 

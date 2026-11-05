@@ -13,6 +13,7 @@ import Toast from './components/common/Toast';
 import ScrollToTop from './components/common/ScrollToTop';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { RouteProgressBar } from './components/common/Loader';
+import { initAnalytics, trackPageView } from './utils/analytics';
 
 // Page Views
 import HomeView from './pages/HomeView';
@@ -71,8 +72,10 @@ export const App = () => {
   const [enquiryProduct, setEnquiryProduct] = useState(null);
   const [toasts, setToasts] = useState([]);
 
-  // Client-side domain migration redirect safeguard (secondary defense alongside vercel.json 308)
+  // Client-side domain migration redirect safeguard & Google Analytics initialization
   useEffect(() => {
+    initAnalytics();
+
     if (typeof window !== 'undefined' && window.location) {
       const hostname = window.location.hostname;
       if (hostname.includes('vercel.app')) {
@@ -215,15 +218,19 @@ export const App = () => {
       breadcrumbs.push({ name: 'Not Found', path: `/${route}` });
     }
 
+    const currentPath = route === 'home' ? '/' : `/${route}${param ? `/${param}` : ''}`;
+
     updatePageSEO({
       title,
       description,
-      path: route === 'home' ? '/' : `/${route}${param ? `/${param}` : ''}`,
+      path: currentPath,
       productData,
       itemList,
       breadcrumbs,
       noindex: route === 'crm' || route === 'account'
     });
+
+    trackPageView(currentPath, title);
   }, [route, param]);
 
   const addToast = (message, type = 'info') => {

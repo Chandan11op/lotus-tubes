@@ -249,7 +249,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
                 muted
                 loop
                 playsInline
-                preload={isCurrent ? 'auto' : 'none'}
+                preload={isCurrent ? 'metadata' : 'none'}
                 onTimeUpdate={isCurrent ? handleTimeUpdate : undefined}
                 onEnded={isCurrent ? handleVideoEnded : undefined}
                 className={`w-full h-full object-cover md:object-cover md:object-right transition-transform duration-7000 ease-out ${
@@ -259,7 +259,7 @@ export const HomeCinematicHero = ({ onOpenEnquiry, onOpenVideo }) => {
               >
                 <source src={s.videoSrcWebm} type="video/webm" />
                 <source src={s.videoSrc} type="video/mp4" />
-                <img src={s.poster} alt={s.titleHighlight} className="w-full h-full object-cover" />
+                <img src={s.poster} alt={s.titleHighlight} width="1280" height="720" loading="lazy" decoding="async" className="w-full h-full object-cover" />
               </video>
             </div>
           );

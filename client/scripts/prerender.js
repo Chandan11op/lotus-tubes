@@ -431,5 +431,15 @@ for (const r of allRoutes) {
 
 console.log(`Pre-rendering complete. ${generatedCount} static routes generated in dist/.`);
 
+// Ensure backward compatibility alias /assets/index.css exists
+const assetsDir = path.join(DIST_DIR, 'assets');
+if (fs.existsSync(assetsDir)) {
+  const cssFiles = fs.readdirSync(assetsDir).filter(f => f.startsWith('index-') && f.endsWith('.css'));
+  if (cssFiles.length > 0) {
+    fs.copyFileSync(path.join(assetsDir, cssFiles[0]), path.join(assetsDir, 'index.css'));
+    console.log(`Copied current CSS ${cssFiles[0]} -> dist/assets/index.css for backward compatibility.`);
+  }
+}
+
 // Generate and sync updated production sitemap
 generateSitemap();
