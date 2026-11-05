@@ -57,11 +57,11 @@ export const TopBar = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
-              title="Select Preferred Language"
+              title={t('select_preferred_lang', 'Select Preferred Language')}
             >
-              <span className="flag-icon">{activeLangConfig.flag}</span>{' '}
-              <span>{activeLangConfig.short} ({activeLangConfig.nativeName})</span>{' '}
-              <span className="arrow-down">▾</span>
+              <span className="globe-icon" aria-hidden="true">🌐</span>{' '}
+              <span className="lang-btn__name">{activeLangConfig.nativeName}</span>{' '}
+              <span className="arrow-down" aria-hidden="true">▾</span>
             </button>
             {dropdownOpen && (
               <div className="lang-dropdown" role="menu" style={{ display: 'block' }}>
@@ -76,9 +76,9 @@ export const TopBar = () => {
                     }}
                     role="menuitem"
                   >
-                    <span className="lang-opt__flag">{lang.flag}</span>
+                    <span className="lang-opt__native">{lang.nativeName}</span>
                     <span className="lang-opt__name">{lang.name}</span>
-                    {currentLang === lang.code && <span className="lang-opt__check">✓</span>}
+                    {currentLang === lang.code && <span className="lang-opt__check" aria-hidden="true">✓</span>}
                   </button>
                 ))}
               </div>

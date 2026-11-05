@@ -1,12 +1,14 @@
 /**
- * Lotus Tubes - Dynamic Production Sitemap Generator
- * Generates https://lotustubes.com/sitemap.xml at build time from authoritative site data.
+ * Lotus Tubes - Dynamic International Multilingual Sitemap Generator
+ * Generates https://lotustubes.com/sitemap.xml with full reciprocal xhtml:link hreflang annotations
+ * for all 7 supported languages (en, de, ar, fr, vi, bn, ms) and x-default.
  */
 
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { CATEGORIES, PRODUCTS } from '../src/data/siteData.js';
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../src/i18n/languages.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,36 +31,61 @@ const CORE_PAGES = [
 ];
 
 export function buildSitemapXml() {
+  // Collect all 46 canonical base routes
+  const baseRoutes = [];
+
+  CORE_PAGES.forEach((p) => {
+    baseRoutes.push({
+      path: p.path,
+      changefreq: p.changefreq,
+      priority: p.priority
+    });
+  });
+
+  CATEGORIES.forEach((cat) => {
+    baseRoutes.push({
+      path: `category/${cat.slug}`,
+      changefreq: 'weekly',
+      priority: '0.8'
+    });
+  });
+
+  PRODUCTS.forEach((prod) => {
+    baseRoutes.push({
+      path: `product/${prod.slug}`,
+      changefreq: 'weekly',
+      priority: '0.8'
+    });
+  });
+
   const urls = [];
 
-  // 1. Core Pages
-  CORE_PAGES.forEach((page) => {
-    const loc = page.path ? `${CANONICAL_DOMAIN}/${page.path}` : `${CANONICAL_DOMAIN}/`;
-    urls.push({
-      loc,
-      lastmod: today,
-      changefreq: page.changefreq,
-      priority: page.priority
-    });
-  });
+  // Generate an entry for each language for each base route (46 x 7 = 322 total URLs)
+  baseRoutes.forEach((route) => {
+    const cleanPath = route.path ? `/${route.path}` : '';
 
-  // 2. Categories
-  CATEGORIES.forEach((cat) => {
-    urls.push({
-      loc: `${CANONICAL_DOMAIN}/category/${cat.slug}`,
-      lastmod: today,
-      changefreq: 'weekly',
-      priority: '0.8'
-    });
-  });
+    // Calculate alternate hreflangs
+    const hreflangLinks = SUPPORTED_LANGUAGES.map((l) => ({
+      lang: l.code,
+      href: l.code === DEFAULT_LANGUAGE ? `${CANONICAL_DOMAIN}${cleanPath || '/'}` : `${CANONICAL_DOMAIN}/${l.code}${cleanPath || '/'}`
+    }));
 
-  // 3. Products
-  PRODUCTS.forEach((prod) => {
-    urls.push({
-      loc: `${CANONICAL_DOMAIN}/product/${prod.slug}`,
-      lastmod: today,
-      changefreq: 'weekly',
-      priority: '0.8'
+    // x-default points to default English canonical URL
+    const xDefaultHref = `${CANONICAL_DOMAIN}${cleanPath || '/'}`;
+
+    SUPPORTED_LANGUAGES.forEach((langConfig) => {
+      const loc = langConfig.code === DEFAULT_LANGUAGE
+        ? `${CANONICAL_DOMAIN}${cleanPath || '/'}`
+        : `${CANONICAL_DOMAIN}/${langConfig.code}${cleanPath || '/'}`;
+
+      urls.push({
+        loc,
+        lastmod: today,
+        changefreq: route.changefreq,
+        priority: route.priority,
+        hreflangs: hreflangLinks,
+        xDefault: xDefaultHref
+      });
     });
   });
 
@@ -71,6 +98,10 @@ export function buildSitemapXml() {
     xml += `    <lastmod>${u.lastmod}</lastmod>\n`;
     xml += `    <changefreq>${u.changefreq}</changefreq>\n`;
     xml += `    <priority>${u.priority}</priority>\n`;
+    u.hreflangs.forEach((h) => {
+      xml += `    <xhtml:link rel="alternate" hreflang="${h.lang}" href="${h.href}" />\n`;
+    });
+    xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${u.xDefault}" />\n`;
     xml += '  </url>\n';
   });
 
@@ -82,12 +113,12 @@ export function generateSitemap() {
   const { xml, count } = buildSitemapXml();
 
   fs.writeFileSync(PUBLIC_SITEMAP_PATH, xml, 'utf8');
-  console.log(`✅ Generated public sitemap (${count} URLs) -> ${PUBLIC_SITEMAP_PATH}`);
+  console.log(`✅ Generated public multilingual sitemap (${count} URLs with full reciprocal hreflangs) -> ${PUBLIC_SITEMAP_PATH}`);
 
   const distDir = path.dirname(DIST_SITEMAP_PATH);
   if (fs.existsSync(distDir)) {
     fs.writeFileSync(DIST_SITEMAP_PATH, xml, 'utf8');
-    console.log(`✅ Synced dist sitemap (${count} URLs) -> ${DIST_SITEMAP_PATH}`);
+    console.log(`✅ Synced dist multilingual sitemap (${count} URLs) -> ${DIST_SITEMAP_PATH}`);
   }
 
   return { count };
@@ -97,4 +128,3 @@ export function generateSitemap() {
 if (process.argv[1] && process.argv[1].endsWith('generateSitemap.js')) {
   generateSitemap();
 }
-

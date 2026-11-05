@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { apiService } from '../services/api';
 import { Loader } from '../components/common/Loader';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { CONFIG } from '../data/siteData';
 import TurnstileWidget from '../components/common/TurnstileWidget';
 import {
@@ -14,6 +15,7 @@ import {
 
 export const QuoteView = ({ onNotify }) => {
   const { user, isAuthenticated } = useAuth();
+  const { t, currentLang } = useLanguage();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -160,6 +162,7 @@ export const QuoteView = ({ onNotify }) => {
         quantity: formData.quantity,
         unit: formData.unit,
         timeline: 'Standard (1-2 Weeks)',
+        language: currentLang,
         boqSummary: `Product: ${formData.category} (${formData.productType})\nGrade: ${formData.material}\nSize / OD: ${selectedSize} (${outsideDiameter || ''})\nWall: ${selectedThickness}\nStandard: ${selectedStandard}\nQuantity: ${formData.quantity} ${formData.unit}\nDestination: ${formData.destination}\nRemarks: ${formData.specs}`,
         ...(!isAuthenticated ? { turnstileToken } : {})
       };

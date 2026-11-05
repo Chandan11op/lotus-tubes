@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS, CONFIG } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import ProductCard from '../components/common/ProductCard';
 import PageHero from '../components/common/PageHero';
 
 export const CategoryView = ({ slug, onOpenEnquiry }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   const cat = CATEGORIES.find((c) => c.slug === slug || c.id === slug) || CATEGORIES[0];
   const allCatProducts = useMemo(() => {
     return PRODUCTS.filter((p) => p.categorySlug === cat.slug || p.category === cat.name);
@@ -56,8 +58,8 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
           { value: 'Girgaon Hub', label: 'Mumbai Stocking' }
         ]}
         actions={[
-          <a key="cat" href="/products" className="btn btn--outline">
-            &larr; View Full Catalogue
+          <a key="cat" href={localizePath('/products', currentLang)} className="btn btn--outline">
+            &larr; {t('view_catalogue', 'View Full Catalogue')}
           </a>,
           <button
             key="rfq"
@@ -65,7 +67,7 @@ export const CategoryView = ({ slug, onOpenEnquiry }) => {
             onClick={() => onOpenEnquiry && onOpenEnquiry(null, `${cat.name} Category Quote`)}
             className="btn btn--primary"
           >
-            Request Category RFQ &rarr;
+            {t('btn_request_rfq', 'Request Category RFQ')} &rarr;
           </button>
         ]}
       />

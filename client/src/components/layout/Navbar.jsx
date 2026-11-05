@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
-  const { t } = useLanguage();
+  const { t, currentLang, setCurrentLang, languages, activeLangConfig } = useLanguage();
   const { user, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const langDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +16,16 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(e.target)) {
+        setIsLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -255,6 +267,56 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
 
         {/* Action Controls & Fast BOQ Quote Button */}
         <div className="executive-actions">
+          {/* International Language Selector Trigger */}
+          <div className="relative" ref={langDropdownRef}>
+            <button
+              type="button"
+              className="executive-action-btn flex items-center gap-1.5 px-2.5"
+              onClick={() => setIsLangOpen(!isLangOpen)}
+              title={t('select_preferred_lang', 'Select Preferred Language')}
+              aria-label="Select website language"
+              aria-haspopup="true"
+              aria-expanded={isLangOpen}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              <span className="text-xs font-semibold tracking-wide uppercase hidden sm:inline">
+                {activeLangConfig.short}
+              </span>
+            </button>
+
+            {isLangOpen && (
+              <div
+                className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700/80 rounded-xl shadow-2xl py-1.5 z-50"
+                role="menu"
+              >
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    className={`w-full flex items-center justify-between px-3.5 py-2 text-xs font-medium transition-colors text-left ${
+                      currentLang === lang.code
+                        ? 'bg-sky-600/20 text-sky-400 font-semibold'
+                        : 'text-slate-200 hover:bg-slate-800 hover:text-white'
+                    }`}
+                    onClick={() => {
+                      setCurrentLang(lang.code);
+                      setIsLangOpen(false);
+                    }}
+                    role="menuitem"
+                  >
+                    <span className="text-[13px]">{lang.nativeName}</span>
+                    <span className="text-[11px] text-slate-400">({lang.name})</span>
+                    {currentLang === lang.code && <span className="text-sky-400 ml-1">✓</span>}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Search Trigger */}
           <button
             type="button"

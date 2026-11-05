@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LanguageProvider } from './context/LanguageContext';
+import { useLanguage } from './context/LanguageContext';
+import { extractLangFromPath, localizePath } from './i18n/index.js';
 import TopBar from './components/layout/TopBar';
 import Navbar from './components/layout/Navbar';
 import MobileDrawer from './components/layout/MobileDrawer';
@@ -48,20 +49,24 @@ const KNOWN_ROUTES = [
 ];
 
 export const App = () => {
+  const { currentLang, setCurrentLang, t, isRTL } = useLanguage();
+
   const parseCurrentLocation = () => {
-    // 1. Prioritize hash if explicitly present (e.g. #product/ss-316l-ep-pipe)
+    // 1. Prioritize hash if explicitly present (e.g. #product/ss-316l-ep-pipe or #de/products)
     const hash = (window.location.hash || '').replace(/^#\/?/, '');
     if (hash) {
-      const parts = hash.split('/');
-      return { route: parts[0] || 'home', param: parts[1] || '' };
+      const { lang, cleanPath } = extractLangFromPath('/' + hash);
+      const parts = cleanPath.replace(/^\//, '').split('/');
+      return { lang, route: parts[0] || 'home', param: parts[1] || '' };
     }
-    // 2. Otherwise inspect clean path route (e.g. /product/ss-316l-ep-pipe)
+    // 2. Otherwise inspect clean path route (e.g. /product/ss-316l-ep-pipe or /de/products)
     const pathname = (window.location.pathname || '').replace(/^\/?/, '');
     if (pathname && pathname !== 'index.html') {
-      const parts = pathname.split('/');
-      return { route: parts[0] || 'home', param: parts[1] || '' };
+      const { lang, cleanPath } = extractLangFromPath('/' + pathname);
+      const parts = cleanPath.replace(/^\//, '').split('/');
+      return { lang, route: parts[0] || 'home', param: parts[1] || '' };
     }
-    return { route: 'home', param: '' };
+    return { lang: 'en', route: 'home', param: '' };
   };
 
   const [currentLoc, setCurrentLoc] = useState(parseCurrentLocation);
@@ -89,7 +94,11 @@ export const App = () => {
     let navTimer = null;
     const handleLocationChange = () => {
       setIsNavigating(true);
-      setCurrentLoc(parseCurrentLocation());
+      const parsed = parseCurrentLocation();
+      setCurrentLoc(parsed);
+      if (parsed.lang && parsed.lang !== currentLang) {
+        setCurrentLang(parsed.lang);
+      }
       window.scrollTo(0, 0);
       if (navTimer) clearTimeout(navTimer);
       navTimer = setTimeout(() => {
@@ -119,7 +128,12 @@ export const App = () => {
           return;
         }
         e.preventDefault();
-        window.history.pushState({}, '', href);
+        const { lang: linkLang, cleanPath } = extractLangFromPath(href);
+        let targetHref = href;
+        if (linkLang === 'en' && currentLang !== 'en') {
+          targetHref = localizePath(cleanPath, currentLang);
+        }
+        window.history.pushState({}, '', targetHref);
         handleLocationChange();
       }
     };
@@ -133,22 +147,22 @@ export const App = () => {
       window.removeEventListener('popstate', handleLocationChange);
       document.removeEventListener('click', handleLinkClick);
     };
-  }, []);
+  }, [currentLang, setCurrentLang]);
 
   const { route, param } = currentLoc;
 
   // Dynamic Technical SEO & Schema.org JSON-LD structured data injection
   useEffect(() => {
-    let title = 'Lotus Tubes | SS Sanitary Pipes, Fittings & Valves';
-    let description = 'Lotus Tubes supplies SS 316L and SS 304 sanitary pipe, ASTM A270 fittings, tri-clamp components, and valves for pharmaceutical and hygienic process lines.';
+    let title = t('seo_home_title', 'Lotus Tubes | SS Sanitary Pipes, Fittings & Valves');
+    let description = t('seo_home_desc', 'Lotus Tubes supplies SS 316L and SS 304 sanitary pipe, ASTM A270 fittings, tri-clamp components, and valves for pharmaceutical and hygienic process lines.');
     let productData = null;
     let itemList = null;
-    let breadcrumbs = [{ name: 'Home', path: '/' }];
+    let breadcrumbs = [{ name: t('nav_home', 'Home'), path: '/' }];
 
     if (route === 'products') {
-      title = 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes';
-      description = 'Explore Lotus Tubes comprehensive range of SS 304 and SS 316L sanitary pipes, electropolished tubing, Tri-Clamp fittings, and hygienic valves.';
-      breadcrumbs.push({ name: 'Products', path: '/products' });
+      title = t('seo_products_title', 'Sanitary Stainless Steel Catalogue | Pipes, Valves & Fittings | Lotus Tubes');
+      description = t('seo_products_desc', 'Explore Lotus Tubes comprehensive range of SS 304 and SS 316L sanitary pipes, electropolished tubing, Tri-Clamp fittings, and hygienic valves.');
+      breadcrumbs.push({ name: t('nav_products', 'Products'), path: '/products' });
       itemList = PRODUCTS.map((p) => ({
         name: p.name,
         url: `/product/${p.slug || p.id}`
@@ -156,13 +170,13 @@ export const App = () => {
     } else if (route === 'product' && param) {
       const found = PRODUCTS.find((p) => p.slug === param || p.id === param);
       if (found) {
-        title = `${found.name} (${found.material}) - Sanitary Specifications | Lotus Tubes`;
+        title = `${found.name} (${found.material}) - ${t('nav_products', 'Sanitary Specifications')} | Lotus Tubes`;
         description = found.overview || `${found.name} in ${found.material} with hygienic finish for pharmaceutical and food process applications.`;
         if (description.length > 160) {
           description = description.substring(0, 157) + '...';
         }
         productData = found;
-        breadcrumbs.push({ name: 'Products', path: '/products' });
+        breadcrumbs.push({ name: t('nav_products', 'Products'), path: '/products' });
         if (found.categorySlug && found.category) {
           breadcrumbs.push({ name: found.category, path: `/category/${found.categorySlug}` });
         }
@@ -170,9 +184,9 @@ export const App = () => {
       }
     } else if (route === 'category' && param) {
       const catName = param.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-      title = `${catName} | Sanitary Stainless Steel Components | Lotus Tubes`;
+      title = `${catName} | ${t('nav_products', 'Sanitary Stainless Steel Components')} | Lotus Tubes`;
       description = `Certified sanitary ${catName} in high purity SS 304 and SS 316L grades with Ra < 0.4µm surface finish for pharmaceutical and food process lines.`;
-      breadcrumbs.push({ name: 'Products', path: '/products' });
+      breadcrumbs.push({ name: t('nav_products', 'Products'), path: '/products' });
       breadcrumbs.push({ name: catName, path: `/category/${param}` });
       const catProducts = PRODUCTS.filter((p) => p.categorySlug === param || p.category?.toLowerCase() === catName.toLowerCase());
       if (catProducts.length > 0) {
@@ -182,29 +196,29 @@ export const App = () => {
         }));
       }
     } else if (route === 'about') {
-      title = 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai';
-      description = 'Lotus Tubes delivers high-precision stainless steel sanitary tubes and components from Girgaon, Mumbai to pharmaceutical and food process leaders worldwide.';
-      breadcrumbs.push({ name: 'About Us', path: '/about' });
+      title = t('seo_about_title', 'About Lotus Tubes | Stainless Steel Sanitary Specialists Mumbai');
+      description = t('seo_about_desc', 'Lotus Tubes delivers high-precision stainless steel sanitary tubes and components from Girgaon, Mumbai to pharmaceutical and food process leaders worldwide.');
+      breadcrumbs.push({ name: t('nav_about', 'About Us'), path: '/about' });
     } else if (route === 'industries' || route === 'industry') {
-      title = 'Process Industries We Serve | Lotus Tubes Sanitary Solutions';
-      description = 'Hygienic stainless steel piping, fittings, and valves engineered for pharmaceutical, biotech, dairy, food & beverage, and high-purity water systems.';
-      breadcrumbs.push({ name: 'Industries', path: '/industries' });
+      title = t('seo_industries_title', 'Process Industries We Serve | Lotus Tubes Sanitary Solutions');
+      description = t('seo_industries_desc', 'Hygienic stainless steel piping, fittings, and valves engineered for pharmaceutical, biotech, dairy, food & beverage, and high-purity water systems.');
+      breadcrumbs.push({ name: t('nav_industries', 'Industries'), path: '/industries' });
     } else if (route === 'quality') {
-      title = 'Quality Assurance & Mill Test Certification | Lotus Tubes';
-      description = 'Every Lotus Tubes sanitary product complies with ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 MTR inspection certification.';
-      breadcrumbs.push({ name: 'Quality Assurance', path: '/quality' });
+      title = t('seo_quality_title', 'Quality Assurance & Mill Test Certification | Lotus Tubes');
+      description = t('seo_quality_desc', 'Every Lotus Tubes sanitary product complies with ASTM A270, ASME BPE, and 3-A standards. Verified with EN 10204 3.1 MTR inspection certification.');
+      breadcrumbs.push({ name: t('nav_quality', 'Quality Assurance'), path: '/quality' });
     } else if (route === 'resources') {
-      title = 'Engineering Resources & Technical Datasheets | Lotus Tubes';
-      description = 'Download sanitary stainless steel dimensional charts, ASTM A270 specifications, and electropolished surface roughness conversion tables.';
-      breadcrumbs.push({ name: 'Resources', path: '/resources' });
+      title = t('seo_resources_title', 'Engineering Resources & Technical Datasheets | Lotus Tubes');
+      description = t('seo_resources_desc', 'Download sanitary stainless steel dimensional charts, ASTM A270 specifications, and electropolished surface roughness conversion tables.');
+      breadcrumbs.push({ name: t('nav_resources', 'Resources'), path: '/resources' });
     } else if (route === 'contact') {
-      title = 'Contact Lotus Tubes | Girgaon Mumbai Sales Office';
-      description = 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.';
-      breadcrumbs.push({ name: 'Contact', path: '/contact' });
+      title = t('seo_contact_title', 'Contact Lotus Tubes | Girgaon Mumbai Sales Office');
+      description = t('seo_contact_desc', 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.');
+      breadcrumbs.push({ name: t('nav_contact', 'Contact'), path: '/contact' });
     } else if (route === 'quote') {
-      title = 'Request a Formal B2B Quotation | Lotus Tubes';
-      description = 'Submit your Bill of Quantities (BOQ) for instant review and competitive quotation on SS 304 and SS 316L sanitary pipes, fittings, and valves.';
-      breadcrumbs.push({ name: 'Request Quote', path: '/quote' });
+      title = t('seo_quote_title', 'Request a Formal B2B Quotation | Lotus Tubes');
+      description = t('seo_quote_desc', 'Submit your Bill of Quantities (BOQ) for instant review and competitive quotation on SS 304 and SS 316L sanitary pipes, fittings, and valves.');
+      breadcrumbs.push({ name: t('nav_quote', 'Request Quote'), path: '/quote' });
     } else if (route === 'account') {
       title = 'Customer Account & Quotation History | Lotus Tubes';
       description = 'View your active quotation inquiries, track dispatch status, and download EN 10204 3.1 material test certificates for Lotus Tubes orders.';
@@ -224,6 +238,7 @@ export const App = () => {
       title,
       description,
       path: currentPath,
+      lang: currentLang,
       productData,
       itemList,
       breadcrumbs,
@@ -231,7 +246,7 @@ export const App = () => {
     });
 
     trackPageView(currentPath, title);
-  }, [route, param]);
+  }, [route, param, currentLang]);
 
   const addToast = (message, type = 'info') => {
     const id = Date.now() + Math.random();
@@ -261,8 +276,7 @@ export const App = () => {
   };
 
   return (
-    <LanguageProvider>
-      <div id="app" className="app-root">
+    <div id="app" className={`app-root ${isRTL ? 'app-root--rtl' : ''}`}>
         {/* Top Viewport Route Transition Indicator */}
         <RouteProgressBar isNavigating={isNavigating} />
         {isCRM ? (
@@ -367,7 +381,6 @@ export const App = () => {
         {/* Scroll-to-Top Button */}
         <ScrollToTop />
       </div>
-    </LanguageProvider>
   );
 };
 

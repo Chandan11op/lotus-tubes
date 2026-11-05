@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import ProductCard from '../components/common/ProductCard';
 import PageHero from '../components/common/PageHero';
 import { filterAndSearchProducts } from '../utils/productSearch';
@@ -15,6 +16,7 @@ const STANDARDS_LIST = [
 ];
 
 export const ProductsView = ({ onOpenEnquiry }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   // Read initial search query from URL parameters if present
   const getInitialSearch = () => {
     if (typeof window === 'undefined') return '';
@@ -107,7 +109,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
             onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Full Sanitary Catalogue Enquiry')}
             className="btn btn--primary"
           >
-            Request Official Quotation &rarr;
+            {t('btn_request_rfq', 'Request Official Quotation')} &rarr;
           </button>,
           <a
             key="whatsapp"
@@ -168,7 +170,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
         >
           <div className="filter-sidebar__header">
             <div>
-              <h3 className="filter-sidebar__title">Filter Catalogue</h3>
+              <h3 className="filter-sidebar__title">{t('filter_catalogue', 'Filter Catalogue')}</h3>
               <p className="text-xs text-slate-500 mt-0.5">Refine by metallurgy &amp; standard</p>
             </div>
             <div className="flex items-center gap-2">
@@ -179,7 +181,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                   id="filter-reset-btn"
                   onClick={handleResetFilters}
                 >
-                  Reset ({activeFilterCount})
+                  {t('filter_reset', 'Reset')} ({activeFilterCount})
                 </button>
               )}
               {/* Mobile Drawer Close Button */}
@@ -197,7 +199,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           <div className="filter-sidebar__content">
             {/* 1. Category Filter */}
             <div className="filter-group">
-              <label className="filter-group__label">Product Category</label>
+              <label className="filter-group__label">{t('all_categories', 'Product Category')}</label>
               <ul className="filter-option-list">
                 <li>
                   <label className="custom-checkbox">
@@ -209,7 +211,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
                       onChange={() => setSelectedCategory('all')}
                     />
                     <span className="custom-checkbox__text">
-                      All Categories
+                      {t('all_categories', 'All Categories')}
                       <span className="filter-count">({PRODUCTS.length})</span>
                     </span>
                   </label>

@@ -1,8 +1,10 @@
 import React from 'react';
 import PageHero from '../components/common/PageHero';
 import { CONFIG } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 
 export const AboutView = ({ onOpenEnquiry }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
 
   return (
@@ -29,7 +31,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
           >
             Consult Engineering Team &rarr;
           </button>,
-          <a key="cat" href="/products" className="btn btn--outline">
+          <a key="cat" href={localizePath('/products', currentLang)} className="btn btn--outline">
             Explore 30+ Component Range
           </a>
         ]}
@@ -268,10 +270,10 @@ export const AboutView = ({ onOpenEnquiry }) => {
               We operate with uncompromising transparency. We partner with tier-1 precision drawing mills and certified CNC machining foundries. All MTC 3.1 certificates provided by Lotus Tubes correspond to verifiable heats and tested batches. If an alloy does not match our guaranteed specification, we replace it immediately without question.
             </p>
             <div className="flex flex-wrap gap-4 mt-6">
-              <a href="/quality" className="btn btn--primary">
+              <a href={localizePath('/quality', currentLang)} className="btn btn--primary">
                 Review MTC 3.1 &amp; Quality Benchmarks &rarr;
               </a>
-              <a href="/contact" className="btn btn--outline">
+              <a href={localizePath('/contact', currentLang)} className="btn btn--outline">
                 Visit Our Girgaon Office
               </a>
             </div>

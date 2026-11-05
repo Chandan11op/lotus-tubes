@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PRODUCTS, CONFIG } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
 import { ProductVideoPlayer } from '../components/common/ProductVideoPlayer';
 import { Product360Viewer } from '../components/common/Product360Viewer';
@@ -20,6 +21,7 @@ import { updatePageSEO } from '../utils/seo';
  * - Complementary related products and direct quotation actions
  */
 export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
@@ -51,16 +53,17 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
       title: prod.seo?.title || `${prod.name} | Lotus Tubes`,
       description: prod.seo?.metaDescription || prod.overview,
       path: `/product/${prod.slug || prod.id}`,
+      lang: currentLang,
       image: prod.image,
       productData: prod,
       breadcrumbs: [
-        { name: 'Home', path: '/' },
-        { name: 'Products', path: '/products' },
+        { name: t('nav_home', 'Home'), path: '/' },
+        { name: t('nav_products', 'Products'), path: '/products' },
         { name: prod.category, path: `/category/${prod.categorySlug}` },
         { name: prod.name, path: `/product/${prod.slug || prod.id}` }
       ]
     });
-  }, [slug, prod?.id]);
+  }, [slug, prod?.id, currentLang]);
 
   const productImages = prod.images && prod.images.length > 0
     ? prod.images
@@ -266,14 +269,14 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           {/* Category Eyebrow & Sourcing Status */}
           <div className="flex items-center justify-between gap-2 mb-2">
             <a
-              href={`/category/${prod.categorySlug}`}
+              href={localizePath(`/category/${prod.categorySlug}`, currentLang)}
               className="text-xs font-bold text-sky-600 uppercase tracking-wider hover:underline"
             >
               {prod.category}
             </a>
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              {prod.availability || 'Ready Stock in Mumbai'}
+              {prod.availability || t('pdp_in_stock', 'Ready Stock in Mumbai')}
             </span>
           </div>
 
@@ -385,7 +388,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               onClick={() => onOpenEnquiry && onOpenEnquiry(prod, prod.name)}
               className="btn btn--primary flex-1 py-3.5 px-6 text-sm font-bold shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2"
             >
-              <span>Request Official Quotation</span>
+              <span>{t('pdp_btn_rfq', 'Request Official Quotation')}</span>
               <span>&rarr;</span>
             </button>
 
@@ -398,11 +401,11 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-lg text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 transition-colors"
             >
               <span>🟢</span>
-              <span>Enquire on WhatsApp</span>
+              <span>{t('pdp_btn_whatsapp', 'Enquire on WhatsApp')}</span>
             </a>
 
             <a
-              href="/quote"
+              href={localizePath('/quote', currentLang)}
               className="btn btn--outline py-3.5 px-5 text-sm font-semibold border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               Attach BOQ
@@ -633,8 +636,8 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 Related Products in {prod.category}
               </h3>
             </div>
-            <a href="/products" className="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1">
-              <span>View Full Catalogue</span>
+            <a href={localizePath('/products', currentLang)} className="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1">
+              <span>{t('view_catalogue', 'View Full Catalogue')}</span>
               <span>&rarr;</span>
             </a>
           </div>
@@ -643,7 +646,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             {related.map((rel) => (
               <a
                 key={rel.id}
-                href={`/product/${rel.slug || rel.id}`}
+                href={localizePath(`/product/${rel.slug || rel.id}`, currentLang)}
                 className="group flex flex-col p-4 rounded-xl bg-white border border-slate-200 hover:border-sky-500 hover:shadow-lg transition-all"
               >
                 <div className="aspect-square w-full rounded-lg overflow-hidden bg-slate-50 mb-3 flex items-center justify-center p-3">
@@ -661,7 +664,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                   Grade: {rel.material} &bull; {rel.finish}
                 </div>
                 <div className="mt-auto pt-3 text-xs font-semibold text-sky-600 flex items-center gap-1">
-                  <span>View Details</span>
+                  <span>{t('view_details', 'View Details')}</span>
                   <span>&rarr;</span>
                 </div>
               </a>

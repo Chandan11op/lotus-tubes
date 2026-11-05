@@ -1,5 +1,6 @@
 import React from 'react';
 import ProductCardVideo from './ProductCardVideo';
+import { useLanguage } from '../../context/LanguageContext';
 
 /**
  * LOTUS TUBES - Professional Industrial Product Card
@@ -14,6 +15,8 @@ export const ProductCard = ({
   className = ''
 }) => {
   if (!product) return null;
+
+  const { t, currentLang, localizePath } = useLanguage();
 
   const {
     id,
@@ -70,6 +73,7 @@ export const ProductCard = ({
   const materialChip = formatMaterialChip(material);
   const finishChip = formatFinishChip(finish);
   const standardChip = formatStandardChip(standard);
+  const productPath = localizePath(`/product/${slug || id}`, currentLang);
 
   return (
     <article className={`product-card group flex flex-col h-full bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-sky-500/40 transition-all duration-300 ${className}`}>
@@ -77,7 +81,7 @@ export const ProductCard = ({
       {/* 1. Unobstructed Product Media Stage */}
       <div className="product-card__img-wrap aspect-[4/3] bg-slate-50 relative overflow-hidden border-b border-slate-100">
         <a
-          href={`/product/${slug || id}`}
+          href={productPath}
           className="block w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500"
           tabIndex="-1"
           aria-hidden="true"
@@ -105,7 +109,7 @@ export const ProductCard = ({
           {/* Deliberate, subtle 360° Video Action Indicator */}
           {hasVerifiedVideo && (
             <a
-              href={`/product/${slug || id}?view=360`}
+              href={`${productPath}?view=360`}
               className="product-card__video-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-sky-50 text-sky-700 border border-sky-200/80 hover:bg-sky-100 hover:text-sky-800 transition-colors shrink-0"
               title="Verified 360° interactive rotation video available"
               aria-label={`View 360° video for ${name}`}
@@ -113,7 +117,7 @@ export const ProductCard = ({
               <svg className="w-3 h-3 text-sky-600 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
               </svg>
-              <span>360° Video</span>
+              <span>{t('badge_360', '360° Video')}</span>
             </a>
           )}
         </div>
@@ -121,7 +125,7 @@ export const ProductCard = ({
         {/* Product Title */}
         <h3 className="product-card__title text-base font-bold text-slate-900 leading-snug mb-2.5 min-h-[2.6em] line-clamp-2">
           <a
-            href={`/product/${slug || id}`}
+            href={productPath}
             className="hover:text-sky-700 transition-colors"
           >
             {name}
@@ -178,10 +182,10 @@ export const ProductCard = ({
         {/* Action Buttons: View Details & Request RFQ */}
         <div className="product-card__actions mt-auto flex items-center gap-2 pt-2 border-t border-slate-100">
           <a
-            href={`/product/${slug || id}`}
+            href={productPath}
             className="btn btn--outline-dark btn--sm flex-1 text-center py-2 text-xs font-semibold rounded-lg border border-slate-300 hover:border-slate-800 hover:bg-slate-50 transition-colors"
           >
-            View Details
+            {t('view_details', 'View Details')}
           </a>
 
           <button
@@ -189,7 +193,7 @@ export const ProductCard = ({
             className="btn btn--primary btn--sm quick-rfq-btn flex-1 py-2 text-xs font-bold rounded-lg shadow-sm hover:shadow transition-all"
             onClick={() => onOpenEnquiry && onOpenEnquiry(id, name)}
           >
-            Request RFQ
+            {t('btn_request_rfq', 'Request RFQ')}
           </button>
         </div>
 

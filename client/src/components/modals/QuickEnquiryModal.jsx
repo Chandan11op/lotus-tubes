@@ -3,6 +3,7 @@ import { apiService } from '../../services/api';
 import { Loader } from '../common/Loader';
 import { CONFIG } from '../../data/siteData';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 import TurnstileWidget from '../common/TurnstileWidget';
 import {
   MATERIAL_GRADES,
@@ -14,6 +15,7 @@ import {
 
 export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
   const { user, isAuthenticated } = useAuth();
+  const { t, currentLang } = useLanguage();
 
   const categorySpecs = getSpecsForCategory(product?.category || product?.name || 'Sanitary Pipes');
 
@@ -187,6 +189,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
         notes: formData.notes,
         finish: formData.finish,
         sizes: `${selectedSize} (${outsideDiameter || ''}) x ${selectedThickness}`,
+        language: currentLang,
         // If guest, pass customer fields and Turnstile token
         ...(!isAuthenticated
           ? {

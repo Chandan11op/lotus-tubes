@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { apiService } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import PageHero from '../components/common/PageHero';
 import { Loader } from '../components/common/Loader';
 
 export const QualityView = () => {
+  const { t, currentLang, localizePath } = useLanguage();
   const [formData, setFormData] = useState({
     company: '',
     email: '',
@@ -24,7 +26,8 @@ export const QualityView = () => {
         company: formData.company,
         email: formData.email,
         product: formData.product || 'General Technical Certification',
-        docType: formData.docType
+        docType: formData.docType,
+        language: currentLang
       });
       setStatus({
         state: 'success',

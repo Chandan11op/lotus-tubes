@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FAQS } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import PageHero from '../components/common/PageHero';
 
 export const ResourcesView = ({ onNotify }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   const [openFaq, setOpenFaq] = useState(null);
 
   const handleDownload = (docName) => {
@@ -40,8 +42,8 @@ export const ResourcesView = ({ onNotify }) => {
           { value: '24h Response', label: 'Technical Sourcing' }
         ]}
         actions={[
-          <a key="cat" href="/products" className="btn btn--primary">
-            Explore Product Range &rarr;
+          <a key="cat" href={localizePath('/products', currentLang)} className="btn btn--primary">
+            {t('nav_products', 'Explore Product Range')} &rarr;
           </a>
         ]}
       />

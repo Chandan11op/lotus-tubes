@@ -3,7 +3,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { CONFIG } from '../../data/siteData';
 
 export const Footer = () => {
-  const { t } = useLanguage();
+  const { t, currentLang, localizePath } = useLanguage();
   const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
 
   return (
@@ -50,7 +50,7 @@ export const Footer = () => {
           {/* Col 1: Brand & Sourcing Statement (Cols 1-4) */}
           <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
             <div>
-              <a href="/" className="inline-block group mb-5" aria-label="Lotus Tubes - Return to Home">
+              <a href={localizePath('/', currentLang)} className="inline-block group mb-5" aria-label="Lotus Tubes - Return to Home">
                 <img
                   src="/banner-image.png"
                   alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves"
@@ -136,49 +136,49 @@ export const Footer = () => {
             </h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
               <li>
-                <a href="/category/sanitary-pipes" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/sanitary-pipes', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Sanitary Pipes &amp; Tubes (ASTM A270)
                 </a>
               </li>
               <li>
-                <a href="/category/sanitary-fittings" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/sanitary-fittings', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Sanitary Bends, Tees &amp; Reducers
                 </a>
               </li>
               <li>
-                <a href="/category/tri-clamp" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/tri-clamp', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Tri-Clamp Ferrules, Clamps &amp; Blanks
                 </a>
               </li>
               <li>
-                <a href="/category/gaskets" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/gaskets', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   USP Class VI &amp; FDA Sanitary Gaskets
                 </a>
               </li>
               <li>
-                <a href="/category/manual-valves" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/manual-valves', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Hygienic Butterfly &amp; Ball Valves
                 </a>
               </li>
               <li>
-                <a href="/category/pneumatic-valves" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/pneumatic-valves', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Aseptic Diaphragm &amp; Control Valves
                 </a>
               </li>
               <li>
-                <a href="/category/tank-cleaning" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/tank-cleaning', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Rotary CIP Tank Cleaning Spray Balls
                 </a>
               </li>
               <li>
-                <a href="/category/custom-assemblies" className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                <a href={localizePath('/category/custom-assemblies', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
                   <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
                   Custom Fabrication &amp; Hygienic Spools
                 </a>
@@ -192,18 +192,18 @@ export const Footer = () => {
               {t('footer_col_industries', 'Sectors & Standards')}
             </h4>
             <ul className="space-y-2.5 text-sm text-slate-400">
-              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_pharma', 'Biopharma Processing')}</a></li>
-              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_dairy', 'Dairy & Milk Processing')}</a></li>
-              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_food', 'Food & Beverage Skids')}</a></li>
-              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_brew', 'Breweries & Distilleries')}</a></li>
-              <li><a href="/industries" className="hover:text-white transition-colors">{t('ind_water', 'WFI High-Purity Water')}</a></li>
+              <li><a href={localizePath('/industries', currentLang)} className="hover:text-white transition-colors">{t('ind_pharma', 'Biopharma Processing')}</a></li>
+              <li><a href={localizePath('/industries', currentLang)} className="hover:text-white transition-colors">{t('ind_dairy', 'Dairy & Milk Processing')}</a></li>
+              <li><a href={localizePath('/industries', currentLang)} className="hover:text-white transition-colors">{t('ind_food', 'Food & Beverage Skids')}</a></li>
+              <li><a href={localizePath('/industries', currentLang)} className="hover:text-white transition-colors">{t('ind_brew', 'Breweries & Distilleries')}</a></li>
+              <li><a href={localizePath('/industries', currentLang)} className="hover:text-white transition-colors">{t('ind_water', 'WFI High-Purity Water')}</a></li>
               <li className="pt-2 border-t border-slate-800/80">
-                <a href="/quality" className="hover:text-white text-xs font-semibold text-slate-300 transition-colors block">
+                <a href={localizePath('/quality', currentLang)} className="hover:text-white text-xs font-semibold text-slate-300 transition-colors block">
                   Material Test Certificates (3.1)
                 </a>
               </li>
               <li>
-                <a href="/resources" className="hover:text-white text-xs font-semibold text-slate-300 transition-colors block">
+                <a href={localizePath('/resources', currentLang)} className="hover:text-white text-xs font-semibold text-slate-300 transition-colors block">
                   Dimensional Specification Charts
                 </a>
               </li>
@@ -253,7 +253,7 @@ export const Footer = () => {
             </div>
 
             <a
-              href="/quote"
+              href={localizePath('/quote', currentLang)}
               className="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs tracking-wide uppercase transition-all shadow-md shadow-sky-900/30"
             >
               Request Project BOQ Quote &rarr;
@@ -272,11 +272,11 @@ export const Footer = () => {
           </p>
 
           <div className="flex items-center gap-4 flex-wrap justify-center text-slate-400">
-            <a href="/quality" className="hover:text-white transition-colors">Quality Assurance Policy</a>
+            <a href={localizePath('/quality', currentLang)} className="hover:text-white transition-colors">Quality Assurance Policy</a>
             <span className="text-slate-700">•</span>
-            <a href="/contact" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors">Privacy Policy</a>
             <span className="text-slate-700">•</span>
-            <a href="/contact" className="hover:text-white transition-colors">Terms of Supply</a>
+            <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors">Terms of Supply</a>
             <span className="text-slate-700">•</span>
             <a href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</a>
           </div>

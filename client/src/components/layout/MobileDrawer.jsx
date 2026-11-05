@@ -69,22 +69,27 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
         <div className="flex-1 overflow-y-auto p-4 space-y-6">
           {/* Language Selector */}
           <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-            <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-2">
-              🌐 Select Language / भाषा / اللغة
+            <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+              <span>🌐</span>
+              <span>{t('select_preferred_lang', 'Select Language')}</span>
             </div>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 gap-1.5">
               {languages.map((lang) => (
                 <button
                   key={lang.code}
                   type="button"
-                  className={`py-1.5 px-2 rounded text-xs font-medium text-center transition-all ${
+                  className={`py-2 px-2.5 rounded-lg text-xs font-medium text-left transition-all flex items-center justify-between ${
                     currentLang === lang.code
-                      ? 'bg-sky-600 text-white shadow-sm'
+                      ? 'bg-sky-600 text-white shadow-sm font-semibold'
                       : 'bg-slate-850 hover:bg-slate-800 text-slate-300'
                   }`}
-                  onClick={() => setCurrentLang(lang.code)}
+                  onClick={() => {
+                    setCurrentLang(lang.code);
+                    onClose();
+                  }}
                 >
-                  {lang.flag} {lang.name.split(' ')[0]}
+                  <span>{lang.nativeName}</span>
+                  {currentLang === lang.code && <span>✓</span>}
                 </button>
               ))}
             </div>

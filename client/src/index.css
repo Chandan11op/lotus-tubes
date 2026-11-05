@@ -678,29 +678,85 @@ ol {
   color: var(--pure-white);
 }
 
-/* RTL Support for Arabic */
-[dir="rtl"] {
+/* ==========================================================================
+   RTL SUPPORT FOR ARABIC (العربية)
+   ========================================================================== */
+[dir="rtl"],
+.rtl-layout {
   direction: rtl;
   text-align: right;
 }
 
 [dir="rtl"] .top-bar__left,
 [dir="rtl"] .site-header__inner,
+[dir="rtl"] .executive-header,
+[dir="rtl"] .executive-nav-container,
 [dir="rtl"] .hero-grid,
 [dir="rtl"] .pre-footer-banner__inner,
-[dir="rtl"] .footer-grid {
+[dir="rtl"] .footer-grid,
+[dir="rtl"] .suites-grid,
+[dir="rtl"] .why-grid,
+[dir="rtl"] .editorial-hero__grid {
   direction: rtl;
 }
 
-[dir="rtl"] .hero-tagline-float {
+/* Mirrored Dropdown & Tooltip Positioning */
+[dir="rtl"] .lang-dropdown,
+[dir="rtl"] .executive-actions .absolute {
   right: auto;
-  left: 20px;
+  left: 0;
+}
+
+[dir="rtl"] .modal-close-btn,
+[dir="rtl"] .modal-box .close-btn {
+  right: auto;
+  left: 1.25rem;
+}
+
+/* Direction Arrows Flip */
+[dir="rtl"] .cta-arrow,
+[dir="rtl"] .suite-link span:last-child,
+[dir="rtl"] .breadcrumb-separator {
+  transform: scaleX(-1);
+  display: inline-block;
+}
+
+/* LTR Preservation for Technical Specifications, Codes & Numbers */
+[dir="rtl"] .badge-heat-code,
+[dir="rtl"] .metric-num,
+[dir="rtl"] .metric-val,
+[dir="rtl"] .tech-spec-table,
+[dir="rtl"] .suite-specs-list,
+[dir="rtl"] .pdp-specs-grid,
+[dir="rtl"] code,
+[dir="rtl"] pre,
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input[type="email"],
+[dir="rtl"] .utility-contact-link,
+[dir="rtl"] .top-bar__link,
+[dir="rtl"] .ltr-preserve {
+  direction: ltr !important;
+  unicode-bidi: isolate;
   text-align: left;
 }
 
-[dir="rtl"] .lang-dropdown {
+/* Adjust Hotspot Pins in RTL Hero */
+[dir="rtl"] .hotspot-tooltip {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .hotspot-tooltip strong {
+  direction: ltr;
+  display: inline-block;
+}
+
+/* Mobile Drawer Positioning in RTL */
+[dir="rtl"] #mobile-drawer {
   right: auto;
   left: 0;
+  border-left: none;
+  border-right: 1px solid var(--navy-border, #1D3B63);
 }
 
 /* --------------------------------------------------------------------------

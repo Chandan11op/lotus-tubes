@@ -136,18 +136,18 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             {/* Quick Metrics Ticker */}
             <div className="editorial-hero__metrics">
               <div className="metric-item">
-                <span className="metric-val">50,000+ Mtrs</span>
-                <span className="metric-lbl">Ready Stock in Mumbai</span>
+                <span className="metric-val">{t('metric_od_val', '1/2" to 4.0"')}</span>
+                <span className="metric-lbl">{t('metric_od_lbl', 'Ready Stock Sanitary OD')}</span>
               </div>
               <div className="metric-divider" />
               <div className="metric-item">
-                <span className="metric-val">Ra ≤ 0.38 µm</span>
-                <span className="metric-lbl">Electropolished Purity</span>
+                <span className="metric-val">{t('metric_ra_val', 'Ra ≤ 0.38 µm')}</span>
+                <span className="metric-lbl">{t('metric_ra_lbl', 'Electro-Polished Internal Bore')}</span>
               </div>
               <div className="metric-divider" />
               <div className="metric-item">
-                <span className="metric-val">100% Traceable</span>
-                <span className="metric-lbl">EN 10204 3.1 Test Certificates</span>
+                <span className="metric-val">{t('metric_mtc_val', '100% Traceable')}</span>
+                <span className="metric-lbl">{t('metric_mtc_lbl', 'EN 10204 3.1 Test Certificates')}</span>
               </div>
             </div>
           </div>
@@ -158,8 +158,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               {/* Central Metallic Tube / Component Showcase */}
               <div className="metallic-card">
                 <div className="metallic-card__header">
-                  <span className="badge-metallic">ASME BPE COMPLIANT</span>
-                  <span className="badge-heat-code">HEAT TRACEABLE: LT-316L-9402</span>
+                  <span className="badge-metallic">{t('badge_asme', 'ASME BPE COMPLIANT')}</span>
+                  <span className="badge-heat-code">{t('badge_heat_code', 'HEAT TRACEABLE: LT-316L-9402')}</span>
                 </div>
 
                 <div className="metallic-card__media">
@@ -174,30 +174,30 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                   />
                   
                   {/* Interactive Hotspot Overlay Pins */}
-                  <div className="hotspot-pin hotspot-pin--1" title="Internal Electropolished Finish">
+                  <div className="hotspot-pin hotspot-pin--1" title={t('hotspot_finish_title', 'Internal Electropolished Finish')}>
                     <span className="hotspot-ping" />
                     <span className="hotspot-dot">1</span>
                     <div className="hotspot-tooltip">
-                      <strong>Ultra-Smooth Finish</strong>
-                      <span>Ra ≤ 0.38 µm (15 µin) Mirror Polish prevents bacterial biofilm growth</span>
+                      <strong>{t('hotspot_finish_title', 'Ultra-Smooth Finish')}</strong>
+                      <span>{t('hotspot_finish_desc', 'Ra ≤ 0.38 µm Mirror Polish prevents bacterial biofilm growth')}</span>
                     </div>
                   </div>
 
-                  <div className="hotspot-pin hotspot-pin--2" title="Material Chemistry Integrity">
+                  <div className="hotspot-pin hotspot-pin--2" title={t('hotspot_chem_title', 'Material Chemistry Integrity')}>
                     <span className="hotspot-ping" />
                     <span className="hotspot-dot">2</span>
                     <div className="hotspot-tooltip">
-                      <strong>Molybdenum Chemistry</strong>
-                      <span>2.5% Mo + 17% Cr for maximum pitting and chloride corrosion resistance</span>
+                      <strong>{t('hotspot_chem_title', 'Molybdenum Chemistry')}</strong>
+                      <span>{t('hotspot_chem_desc', '2.5% Mo + 17% Cr for maximum pitting and chloride corrosion resistance')}</span>
                     </div>
                   </div>
 
-                  <div className="hotspot-pin hotspot-pin--3" title="Dimensional Inspection">
+                  <div className="hotspot-pin hotspot-pin--3" title={t('hotspot_dim_title', 'Dimensional Inspection')}>
                     <span className="hotspot-ping" />
                     <span className="hotspot-dot">3</span>
                     <div className="hotspot-tooltip">
-                      <strong>Precision Calibration</strong>
-                      <span>Eddy-Current tested with strict ASTM A270 wall thickness consistency</span>
+                      <strong>{t('hotspot_dim_title', 'Precision Calibration')}</strong>
+                      <span>{t('hotspot_dim_desc', 'Eddy-Current tested with strict ASTM A270 wall thickness consistency')}</span>
                     </div>
                   </div>
                 </div>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { CONFIG } from '../data/siteData';
 import { apiService } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 import { Loader } from '../components/common/Loader';
 import PageHero from '../components/common/PageHero';
 
 export const ContactView = ({ onNotify }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -40,7 +42,7 @@ export const ContactView = ({ onNotify }) => {
     setIsLoading(true);
 
     try {
-      const res = await apiService.submitContact(formData);
+      const res = await apiService.submitContact({ ...formData, language: currentLang });
       if (res?.success !== false) {
         setIsSubmitted(true);
         if (onNotify) {

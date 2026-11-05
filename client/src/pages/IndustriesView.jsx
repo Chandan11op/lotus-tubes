@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { INDUSTRIES, PRODUCTS } from '../data/siteData';
+import { useLanguage } from '../context/LanguageContext';
 import PageHero from '../components/common/PageHero';
 import ProductImage from '../components/common/ProductImage';
 
@@ -22,6 +23,7 @@ import ProductImage from '../components/common/ProductImage';
  * 5. Full keyboard accessibility, aria-selected attributes, and prefers-reduced-motion support.
  */
 export const IndustriesView = ({ slug, onOpenEnquiry }) => {
+  const { t, currentLang, localizePath } = useLanguage();
   // Find initial active index based on URL slug if provided
   const initialIndex = useMemo(() => {
     if (!slug) return 0;
@@ -386,7 +388,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                       Recommended Components for {currentIndustry.name}:
                     </span>
                     <a
-                      href="/products"
+                      href={localizePath('/products', currentLang)}
                       className="text-xs font-semibold text-sky-400 hover:text-sky-300"
                     >
                       View All 30+ Items &rarr;
@@ -398,7 +400,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                       return (
                         <a
                           key={p.id}
-                          href={`/product/${p.slug || p.id}`}
+                          href={localizePath(`/product/${p.slug || p.id}`, currentLang)}
                           className="group/card flex flex-col p-2.5 rounded-xl bg-slate-850/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 transition-all text-left min-w-0"
                         >
                           <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-slate-900 mb-2 flex items-center justify-center p-2">
