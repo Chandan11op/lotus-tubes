@@ -436,7 +436,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           <div className="lt-founder-panel">
             <div className="lt-founder-mark" aria-hidden="true">LT</div>
             <div className="lt-founder-copy">
-              <span className="lt-person-label">Chief Executive Officer</span>
+              <span className="lt-person-label">Founder &amp; CEO</span>
               <h3>Chirag Shah</h3>
               <p>Guiding the business through customer relationships, commercial coordination and stainless steel sanitary product sourcing.</p>
               <span className="lt-person-note">A fuller personal introduction can be added after the founder approves the final biography.</span>
@@ -450,7 +450,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           <div className="lt-team-heading">
             <div>
               <span className="editorial-kicker">Our AI Team</span>
-              <h3>People behind every enquiry.</h3>
+              <h3>AI agents supporting Lotus Tubes.</h3>
             </div>
             <p>These AI team profiles are being configured. Individual role descriptions will be added once responsibilities are assigned.</p>
           </div>
@@ -465,7 +465,6 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 <div className="lt-team-avatar" aria-hidden="true">{member.initial}</div>
                 <div className="lt-team-info">
                   <h4>{member.name}</h4>
-                  <span className="lt-team-role">Role to be assigned</span>
                   <a href={`mailto:${member.email}`}>{member.email}</a>
                 </div>
               </article>
