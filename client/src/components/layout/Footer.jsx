@@ -217,7 +217,7 @@ export const Footer = () => {
             <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-3">
               <div>
                 <span className="text-slate-400 block text-[11px] uppercase font-mono mb-1">
-                  {t('label_office', 'Registered Office & Stockhub:')}
+                  {t('label_office', 'Business Address:')}
                 </span>
                 <p className="text-slate-200 leading-snug">{CONFIG.officeAddress}</p>
               </div>
