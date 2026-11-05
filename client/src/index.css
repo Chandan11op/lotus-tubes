@@ -5585,3 +5585,40 @@ video {
     display: none;
   }
 }
+
+/* =============================================================================
+   LOTUS TUBES HOMEPAGE — ABOUT & TEAM SECTION
+   ============================================================================= */
+.lt-about-section { padding: 88px 0 96px; background: #f4f7fa; }
+.lt-about-intro { max-width: 820px; margin: 0 auto 42px; text-align: center; }
+.lt-about-intro .editorial-title { margin: 10px 0 18px; }
+.lt-about-intro p { color: #526174; font-size: 1rem; line-height: 1.85; margin: 0 auto 12px; }
+.lt-founder-panel { display: grid; grid-template-columns: 92px minmax(0, 1fr) 220px; gap: 26px; align-items: center; padding: 30px; border: 1px solid #dce5ee; border-radius: 18px; background: #fff; box-shadow: 0 18px 50px rgba(3, 8, 16, .06); }
+.lt-founder-mark { width: 82px; height: 82px; display: grid; place-items: center; border-radius: 16px; color: #d9e7f5; background: linear-gradient(145deg, #030810, #18314b); font: 800 1.8rem 'Outfit', sans-serif; letter-spacing: .08em; }
+.lt-person-label, .lt-side-overline { display: block; color: #1474a5; font-size: .72rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.lt-founder-copy h3 { margin: 5px 0 8px; color: #101e30; font: 700 1.55rem 'Outfit', sans-serif; }
+.lt-founder-copy p { color: #536174; line-height: 1.7; margin: 0 0 8px; }
+.lt-person-note { color: #8290a1; font-size: .78rem; }
+.lt-founder-side { border-left: 1px solid #e2e8f0; padding-left: 24px; display: flex; flex-direction: column; gap: 5px; color: #64748b; font-size: .9rem; }
+.lt-founder-side strong { color: #14263a; font-size: 1rem; }
+.lt-team-heading { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin: 58px 0 22px; }
+.lt-team-heading h3 { color: #101e30; font: 700 1.7rem 'Outfit', sans-serif; margin-top: 7px; }
+.lt-team-heading p { max-width: 420px; color: #64748b; font-size: .9rem; line-height: 1.7; }
+.lt-team-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
+.lt-team-card { display: flex; gap: 14px; align-items: center; min-width: 0; padding: 20px 16px; border: 1px solid #dce5ee; border-radius: 14px; background: #fff; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.lt-team-card:hover { transform: translateY(-4px); border-color: #a9c8df; box-shadow: 0 14px 32px rgba(3,8,16,.08); }
+.lt-team-avatar { flex: 0 0 48px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: #e8f0f6; color: #173b5c; font: 800 .85rem 'Outfit', sans-serif; }
+.lt-team-info { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.lt-team-info h4 { color: #15283c; font: 700 .98rem 'Outfit', sans-serif; overflow-wrap: anywhere; }
+.lt-team-role { color: #78889a; font-size: .75rem; }
+.lt-team-info a { color: #1474a5; font-size: .73rem; overflow-wrap: anywhere; }
+.lt-team-info a:hover { text-decoration: underline; }
+@media (max-width: 1050px) { .lt-team-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 720px) {
+ .lt-about-section { padding: 62px 0 70px; }
+ .lt-founder-panel { grid-template-columns: 64px minmax(0,1fr); gap: 16px; padding: 22px; }
+ .lt-founder-mark { width: 60px; height: 60px; border-radius: 13px; font-size: 1.3rem; }
+ .lt-founder-side { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #e2e8f0; padding: 15px 0 0; }
+ .lt-team-heading { align-items: flex-start; flex-direction: column; gap: 10px; margin-top: 42px; }
+}
+@media (max-width: 520px) { .lt-team-grid { grid-template-columns: 1fr; } }
