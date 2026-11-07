@@ -1129,8 +1129,8 @@ export const LEADERSHIP = {
   name: 'Chirag Shah',
   designation: 'Founder & CEO',
   location: 'Mumbai, Maharashtra, India',
-  summary: 'Guiding the business through customer relationships, commercial coordination and stainless steel sanitary product sourcing.',
-  photo: null
+  summary: 'Leads the business and guides its commercial direction, customer relationships and supplier coordination for stainless steel sanitary product sourcing.',
+  photo: '/assets/images/team/owner.jpeg'
 };
 
 export const AI_TEAM_MEMBERS = [
@@ -1139,39 +1139,38 @@ export const AI_TEAM_MEMBERS = [
     name: 'Ananya Mehta',
     email: 'ananyamehta@lotustubes.com',
     initial: 'AM',
-    role: '',
-    isEmailActive: false,
-    status: 'AI Team Profile'
+    role: 'AI Quotation & Sales Coordination Agent',
+    summary: 'Coordinates customer quotation requests, prepares quotation drafts from verified CRM and product information, and shares approved quotations through email and WhatsApp.',
+    photo: '/assets/images/team/agent-1.jpeg'
   },
   {
     id: 'riya-shah',
     name: 'Riya Shah',
     email: 'riyashah@lotustubes.com',
     initial: 'RS',
-    role: '',
-    isEmailActive: false,
-    status: 'AI Team Profile'
+    role: 'AI Billing & Invoice Coordination Agent',
+    summary: 'Coordinates approved billing documents and invoices, checks that each document belongs to the right customer and order, and delivers it through email and WhatsApp.',
+    photo: '/assets/images/team/agent-2.jpeg'
   },
   {
     id: 'neha-desai',
     name: 'Neha Desai',
-    email: 'nehasdesai@lotustubes.com',
+    email: 'nehadesai@lotustubes.com',
     initial: 'ND',
-    role: '',
-    isEmailActive: false,
-    status: 'AI Team Profile'
+    role: 'AI Customer Enquiry & Resolution Agent',
+    summary: 'Receives customer enquiries, creates traceable query records, routes them to the relevant staff member and sends responses only after Super Admin approval.',
+    photo: '/assets/images/team/agent-3.jpeg'
   },
   {
-    id: 'arjun-yada',
-    name: 'Arjun Yada',
+    id: 'arjun-yadav',
+    name: 'Arjun Yadav',
     email: 'arjunyadav@lotustubes.com',
     initial: 'AY',
-    role: '',
-    isEmailActive: false,
-    status: 'AI Team Profile'
+    role: 'AI Customer Support & Operations Manager',
+    summary: 'Coordinates status information from the other AI agents, prepares customer-support updates and routes each proposed reply to the Super Admin for approval before sending.',
+    photo: '/assets/images/team/agent-4.jpeg'
   }
 ];
-
 export {
   CONFIG,
   createProductSVG,

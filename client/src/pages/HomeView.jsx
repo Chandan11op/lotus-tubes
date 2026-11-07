@@ -534,7 +534,14 @@ export const HomeView = ({ onOpenEnquiry }) => {
 
           {/* Founder / CEO Profile Card */}
           <div className="lt-founder-panel">
-            <div className="lt-founder-mark" aria-hidden="true">LT</div>
+            <img
+              src={LEADERSHIP.photo}
+              alt="Lotus Tubes leadership profile"
+              className="lt-founder-photo"
+              width="112"
+              height="112"
+              loading="lazy"
+            />
             <div className="lt-founder-copy">
               <span className="lt-person-label">{LEADERSHIP.designation}</span>
               <h3>{LEADERSHIP.name}</h3>
@@ -551,24 +558,31 @@ export const HomeView = ({ onOpenEnquiry }) => {
           <div className="lt-team-heading">
             <div>
               <span className="editorial-kicker">Our AI Team</span>
-              <h3>AI agents supporting Lotus Tubes.</h3>
+              <h3>Four specialised AI agents. One connected customer experience.</h3>
             </div>
             <p>
-              These AI team profiles are being configured. Individual role descriptions will be added once responsibilities are assigned.
+              Our AI agents coordinate quotation delivery, invoice communication, customer enquiries and support updates under Super Admin oversight.
             </p>
           </div>
 
-          {/* AI Team 4-Card Responsive Grid */}
+          {/* AI Team 2-by-2 Responsive Profile Grid */}
           <div className="lt-team-grid">
             {AI_TEAM_MEMBERS.map((member) => (
               <article className="lt-team-card" key={member.id}>
-                <div className="lt-team-avatar" aria-hidden="true">{member.initial}</div>
+                <img
+                  src={member.photo}
+                  alt={`${member.name} AI agent profile`}
+                  className="lt-team-avatar"
+                  width="88"
+                  height="104"
+                  loading="lazy"
+                />
                 <div className="lt-team-info">
+                  <span className="lt-team-tag">AI AGENT</span>
                   <h4>{member.name}</h4>
-                  {/* Role left completely blank per strict requirement */}
-                  {/* Email rendered as clean text without misleading active mailto link */}
+                  <span className="lt-team-role">{member.role}</span>
+                  <p className="lt-team-summary">{member.summary}</p>
                   <span className="lt-team-email">{member.email}</span>
-                  <span className="lt-team-tag">Account Setup in Progress</span>
                 </div>
               </article>
             ))}
