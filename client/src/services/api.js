@@ -460,6 +460,46 @@ export const apiService = {
       method: 'POST',
       body: JSON.stringify(qualityData)
     });
+  },
+
+  /**
+   * Agent 4 (Arjun Yadav): Live Chat Inquiry
+   */
+  async submitChatInquiry(chatData) {
+    return await request('/agents/chat-inquiry', {
+      method: 'POST',
+      body: JSON.stringify(chatData)
+    });
+  },
+
+  /**
+   * Agent 2 (Riya Shah): Request Invoice on WhatsApp
+   */
+  async requestInvoiceWhatsApp(quoteId, phone) {
+    return await request('/agents/request-invoice-whatsapp', {
+      method: 'POST',
+      body: JSON.stringify({ quoteId, phone })
+    });
+  },
+
+  /**
+   * Agent 3 (Neha Desai): Staff Reply to Customer Inquiry
+   */
+  async submitStaffReply(taskId, replyText) {
+    return await request(`/agents/inquiry-task/${taskId}/staff-reply`, {
+      method: 'POST',
+      body: JSON.stringify({ replyText })
+    });
+  },
+
+  /**
+   * Agent 3 (Neha Desai): Super Admin Confirm & Dispatch Inquiry Reply
+   */
+  async confirmInquiryReply(taskId, finalReplyText) {
+    return await request(`/agents/inquiry-task/${taskId}/confirm-reply`, {
+      method: 'POST',
+      body: JSON.stringify({ finalReplyText })
+    });
   }
 };
 

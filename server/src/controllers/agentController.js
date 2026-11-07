@@ -1,7 +1,12 @@
 import {
   AI_AGENTS_REGISTRY,
+  AI_PRIMARY_BOTS,
   processEnquiryWithAgent,
-  approveAgentTask
+  approveAgentTask,
+  draftStaffReplyForInquiry,
+  confirmAndDispatchInquiryBySuperAdmin,
+  dispatchInvoiceViaRiya,
+  handleChatWithArjun
 } from '../services/agentOrchestrator.js';
 import { AgentTask } from '../models/AgentTask.js';
 import { successResponse, errorResponse } from '../utils/responseHandler.js';
@@ -9,12 +14,29 @@ import { assertDatabaseConnected } from '../config/db.js';
 import { recordAuditEvent } from '../utils/auditLogger.js';
 
 /**
- * Super Admin & Staff: Get list of all 7 AI Business Agents
+ * Super Admin & Staff: Get list of AI Business Agents
+ * (Defaults to the 7 internal agents for backward compatibility and test suites;
+ * returns the 4 primary named bots when requested via ?scope=primary).
  */
 export const getAgents = async (req, res, next) => {
   try {
+    const { scope } = req.query;
+    if (scope === 'primary') {
+      return successResponse(res, Object.values(AI_PRIMARY_BOTS), 'Primary AI Bots retrieved');
+    }
     const agents = Object.values(AI_AGENTS_REGISTRY);
     return successResponse(res, agents, 'AI Agents registry retrieved');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get 4 Named Primary Bots (Ananya, Riya, Neha, Arjun)
+ */
+export const getPrimaryBots = async (req, res, next) => {
+  try {
+    return successResponse(res, Object.values(AI_PRIMARY_BOTS), 'Primary AI Bots retrieved');
   } catch (error) {
     next(error);
   }
@@ -133,6 +155,111 @@ export const rejectTask = async (req, res, next) => {
     });
 
     return successResponse(res, task, 'Task review updated');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Public & Customer: Live Chat Inquiry handled by Arjun Yadav (Operations Manager)
+ */
+export const chatInquiryHandler = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { message, reference, email, phone } = req.body;
+
+    if (!message || typeof message !== 'string' || !message.trim()) {
+      return errorResponse(res, 'Message is required for live chat inquiry', 400);
+    }
+
+    const result = await handleChatWithArjun(
+      {
+        message,
+        reference,
+        customerEmail: email || req.user?.email,
+        customerPhone: phone || req.user?.phone
+      },
+      req.user || null
+    );
+
+    return successResponse(res, result, 'Inquiry processed by Operations Desk');
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Staff: Submit proposed reply to Customer Inquiry for Super Admin confirmation
+ */
+export const submitStaffReplyHandler = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { id } = req.params;
+    const { replyText } = req.body;
+
+    if (!replyText || !replyText.trim()) {
+      return errorResponse(res, 'Reply text is required', 400);
+    }
+
+    const task = await draftStaffReplyForInquiry(id, req.user, replyText);
+    return successResponse(
+      res,
+      task,
+      'Staff reply drafted. Submitted to Super Admin for confirmation prior to customer dispatch.'
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * SUPER ADMIN ONLY: Confirm, Edit & Dispatch Inquiry Reply via Neha Desai
+ */
+export const confirmInquiryReplyHandler = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { id } = req.params;
+    const { finalReplyText } = req.body;
+
+    const task = await confirmAndDispatchInquiryBySuperAdmin(id, req.user, finalReplyText);
+
+    await recordAuditEvent({
+      actor: req.user,
+      action: 'INQUIRY_REPLY_CONFIRMED',
+      targetType: 'AgentTask',
+      targetId: task._id,
+      targetRef: task.title,
+      metadata: { agentId: 'neha-desai' },
+      ip: req.ip
+    });
+
+    return successResponse(
+      res,
+      task,
+      'Inquiry reply confirmed by Super Admin and successfully dispatched to customer via Neha Desai (Email & WhatsApp).'
+    );
+  } catch (error) {
+    if (error.message.includes('FORBIDDEN')) {
+      return errorResponse(res, error.message, 403);
+    }
+    next(error);
+  }
+};
+
+/**
+ * Customer / Staff: Request Invoice on WhatsApp via Riya Shah
+ */
+export const requestInvoiceWhatsAppHandler = async (req, res, next) => {
+  try {
+    assertDatabaseConnected();
+    const { quoteId, phone } = req.body;
+
+    if (!quoteId) {
+      return errorResponse(res, 'Quotation / Order ID is required', 400);
+    }
+
+    const result = await dispatchInvoiceViaRiya(quoteId, phone || req.user?.phone);
+    return successResponse(res, result, 'Invoice dispatch processed by Riya Shah');
   } catch (error) {
     next(error);
   }

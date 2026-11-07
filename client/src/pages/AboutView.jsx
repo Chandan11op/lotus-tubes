@@ -1,6 +1,6 @@
 import React from 'react';
 import PageHero from '../components/common/PageHero';
-import { CONFIG } from '../data/siteData';
+import { CONFIG, LEADERSHIP, AI_TEAM_MEMBERS } from '../data/siteData';
 import { useLanguage } from '../context/LanguageContext';
 
 export const AboutView = ({ onOpenEnquiry }) => {
@@ -256,7 +256,118 @@ export const AboutView = ({ onOpenEnquiry }) => {
         </div>
       </section>
 
-      {/* 5. Authentic Sourcing Guarantee Notice */}
+      {/* 5. Business Leadership & Autonomous Operations Team */}
+      <section className="site-container py-12 border-t border-slate-200">
+        <div className="max-w-3xl mb-8">
+          <span className="text-xs font-mono font-bold tracking-widest text-sky-600 uppercase">
+            Corporate Leadership &amp; AI Team
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-2">
+            Executive Direction &amp; Autonomous Operations
+          </h2>
+          <p className="text-sm text-slate-600 mt-2">
+            Meet the leadership and specialized AI workflow agents delivering rapid quotations, billing precision, and verified support to signed-in customers.
+          </p>
+        </div>
+
+        {/* Owner Profile Card */}
+        <div className="lt-owner-card-panel">
+          <div className="lt-owner-media">
+            <img
+              src={LEADERSHIP.photo || '/assets/images/team/owner.jpeg'}
+              alt={`${LEADERSHIP.name} - ${LEADERSHIP.title || LEADERSHIP.designation}`}
+              className="lt-owner-img"
+              width="140"
+              height="140"
+              loading="lazy"
+            />
+            <span className="lt-owner-status-badge">
+              <span className="lt-status-dot"></span> Executive Leadership
+            </span>
+          </div>
+          <div className="lt-owner-copy">
+            <div className="lt-owner-header-row">
+              <div>
+                <span className="lt-person-label">{LEADERSHIP.title || 'Owner & Managing Director'}</span>
+                <h3 className="lt-owner-name">{LEADERSHIP.name}</h3>
+              </div>
+              <div className="lt-owner-location-pill">
+                <span className="lt-loc-icon">📍</span>
+                <span>{LEADERSHIP.location}</span>
+              </div>
+            </div>
+            <p className="lt-owner-summary">{LEADERSHIP.summary}</p>
+            <div className="lt-owner-pillars">
+              <span className="lt-pill-tag">✓ 20+ Years Sourcing Mastery</span>
+              <span className="lt-pill-tag">✓ ASTM A270 &amp; ASME BPE Quality Oversight</span>
+              <span className="lt-pill-tag">✓ Mandatory Super Admin Dispatch Review</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Our Team Subsection */}
+        <div className="lt-team-heading">
+          <div>
+            <span className="editorial-kicker">Our Team</span>
+            <h3>Four Autonomous Workflow Agents Serving Signed-In Clients</h3>
+          </div>
+          <p>
+            Dedicated AI specialists operating under strict executive supervision to automate quotations, invoices, support tickets, and live chat assistance.
+          </p>
+        </div>
+
+        {/* AI Team 4 Agents in 2x2 Grid */}
+        <div className="lt-team-2x2-grid">
+          {AI_TEAM_MEMBERS.map((member) => (
+            <article className="lt-agent-card" key={member.id}>
+              <div className="lt-agent-card-top">
+                <div className="lt-agent-avatar-wrap">
+                  <img
+                    src={member.photo}
+                    alt={`${member.name} - ${member.role}`}
+                    className="lt-agent-avatar-img"
+                    width="76"
+                    height="76"
+                    loading="lazy"
+                  />
+                  <span className="lt-agent-badge">{member.agentNumber}</span>
+                </div>
+                <div className="lt-agent-details">
+                  <div className="lt-agent-meta">
+                    <h4>{member.name}</h4>
+                    <span className="lt-agent-title-pill">{member.role}</span>
+                  </div>
+                  <a href={`mailto:${member.email}`} className="lt-agent-email-link" title={`Email ${member.name}`}>
+                    ✉️ {member.email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="lt-agent-body">
+                <p className="lt-agent-summary">{member.summary}</p>
+                {member.value && (
+                  <div className="lt-agent-value-box">
+                    <strong>Client Value:</strong> {member.value}
+                  </div>
+                )}
+              </div>
+
+              <div className="lt-agent-card-footer">
+                <div className="lt-agent-channels">
+                  {member.channels?.map((ch, idx) => (
+                    <span key={idx} className="lt-channel-tag">{ch}</span>
+                  ))}
+                </div>
+                <span className="lt-agent-live-status">
+                  <span className="lt-pulse-dot"></span> Active Bot
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. Authentic Sourcing Guarantee Notice */}
       <section className="site-container pb-16 sm:pb-20">
         <div className="bg-slate-900 rounded-2xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden">
           <div className="relative z-10 max-w-3xl">

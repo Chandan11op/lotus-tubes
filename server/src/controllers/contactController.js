@@ -2,6 +2,7 @@ import { Contact } from '../models/Contact.js';
 import { Customer } from '../models/Customer.js';
 import { Enquiry } from '../models/Enquiry.js';
 import { sendEmail } from '../services/emailService.js';
+import { processContactWithNeha } from '../services/agentOrchestrator.js';
 import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
@@ -59,6 +60,13 @@ export const submitContact = async (req, res, next) => {
       status: 'New',
       customerId: customer._id
     });
+
+    // Route inquiry to Agent 3: Neha Desai (enforcing Super Admin confirmation workflow)
+    try {
+      await processContactWithNeha(savedContact, customer._id);
+    } catch (agentErr) {
+      console.warn('Agent 3 (Neha Desai) task creation warning:', agentErr.message);
+    }
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">

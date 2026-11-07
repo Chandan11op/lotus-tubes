@@ -87,3 +87,87 @@ export const sendWhatsAppQuotation = async ({ phone, customerName, reference, pr
     };
   }
 };
+
+/**
+ * Agent 2: Riya Shah sends invoice / billing update via WhatsApp
+ */
+export const sendWhatsAppInvoice = async ({ phone, customerName, invoiceNumber, grandTotal, pdfUrl }) => {
+  const normalizedPhone = normalizePhoneNumber(phone);
+  const token = process.env.WHATSAPP_ACCESS_TOKEN;
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+
+  const directLink = `https://wa.me/919930430789?text=${encodeURIComponent(
+    `Hello Riya Shah, I am requesting verified invoice ${invoiceNumber || ''} (Total: ₹${grandTotal || 'N/A'}).`
+  )}`;
+
+  if (!token || !phoneNumberId || token === 'your_whatsapp_access_token_here') {
+    console.log(`ℹ️ [WhatsApp Service] Riya Shah billing notice to +${normalizedPhone}. (Credentials unconfigured)`);
+    return { success: false, status: 'not_configured', directLink };
+  }
+
+  try {
+    const url = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+    const payload = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: normalizedPhone,
+      type: 'text',
+      text: {
+        preview_url: true,
+        body: `Dear ${customerName || 'Customer'},\n\nYour verified Commercial Invoice (*${invoiceNumber}*) for ₹${Number(grandTotal || 0).toLocaleString('en-IN')} has been authorized by Super Admin Chirag Shah.\n\nDownload Document: ${pdfUrl || 'https://lotustubes.com/sample-quotation.pdf'}\n\nDispatched by:\n*Riya Shah (Billing & Invoicing Specialist)*\nEmail: riyashah@lotustubes.com\nLotus Tubes (Lotus Impex)`
+      }
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    return { success: res.ok, status: res.ok ? 'sent' : 'failed', directLink, response: data };
+  } catch (err) {
+    return { success: false, status: 'failed', directLink, error: err.message };
+  }
+};
+
+/**
+ * Agent 3: Neha Desai dispatches Super Admin confirmed response via WhatsApp
+ */
+export const sendWhatsAppInquiryReply = async ({ phone, customerName, reference, replyText }) => {
+  const normalizedPhone = normalizePhoneNumber(phone);
+  const token = process.env.WHATSAPP_ACCESS_TOKEN;
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+
+  const directLink = `https://wa.me/919930430789?text=${encodeURIComponent(
+    `Hello Neha Desai, regarding inquiry ${reference}.`
+  )}`;
+
+  if (!token || !phoneNumberId || token === 'your_whatsapp_access_token_here') {
+    console.log(`ℹ️ [WhatsApp Service] Neha Desai confirmed reply to +${normalizedPhone}. (Credentials unconfigured)`);
+    return { success: false, status: 'not_configured', directLink };
+  }
+
+  try {
+    const url = `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`;
+    const payload = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: normalizedPhone,
+      type: 'text',
+      text: {
+        preview_url: true,
+        body: `Dear ${customerName || 'Customer'},\n\n*Update on your Lotus Tubes Inquiry (${reference})*:\n\n${replyText}\n\n✓ *Verified & Confirmed by Super Admin Chirag Shah*\n\nDispatched by:\n*Neha Desai (Customer Support Concierge)*\nEmail: nehadesai@lotustubes.com\nLotus Tubes Desk: +91 99304 30789`
+      }
+    };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    return { success: res.ok, status: res.ok ? 'sent' : 'failed', directLink, response: data };
+  } catch (err) {
+    return { success: false, status: 'failed', directLink, error: err.message };
+  }
+};

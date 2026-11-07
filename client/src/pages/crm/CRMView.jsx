@@ -67,6 +67,8 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [isSavingQuote, setIsSavingQuote] = useState(false);
   const [newNote, setNewNote] = useState('');
+  const [inquiryReplyDraft, setInquiryReplyDraft] = useState('');
+  const [isDispatchingReply, setIsDispatchingReply] = useState(false);
 
   const isSuperAdmin = user?.role === 'admin';
 
@@ -312,6 +314,50 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
       }
     } catch (err) {
       if (onNotify) onNotify('Failed to record note', 'danger');
+    }
+  };
+
+  // Staff Submit Reply for Super Admin Confirmation (Agent 3 - Neha Desai Workflow)
+  const handleStaffSubmitInquiryReply = async (enquiryId) => {
+    if (!inquiryReplyDraft.trim()) return;
+    try {
+      setIsDispatchingReply(true);
+      const noteContent = `[Staff Reply Draft for Neha Desai]: "${inquiryReplyDraft}" (Submitted for Super Admin Confirmation)`;
+      await apiService.updateEnquiry(enquiryId, {
+        note: noteContent,
+        status: 'In Progress'
+      });
+      if (onNotify) onNotify('Staff reply drafted & submitted to Super Admin for confirmation!', 'success');
+      setInquiryReplyDraft('');
+      loadOperationalData();
+    } catch (err) {
+      if (onNotify) onNotify(`Failed to submit reply draft: ${err.message}`, 'danger');
+    } finally {
+      setIsDispatchingReply(false);
+    }
+  };
+
+  // Super Admin Confirm & Authorize Reply (Agent 3 - Neha Desai Dispatch)
+  const handleSuperAdminConfirmInquiryReply = async (enquiryId) => {
+    if (!isSuperAdmin) {
+      if (onNotify) onNotify('Only Super Admin Chirag Shah can confirm customer reply dispatch.', 'danger');
+      return;
+    }
+    const replyToSend = inquiryReplyDraft.trim() || 'Your technical specification inquiry has been verified against our stock and mill certification. A representative from our Mumbai sales office will follow up with complete dimensional specs.';
+    try {
+      setIsDispatchingReply(true);
+      const noteContent = `[Super Admin Confirmed & Dispatched via Neha Desai]: "${replyToSend}" (Email & WhatsApp)`;
+      await apiService.updateEnquiry(enquiryId, {
+        note: noteContent,
+        status: 'Contacted'
+      });
+      if (onNotify) onNotify('Confirmed by Super Admin! Reply dispatched to customer via Neha Desai (Email & WhatsApp).', 'success');
+      setInquiryReplyDraft('');
+      loadOperationalData();
+    } catch (err) {
+      if (onNotify) onNotify(`Failed to confirm reply: ${err.message}`, 'danger');
+    } finally {
+      setIsDispatchingReply(false);
     }
   };
 
@@ -1076,6 +1122,49 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                   <CRMIcon name="quotations" size={16} />
                   <span>Generate Formal Quotation for this RFQ</span>
                 </button>
+              </div>
+
+              {/* Agent 3: Neha Desai Customer Inquiry Desk & Super Admin Confirmation */}
+              <div className="crm-drawer-card" style={{ marginTop: '16px', border: '1px solid #BAE6FD', background: '#F0F9FF' }}>
+                <div className="crm-drawer-card__header" style={{ borderBottom: '1px solid #E0F2FE' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#0369A1' }}>
+                    🤖 Agent 3: Neha Desai (Customer Inquiry Desk)
+                  </span>
+                </div>
+                <div className="crm-drawer-card__content" style={{ padding: '14px' }}>
+                  <p style={{ margin: '0 0 10px 0', fontSize: '12px', color: '#475569', lineHeight: 1.5 }}>
+                    Staff can draft proposed solutions for this inquiry. Replies are dispatched to customer WhatsApp and Email <strong>strictly after Super Admin confirmation</strong>.
+                  </p>
+                  <textarea
+                    className="crm-input-sm"
+                    rows={3}
+                    placeholder="Draft response for customer inquiry (e.g. verified alloy spec, delivery schedule, or technical resolution)..."
+                    value={inquiryReplyDraft}
+                    onChange={(e) => setInquiryReplyDraft(e.target.value)}
+                    style={{ width: '100%', marginBottom: '10px', fontSize: '12px', padding: '8px', borderRadius: '6px', border: '1px solid #CBD5E1' }}
+                  />
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      className="crm-btn crm-btn-xs crm-btn-secondary"
+                      onClick={() => handleStaffSubmitInquiryReply(selectedEnquiry._id)}
+                      disabled={isDispatchingReply || !inquiryReplyDraft.trim()}
+                    >
+                      Submit for Super Admin Review
+                    </button>
+                    {isSuperAdmin && (
+                      <button
+                        type="button"
+                        className="crm-btn crm-btn-xs crm-btn-primary"
+                        style={{ background: '#059669', borderColor: '#059669' }}
+                        onClick={() => handleSuperAdminConfirmInquiryReply(selectedEnquiry._id)}
+                        disabled={isDispatchingReply}
+                      >
+                        ✓ Confirm &amp; Dispatch via Neha Desai
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Activity & Internal Notes Log */}

@@ -532,57 +532,101 @@ export const HomeView = ({ onOpenEnquiry }) => {
             </p>
           </div>
 
-          {/* Founder / CEO Profile Card */}
-          <div className="lt-founder-panel">
-            <img
-              src={LEADERSHIP.photo}
-              alt="Lotus Tubes leadership profile"
-              className="lt-founder-photo"
-              width="112"
-              height="112"
-              loading="lazy"
-            />
-            <div className="lt-founder-copy">
-              <span className="lt-person-label">{LEADERSHIP.designation}</span>
-              <h3>{LEADERSHIP.name}</h3>
-              <p>{LEADERSHIP.summary}</p>
+          {/* Owner Profile Card */}
+          <div className="lt-owner-card-panel">
+            <div className="lt-owner-media">
+              <img
+                src={LEADERSHIP.photo || '/assets/images/team/owner.jpeg'}
+                alt={`${LEADERSHIP.name} - ${LEADERSHIP.title || LEADERSHIP.designation}`}
+                className="lt-owner-img"
+                width="140"
+                height="140"
+                loading="lazy"
+              />
+              <span className="lt-owner-status-badge">
+                <span className="lt-status-dot"></span> Executive Leadership
+              </span>
             </div>
-            <div className="lt-founder-side">
-              <span className="lt-side-overline">Business Base</span>
-              <strong>{LEADERSHIP.location.split(',')[0]}</strong>
-              <span>{LEADERSHIP.location.split(',').slice(1).join(',')}</span>
+            <div className="lt-owner-copy">
+              <div className="lt-owner-header-row">
+                <div>
+                  <span className="lt-person-label">{LEADERSHIP.title || 'Owner & Managing Director'}</span>
+                  <h3 className="lt-owner-name">{LEADERSHIP.name}</h3>
+                </div>
+                <div className="lt-owner-location-pill">
+                  <span className="lt-loc-icon">📍</span>
+                  <span>{LEADERSHIP.location}</span>
+                </div>
+              </div>
+              <p className="lt-owner-summary">{LEADERSHIP.summary}</p>
+              <div className="lt-owner-pillars">
+                <span className="lt-pill-tag">✓ 20+ Years Metallurgical Sourcing</span>
+                <span className="lt-pill-tag">✓ ASTM A270 &amp; ASME BPE Quality Oversight</span>
+                <span className="lt-pill-tag">✓ Mandatory Super Admin Dispatch Review</span>
+              </div>
             </div>
           </div>
 
-          {/* Our AI Team Subsection */}
+          {/* Our Team Subsection */}
           <div className="lt-team-heading">
             <div>
-              <span className="editorial-kicker">Our AI Team</span>
-              <h3>Four specialised AI agents. One connected customer experience.</h3>
+              <span className="editorial-kicker">Our Team</span>
+              <h3>Autonomous Workflow Agents Serving Signed-In Clients</h3>
             </div>
             <p>
-              Our AI agents coordinate quotation delivery, invoice communication, customer enquiries and support updates under Super Admin oversight.
+              Four dedicated AI specialists assigned to customer accounts to automate quotations, billing, verified inquiry responses, and real-time live chat assistance under executive supervision.
             </p>
           </div>
 
-          {/* AI Team 2-by-2 Responsive Profile Grid */}
-          <div className="lt-team-grid">
+          {/* AI Team 4 Agents in 2x2 Grid */}
+          <div className="lt-team-2x2-grid">
             {AI_TEAM_MEMBERS.map((member) => (
-              <article className="lt-team-card" key={member.id}>
-                <img
-                  src={member.photo}
-                  alt={`${member.name} AI agent profile`}
-                  className="lt-team-avatar"
-                  width="88"
-                  height="104"
-                  loading="lazy"
-                />
-                <div className="lt-team-info">
-                  <span className="lt-team-tag">AI AGENT</span>
-                  <h4>{member.name}</h4>
-                  <span className="lt-team-role">{member.role}</span>
-                  <p className="lt-team-summary">{member.summary}</p>
-                  <span className="lt-team-email">{member.email}</span>
+              <article className="lt-agent-card" key={member.id}>
+                <div className="lt-agent-card-top">
+                  <div className="lt-agent-avatar-wrap">
+                    <img
+                      src={member.photo}
+                      alt={`${member.name} - ${member.role}`}
+                      className="lt-agent-avatar-img"
+                      width="76"
+                      height="76"
+                      loading="lazy"
+                    />
+                    <span className="lt-agent-badge">{member.agentNumber}</span>
+                  </div>
+                  <div className="lt-agent-details">
+                    <div className="lt-agent-meta">
+                      <h4>{member.name}</h4>
+                      <span className="lt-agent-title-pill">{member.role}</span>
+                    </div>
+                    <a href={`mailto:${member.email}`} className="lt-agent-email-link" title={`Email ${member.name}`}>
+                      ✉️ {member.email}
+                    </a>
+                  </div>
+                </div>
+
+                <div className="lt-agent-body">
+                  <p className="lt-agent-summary">{member.summary}</p>
+                  {member.value && (
+                    <div className="lt-agent-value-box">
+                      <strong>Client Value:</strong> {member.value}
+                    </div>
+                  )}
+                </div>
+
+                <div className="lt-agent-card-footer">
+                  <div className="lt-agent-channels">
+                    {member.channels?.map((ch, idx) => (
+                      <span key={idx} className="lt-channel-tag">{ch}</span>
+                    ))}
+                  </div>
+                  <span className="lt-agent-live-status">
+                    <span className="lt-pulse-dot"></span> Active Bot
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
                 </div>
               </article>
             ))}
