@@ -80,6 +80,34 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
     }
   }, [subroute]);
 
+  // Synchronize document.title dynamically with portal auth state and active CRM tabs
+  useEffect(() => {
+    if (!user) {
+      if (customerIsRegistering) {
+        document.title = 'Create Customer Account | Lotus Tubes Secure Portal';
+      } else if (authMode === 'staff') {
+        document.title = 'Staff Workspace Login | Lotus Tubes Secure Portal';
+      } else {
+        document.title = 'Customer Account Sign In | Lotus Tubes Secure Portal';
+      }
+    } else {
+      const crmTitles = {
+        'dashboard': 'Executive Dashboard | Staff CRM | Lotus Tubes',
+        'enquiries': 'Client Enquiries & Resolution | Staff CRM | Lotus Tubes',
+        'quotations': 'Quotation Management & RFQs | Staff CRM | Lotus Tubes',
+        'customers': 'Customer Directory & Accounts | Staff CRM | Lotus Tubes',
+        'tasks': 'Operational Tasks & Workflow | Staff CRM | Lotus Tubes',
+        'products': 'Product Master Catalogue | Staff CRM | Lotus Tubes',
+        'videos': 'Video Assets & Facility Media | Staff CRM | Lotus Tubes',
+        'staff': 'Staff Roles & Permissions | Staff CRM | Lotus Tubes',
+        'reports': 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
+        'seo': 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
+        'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes'
+      };
+      document.title = crmTitles[activeTab] || 'Staff CRM & Operations Portal | Lotus Tubes';
+    }
+  }, [user, activeTab, authMode, customerIsRegistering]);
+
   // Load Operational CRM data from backend with resilient fallback & bounded timeout
   const loadOperationalData = async ({ isInitial = false } = {}) => {
     if (isInitial) {

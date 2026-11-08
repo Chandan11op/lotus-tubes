@@ -45,26 +45,32 @@ const KNOWN_ROUTES = [
   'resources',
   'contact',
   'quote',
-  'account'
+  'account',
+  'crm',
+  'login',
+  'register'
 ];
 
 export const App = () => {
   const { currentLang, setCurrentLang, t, isRTL } = useLanguage();
 
   const parseCurrentLocation = () => {
-    // 1. Prioritize hash if explicitly present (e.g. #product/ss-316l-ep-pipe or #de/products)
-    const hash = (window.location.hash || '').replace(/^#\/?/, '');
-    if (hash) {
-      const { lang, cleanPath } = extractLangFromPath('/' + hash);
+    // 1. Prioritize hash if it matches an actual known route or subroute (e.g. #login, #register, #account, #crm/quotations)
+    const rawHash = (window.location.hash || '').replace(/^#\/?/, '');
+    if (rawHash) {
+      const { lang, cleanPath } = extractLangFromPath('/' + rawHash);
       const parts = cleanPath.replace(/^\//, '').split('/');
-      return { lang, route: parts[0] || 'home', param: parts[1] || '' };
+      const potentialRoute = parts[0] || '';
+      if (KNOWN_ROUTES.includes(potentialRoute)) {
+        return { lang: lang || 'en', route: potentialRoute, param: parts[1] || '' };
+      }
     }
-    // 2. Otherwise inspect clean path route (e.g. /product/ss-316l-ep-pipe or /de/products)
+    // 2. Otherwise inspect clean path route (e.g. /about, /products, /contact, /login)
     const pathname = (window.location.pathname || '').replace(/^\/?/, '');
     if (pathname && pathname !== 'index.html') {
       const { lang, cleanPath } = extractLangFromPath('/' + pathname);
       const parts = cleanPath.replace(/^\//, '').split('/');
-      return { lang, route: parts[0] || 'home', param: parts[1] || '' };
+      return { lang: lang || 'en', route: parts[0] || 'home', param: parts[1] || '' };
     }
     return { lang: 'en', route: 'home', param: '' };
   };
@@ -219,12 +225,33 @@ export const App = () => {
       title = t('seo_quote_title', 'Request a Formal B2B Quotation | Lotus Tubes');
       description = t('seo_quote_desc', 'Submit your Bill of Quantities (BOQ) for instant review and competitive quotation on SS 304 and SS 316L sanitary pipes, fittings, and valves.');
       breadcrumbs.push({ name: t('nav_quote', 'Request Quote'), path: '/quote' });
+    } else if (route === 'login') {
+      title = 'Lotus Tubes Secure Portal | Sign In';
+      description = 'Secure login portal for Lotus Tubes customer accounts and staff workspace management.';
+      breadcrumbs.push({ name: 'Secure Portal', path: '/#login' });
+    } else if (route === 'register') {
+      title = 'Create Customer Account | Lotus Tubes Secure Portal';
+      description = 'Register for a verified Lotus Tubes customer account to track quotation inquiries, billing, and order dispatches.';
+      breadcrumbs.push({ name: 'Register Account', path: '/#register' });
     } else if (route === 'account') {
       title = 'Customer Account & Quotation History | Lotus Tubes';
       description = 'View your active quotation inquiries, track dispatch status, and download EN 10204 3.1 material test certificates for Lotus Tubes orders.';
       breadcrumbs.push({ name: 'Customer Account', path: '/account' });
     } else if (route === 'crm') {
-      title = 'Lotus Tubes Staff CRM & Operations Portal';
+      const crmTitles = {
+        dashboard: 'Executive Dashboard | Staff CRM | Lotus Tubes',
+        enquiries: 'Client Enquiries & Resolution | Staff CRM | Lotus Tubes',
+        quotations: 'Quotation Management & RFQs | Staff CRM | Lotus Tubes',
+        customers: 'Customer Directory & Accounts | Staff CRM | Lotus Tubes',
+        tasks: 'Operational Tasks & Workflow | Staff CRM | Lotus Tubes',
+        products: 'Product Master Catalogue | Staff CRM | Lotus Tubes',
+        videos: 'Video Assets & Facility Media | Staff CRM | Lotus Tubes',
+        staff: 'Staff Roles & Permissions | Staff CRM | Lotus Tubes',
+        reports: 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
+        seo: 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
+        'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes'
+      };
+      title = crmTitles[param] || 'Lotus Tubes Staff CRM & Operations Portal';
       description = 'Internal operational management system for Lotus Tubes customer enquiries, quotations, pipeline, and staff RBAC.';
     } else if (!KNOWN_ROUTES.includes(route)) {
       title = '404 - Page Not Found | Lotus Tubes Sanitary Solutions';

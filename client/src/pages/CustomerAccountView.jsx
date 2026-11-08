@@ -11,6 +11,16 @@ export const CustomerAccountView = ({ onNotify }) => {
   const [activeTab, setActiveTab] = useState('quotes'); // 'quotes' | 'billing' | 'support'
   const [sendingInvoiceId, setSendingInvoiceId] = useState(null);
 
+  // Synchronize document.title dynamically with active customer portal tab
+  useEffect(() => {
+    const tabTitles = {
+      quotes: 'My Quotations & RFQs | Customer Portal | Lotus Tubes',
+      billing: 'Tax Invoices & Billing | Customer Portal | Lotus Tubes',
+      support: 'Support Enquiries & Live Help | Customer Portal | Lotus Tubes'
+    };
+    document.title = tabTitles[activeTab] || 'Customer Account & Orders Portal | Lotus Tubes';
+  }, [activeTab]);
+
   useEffect(() => {
     let mounted = true;
     apiService.getMyQuotes()
