@@ -196,8 +196,8 @@
   left: 5%;
   right: 5%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #3478C8 30%, #E83E83 50%, #3478C8 70%, transparent);
-  box-shadow: 0 0 10px #3478C8, 0 0 18px rgba(232, 62, 131, 0.7);
+  background: linear-gradient(90deg, transparent, #3B82F6 30%, #FB7185 50%, #3B82F6 70%, transparent);
+  box-shadow: 0 0 10px #3B82F6, 0 0 18px rgba(251, 113, 133, 0.7);
   pointer-events: none;
   animation: lotusScanlineAscend 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
 }
@@ -225,9 +225,9 @@
 }
 
 .lotus-loader-outline-path--accent {
-  stroke: var(--primary-pink, #E83E83);
+  stroke: var(--primary-pink, #FB7185);
   stroke-width: 2.6;
-  filter: drop-shadow(0 0 6px rgba(232, 62, 131, 0.75));
+  filter: drop-shadow(0 0 6px rgba(251, 113, 133, 0.75));
 }
 
 /* ==============================================================================
@@ -293,7 +293,7 @@
   top: 0;
   bottom: 0;
   left: 0;
-  background: linear-gradient(90deg, #163A70, #3478C8, #E83E83);
+  background: linear-gradient(90deg, #2563EB, #3B82F6, #FB7185);
   border-radius: 999px;
   transition: width 0.3s ease;
 }

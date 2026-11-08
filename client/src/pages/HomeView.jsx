@@ -145,69 +145,6 @@ export const HomeView = ({ onOpenEnquiry }) => {
               </a>
             </div>
 
-            {/* Quick Interactive Technical Spec Configurator */}
-            <div className="hero-spec-calculator">
-              <div className="calc-header">
-                <span className="calc-icon">⚡</span>
-                <span className="calc-title">Interactive Technical Specification Configurator</span>
-              </div>
-
-              <div className="calc-grid">
-                <div className="calc-group">
-                  <label>Material Chemistry</label>
-                  <select
-                    value={selectedGrade}
-                    onChange={(e) => setSelectedGrade(e.target.value)}
-                    className="calc-select"
-                  >
-                    <option value="SS 316L">SS 316L (High Corrosion Resistance)</option>
-                    <option value="SS 304">SS 304 (Standard Hygienic Grade)</option>
-                  </select>
-                </div>
-
-                <div className="calc-group">
-                  <label>Component Family</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="calc-select"
-                  >
-                    <option value="Sanitary Pipes">Sanitary Pipes &amp; Tubes</option>
-                    <option value="Pipe Fittings">Sanitary Pipe Fittings (Bends / Tees / Reducers)</option>
-                    <option value="Tri-Clamp Ferrules">Tri-Clamp Ferrules &amp; Clamps</option>
-                    <option value="Process Valves">Hygienic Process Valves</option>
-                  </select>
-                </div>
-
-                <div className="calc-group">
-                  <label>Required Outside Diameter / Dimensions</label>
-                  <input
-                    type="text"
-                    value={selectedSize}
-                    onChange={(e) => setSelectedSize(e.target.value)}
-                    placeholder='e.g. 1.5" OD, 38mm, or DN40'
-                    className="calc-select"
-                  />
-                </div>
-              </div>
-
-              <div className="calc-result-bar">
-                <div className="calc-metrics">
-                  <span>Surface Finish: <strong>EP / MP, confirmed per enquiry</strong></span>
-                  <span>Standard: <strong>Confirmed per product</strong></span>
-                  <span>MTC: <strong>Availability confirmed</strong></span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleQuickQuoteClick}
-                  className="calc-submit-btn"
-                  id="calc-fast-quote-btn"
-                >
-                  Request Specification Quote &rarr;
-                </button>
-              </div>
-            </div>
-
             {/* Quick Metrics Ticker */}
             <div className="editorial-hero__metrics">
               <div className="metric-item">
@@ -293,15 +230,6 @@ export const HomeView = ({ onOpenEnquiry }) => {
                     <span className="pill-tag">Clean-In-Place (CIP)</span>
                     <span className="pill-tag">Tri-Clamp Ends</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Subsidiary Floating Assurance Badge */}
-              <div className="floating-cert-badge">
-                <div className="cert-badge-icon">🛡️</div>
-                <div className="cert-badge-text">
-                  <strong>Material Test Documentation</strong>
-                  <span>Mill Test Certificate availability can be confirmed for the supplied material.</span>
                 </div>
               </div>
             </div>
@@ -571,58 +499,61 @@ export const HomeView = ({ onOpenEnquiry }) => {
           <div className="lt-team-heading">
             <div>
               <span className="editorial-kicker">Our Team</span>
-              <h3>Autonomous Workflow Agents Serving Signed-In Clients</h3>
+              <h3>Dedicated Operations Specialists Supporting Every Client Account</h3>
             </div>
             <p>
-              Four dedicated AI specialists assigned to customer accounts to automate quotations, billing, verified inquiry responses, and real-time live chat assistance under executive supervision.
+              Our experienced team of procurement, billing, engineering, and client operations professionals works in close coordination with Managing Director Chirag Shah to guarantee rapid technical quotations, exact ASME/ASTM compliance, and seamless customer service.
             </p>
           </div>
 
-          {/* AI Team 4 Agents in 2x2 Grid */}
+          {/* Team Members in Responsive Grid */}
           <div className="lt-team-2x2-grid">
             {AI_TEAM_MEMBERS.map((member) => (
-              <article className="lt-agent-card" key={member.id}>
-                <div className="lt-agent-card-top">
-                  <div className="lt-agent-avatar-wrap">
-                    <img
-                      src={member.photo}
-                      alt={`${member.name} - ${member.role}`}
-                      className="lt-agent-avatar-img"
-                      width="76"
-                      height="76"
-                      loading="lazy"
-                    />
-                    <span className="lt-agent-badge">{member.agentNumber}</span>
+              <article className="lt-team-card" key={member.id}>
+                <div className="lt-team-card__image-container">
+                  <img
+                    src={member.photo}
+                    alt={`${member.name} - ${member.role}`}
+                    className="lt-team-card__img"
+                    width="400"
+                    height="400"
+                    loading="lazy"
+                  />
+                  <div className="lt-team-card__dept-pill">
+                    {member.department || 'Operations'}
                   </div>
-                  <div className="lt-agent-details">
-                    <div className="lt-agent-meta">
-                      <h4>{member.name}</h4>
-                      <span className="lt-agent-title-pill">{member.role}</span>
+                </div>
+
+                <div className="lt-team-card__sheet">
+                  <div className="lt-team-card__top">
+                    <div className="lt-team-card__name-row">
+                      <h4 className="lt-team-card__name">{member.name}</h4>
+                      <span className="lt-team-card__status">
+                        <span className="lt-pulse-dot" /> {member.status || 'Available'}
+                      </span>
                     </div>
-                    <a href={`mailto:${member.email}`} className="lt-agent-email-link" title={`Email ${member.name}`}>
+                    <span className="lt-team-card__role">{member.role}</span>
+                    <a href={`mailto:${member.email}`} className="lt-team-card__email" title={`Email ${member.name}`}>
                       ✉️ {member.email}
                     </a>
                   </div>
-                </div>
 
-                <div className="lt-agent-body">
-                  <p className="lt-agent-summary">{member.summary}</p>
-                  {member.value && (
-                    <div className="lt-agent-value-box">
-                      <strong>Client Value:</strong> {member.value}
-                    </div>
-                  )}
-                </div>
-
-                <div className="lt-agent-card-footer">
-                  <div className="lt-agent-channels">
-                    {member.channels?.map((ch, idx) => (
-                      <span key={idx} className="lt-channel-tag">{ch}</span>
-                    ))}
+                  <div className="lt-team-card__body">
+                    <p className="lt-team-card__summary">{member.summary}</p>
+                    {member.value && (
+                      <div className="lt-team-card__value">
+                        <strong>Client Value:</strong> {member.value}
+                      </div>
+                    )}
                   </div>
-                  <span className="lt-agent-live-status">
-                    <span className="lt-pulse-dot"></span> Active Bot
-                  </span>
+
+                  <div className="lt-team-card__footer">
+                    <div className="lt-team-card__channels">
+                      {member.channels?.map((ch, idx) => (
+                        <span key={idx} className="lt-team-card__tag">{ch}</span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </article>
             ))}

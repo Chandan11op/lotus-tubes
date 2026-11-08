@@ -309,58 +309,61 @@ export const AboutView = ({ onOpenEnquiry }) => {
         <div className="lt-team-heading">
           <div>
             <span className="editorial-kicker">Our Team</span>
-            <h3>Four Autonomous Workflow Agents Serving Signed-In Clients</h3>
+            <h3>Dedicated Operations Specialists Supporting Every Client Account</h3>
           </div>
           <p>
-            Dedicated AI specialists operating under strict executive supervision to automate quotations, invoices, support tickets, and live chat assistance.
+            Our experienced team of procurement, billing, engineering, and client operations professionals works in close coordination with Managing Director Chirag Shah to guarantee rapid technical quotations, exact ASME/ASTM compliance, and seamless customer service.
           </p>
         </div>
 
-        {/* AI Team 4 Agents in 2x2 Grid */}
+        {/* Team Members in Responsive Grid */}
         <div className="lt-team-2x2-grid">
           {AI_TEAM_MEMBERS.map((member) => (
-            <article className="lt-agent-card" key={member.id}>
-              <div className="lt-agent-card-top">
-                <div className="lt-agent-avatar-wrap">
-                  <img
-                    src={member.photo}
-                    alt={`${member.name} - ${member.role}`}
-                    className="lt-agent-avatar-img"
-                    width="76"
-                    height="76"
-                    loading="lazy"
-                  />
-                  <span className="lt-agent-badge">{member.agentNumber}</span>
+            <article className="lt-team-card" key={member.id}>
+              <div className="lt-team-card__image-container">
+                <img
+                  src={member.photo}
+                  alt={`${member.name} - ${member.role}`}
+                  className="lt-team-card__img"
+                  width="400"
+                  height="400"
+                  loading="lazy"
+                />
+                <div className="lt-team-card__dept-pill">
+                  {member.department || 'Operations'}
                 </div>
-                <div className="lt-agent-details">
-                  <div className="lt-agent-meta">
-                    <h4>{member.name}</h4>
-                    <span className="lt-agent-title-pill">{member.role}</span>
+              </div>
+
+              <div className="lt-team-card__sheet">
+                <div className="lt-team-card__top">
+                  <div className="lt-team-card__name-row">
+                    <h4 className="lt-team-card__name">{member.name}</h4>
+                    <span className="lt-team-card__status">
+                      <span className="lt-pulse-dot" /> {member.status || 'Available'}
+                    </span>
                   </div>
-                  <a href={`mailto:${member.email}`} className="lt-agent-email-link" title={`Email ${member.name}`}>
+                  <span className="lt-team-card__role">{member.role}</span>
+                  <a href={`mailto:${member.email}`} className="lt-team-card__email" title={`Email ${member.name}`}>
                     ✉️ {member.email}
                   </a>
                 </div>
-              </div>
 
-              <div className="lt-agent-body">
-                <p className="lt-agent-summary">{member.summary}</p>
-                {member.value && (
-                  <div className="lt-agent-value-box">
-                    <strong>Client Value:</strong> {member.value}
-                  </div>
-                )}
-              </div>
-
-              <div className="lt-agent-card-footer">
-                <div className="lt-agent-channels">
-                  {member.channels?.map((ch, idx) => (
-                    <span key={idx} className="lt-channel-tag">{ch}</span>
-                  ))}
+                <div className="lt-team-card__body">
+                  <p className="lt-team-card__summary">{member.summary}</p>
+                  {member.value && (
+                    <div className="lt-team-card__value">
+                      <strong>Client Value:</strong> {member.value}
+                    </div>
+                  )}
                 </div>
-                <span className="lt-agent-live-status">
-                  <span className="lt-pulse-dot"></span> Active Bot
-                </span>
+
+                <div className="lt-team-card__footer">
+                  <div className="lt-team-card__channels">
+                    {member.channels?.map((ch, idx) => (
+                      <span key={idx} className="lt-team-card__tag">{ch}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </article>
           ))}

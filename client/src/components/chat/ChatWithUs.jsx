@@ -10,7 +10,7 @@ export const ChatWithUs = () => {
       id: 1,
       sender: 'bot',
       time: 'Just now',
-      text: "Hello! I am Arjun Yadav, AI Operations Manager at Lotus Tubes. I coordinate directly between our department bots—Ananya Mehta (Quotations), Riya Shah (Billing), and Neha Desai (Support)—and our Managing Director Chirag Shah.\n\nHow can I assist you today? You can ask for an update on your quotation, bill, or support query with your reference number."
+      text: "Hello! I am Arjun Yadav, Customer Operations & Support Manager at Lotus Tubes. I coordinate directly between our department specialists—Ananya Mehta (Quotations), Riya Shah (Billing), and Neha Desai (Client Support)—and our Managing Director Chirag Shah.\n\nHow can I assist you today? You can ask for an update on your quotation, bill, or support query with your reference number."
     }
   ]);
   const [input, setInput] = useState('');
@@ -126,14 +126,14 @@ export const ChatWithUs = () => {
           type="button"
           className="lt-chat-trigger-btn"
           onClick={() => setIsOpen(true)}
-          aria-label="Open chat with Arjun Yadav - AI Operations Manager"
+          aria-label="Open chat with Arjun Yadav - Customer Operations & Support Manager"
         >
           <img
             src="/assets/images/team/agent-4.jpeg"
             alt="Arjun Yadav"
             className="lt-chat-trigger-avatar"
-            width="40"
-            height="40"
+            width="44"
+            height="44"
           />
           <div className="lt-chat-trigger-text">
             <span className="lt-chat-trigger-title">Chat with Us</span>
@@ -153,14 +153,14 @@ export const ChatWithUs = () => {
             <div className="lt-chat-header-info">
               <img
                 src="/assets/images/team/agent-4.jpeg"
-                alt="Arjun Yadav - AI Operations Manager"
+                alt="Arjun Yadav - Customer Operations & Support Manager"
                 className="lt-chat-header-avatar"
-                width="42"
-                height="42"
+                width="44"
+                height="44"
               />
               <div>
                 <div className="lt-chat-header-title">Arjun Yadav</div>
-                <div className="lt-chat-header-sub">AI Operations Manager • Executive Desk</div>
+                <div className="lt-chat-header-sub">Operations Manager • Executive Desk</div>
               </div>
             </div>
             <button

@@ -206,7 +206,7 @@ export const CustomerAccountView = ({ onNotify }) => {
                 Assigned Business Portfolio Team
               </span>
               <h3 style={{ margin: '4px 0 0 0', color: '#FFFFFF', fontSize: '1.2rem' }}>
-                Your 4 Dedicated Autonomous Agents
+                Your Dedicated Account Management Team
               </h3>
             </div>
             <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>

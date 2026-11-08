@@ -30,44 +30,6 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
 
   return (
     <header className={`executive-header ${isScrolled ? 'executive-header--scrolled' : ''}`} id="site-header">
-      {/* Top Utility & Quality Compliance Bar */}
-      <div className="header-utility-bar">
-        <div className="site-container header-utility-bar__inner">
-          <div className="header-utility-left">
-            <span className="utility-badge">
-              <span className="utility-badge__dot" />
-              Mumbai, India &bull; Stainless Steel Sanitary Products
-            </span>
-            <span className="utility-divider">|</span>
-            <span className="utility-standards">SS 304 &bull; SS 316L &bull; Specifications confirmed per enquiry</span>
-          </div>
-
-          <div className="header-utility-right">
-            <a href="tel:+919820525200" className="utility-contact-link" title="Call Lotus Tubes Sales Desk">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-              <span>+91 98205 25200</span>
-            </a>
-            <span className="utility-divider">|</span>
-            <a href="mailto:sales@lotustubes.com" className="utility-contact-link" title="Email Technical Quotation Desk">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <polyline points="22,6 12,13 2,6" />
-              </svg>
-              <span>sales@lotustubes.com</span>
-            </a>
-            <span className="utility-divider">|</span>
-            <a
-              href={isAuthenticated ? (user?.role === 'staff' || user?.role === 'admin' ? '#crm/dashboard' : '#account') : '#login'}
-              className="utility-auth-link"
-            >
-              {isAuthenticated ? `Portal (${user?.name?.split(' ')[0] || 'User'})` : 'Client & Staff Portal'}
-            </a>
-          </div>
-        </div>
-      </div>
-
       {/* Main Spacious Executive Navigation Header */}
       <div className="site-container executive-nav-container">
         {/* Prominent, Significantly Larger Lotus Tubes Logo Banner */}
@@ -246,18 +208,6 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             </li>
 
             <li className="executive-nav-item">
-              <a href="/quality" className="executive-nav-link">
-                <span>{t('nav_quality', 'Quality & Standards')}</span>
-              </a>
-            </li>
-
-            <li className="executive-nav-item">
-              <a href="/resources" className="executive-nav-link">
-                <span>{t('nav_resources', 'Datasheets')}</span>
-              </a>
-            </li>
-
-            <li className="executive-nav-item">
               <a href="/contact" className="executive-nav-link">
                 <span>{t('nav_contact', 'Contact')}</span>
               </a>
@@ -265,65 +215,19 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           </ul>
         </nav>
 
-        {/* Action Controls & Fast BOQ Quote Button */}
+        {/* Action Controls */}
         <div className="executive-actions">
-          {/* International Language Selector Trigger */}
-          <div className="relative" ref={langDropdownRef}>
-            <button
-              type="button"
-              className="executive-action-btn flex items-center gap-1.5 px-2.5"
-              onClick={() => setIsLangOpen(!isLangOpen)}
-              title={t('select_preferred_lang', 'Select Preferred Language')}
-              aria-label="Select website language"
-              aria-haspopup="true"
-              aria-expanded={isLangOpen}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-              <span className="text-xs font-semibold tracking-wide uppercase hidden sm:inline">
-                {activeLangConfig.short}
-              </span>
-            </button>
-
-            {isLangOpen && (
-              <div
-                className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-700/80 rounded-xl shadow-2xl py-1.5 z-50"
-                role="menu"
-              >
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    className={`w-full flex items-center justify-between px-3.5 py-2 text-xs font-medium transition-colors text-left ${
-                      currentLang === lang.code
-                        ? 'bg-sky-600/20 text-sky-400 font-semibold'
-                        : 'text-slate-200 hover:bg-slate-800 hover:text-white'
-                    }`}
-                    onClick={() => {
-                      setCurrentLang(lang.code);
-                      setIsLangOpen(false);
-                    }}
-                    role="menuitem"
-                  >
-                    <span className="text-[13px]">{lang.nativeName}</span>
-                    <span className="text-[11px] text-slate-400">({lang.name})</span>
-                    {currentLang === lang.code && <span className="text-sky-400 ml-1">✓</span>}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Search Trigger */}
           <button
             type="button"
             className="executive-action-btn"
-            onClick={onOpenSearch}
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof onOpenSearch === 'function') onOpenSearch();
+            }}
             title="Search products, sizes, ASTM standards"
             aria-label="Search product catalogue"
+            id="nav-search-btn"
           >
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <circle cx="11" cy="11" r="8" />
@@ -343,13 +247,6 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
               <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" />
             </svg>
             {isAuthenticated && <span className="profile-active-dot" />}
-          </a>
-
-          {/* Prominent High-Conversion BOQ Quotation CTA */}
-          <a href="/quote" className="executive-cta-btn">
-            <span className="cta-icon">📋</span>
-            <span className="cta-text">Request BOQ Quote</span>
-            <span className="cta-arrow">&rarr;</span>
           </a>
 
           {/* Mobile Hamburger Toggle */}

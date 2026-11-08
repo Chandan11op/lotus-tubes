@@ -11,7 +11,6 @@ import SearchModal from './components/modals/SearchModal';
 import QuickEnquiryModal from './components/modals/QuickEnquiryModal';
 import VideoModal from './components/modals/VideoModal';
 import Toast from './components/common/Toast';
-import ScrollToTop from './components/common/ScrollToTop';
 import ChatWithUs from './components/chat/ChatWithUs';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { RouteProgressBar } from './components/common/Loader';
@@ -381,9 +380,6 @@ export const App = () => {
 
         {/* 24/7 Operations Concierge Live Chat */}
         <ChatWithUs />
-
-        {/* Scroll-to-Top Button */}
-        <ScrollToTop />
       </div>
   );
 };

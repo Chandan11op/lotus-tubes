@@ -114,19 +114,11 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
               <span className="text-slate-500 font-mono text-xs">›</span>
             </a>
             <a
-              href="/quality"
+              href="/industries"
               onClick={onClose}
               className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 hover:text-white transition-colors"
             >
-              <span>{t('nav_quality', 'Quality Assurance & MTC 3.1')}</span>
-              <span className="text-slate-500 font-mono text-xs">›</span>
-            </a>
-            <a
-              href="/resources"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-200 hover:bg-slate-800 hover:text-white transition-colors"
-            >
-              <span>{t('nav_resources', 'Technical Datasheets & Charts')}</span>
+              <span>{t('nav_industries', 'Industries')}</span>
               <span className="text-slate-500 font-mono text-xs">›</span>
             </a>
             <a

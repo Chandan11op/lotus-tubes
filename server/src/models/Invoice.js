@@ -226,3 +226,4 @@ export function computeInvoiceApprovalHash(invoice) {
 }
 
 export const Invoice = mongoose.model('Invoice', invoiceSchema);
+
