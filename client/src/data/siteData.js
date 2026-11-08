@@ -1127,48 +1127,69 @@ import { MASTER_PRODUCTS } from './productsData.js';
 
 export const LEADERSHIP = {
   name: 'Chirag Shah',
-  designation: 'Founder & CEO',
+  title: 'Owner & Managing Director',
+  designation: 'Owner & Managing Director',
   location: 'Mumbai, Maharashtra, India',
-  summary: 'Leads the business and guides its commercial direction, customer relationships and supplier coordination for stainless steel sanitary product sourcing.',
+  summary: 'Guiding the business through customer relationships, commercial coordination, and verified stainless steel sanitary product sourcing. Chirag Shah personally oversees high-purity supply contracts, mill test traceability, and authorizes all quotation and commercial dispatches.',
   photo: '/assets/images/team/owner.jpeg'
 };
 
 export const AI_TEAM_MEMBERS = [
   {
     id: 'ananya-mehta',
+    agentNumber: 'Agent-1',
     name: 'Ananya Mehta',
     email: 'ananyamehta@lotustubes.com',
     initial: 'AM',
+    photo: '/assets/images/team/agent-1.jpeg',
     role: 'AI Quotation & Sales Coordination Agent',
-    summary: 'Coordinates customer quotation requests, prepares quotation drafts from verified CRM and product information, and shares approved quotations through email and WhatsApp.',
-    photo: '/assets/images/team/agent-1.jpeg'
+    channels: ['Email Dispatch', 'WhatsApp Quotes'],
+    summary: 'Coordinates customer quotation requests, matches sanitary specifications (ASTM A270, ASME BPE, DIN 11850), and dispatches Super Admin-approved formal quotations through Resend email and WhatsApp.',
+    value: 'Eliminates quotation delays and guarantees 100% accurate dimensional matching from our Mumbai stock hub with verified staff pricing.',
+    isEmailActive: true,
+    status: 'Active • Verified Bot'
   },
   {
     id: 'riya-shah',
+    agentNumber: 'Agent-2',
     name: 'Riya Shah',
     email: 'riyashah@lotustubes.com',
     initial: 'RS',
+    photo: '/assets/images/team/agent-2.jpeg',
     role: 'AI Billing & Invoice Coordination Agent',
-    summary: 'Coordinates approved billing documents and invoices, checks that each document belongs to the right customer and order, and delivers it through email and WhatsApp.',
-    photo: '/assets/images/team/agent-2.jpeg'
+    channels: ['Tax Invoices', 'WhatsApp Billing'],
+    summary: 'Coordinates approved billing documents and invoices, enforces GST tax compliance (18% HSN), and delivers authorized commercial invoices through Resend email and WhatsApp.',
+    value: 'Accelerates commercial clearance and provides procurement teams with immediate verifiable accounting documents directly linked to customer orders.',
+    isEmailActive: true,
+    status: 'Active • Verified Bot'
   },
   {
     id: 'neha-desai',
+    agentNumber: 'Agent-3',
     name: 'Neha Desai',
     email: 'nehadesai@lotustubes.com',
     initial: 'ND',
+    photo: '/assets/images/team/agent-3.jpeg',
     role: 'AI Customer Enquiry & Resolution Agent',
-    summary: 'Receives customer enquiries, creates traceable query records, routes them to the relevant staff member and sends responses only after Super Admin approval.',
-    photo: '/assets/images/team/agent-3.jpeg'
+    channels: ['Contact Us Desk', 'Super Admin Verified'],
+    summary: 'Receives customer enquiries, creates traceable LT-CNT tickets, coordinates with engineering and sales staff, and sends verified responses strictly after Super Admin confirmation.',
+    value: 'Guarantees that every technical question receives a verified, metallurgically accurate answer without delay, maintaining 100% human accountability.',
+    isEmailActive: true,
+    status: 'Active • Verified Bot'
   },
   {
     id: 'arjun-yadav',
+    agentNumber: 'Agent-4',
     name: 'Arjun Yadav',
     email: 'arjunyadav@lotustubes.com',
     initial: 'AY',
+    photo: '/assets/images/team/agent-4.jpeg',
     role: 'AI Customer Support & Operations Manager',
-    summary: 'Coordinates status information from the other AI agents, prepares customer-support updates and routes each proposed reply to the Super Admin for approval before sending.',
-    photo: '/assets/images/team/agent-4.jpeg'
+    channels: ['24/7 Live Chat', 'Inter-Bot Coordination', 'Executive Desk'],
+    summary: 'Coordinates operations across all bot workflows and directly powers the 24/7 Chat with Us concierge. Interrogates quotation, billing, and enquiry databases, provides pre-approved waiting updates, and routes proposed replies to Super Admin for approval.',
+    value: 'Provides customers with a single omniscient touchpoint for instant order tracking, bridges customer requests with executive oversight, and prevents client support bottlenecks.',
+    isEmailActive: true,
+    status: 'Active • Verified Bot'
   }
 ];
 export {

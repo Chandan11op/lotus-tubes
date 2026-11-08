@@ -56,10 +56,15 @@ import {
 import { getDashboardMetrics } from '../controllers/reportController.js';
 import {
   getAgents,
+  getPrimaryBots,
   getAgentTasks,
   triggerAgentEnquiryProcessing,
   approveTask,
-  rejectTask
+  rejectTask,
+  chatInquiryHandler,
+  submitStaffReplyHandler,
+  confirmInquiryReplyHandler,
+  requestInvoiceWhatsAppHandler
 } from '../controllers/agentController.js';
 import { validateEnquiry, validateContact, validateQuote } from '../middleware/validateRequest.js';
 import { authenticate, requireStaff, requireSuperAdmin, optionalAuth } from '../middleware/authMiddleware.js';
@@ -142,9 +147,20 @@ router.post('/quality-request', publicFormLimiter, submitQualityRequest);
 
 // AI Business Agents & Super Admin Approval Workflows
 router.get('/agents', authenticate, requireStaff, getAgents);
+router.get('/agents/primary-bots', getPrimaryBots);
 router.get('/agents/tasks', authenticate, requireStaff, getAgentTasks);
 router.post('/agents/process-enquiry/:id', authenticate, requireStaff, triggerAgentEnquiryProcessing);
 router.post('/agents/tasks/:id/approve', authenticate, requireSuperAdmin, approveTask);
 router.post('/agents/tasks/:id/reject', authenticate, requireSuperAdmin, rejectTask);
+
+// Agent 3 (Neha Desai): Staff proposed reply & Super Admin confirmation
+router.post('/agents/inquiry-task/:id/staff-reply', authenticate, requireStaff, submitStaffReplyHandler);
+router.post('/agents/inquiry-task/:id/confirm-reply', authenticate, requireSuperAdmin, confirmInquiryReplyHandler);
+
+// Agent 2 (Riya Shah): Invoicing dispatch on WhatsApp
+router.post('/agents/request-invoice-whatsapp', publicFormLimiter, optionalAuth, requestInvoiceWhatsAppHandler);
+
+// Agent 4 (Arjun Yadav): 24/7 Live Chat Concierge
+router.post('/agents/chat-inquiry', publicFormLimiter, optionalAuth, chatInquiryHandler);
 
 export default router;

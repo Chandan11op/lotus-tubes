@@ -18,7 +18,11 @@ const agentTaskSchema = new mongoose.Schema(
         'intl-sales-1',
         'intl-sales-2',
         'mktg-comm-1',
-        'mktg-lead-2'
+        'mktg-lead-2',
+        'ananya-mehta',
+        'riya-shah',
+        'neha-desai',
+        'arjun-yadav'
       ],
       index: true
     },
@@ -29,7 +33,16 @@ const agentTaskSchema = new mongoose.Schema(
     agentRole: {
       type: String,
       required: true,
-      enum: ['domestic_sales', 'international_sales', 'marketing_communications', 'marketing_outreach']
+      enum: [
+        'domestic_sales',
+        'international_sales',
+        'marketing_communications',
+        'marketing_outreach',
+        'quotation_specialist',
+        'billing_specialist',
+        'support_concierge',
+        'operations_manager'
+      ]
     },
     taskType: {
       type: String,
@@ -42,7 +55,9 @@ const agentTaskSchema = new mongoose.Schema(
         'draft_outreach',
         'draft_announcement',
         'draft_invoice',
-        'draft_mtc'
+        'draft_mtc',
+        'customer_inquiry_resolution',
+        'chat_inquiry_update'
       ],
       index: true
     },
@@ -79,7 +94,7 @@ const agentTaskSchema = new mongoose.Schema(
     // Super Admin Human-in-the-Loop Approval Workflow
     approvalStatus: {
       type: String,
-      enum: ['pending_review', 'approved', 'rejected', 'changes_requested'],
+      enum: ['pending_review', 'pending_super_admin_confirmation', 'approved', 'rejected', 'changes_requested'],
       default: 'pending_review',
       index: true
     },
@@ -95,6 +110,33 @@ const agentTaskSchema = new mongoose.Schema(
     reviewNotes: {
       type: String,
       default: ''
+    },
+    // Staff and Super Admin reply collaboration
+    staffReplyDraft: {
+      type: String,
+      default: ''
+    },
+    staffRepliedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null
+    },
+    staffRepliedAt: {
+      type: Date,
+      default: null
+    },
+    finalApprovedReply: {
+      type: String,
+      default: ''
+    },
+    superAdminApprovedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      default: null
+    },
+    superAdminApprovedAt: {
+      type: Date,
+      default: null
     },
     // Task execution status
     executionStatus: {
