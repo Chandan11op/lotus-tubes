@@ -54,7 +54,7 @@ export const ChatWithUs = () => {
     setInput('');
     setIsChecking(true);
 
-    // Initial professional waiting message required by user specification
+    // Initial professional waiting holding message mandated by executive specification
     const waitingMsgId = Date.now() + 1;
     setMessages((prev) => [
       ...prev,
@@ -63,7 +63,7 @@ export const ChatWithUs = () => {
         sender: 'bot',
         isWaiting: true,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        text: "Please wait a moment while I check your request across our department bots (Ananya, Riya, Neha) and verify the update with our executive desk..."
+        text: "Thank you for your patience. I’m checking the latest status of your request with our team. I’ll get back to you shortly."
       }
     ]);
 

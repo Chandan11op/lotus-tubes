@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import { User } from '../models/User.js';
 import { Enquiry } from '../models/Enquiry.js';
 import { Quote } from '../models/Quote.js';
+import { Invoice } from '../models/Invoice.js';
 import { AuditLog } from '../models/AuditLog.js';
 import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { config } from '../config/env.js';
@@ -240,16 +241,17 @@ export const getMe = async (req, res) => {
  */
 export const getMyQuotations = async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    const userEmail = req.user.email;
+    const userId = req.user.id || req.user._id;
+    const userEmail = (req.user.email || '').toLowerCase().trim();
     assertDatabaseConnected();
 
-    const [enquiries, quotes] = await Promise.all([
-      Enquiry.find({ $or: [{ userId }, { email: userEmail }] }).sort({ createdAt: -1 }),
-      Quote.find({ $or: [{ createdBy: userId }, { email: userEmail }] }).sort({ createdAt: -1 })
+    const [enquiries, quotes, invoices] = await Promise.all([
+      Enquiry.find({ $or: [{ customerId: userId }, { email: userEmail }] }).sort({ createdAt: -1 }),
+      Quote.find({ $or: [{ customerId: userId }, { email: userEmail }] }).sort({ createdAt: -1 }),
+      Invoice.find({ $or: [{ customerId: userId }, { email: userEmail }] }).sort({ createdAt: -1 })
     ]);
 
-    return successResponse(res, { enquiries, quotes });
+    return successResponse(res, { enquiries, quotes, invoices });
   } catch (error) {
     next(error);
   }

@@ -500,6 +500,88 @@ export const apiService = {
       method: 'POST',
       body: JSON.stringify({ finalReplyText })
     });
+  },
+
+  /**
+   * Primary Bots Registry & Agent Tasks
+   */
+  async getPrimaryBots() {
+    return await request('/agents/primary-bots');
+  },
+
+  async getAgentTasks(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/agents/tasks${query ? `?${query}` : ''}`);
+  },
+
+  async processEnquiryWithAgent(enquiryId) {
+    return await request(`/agents/process-enquiry/${enquiryId}`, {
+      method: 'POST'
+    });
+  },
+
+  async approveAgentTask(taskId, notes = '') {
+    return await request(`/agents/tasks/${taskId}/approve`, {
+      method: 'POST',
+      body: JSON.stringify({ notes })
+    });
+  },
+
+  async rejectAgentTask(taskId, reason = '', actionType = 'reject') {
+    return await request(`/agents/tasks/${taskId}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ reason, actionType })
+    });
+  },
+
+  /**
+   * Dedicated Commercial Invoicing (Riya Shah & Super Admin Workflows)
+   */
+  async getInvoices(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return await request(`/invoices${query ? `?${query}` : ''}`);
+  },
+
+  async getMyInvoices() {
+    return await request('/invoices/my');
+  },
+
+  async getInvoiceById(id) {
+    return await request(`/invoices/${id}`);
+  },
+
+  async createInvoice(invoiceData) {
+    return await request('/invoices', {
+      method: 'POST',
+      body: JSON.stringify(invoiceData)
+    });
+  },
+
+  async updateInvoice(id, invoiceData) {
+    return await request(`/invoices/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(invoiceData)
+    });
+  },
+
+  async approveInvoice(id, notes = '') {
+    return await request(`/invoices/${id}/approve`, {
+      method: 'POST',
+      body: JSON.stringify({ notes })
+    });
+  },
+
+  async rejectInvoice(id, reason = '', actionType = 'reject') {
+    return await request(`/invoices/${id}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ reason, actionType })
+    });
+  },
+
+  async sendInvoice(id) {
+    return await request(`/invoices/${id}/send`, {
+      method: 'POST'
+    });
   }
 };
 

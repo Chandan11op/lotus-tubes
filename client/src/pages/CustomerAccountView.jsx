@@ -82,24 +82,37 @@ export const CustomerAccountView = ({ onNotify }) => {
     }))
   ];
 
-  const billingItems = (quotesData.quotes || []).map((q) => {
-    const invNum = (q.quotationNumber || q.reference || 'LT-QT-1001').replace('LT-QT', 'LT-INV');
-    const subtotal = q.subtotal || 25000;
-    const taxTotal = q.taxTotal || Math.round(subtotal * 0.18);
-    const grandTotal = q.grandTotal || subtotal + taxTotal;
-    return {
-      rawId: q._id,
-      invoiceNumber: invNum,
-      quoteRef: q.quotationNumber || q.reference,
-      date: new Date(q.createdAt || Date.now()).toLocaleDateString(),
-      subtotal,
-      taxTotal,
-      grandTotal,
-      status: q.status === 'Approved' ? 'Authorized by Super Admin' : 'Proforma Draft',
-      assignedAgent: 'Riya Shah',
-      pdfUrl: '/sample-quotation.pdf'
-    };
-  });
+  const billingItems = (quotesData.invoices && quotesData.invoices.length > 0)
+    ? quotesData.invoices.map((inv) => ({
+        rawId: inv._id,
+        invoiceNumber: inv.invoiceNumber,
+        quoteRef: inv.quotationNumber || 'Direct Order',
+        date: new Date(inv.createdAt || inv.issuedDate || Date.now()).toLocaleDateString(),
+        subtotal: inv.subtotal || 0,
+        taxTotal: inv.taxTotal || 0,
+        grandTotal: inv.grandTotal || 0,
+        status: inv.status === 'Approved' ? 'Authorized by Super Admin' : (inv.status || 'Draft'),
+        assignedAgent: 'Riya Shah',
+        pdfUrl: inv.pdfUrl || '/sample-quotation.pdf'
+      }))
+    : (quotesData.quotes || []).map((q) => {
+        const invNum = (q.quotationNumber || q.reference || 'LT-QT-1001').replace('LT-QT', 'LT-INV');
+        const subtotal = q.subtotal || 0;
+        const taxTotal = q.taxTotal || Math.round(subtotal * 0.18);
+        const grandTotal = q.grandTotal || subtotal + taxTotal;
+        return {
+          rawId: q._id,
+          invoiceNumber: invNum,
+          quoteRef: q.quotationNumber || q.reference,
+          date: new Date(q.createdAt || Date.now()).toLocaleDateString(),
+          subtotal,
+          taxTotal,
+          grandTotal,
+          status: q.status === 'Approved' ? 'Authorized by Super Admin' : 'Proforma Draft',
+          assignedAgent: 'Riya Shah',
+          pdfUrl: '/sample-quotation.pdf'
+        };
+      });
 
   return (
     <>
@@ -507,7 +520,7 @@ export const CustomerAccountView = ({ onNotify }) => {
               <div>
                 <h3 style={{ margin: 0, color: '#0F172A', fontSize: '1.15rem' }}>Customer Inquiries &amp; Technical Helpdesk</h3>
                 <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '13px' }}>
-                  Managed by <strong>Neha Desai</strong>. Inquiries are reviewed by staff and require mandatory Super Admin confirmation prior to dispatch.
+                  Managed by <strong>Neha Desai</strong>. Inquiries are reviewed by engineering staff and require mandatory Super Admin confirmation prior to dispatch.
                 </p>
               </div>
             </div>
@@ -520,6 +533,58 @@ export const CustomerAccountView = ({ onNotify }) => {
                 Every inquiry submitted through the Contact Us form is received by <strong>Neha Desai</strong> and routed to our engineering staff. Before any reply is sent to you on WhatsApp or email, it must be verified and approved by <strong>Super Admin Chirag Shah</strong>. This ensures 100% metallurgical and commercial accuracy.
               </p>
             </div>
+
+            {(quotesData.enquiries || []).length > 0 ? (
+              <div style={{ overflowX: 'auto', marginBottom: '20px' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' }}>
+                  <thead>
+                    <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+                      <th style={{ padding: '12px' }}>Ticket Ref</th>
+                      <th style={{ padding: '12px' }}>Subject / Component</th>
+                      <th style={{ padding: '12px' }}>Submitted Date</th>
+                      <th style={{ padding: '12px' }}>Status</th>
+                      <th style={{ padding: '12px', textAlign: 'right' }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(quotesData.enquiries || []).map((enq, idx) => (
+                      <tr key={idx} style={{ borderBottom: '1px solid #F1F5F9' }}>
+                        <td style={{ padding: '12px', fontWeight: 700, color: '#0F172A' }}>{enq.reference || 'LT-CNT'}</td>
+                        <td style={{ padding: '12px' }}>
+                          <div style={{ fontWeight: 600 }}>{enq.productName || 'General Sourcing Inquiry'}</div>
+                          <small style={{ color: '#64748B' }}>Assigned Agent: Neha Desai</small>
+                        </td>
+                        <td style={{ padding: '12px', color: '#64748B' }}>{new Date(enq.createdAt || Date.now()).toLocaleDateString()}</td>
+                        <td style={{ padding: '12px' }}>
+                          <span style={{ background: '#E0F2FE', color: '#0369A1', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>
+                            {enq.status || 'Under Staff Review'}
+                          </span>
+                        </td>
+                        <td style={{ padding: '12px', textAlign: 'right' }}>
+                          <div style={{ display: 'inline-flex', gap: '6px' }}>
+                            <button
+                              type="button"
+                              className="btn btn--outline btn--sm"
+                              style={{ padding: '4px 8px', fontSize: '11px' }}
+                              onClick={() => openLiveChat(`Hello Arjun, what is the status of my ticket ${enq.reference}?`)}
+                            >
+                              ⚡ Check via Arjun
+                            </button>
+                            <a
+                              href={`mailto:nehadesai@lotustubes.com?subject=Regarding Ticket ${enq.reference}`}
+                              className="btn btn--outline-dark btn--sm"
+                              style={{ padding: '4px 8px', fontSize: '11px' }}
+                            >
+                              ✉️ Email Neha
+                            </a>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
 
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a href="/contact" className="btn btn--primary btn--sm">

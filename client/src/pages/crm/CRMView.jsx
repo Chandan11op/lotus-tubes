@@ -21,6 +21,7 @@ import { CRMVideoManagerView } from './views/CRMVideoManagerView';
 import { CRMStaffView } from './views/CRMStaffView';
 import { CRMReportsView } from './views/CRMReportsView';
 import { CRMSeoView } from './views/CRMSeoView';
+import { CRMAiOperationsView } from './views/CRMAiOperationsView';
 import { NewStaffModal } from './components/NewStaffModal';
 
 export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }) => {
@@ -790,6 +791,15 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   // Active subview selector
   const renderActiveView = () => {
     switch (activeTab) {
+      case 'ai-operations':
+        return (
+          <CRMAiOperationsView
+            user={user}
+            isSuperAdmin={isSuperAdmin}
+            onNotify={onNotify}
+            onRefresh={() => loadOperationalData({ isInitial: false })}
+          />
+        );
       case 'dashboard':
         return (
           <CRMDashboardView
