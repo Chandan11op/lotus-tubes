@@ -2,15 +2,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import apiService from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
+const INITIAL_GREETING = `Welcome to Lotus Tubes!
+
+I'm Arjun, your Customer Support Assistant.
+
+It's a pleasure to assist you. Whether you need information about our products, an update on an existing enquiry, quotation assistance or support with an ongoing order, I'm here to help.
+
+Please let me know how I can assist you today.`;
+
 export const ChatWithUs = () => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: 'bot',
       time: 'Just now',
-      text: "Hello! I am Arjun Yadav, Customer Operations & Support Manager at Lotus Tubes. I coordinate directly between our department specialists—Ananya Mehta (Quotations), Riya Shah (Billing), and Neha Desai (Client Support)—and our Managing Director Chirag Shah.\n\nHow can I assist you today? You can ask for an update on your quotation, bill, or support query with your reference number."
+      text: INITIAL_GREETING
     }
   ]);
   const [input, setInput] = useState('');
@@ -27,9 +36,21 @@ export const ChatWithUs = () => {
     }
   }, [messages, isOpen, isChecking]);
 
+  // Check if user just logged in with pending chat request
+  useEffect(() => {
+    if (user && sessionStorage.getItem('lotus_open_chat_after_login') === 'true') {
+      sessionStorage.removeItem('lotus_open_chat_after_login');
+      setIsOpen(true);
+    }
+  }, [user]);
+
   // Listen for external trigger to open chat with prefilled context
   useEffect(() => {
     const handleTrigger = (e) => {
+      if (!user) {
+        setShowAuthModal(true);
+        return;
+      }
       setIsOpen(true);
       if (e.detail?.message) {
         handleSendMessage(e.detail.message, e.detail.reference);
@@ -37,11 +58,30 @@ export const ChatWithUs = () => {
     };
     window.addEventListener('open-lotus-chat', handleTrigger);
     return () => window.removeEventListener('open-lotus-chat', handleTrigger);
-  }, []);
+  }, [user]);
+
+  const handleOpenClick = () => {
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      setIsOpen(true);
+    }
+  };
+
+  const handleNavigateAuth = (targetHash) => {
+    sessionStorage.setItem('lotus_open_chat_after_login', 'true');
+    setShowAuthModal(false);
+    window.location.hash = targetHash;
+  };
 
   const handleSendMessage = async (msgText = input, reference = '') => {
     const textToSend = (msgText || '').trim();
     if (!textToSend || isChecking) return;
+
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
 
     const userMsg = {
       id: Date.now(),
@@ -84,9 +124,9 @@ export const ChatWithUs = () => {
             id: Date.now() + 2,
             sender: 'bot',
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            botSource: res?.data?.botSource || 'Operations Desk',
-            verifiedBy: res?.data?.verifiedBy || 'Super Admin Desk (Chirag Shah)',
-            text: res?.data?.reply || "I have cross-checked with our department bots and our executive desk. Your request is registered and will be attended to promptly."
+            botSource: res?.data?.botSource || 'Customer Support Desk',
+            verifiedBy: res?.data?.verifiedBy || 'Lotus Tubes Operations Desk',
+            text: res?.data?.reply || "I have cross-checked with our department desk. Your request is registered and will be attended to promptly."
           }
         ];
       });
@@ -100,9 +140,9 @@ export const ChatWithUs = () => {
             id: Date.now() + 2,
             sender: 'bot',
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            botSource: 'Arjun Yadav (Operations Manager)',
-            verifiedBy: 'Super Admin Desk (Chirag Shah)',
-            text: `Status checked: I have notified Chirag Shah and our department specialists regarding your message: "${textToSend}". If you have an urgent inquiry or reference, you can also reach our direct Mumbai WhatsApp desk at +91 93246 19572.`
+            botSource: 'Customer Support Desk',
+            verifiedBy: 'Lotus Tubes Operations Desk',
+            text: `Status checked: Our customer support team has logged your message: "${textToSend}". For urgent technical inquiries or order updates, you can also reach our direct Mumbai desk at +91 98205 25200 or via WhatsApp.`
           }
         ];
       });
@@ -125,12 +165,12 @@ export const ChatWithUs = () => {
         <button
           type="button"
           className="lt-chat-trigger-btn"
-          onClick={() => setIsOpen(true)}
-          aria-label="Open chat with Arjun Yadav - Customer Operations & Support Manager"
+          onClick={handleOpenClick}
+          aria-label="Open chat with Arjun - Customer Support Assistant"
         >
           <img
             src="/assets/images/team/agent-4.jpeg"
-            alt="Arjun Yadav"
+            alt="Arjun - Customer Support Assistant"
             className="lt-chat-trigger-avatar"
             width="44"
             height="44"
@@ -139,10 +179,77 @@ export const ChatWithUs = () => {
             <span className="lt-chat-trigger-title">Chat with Us</span>
             <span className="lt-chat-trigger-sub">
               <span className="lt-pulse-dot" style={{ width: '5px', height: '5px' }}></span>
-              Arjun Yadav • Operations
+              Arjun • Customer Support
             </span>
           </div>
         </button>
+      )}
+
+      {/* Authentication Prompt Modal for Unauthenticated Visitors */}
+      {showAuthModal && (
+        <div className="lt-chat-auth-overlay" onClick={() => setShowAuthModal(false)} role="dialog" aria-modal="true">
+          <div className="lt-chat-auth-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="lt-chat-auth-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="lt-chat-auth-avatar-wrap">
+                  <img
+                    src="/assets/images/team/agent-4.jpeg"
+                    alt="Arjun"
+                    className="lt-chat-auth-avatar"
+                    width="44"
+                    height="44"
+                  />
+                  <span className="lt-chat-auth-badge">Support</span>
+                </div>
+                <div>
+                  <h3 className="lt-chat-auth-title">Customer Sign In Required</h3>
+                  <p className="lt-chat-auth-subtitle">Lotus Tubes Live Customer Concierge</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="lt-chat-auth-close"
+                onClick={() => setShowAuthModal(false)}
+                aria-label="Close"
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="lt-chat-auth-body">
+              <p className="lt-chat-auth-desc">
+                Live support chat, order tracking, and quotation assistance are available exclusively for registered Lotus Tubes clients.
+              </p>
+              <p className="lt-chat-auth-note">
+                Please sign in to your customer account or create a new account to connect directly with Arjun.
+              </p>
+
+              <div className="lt-chat-auth-actions">
+                <button
+                  type="button"
+                  className="lt-chat-auth-btn lt-chat-auth-btn--primary"
+                  onClick={() => handleNavigateAuth('#login')}
+                >
+                  Sign In to Account &rarr;
+                </button>
+                <button
+                  type="button"
+                  className="lt-chat-auth-btn lt-chat-auth-btn--secondary"
+                  onClick={() => handleNavigateAuth('#register')}
+                >
+                  Create an Account
+                </button>
+                <button
+                  type="button"
+                  className="lt-chat-auth-btn lt-chat-auth-btn--text"
+                  onClick={() => setShowAuthModal(false)}
+                >
+                  Continue Browsing
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* Expandable Chat Window */}
@@ -153,14 +260,14 @@ export const ChatWithUs = () => {
             <div className="lt-chat-header-info">
               <img
                 src="/assets/images/team/agent-4.jpeg"
-                alt="Arjun Yadav - Customer Operations & Support Manager"
+                alt="Arjun - Customer Support Assistant"
                 className="lt-chat-header-avatar"
                 width="44"
                 height="44"
               />
               <div>
-                <div className="lt-chat-header-title">Arjun Yadav</div>
-                <div className="lt-chat-header-sub">Operations Manager • Executive Desk</div>
+                <div className="lt-chat-header-title">Arjun</div>
+                <div className="lt-chat-header-sub">Customer Support Assistant • Support Desk</div>
               </div>
             </div>
             <button
@@ -212,24 +319,24 @@ export const ChatWithUs = () => {
           <div style={{ padding: '6px 12px', background: '#ffffff', display: 'flex', gap: '6px', overflowX: 'auto', borderTop: '1px solid #f1f5f9' }}>
             <button
               type="button"
-              onClick={() => handleSendMessage("I did not receive quotation for my recent request")}
+              onClick={() => handleSendMessage("I would like an update on my quotation")}
               style={{ fontSize: '0.7rem', padding: '4px 8px', borderRadius: '12px', background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#0369a1', cursor: 'pointer', whiteSpace: 'nowrap' }}
             >
-              📊 Check Quotation (Ananya)
+              📊 Quotation Status
             </button>
             <button
               type="button"
-              onClick={() => handleSendMessage("Where is my bill / commercial invoice?")}
+              onClick={() => handleSendMessage("Where is my bill or commercial invoice?")}
               style={{ fontSize: '0.7rem', padding: '4px 8px', borderRadius: '12px', background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#0369a1', cursor: 'pointer', whiteSpace: 'nowrap' }}
             >
-              🧾 Billing Update (Riya)
+              🧾 Billing & Invoices
             </button>
             <button
               type="button"
-              onClick={() => handleSendMessage("Update on my Contact Us inquiry")}
+              onClick={() => handleSendMessage("I would like an update on my enquiry")}
               style={{ fontSize: '0.7rem', padding: '4px 8px', borderRadius: '12px', background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#0369a1', cursor: 'pointer', whiteSpace: 'nowrap' }}
             >
-              📝 Support Query (Neha)
+              📝 Support & Enquiries
             </button>
           </div>
 
@@ -238,7 +345,7 @@ export const ChatWithUs = () => {
             <input
               type="text"
               className="lt-chat-input"
-              placeholder="Ask Arjun for status, quotation, or bill..."
+              placeholder="Ask Arjun for product details, quotation, or order status..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -260,4 +367,3 @@ export const ChatWithUs = () => {
 };
 
 export default ChatWithUs;
-

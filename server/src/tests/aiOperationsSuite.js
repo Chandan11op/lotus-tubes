@@ -19,6 +19,7 @@ import { Enquiry } from '../models/Enquiry.js';
 import { Contact } from '../models/Contact.js';
 import { AgentTask } from '../models/AgentTask.js';
 import { User } from '../models/User.js';
+import { Customer } from '../models/Customer.js';
 
 let server;
 const PORT = 5056;
@@ -370,10 +371,11 @@ async function runAiOperationsTests() {
     }
   });
 
-  // Test 7: Agent 4 (Arjun Yadav) Live Chat Concierge & Mandated Holding Message
-  await test('Agent 4 (Arjun Yadav): Returns user-mandated holding message and cross-interrogates DB', async () => {
+  // Test 7: Agent 4 (Arjun) Live Chat Concierge & Mandated Holding Message
+  await test('Agent 4 (Arjun): Returns user-mandated holding message and cross-interrogates DB', async () => {
     const chatRes = await makeRequest('/agents/chat-inquiry', {
       method: 'POST',
+      headers: { Authorization: `Bearer ${customer1Token}` },
       body: JSON.stringify({
         message: 'Where is my bill or invoice for BioPharma India?',
         email: testCustomer1Email,
@@ -390,14 +392,14 @@ async function runAiOperationsTests() {
       throw new Error(`Holding message mismatch!\nExpected: "${expectedHolding}"\nGot: "${result.waitingMessage}"`);
     }
 
-    // Verify Arjun interrogated Riya Shah (Billing Desk)
-    if (!result.botSource.includes('Riya Shah')) {
-      throw new Error(`Expected botSource to reference Riya Shah, got: ${result.botSource}`);
+    // Verify Arjun interrogated Billing Desk
+    if (!result.botSource.includes('Billing')) {
+      throw new Error(`Expected botSource to reference Billing Desk, got: ${result.botSource}`);
     }
 
     // Verify response mentions the approved invoice or quote
-    if (!result.reply.includes('Riya Shah') && !result.reply.includes('invoice')) {
-      throw new Error(`Expected reply to mention Riya Shah / invoice, got: ${result.reply}`);
+    if (!result.reply.toLowerCase().includes('billing') && !result.reply.toLowerCase().includes('invoice')) {
+      throw new Error(`Expected reply to mention billing / invoice, got: ${result.reply}`);
     }
   });
 
@@ -426,7 +428,20 @@ async function runAiOperationsTests() {
     }
   });
 
-  // Teardown
+  // Teardown & Self-Cleaning: Delete all test records created during test run
+  try {
+    const testEmailRegex = /(_ai_|pharmabiotech\.com|dairyprocess\.com)/i;
+    await User.deleteMany({ email: testEmailRegex });
+    await Customer.deleteMany({ email: testEmailRegex });
+    await Quote.deleteMany({ email: testEmailRegex });
+    await Invoice.deleteMany({ email: testEmailRegex });
+    await Enquiry.deleteMany({ email: testEmailRegex });
+    await AgentTask.deleteMany({ 'proposedPayload.customerEmail': testEmailRegex });
+    console.log('🧹 Test records successfully cleaned up.');
+  } catch (cleanErr) {
+    console.warn('Test cleanup warning:', cleanErr.message);
+  }
+
   if (server) {
     await new Promise((resolve) => server.close(resolve));
   }

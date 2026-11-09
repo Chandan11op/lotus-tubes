@@ -71,19 +71,19 @@ export const HomeView = ({ onOpenEnquiry }) => {
     ];
 
     if (activeProductTab === 'pipes') {
-      return PRODUCTS.filter((p) => pipeIds.includes(p.id));
+      return PRODUCTS.filter((p) => pipeIds.includes(p.id)).slice(0, 8);
     }
     if (activeProductTab === 'fittings') {
-      return PRODUCTS.filter((p) => fittingIds.includes(p.id));
+      return PRODUCTS.filter((p) => fittingIds.includes(p.id)).slice(0, 8);
     }
     if (activeProductTab === 'triclamp') {
-      return PRODUCTS.filter((p) => triclampIds.includes(p.id));
+      return PRODUCTS.filter((p) => triclampIds.includes(p.id)).slice(0, 8);
     }
     if (activeProductTab === 'valves') {
-      return PRODUCTS.filter((p) => valveIds.includes(p.id));
+      return PRODUCTS.filter((p) => valveIds.includes(p.id)).slice(0, 8);
     }
 
-    // Default 'all' tab: balanced showcase of flagship items across all 4 categories
+    // Default 'all' tab: balanced showcase of exactly 8 flagship items across all 4 categories (2 per family)
     const allPriorityIds = [
       'ss-316l-ep-pipe',
       'ss-304-ep-pipe',
@@ -92,13 +92,9 @@ export const HomeView = ({ onOpenEnquiry }) => {
       'ss-tri-clamp-ferrule',
       'ss-tri-clamp-clamp',
       'ss-sanitary-butterfly-valve',
-      'ss-316l-diaphragm-valve',
-      'pneumatic-sanitary-ball-valve',
-      'silicone-tri-clamp-gasket',
-      'ss-sanitary-concentric-reducer',
-      'ss-316l-seamless-sanitary-tube'
+      'ss-316l-diaphragm-valve'
     ];
-    return PRODUCTS.filter((p) => allPriorityIds.includes(p.id));
+    return PRODUCTS.filter((p) => allPriorityIds.includes(p.id)).slice(0, 8);
   }, [activeProductTab]);
 
   return (
@@ -125,14 +121,11 @@ export const HomeView = ({ onOpenEnquiry }) => {
               Lotus Tubes supplies SS 304 and SS 316L sanitary pipes and tubes, pipe fittings, tri-clamp components and hygienic valves for pharmaceutical, dairy, food and beverage, brewery, chemical and water-treatment applications.
             </p>
 
-            {/* 3 Primary Action Buttons */}
+            {/* 2 Primary Action Buttons */}
             <div className="editorial-hero__actions">
               <a href={localizePath('/products', currentLang)} className="btn-hero-primary" id="hero-explore-btn">
                 <span>Explore Products</span>
                 <span className="btn-arrow">&rarr;</span>
-              </a>
-              <a href={localizePath('/quote', currentLang)} className="btn-hero-secondary" id="hero-quote-btn">
-                <span>Request a Quote</span>
               </a>
               <a
                 href={whatsappUrl}
@@ -184,34 +177,6 @@ export const HomeView = ({ onOpenEnquiry }) => {
                     decoding="async"
                     className="metallic-card__img"
                   />
-                  
-                  {/* Interactive Hotspot Overlay Pins */}
-                  <div className="hotspot-pin hotspot-pin--1" title={t('hotspot_finish_title', 'Internal Electropolished Finish')}>
-                    <span className="hotspot-ping" />
-                    <span className="hotspot-dot">1</span>
-                    <div className="hotspot-tooltip">
-                      <strong>{t('hotspot_finish_title', 'Ultra-Smooth Finish')}</strong>
-                      <span>{t('hotspot_finish_desc', 'Electropolished or mechanically polished finish, subject to product availability.')}</span>
-                    </div>
-                  </div>
-
-                  <div className="hotspot-pin hotspot-pin--2" title={t('hotspot_chem_title', 'Material Grade Options')}>
-                    <span className="hotspot-ping" />
-                    <span className="hotspot-dot">2</span>
-                    <div className="hotspot-tooltip">
-                      <strong>{t('hotspot_chem_title', 'Material Grade Options')}</strong>
-                      <span>{t('hotspot_chem_desc', 'SS 316L grade option for applications requiring added corrosion resistance.')}</span>
-                    </div>
-                  </div>
-
-                  <div className="hotspot-pin hotspot-pin--3" title={t('hotspot_dim_title', 'Dimensional Inspection')}>
-                    <span className="hotspot-ping" />
-                    <span className="hotspot-dot">3</span>
-                    <div className="hotspot-tooltip">
-                      <strong>{t('hotspot_dim_title', 'Product Specifications')}</strong>
-                      <span>{t('hotspot_dim_desc', 'Dimensions and applicable specifications confirmed against the supplied product.')}</span>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="metallic-card__footer">

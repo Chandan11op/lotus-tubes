@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/api';
 import { Loader } from '../../components/common/Loader';
-import { DEFAULT_CUSTOMERS } from '../../data/defaultCustomers';
 import './crm.css';
 
 // CRM Components
@@ -27,9 +26,9 @@ import { NewStaffModal } from './components/NewStaffModal';
 export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }) => {
   const { user, loginStaff, loginCustomer, registerCustomer, logout, isStaff } = useAuth();
 
-  // Auth Form State (for login fallback)
-  const [authMode, setAuthMode] = useState('staff'); // 'customer' | 'staff'
-  const [customerIsRegistering, setCustomerIsRegistering] = useState(false);
+  const isRegisterParam = subroute === 'register' || (typeof window !== 'undefined' && window.location.hash === '#register');
+  const [authMode, setAuthMode] = useState(isRegisterParam ? 'customer' : 'staff'); // 'customer' | 'staff'
+  const [customerIsRegistering, setCustomerIsRegistering] = useState(isRegisterParam);
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
   const [authName, setAuthName] = useState('');
@@ -73,9 +72,17 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
 
   const isSuperAdmin = user?.role === 'admin';
 
-  // Sync activeTab with subroute prop
+  // Sync activeTab and auth mode with subroute prop
   useEffect(() => {
-    if (subroute && subroute !== 'login') {
+    if (subroute === 'register' || (typeof window !== 'undefined' && window.location.hash === '#register')) {
+      setAuthMode('customer');
+      setCustomerIsRegistering(true);
+    } else if (subroute === 'login' || (typeof window !== 'undefined' && window.location.hash === '#login')) {
+      if (typeof window !== 'undefined' && sessionStorage.getItem('lotus_open_chat_after_login')) {
+        setAuthMode('customer');
+        setCustomerIsRegistering(false);
+      }
+    } else if (subroute && subroute !== 'login') {
       setActiveTab(subroute);
     }
   }, [subroute]);
@@ -148,16 +155,12 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         if (Array.isArray(list) && list.length > 0) setQuotations(list);
       }
 
-      // 3. Process Customers (with guaranteed verified fallback accounts)
+      // 3. Process Customers
       if (custRes?.status === 'fulfilled') {
         const list = custRes.value?.data?.customers || custRes.value?.data || [];
-        if (Array.isArray(list) && list.length > 0) {
+        if (Array.isArray(list)) {
           setCustomers(list);
-        } else {
-          setCustomers((prev) => (prev.length > 0 ? prev : DEFAULT_CUSTOMERS));
         }
-      } else {
-        setCustomers((prev) => (prev.length > 0 ? prev : DEFAULT_CUSTOMERS));
       }
 
       // 4. Process Tasks
@@ -185,8 +188,6 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
 
     } catch (err) {
       console.warn('Operational data fetch degraded/timeout:', err.message);
-      // Ensure customers are ALWAYS available even when remote DB is waking up
-      setCustomers((prev) => (prev.length > 0 ? prev : DEFAULT_CUSTOMERS));
       setDataLoadError('Operating in offline/cached mode. Live sync will retry in background.');
     } finally {
       setDataLoading(false);

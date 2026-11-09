@@ -287,7 +287,7 @@ export const App = () => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const isCRM = route === 'crm' || route === 'login';
+  const isCRM = route === 'crm' || route === 'login' || route === 'register';
 
   const handleOpenEnquiry = (product, productName) => {
     if (typeof product === 'string') {
@@ -308,7 +308,7 @@ export const App = () => {
         <RouteProgressBar isNavigating={isNavigating} />
         {isCRM ? (
           <CRMView
-            subroute={param || 'dashboard'}
+            subroute={route === 'register' ? 'register' : (param || (route === 'login' ? 'login' : 'dashboard'))}
             onNotify={addToast}
             onOpenQuickEnquiry={handleOpenEnquiry}
           />
