@@ -628,59 +628,59 @@ export async function handleChatWithArjun({ message, reference, customerEmail, c
     matchingContact = await Contact.findOne({ email: emailToSearch.toLowerCase() }).sort({ createdAt: -1 });
   }
 
-  // Interrogate the respective department bot
-  let botSource = 'Arjun Yadav (Operations Manager)';
+  // Interrogate the respective department desk
+  let botSource = 'Customer Support Desk';
   let statusUpdate = '';
   let actionSuggestion = '';
 
   if (text.toLowerCase().includes('bill') || text.toLowerCase().includes('invoice') || text.toLowerCase().includes('payment')) {
-    botSource = 'Riya Shah (Billing Desk)';
+    botSource = 'Billing & Accounts Desk';
     if (matchingInvoice) {
-      statusUpdate = `Status checked with Riya Shah: Your official invoice [${matchingInvoice.invoiceNumber}] for ₹${Number(matchingInvoice.grandTotal || 0).toLocaleString('en-IN')} is in status: "${matchingInvoice.status}". ${matchingInvoice.status === 'Approved' ? `It was verified and authorized by Super Admin Chirag Shah on ${new Date(matchingInvoice.approvedAt).toLocaleDateString()}.` : 'It is queued for commercial verification by Super Admin Chirag Shah.'}`;
-      actionSuggestion = 'Would you like Riya Shah to re-dispatch a copy directly to your WhatsApp or email?';
+      statusUpdate = `Status checked with our Billing & Accounts Desk: Your official invoice [${matchingInvoice.invoiceNumber}] for ₹${Number(matchingInvoice.grandTotal || 0).toLocaleString('en-IN')} is in status: "${matchingInvoice.status}". ${matchingInvoice.status === 'Approved' ? 'It has been verified and authorized by management.' : 'It is currently queued for commercial verification.'}`;
+      actionSuggestion = 'Would you like our accounts desk to re-dispatch a copy directly to your WhatsApp or email?';
     } else if (matchingQuote) {
       const invNum = (matchingQuote.quotationNumber || 'LT-QT').replace('LT-QT', 'LT-INV');
-      statusUpdate = `Status checked with Riya Shah: Your proforma quotation [${matchingQuote.quotationNumber}] for ₹${Number(matchingQuote.grandTotal || 0).toLocaleString('en-IN')} has reference [${invNum}]. ${matchingQuote.status === 'Approved' ? 'It is officially approved by Super Admin Chirag Shah.' : 'It is queued for commercial verification.'}`;
-      actionSuggestion = 'Riya Shah can prepare and dispatch your official tax invoice right away.';
+      statusUpdate = `Status checked with our Billing & Accounts Desk: Your proforma quotation [${matchingQuote.quotationNumber}] for ₹${Number(matchingQuote.grandTotal || 0).toLocaleString('en-IN')} has reference [${invNum}]. ${matchingQuote.status === 'Approved' ? 'It has been officially approved.' : 'It is queued for commercial verification.'}`;
+      actionSuggestion = 'Our billing desk can prepare and dispatch your official tax invoice right away.';
     } else {
-      statusUpdate = 'Status checked with Riya Shah: We do not see an active billing invoice under this session reference. Please provide your Quote Reference (e.g. LT-BOQ-...) and Riya will generate your proforma statement immediately.';
+      statusUpdate = 'Status checked with our Billing & Accounts Desk: We do not see an active billing invoice under this session reference. Please provide your Quote Reference (e.g. LT-BOQ-...) and our accounts desk will generate your proforma statement immediately.';
     }
   } else if (text.toLowerCase().includes('quote') || text.toLowerCase().includes('quotation') || text.toLowerCase().includes('rfq') || text.toLowerCase().includes('price')) {
-    botSource = 'Ananya Mehta (Quotations Desk)';
+    botSource = 'Quotations Desk';
     if (matchingQuote) {
-      statusUpdate = `Status checked with Ananya Mehta: Your Quotation [${matchingQuote.quotationNumber || matchingQuote.reference}] is in status: "${matchingQuote.status}". ${matchingQuote.approvedByName ? `It was verified and authorized by ${matchingQuote.approvedByName}.` : 'It is undergoing metallurgical specification check by Chirag Shah.'}`;
-      actionSuggestion = 'Ananya can re-send the detailed line-item PDF to your email or WhatsApp right away.';
+      statusUpdate = `Status checked with our Quotations Desk: Your Quotation [${matchingQuote.quotationNumber || matchingQuote.reference}] is in status: "${matchingQuote.status}". ${matchingQuote.approvedByName ? 'It has been verified and authorized.' : 'It is currently undergoing metallurgical specification check.'}`;
+      actionSuggestion = 'Our sales desk can re-send the detailed line-item PDF to your email or WhatsApp right away.';
     } else if (matchingEnquiry) {
-      statusUpdate = `Status checked with Ananya Mehta: Inbound RFQ [${matchingEnquiry.reference}] for "${matchingEnquiry.productName}" is registered. Technical spec matching is underway.`;
+      statusUpdate = `Status checked with our Quotations Desk: Inbound RFQ [${matchingEnquiry.reference}] for "${matchingEnquiry.productName}" is registered. Technical spec matching is underway.`;
       actionSuggestion = 'Our sales desk coordinates same-day quoting from our Mumbai stockhub.';
     } else {
-      statusUpdate = 'Status checked with Ananya Mehta: No pending RFQ was detected. You can request an immediate quotation on any product in our sanitary catalogue.';
+      statusUpdate = 'Status checked with our Quotations Desk: No pending RFQ was detected. You can request an immediate quotation on any product in our sanitary catalogue.';
     }
   } else {
     // General or contact query
-    botSource = 'Neha Desai (Support Desk)';
+    botSource = 'Customer Support Desk';
     if (matchingContact || matchingEnquiry) {
       const ref = matchingEnquiry?.reference || 'LT-CNT';
-      statusUpdate = `Status checked with Neha Desai: Your inquiry [${ref}] is logged with our engineering desk. Current status: "${matchingEnquiry?.status || 'Under Staff Review'}". Staff replies require mandatory Super Admin confirmation before dispatch.`;
-      actionSuggestion = 'We will notify you via email and WhatsApp as soon as Chirag Shah confirms the technical resolution.';
+      statusUpdate = `Status checked with our Customer Support Desk: Your inquiry [${ref}] is logged with our engineering desk. Current status: "${matchingEnquiry?.status || 'Under Review'}". Staff replies undergo mandatory quality confirmation before dispatch.`;
+      actionSuggestion = 'We will notify you via email and WhatsApp as soon as our technical resolution is confirmed.';
     } else {
-      statusUpdate = 'I have cross-checked our systems across Quotations, Invoices, and Inquiries. How can our autonomous team support your sanitary piping requirements today?';
+      statusUpdate = 'I have cross-checked our systems across Quotations, Invoices, and Inquiries. How can our customer support team assist your sanitary piping requirements today?';
     }
   }
 
   const proposedResponse = `${statusUpdate} ${actionSuggestion}`.trim();
 
-  // Create an AgentTask logging this chat interaction for Super Admin review & visibility
+  // Create an AgentTask logging this chat interaction for review & visibility
   await AgentTask.create({
-    agentId: bot.id,
-    agentName: bot.name,
-    agentRole: bot.role,
+    agentId: bot?.id || 'agent-4',
+    agentName: bot?.name || 'Arjun',
+    agentRole: bot?.role || 'Customer Support Assistant',
     taskType: 'chat_inquiry_update',
     title: `Live Chat Inquiry: ${text.substring(0, 60)}...`,
-    description: `Customer query routed through Arjun Yadav. Verified update generated from ${botSource}.`,
+    description: `Customer query handled by Arjun. Verified update generated from ${botSource}.`,
     customerId: customerUser?._id || customerUser?.id || null,
     approvalStatus: 'approved',
-    reviewNotes: `Auto-verified against database by ${bot.name} with Super Admin oversight.`,
+    reviewNotes: `Auto-verified against database with operations oversight.`,
     proposedPayload: {
       customerQuery: text,
       targetRef,
@@ -692,11 +692,11 @@ export async function handleChatWithArjun({ message, reference, customerEmail, c
   });
 
   return {
-    manager: 'Arjun Yadav',
+    manager: 'Arjun',
     botSource,
     waitingMessage: "Thank you for your patience. I’m checking the latest status of your request with our team. I’ll get back to you shortly.",
     reply: proposedResponse,
     superAdminVerified: true,
-    verifiedBy: 'Super Admin Desk (Chirag Shah)'
+    verifiedBy: 'Lotus Tubes Operations Desk'
   };
 }

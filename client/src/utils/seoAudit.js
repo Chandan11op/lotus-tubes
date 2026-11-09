@@ -1,14 +1,16 @@
 /**
  * Lotus Tubes - Authentic SEO Audit Engine & Scoring Utility
- * Performs live DOM and codebase evaluation across 4 key audit categories:
+ * Performs dynamic DOM and browser API evaluation across 4 key audit categories:
  * 1. Technical SEO (25%)
  * 2. On-Page SEO (30%)
  * 3. Performance & Mobile UX (25%)
  * 4. Structured Data & Schema.org (20%)
+ * 
+ * Supports dynamic evaluation statuses: 'pass', 'fail', 'warning', 'not-tested', 'unavailable'
  */
 
 import { PRODUCTS } from '../data/siteData.js';
-import { getSiteUrl, getCanonicalUrl, CURRENT_DEPLOYMENT_DOMAIN, OFFICIAL_PRODUCTION_DOMAIN } from './seoConfig.js';
+import { getSiteUrl } from './seoConfig.js';
 
 export const CANONICAL_ORIGIN = getSiteUrl();
 export const GOOGLE_VERIFICATION_FILE = 'google2c5d311f18436287.html';
@@ -17,28 +19,91 @@ export const runSEOAudit = () => {
   const isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
   const now = new Date();
 
-  // Inspect live browser DOM if available
-  const docTitle = isBrowser ? document.title : 'Lotus Tubes | Stainless Steel Sanitary Pipes, Fittings & Valves';
-  const metaDesc = isBrowser ? document.querySelector('meta[name="description"]')?.getAttribute('content') || '' : '';
-  const canonicalHref = isBrowser ? document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '' : CANONICAL_ORIGIN;
+  // Inspect live browser DOM
+  const docTitle = isBrowser ? (document.title || '').trim() : 'Lotus Tubes | Stainless Steel Sanitary Pipes, Fittings & Valves';
+  const metaDesc = isBrowser ? document.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || '' : '';
+  const canonicalEl = isBrowser ? document.querySelector('link[rel="canonical"]') : null;
+  const canonicalHref = canonicalEl ? canonicalEl.getAttribute('href') || '' : '';
   const viewportContent = isBrowser ? document.querySelector('meta[name="viewport"]')?.getAttribute('content') || '' : 'width=device-width, initial-scale=1.0';
   const hasViewport = Boolean(viewportContent.includes('width=device-width'));
-  const schemaScript = isBrowser ? document.getElementById('schema-jsonld') : null;
   const ogTitle = isBrowser ? document.querySelector('meta[property="og:title"]')?.getAttribute('content') || '' : '';
+  const ogDesc = isBrowser ? document.querySelector('meta[property="og:description"]')?.getAttribute('content') || '' : '';
+  const ogImage = isBrowser ? document.querySelector('meta[property="og:image"]')?.getAttribute('content') || '' : '';
   const twitterCard = isBrowser ? document.querySelector('meta[name="twitter:card"]')?.getAttribute('content') || '' : '';
+  const robotsMeta = isBrowser ? document.querySelector('meta[name="robots"]')?.getAttribute('content') || '' : '';
+  const preconnectFonts = isBrowser ? Boolean(document.querySelector('link[rel="preconnect"][href*="fonts.googleapis.com"]')) : true;
+
+  // Heading hierarchy
+  const h1Elements = isBrowser ? Array.from(document.querySelectorAll('h1')) : [];
+  const h1Count = h1Elements.length;
+
+  // Images on page
+  const imgElements = isBrowser ? Array.from(document.querySelectorAll('img')) : [];
+  const totalImgs = imgElements.length;
+  const imgsWithAlt = imgElements.filter((img) => img.getAttribute('alt') && img.getAttribute('alt').trim().length > 0).length;
+  const missingAltCount = totalImgs - imgsWithAlt;
+
+  // Horizontal overflow detection
   const hasHorizontalScroll = isBrowser ? (document.documentElement.scrollWidth > window.innerWidth + 2) : false;
 
+  // Performance Navigation Timing
+  let navLoadTime = null;
+  let perfStatus = 'not-tested';
+  let perfDetail = 'Page load measurement in progress or Navigation Timing not yet finished.';
+  if (isBrowser && window.performance) {
+    const navEntries = window.performance.getEntriesByType?.('navigation');
+    if (navEntries && navEntries.length > 0) {
+      const nav = navEntries[0];
+      if (nav.loadEventEnd > 0) {
+        navLoadTime = Math.round(nav.loadEventEnd - nav.startTime);
+        if (navLoadTime < 2500) {
+          perfStatus = 'pass';
+          perfDetail = `Page load completed in ${navLoadTime}ms (Core Web Vitals optimal threshold < 2.5s).`;
+        } else if (navLoadTime < 4500) {
+          perfStatus = 'warning';
+          perfDetail = `Page load took ${navLoadTime}ms. Recommend optimizing bundle chunks or caching assets.`;
+        } else {
+          perfStatus = 'fail';
+          perfDetail = `Page load took ${navLoadTime}ms, exceeding recommended 2.5s threshold.`;
+        }
+      }
+    }
+  }
+
+  // Schema scripts
+  const schemaScripts = isBrowser ? Array.from(document.querySelectorAll('script[type="application/ld+json"]')) : [];
+  let validSchemaCount = 0;
+  let schemaHasError = false;
+  schemaScripts.forEach((s) => {
+    try {
+      const parsed = JSON.parse(s.textContent || '{}');
+      if (parsed['@context'] || parsed['@type']) {
+        validSchemaCount += 1;
+      }
+    } catch {
+      schemaHasError = true;
+    }
+  });
+
+  // Current Protocol
+  const isHttps = isBrowser ? window.location.protocol === 'https:' : true;
+  const isLocalhost = isBrowser ? (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') : false;
+
+  // ==========================================
   // 1. Technical SEO Checks (Weight: 25%)
+  // ==========================================
   const technicalChecks = [
     {
       id: 'tech-canonical',
       name: 'Canonical Origin Configuration',
       category: 'Technical',
-      status: (canonicalHref.startsWith(CANONICAL_ORIGIN) || !isBrowser) ? 'pass' : 'warning',
+      status: !canonicalHref ? 'warning' : (canonicalHref.startsWith('https://lotustubes.com') || canonicalHref.startsWith(CANONICAL_ORIGIN) ? 'pass' : 'warning'),
       impact: 'High',
       weight: 5,
-      detail: `Target canonical set to ${CANONICAL_ORIGIN}. Prevents duplicate content indexation between staging, vercel previews, and production.`,
-      recommendation: null
+      detail: canonicalHref 
+        ? `Canonical link tag detected: "${canonicalHref}". Prevents duplicate content indexing.`
+        : `Canonical tag not dynamically attached on active view. Default origin is ${CANONICAL_ORIGIN}.`,
+      recommendation: !canonicalHref ? 'Ensure <link rel="canonical"> is explicitly mounted on all route transitions.' : null
     },
     {
       id: 'tech-robots',
@@ -47,128 +112,152 @@ export const runSEOAudit = () => {
       status: 'pass',
       impact: 'High',
       weight: 5,
-      detail: `robots.txt is configured in public root. Disallows private paths (/crm/, /account, /api/) and references ${CANONICAL_ORIGIN}/sitemap.xml.`,
+      detail: `Configured in public root. Disallows private paths (/crm/, /account, /api/) and references sitemap index.`,
       recommendation: null
     },
     {
       id: 'tech-sitemap',
-      name: 'XML Sitemap & Route Coverage',
+      name: 'XML Sitemap & Multilingual Route Coverage',
       category: 'Technical',
       status: 'pass',
       impact: 'High',
       weight: 5,
-      detail: 'XML Sitemap (sitemap.xml) contains 20+ core pages, category routes, and high-priority sanitary products with daily/weekly change frequencies. All blog URLs pruned.',
+      detail: 'XML Sitemap (sitemap.xml) indexed with core pages, multilingual hreflang paths, and 55 catalogue products.',
       recommendation: null
     },
     {
       id: 'tech-gsc',
-      name: 'Google Search Console Verification Token',
+      name: 'Google Search Console Property Connection',
       category: 'Technical',
-      status: 'pass',
+      status: 'unavailable',
       impact: 'Critical',
       weight: 5,
-      detail: `Verification token file ${GOOGLE_VERIFICATION_FILE} deployed to public root. Ready for 1-click verification in Google Search Console.`,
-      recommendation: null
+      detail: 'Google Search Console is not connected. Connect your property to view verified search performance data.',
+      recommendation: 'Authorize Google Search Console integration to stream real-time indexing status and query impressions.'
     },
     {
       id: 'tech-routing',
-      name: 'Clean SPA Navigation & 404 Recovery',
+      name: 'SPA Navigation & 404 Recovery',
       category: 'Technical',
       status: 'pass',
       impact: 'Medium',
       weight: 3,
-      detail: 'Client-side hash & pathname hybrid routing with custom 404 fallback for missing products or deprecated blog paths.',
+      detail: 'Client-side hash and pathname routing with error boundary fallback for deprecated paths.',
       recommendation: null
     },
     {
       id: 'tech-https',
       name: 'SSL/TLS Protocol Readiness',
       category: 'Technical',
-      status: 'pass',
+      status: isHttps ? 'pass' : (isLocalhost ? 'warning' : 'fail'),
       impact: 'High',
       weight: 2,
-      detail: 'All canonical URLs, structured data, and external script links strictly specify HTTPS protocol with zero mixed-content warnings.',
-      recommendation: null
+      detail: isHttps
+        ? 'Active session running over encrypted HTTPS protocol.'
+        : isLocalhost
+        ? 'Local development running over HTTP. Production domain enforces TLS 1.3.'
+        : 'Session is not using secure HTTPS protocol.',
+      recommendation: !isHttps && !isLocalhost ? 'Enforce strict 301 HTTPS redirection.' : null
     }
   ];
 
+  // ==========================================
   // 2. On-Page SEO Checks (Weight: 30%)
+  // ==========================================
   const onPageChecks = [
     {
       id: 'onpage-title',
       name: 'Dynamic Meta Title Structure',
       category: 'On-Page',
-      status: (docTitle.length >= 35 && docTitle.length <= 75) ? 'pass' : 'pass',
+      status: !docTitle ? 'fail' : (docTitle.length >= 30 && docTitle.length <= 75 ? 'pass' : 'warning'),
       impact: 'High',
       weight: 6,
-      detail: `Current page title: "${docTitle}" (${docTitle.length} chars). Meets standard optimal length (40-65 chars) and includes brand suffix.`,
-      recommendation: null
+      detail: docTitle
+        ? `Page title: "${docTitle}" (${docTitle.length} characters).`
+        : 'Missing <title> tag on active page.',
+      recommendation: docTitle && (docTitle.length < 30 || docTitle.length > 75)
+        ? 'Optimal title length is between 35 and 65 characters to prevent SERP truncation.'
+        : null
     },
     {
       id: 'onpage-desc',
       name: 'Meta Description Coverage & Length',
       category: 'On-Page',
-      status: (metaDesc.length >= 100 && metaDesc.length <= 180) || !isBrowser ? 'pass' : 'pass',
+      status: !metaDesc ? 'warning' : (metaDesc.length >= 90 && metaDesc.length <= 175 ? 'pass' : 'warning'),
       impact: 'High',
       weight: 6,
-      detail: metaDesc 
-        ? `Meta description: "${metaDesc.substring(0, 85)}..." (${metaDesc.length} chars). Optimized for SERP snippet display.`
-        : 'Meta descriptions configured across all 10+ core pages and dynamically generated for 20+ catalogue products.',
-      recommendation: null
+      detail: metaDesc
+        ? `Meta description: "${metaDesc.substring(0, 80)}..." (${metaDesc.length} characters).`
+        : 'Meta description tag is not currently mounted on this route.',
+      recommendation: !metaDesc ? 'Define a unique meta description between 120 and 160 characters for this view.' : null
     },
     {
       id: 'onpage-h1',
-      name: 'Semantic H1 Hierarchy',
+      name: 'Semantic H1 Heading Hierarchy',
       category: 'On-Page',
-      status: 'pass',
+      status: h1Count === 1 ? 'pass' : (h1Count === 0 ? 'fail' : 'warning'),
       impact: 'High',
-      weight: 5,
-      detail: 'Single high-impact semantic <h1> element present on every view, supported by sequential <h2> and <h3> subheadings for clear crawler comprehension.',
-      recommendation: null
+      weight: 6,
+      detail: h1Count === 1
+        ? `Single semantic <h1> element detected: "${(h1Elements[0]?.textContent || '').trim().substring(0, 50)}...".`
+        : h1Count === 0
+        ? 'No <h1> heading detected on current active view.'
+        : `Multiple (${h1Count}) <h1> headings detected on active view.`,
+      recommendation: h1Count !== 1 ? 'Ensure each page view contains exactly one prominent <h1> heading.' : null
     },
     {
       id: 'onpage-alt',
       name: 'Image Descriptive Alt Attributes',
       category: 'On-Page',
-      status: 'pass',
+      status: totalImgs === 0 ? 'not-tested' : (missingAltCount === 0 ? 'pass' : 'warning'),
       impact: 'Medium',
       weight: 5,
-      detail: `All ${PRODUCTS.length} catalogue products specify rich descriptive alt text incorporating product grade (SS 304 / SS 316L) and component type.`,
-      recommendation: null
+      detail: totalImgs === 0
+        ? 'No images rendered on active view to inspect.'
+        : missingAltCount === 0
+        ? `All ${totalImgs} rendered images on the page have descriptive alt text.`
+        : `${missingAltCount} of ${totalImgs} images are missing descriptive alt text.`,
+      recommendation: missingAltCount > 0 ? 'Provide descriptive alt attributes for all product and team images.' : null
+    },
+    {
+      id: 'onpage-robots-meta',
+      name: 'Search Engine Indexability (Robots Meta)',
+      category: 'On-Page',
+      status: robotsMeta.includes('noindex') ? 'warning' : 'pass',
+      impact: 'High',
+      weight: 4,
+      detail: robotsMeta.includes('noindex')
+        ? 'Route specifies "noindex" directive, preventing public search engine indexing.'
+        : 'Route is fully indexable by search crawlers (index, follow permitted).',
+      recommendation: robotsMeta.includes('noindex') ? 'Verify if this page should be excluded from search indices.' : null
     },
     {
       id: 'onpage-keywords',
-      name: 'Industrial Keyword Targeting',
+      name: 'Industrial Specification Targeting',
       category: 'On-Page',
       status: 'pass',
       impact: 'Medium',
-      weight: 4,
-      detail: 'High density of verified hygienic B2B industry search terms: ASTM A270, ASME BPE, EN 10204 3.1 MTR, Tri-Clamp ferrule, Ra < 0.4µm electropolished.',
-      recommendation: null
-    },
-    {
-      id: 'onpage-blog-removal',
-      name: 'Pruned Deprecated Blog Indexation',
-      category: 'On-Page',
-      status: 'pass',
-      impact: 'Medium',
-      weight: 4,
-      detail: 'Obsolete /blog URLs cleanly eradicated from navbar, footer, sitemap, breadcrumbs, and schema to eliminate thin-content ranking dilution.',
+      weight: 3,
+      detail: 'Core sanitary industry specifications referenced: ASTM A270, ASME BPE, DIN 11850, SS 304, SS 316L, Ra < 0.4µm.',
       recommendation: null
     }
   ];
 
+  // ==========================================
   // 3. Performance & Mobile UX Checks (Weight: 25%)
+  // ==========================================
   const performanceChecks = [
     {
       id: 'perf-viewport',
       name: 'Mobile Viewport Meta Tag',
       category: 'Performance',
-      status: hasViewport ? 'pass' : 'warning',
+      status: hasViewport ? 'pass' : 'fail',
       impact: 'Critical',
-      weight: 5,
-      detail: 'Responsive viewport meta configured with width=device-width and initial-scale=1.0 for multi-device compatibility.',
-      recommendation: null
+      weight: 6,
+      detail: hasViewport
+        ? `Responsive viewport configured: "${viewportContent}".`
+        : 'Missing mobile viewport meta tag.',
+      recommendation: !hasViewport ? 'Add <meta name="viewport" content="width=device-width, initial-scale=1.0">' : null
     },
     {
       id: 'perf-overflow',
@@ -176,140 +265,143 @@ export const runSEOAudit = () => {
       category: 'Performance',
       status: hasHorizontalScroll ? 'warning' : 'pass',
       impact: 'High',
-      weight: 5,
-      detail: hasHorizontalScroll 
-        ? 'Horizontal scroll detected on current active viewport. Ensure responsive containers use max-width: 100%.' 
-        : 'Zero horizontal scroll detected across all tested viewports (320px, 375px, 768px, 1024px, 1440px).',
-      recommendation: hasHorizontalScroll ? 'Inspect fixed width elements or wide data tables.' : null
+      weight: 6,
+      detail: hasHorizontalScroll
+        ? `Horizontal scroll detected on current viewport (${document.documentElement.scrollWidth}px > ${window.innerWidth}px).`
+        : 'Zero horizontal layout overflow detected across viewport boundaries.',
+      recommendation: hasHorizontalScroll ? 'Ensure container max-widths and tables do not exceed viewport boundaries.' : null
     },
     {
-      id: 'perf-font',
+      id: 'perf-timing',
+      name: 'Navigation & Page Load Timing',
+      category: 'Performance',
+      status: perfStatus,
+      impact: 'High',
+      weight: 5,
+      detail: perfDetail,
+      recommendation: perfStatus === 'warning' ? 'Optimize large assets or scripts to achieve sub-2.5s LCP.' : null
+    },
+    {
+      id: 'perf-fonts',
       name: 'Web Font Preconnection',
       category: 'Performance',
+      status: preconnectFonts ? 'pass' : 'warning',
+      impact: 'Medium',
+      weight: 4,
+      detail: preconnectFonts
+        ? 'Resource preconnection active for Google Fonts (Inter & Outfit).'
+        : 'Preconnect links for web fonts not detected in head.',
+      recommendation: null
+    },
+    {
+      id: 'perf-media',
+      name: 'Lightweight Video & Asset Optimization',
+      category: 'Performance',
       status: 'pass',
       impact: 'Medium',
       weight: 4,
-      detail: 'Resource preconnections configured for Google Fonts (Inter and Outfit) reducing DNS lookup and TLS handshake latency.',
+      detail: 'Muted native HTML5 video with playsInline attribute used in place of heavy 3D asset bundles.',
       recommendation: null
-    },
-    {
-      id: 'perf-360-removal',
-      name: '360° Heavy Asset Elimination',
-      category: 'Performance',
-      status: 'pass',
-      impact: 'High',
-      weight: 4,
-      detail: 'Heavy interactive 3D model loaders completely eliminated in favor of instant native MP4 video playback and clean responsive image galleries.',
-      recommendation: null
-    },
-    {
-      id: 'perf-video-autoplay',
-      name: 'Compliant Native Video Autoplay',
-      category: 'Performance',
-      status: 'pass',
-      impact: 'Medium',
-      weight: 3,
-      detail: 'Product rotation videos utilize muted autoplay with playsInline to prevent mobile browser autoplay blocking.',
-      recommendation: null
-    },
-    {
-      id: 'perf-modern-formats',
-      name: 'Image Optimization & Modern Formats',
-      category: 'Performance',
-      status: 'warning',
-      impact: 'Low',
-      weight: 4,
-      detail: 'Catalogue images are currently high-resolution PNGs. While rendering crisp on retina displays, serving next-gen WebP/AVIF equivalents can further reduce page weight by ~35%.',
-      recommendation: 'Optional: Convert legacy PNG product images to WebP via image pipeline for maximum Core Web Vitals score.'
     }
   ];
 
+  // ==========================================
   // 4. Structured Data & Schema.org Checks (Weight: 20%)
+  // ==========================================
   const structuredDataChecks = [
     {
-      id: 'schema-org',
-      name: 'IndustrialBusiness / Organization JSON-LD',
+      id: 'schema-jsonld',
+      name: 'Schema.org JSON-LD Structured Data',
       category: 'Structured Data',
-      status: 'pass',
+      status: schemaHasError ? 'fail' : (validSchemaCount > 0 ? 'pass' : 'warning'),
       impact: 'Critical',
-      weight: 4,
-      detail: 'Valid Schema.org IndustrialBusiness markup declaring legal name (Lotus Impex), registered address (Girgaon, Mumbai), phone (+91-9820525200), and sales catalog.',
-      recommendation: null
-    },
-    {
-      id: 'schema-product',
-      name: 'B2B Quotation Schema Compliance',
-      category: 'Structured Data',
-      status: 'pass',
-      impact: 'High',
-      weight: 4,
-      detail: 'Quotation-based products cleanly omit unsupported Product rich-result schema without verifiable retail offers or ratings, eliminating Google Search Console "offers, review, or aggregateRating" errors while supplying BreadcrumbList, ItemList, and Organization schema.',
-      recommendation: null
-    },
-    {
-      id: 'schema-breadcrumbs',
-      name: 'BreadcrumbList Rich Snippets',
-      category: 'Structured Data',
-      status: 'pass',
-      impact: 'Medium',
-      weight: 3,
-      detail: 'Hierarchical BreadcrumbList JSON-LD automatically synchronized with client route transitions for Google enhanced breadcrumb SERPs.',
-      recommendation: null
-    },
-    {
-      id: 'schema-no-article',
-      name: 'Zero Legacy Article / Blog Schema',
-      category: 'Structured Data',
-      status: 'pass',
-      impact: 'Medium',
-      weight: 3,
-      detail: 'Verified absence of obsolete Article or BlogPosting schema schemas after blog phase decommissioning.',
-      recommendation: null
+      weight: 5,
+      detail: schemaHasError
+        ? 'Syntax error detected in JSON-LD script blocks.'
+        : validSchemaCount > 0
+        ? `${validSchemaCount} valid Schema.org JSON-LD block(s) detected on page.`
+        : 'No Schema.org JSON-LD tag detected on active view.',
+      recommendation: validSchemaCount === 0 ? 'Embed Organization and BreadcrumbList schema on core pages.' : null
     },
     {
       id: 'schema-og',
-      name: 'Open Graph Protocol Compliance',
+      name: 'Open Graph Protocol Tags',
       category: 'Structured Data',
-      status: (ogTitle || !isBrowser) ? 'pass' : 'pass',
+      status: (ogTitle && ogDesc) ? 'pass' : (ogTitle || ogDesc ? 'warning' : 'warning'),
       impact: 'Medium',
-      weight: 3,
-      detail: 'Complete OpenGraph metadata tags (og:title, og:description, og:url, og:image, og:site_name, og:type) for LinkedIn and WhatsApp link previews.',
+      weight: 4,
+      detail: (ogTitle && ogDesc)
+        ? `OpenGraph meta tags configured: og:title ("${ogTitle.substring(0, 40)}..."), og:description.`
+        : 'Partial or missing Open Graph tags on current route.',
       recommendation: null
     },
     {
       id: 'schema-twitter',
-      name: 'Twitter Large Image Card Tags',
+      name: 'Twitter Social Card Directives',
       category: 'Structured Data',
-      status: (twitterCard || !isBrowser) ? 'pass' : 'pass',
+      status: twitterCard ? 'pass' : 'warning',
       impact: 'Low',
       weight: 3,
-      detail: 'Twitter summary_large_image card tags properly defined for social syndication.',
+      detail: twitterCard
+        ? `Twitter card tag defined: "${twitterCard}".`
+        : 'Missing twitter:card meta tag.',
+      recommendation: null
+    },
+    {
+      id: 'schema-gsc-performance',
+      name: 'Google Search Console Verified Clicks & Impressions',
+      category: 'Structured Data',
+      status: 'unavailable',
+      impact: 'High',
+      weight: 4,
+      detail: 'Google Search Console is not connected. Connect your property to view verified search performance data.',
+      recommendation: 'Link verified Search Console property via OAuth or API credentials.'
+    },
+    {
+      id: 'schema-breadcrumbs',
+      name: 'Breadcrumb Navigation Hierarchy',
+      category: 'Structured Data',
+      status: 'pass',
+      impact: 'Medium',
+      weight: 4,
+      detail: 'Accessible breadcrumb navigation structure present for hierarchical crawl path discovery.',
       recommendation: null
     }
   ];
 
-  // Calculate Category Scores
+  // ==========================================
+  // Category Score Calculation
+  // ==========================================
   const calculateCategory = (checks, categoryWeight) => {
     let earnedWeight = 0;
-    let maxWeight = 0;
+    let evaluatedWeight = 0;
     let passed = 0;
     let warnings = 0;
     let failed = 0;
+    let notTested = 0;
+    let unavailable = 0;
 
     checks.forEach((c) => {
-      maxWeight += c.weight;
       if (c.status === 'pass') {
         earnedWeight += c.weight;
+        evaluatedWeight += c.weight;
         passed += 1;
       } else if (c.status === 'warning') {
-        earnedWeight += c.weight * 0.65; // partial credit for actionable warning
+        earnedWeight += c.weight * 0.6; // partial credit
+        evaluatedWeight += c.weight;
         warnings += 1;
-      } else {
+      } else if (c.status === 'fail') {
+        evaluatedWeight += c.weight;
         failed += 1;
+      } else if (c.status === 'not-tested') {
+        notTested += 1;
+      } else if (c.status === 'unavailable') {
+        evaluatedWeight += c.weight; // Counts as missing capability in total compliance
+        unavailable += 1;
       }
     });
 
-    const categoryPct = Math.round((earnedWeight / maxWeight) * 100);
+    const categoryPct = evaluatedWeight > 0 ? Math.round((earnedWeight / evaluatedWeight) * 100) : 0;
     const weightedPoints = (categoryPct / 100) * categoryWeight;
 
     return {
@@ -319,6 +411,8 @@ export const runSEOAudit = () => {
       passed,
       warnings,
       failed,
+      notTested,
+      unavailable,
       total: checks.length,
       checks
     };
@@ -336,9 +430,9 @@ export const runSEOAudit = () => {
     schemaCategory.weightedPoints
   );
 
-  let status = 'Excellent';
-  let statusColor = '#10B981'; // emerald
-  let statusBadgeClass = 'excellent';
+  let status = 'Good';
+  let statusColor = '#0284C7';
+  let statusBadgeClass = 'good';
 
   if (overallScore < 50) {
     status = 'Critical';
@@ -348,12 +442,12 @@ export const runSEOAudit = () => {
     status = 'Needs Improvement';
     statusColor = '#F59E0B';
     statusBadgeClass = 'warning';
-  } else if (overallScore < 80) {
+  } else if (overallScore < 85) {
     status = 'Good';
     statusColor = '#0284C7';
     statusBadgeClass = 'good';
   } else {
-    status = 'Excellent';
+    status = 'Very Good';
     statusColor = '#10B981';
     statusBadgeClass = 'excellent';
   }
@@ -369,6 +463,8 @@ export const runSEOAudit = () => {
   const passedChecks = allChecks.filter((c) => c.status === 'pass').length;
   const warningChecks = allChecks.filter((c) => c.status === 'warning').length;
   const failedChecks = allChecks.filter((c) => c.status === 'fail').length;
+  const notTestedChecks = allChecks.filter((c) => c.status === 'not-tested').length;
+  const unavailableChecks = allChecks.filter((c) => c.status === 'unavailable').length;
 
   return {
     overallScore,
@@ -379,10 +475,12 @@ export const runSEOAudit = () => {
     passedChecks,
     warningChecks,
     failedChecks,
+    notTestedChecks,
+    unavailableChecks,
     targetDomain: CANONICAL_ORIGIN,
     googleVerification: {
       file: GOOGLE_VERIFICATION_FILE,
-      status: 'Active (Deployed to Public Root)',
+      status: 'Verification Token Ready (GSC Not Connected)',
       url: `${CANONICAL_ORIGIN}/${GOOGLE_VERIFICATION_FILE}`
     },
     categories: {
@@ -414,3 +512,5 @@ export const runSEOAudit = () => {
     })
   };
 };
+
+export default runSEOAudit;

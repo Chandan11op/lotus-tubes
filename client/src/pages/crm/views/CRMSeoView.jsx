@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
 import { runSEOAudit, CANONICAL_ORIGIN, GOOGLE_VERIFICATION_FILE } from '../../../utils/seoAudit';
 
@@ -15,7 +15,7 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
       setAuditData(freshData);
       setIsScanning(false);
       if (onNotify) {
-        onNotify('Live SEO audit completed. All technical directives validated.', 'success');
+        onNotify('Live SEO audit completed. Real-time DOM and performance directives evaluated.', 'success');
       }
     }, 700);
   };
@@ -29,7 +29,7 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
           </div>
           <h3 style={{ fontSize: '1.25rem', color: '#10263D', margin: '0 0 8px 0' }}>Access Restricted</h3>
           <p style={{ color: '#64748B', maxWidth: '480px', margin: '0 auto', fontSize: '14px' }}>
-            The SEO Performance Engine and Google Search Console Audit Meter is restricted exclusively to authorized Super Administrators.
+            The SEO Performance Engine and Search Console Audit Meter is restricted exclusively to authorized Super Administrators.
           </p>
         </div>
       </div>
@@ -39,11 +39,12 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
   const {
     overallScore,
     status,
-    statusBadgeClass,
     totalChecks,
     passedChecks,
     warningChecks,
     failedChecks,
+    notTestedChecks = 0,
+    unavailableChecks = 0,
     categories,
     formattedTimestamp
   } = auditData;
@@ -120,31 +121,27 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
                   cx="65"
                   cy="65"
                   r={radius}
-                  fill="none"
                   stroke="#E2E8F0"
                   strokeWidth="10"
+                  fill="transparent"
                 />
-                {/* Animated Progress Ring */}
+                {/* Dynamic Value Arc */}
                 <circle
                   cx="65"
                   cy="65"
                   r={radius}
-                  fill="none"
-                  stroke={overallScore >= 80 ? '#10B981' : overallScore >= 70 ? '#0284C7' : '#F59E0B'}
+                  stroke={overallScore >= 80 ? '#10B981' : overallScore >= 65 ? '#0284C7' : '#F59E0B'}
                   strokeWidth="10"
                   strokeDasharray={circumference}
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
-                  style={{ transition: 'stroke-dashoffset 0.8s ease-in-out' }}
+                  fill="transparent"
+                  style={{ transition: 'stroke-dashoffset 0.8s ease' }}
                 />
               </svg>
-              {/* Inner Percentage Label */}
               <div style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
+                inset: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -169,53 +166,67 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
                 Search Visibility Score
               </h3>
               <p style={{ margin: 0, fontSize: '12px', color: '#64748B', lineHeight: '1.4' }}>
-                Target threshold (&ge; 80%) surpassed. Ready for indexed search engine crawling and high-relevance B2B rank authority.
+                Live evaluation calculated across active DOM directives, Core Web Vitals performance, and rich structured data schemas.
               </p>
             </div>
           </div>
 
           {/* Quick Stats Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-            <div style={{ padding: '12px 16px', borderRadius: '8px', background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
-              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: '600' }}>TOTAL CHECKS</div>
-              <div style={{ fontSize: '24px', fontWeight: '700', color: '#10263D', marginTop: '2px' }}>{totalChecks}</div>
-              <div style={{ fontSize: '11px', color: '#0284C7', marginTop: '2px' }}>Across 4 Core Disciplines</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
+            <div style={{ padding: '12px 14px', borderRadius: '8px', background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <div style={{ fontSize: '10px', color: '#64748B', fontWeight: '700', textTransform: 'uppercase' }}>TOTAL CHECKS</div>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: '#10263D', marginTop: '2px' }}>{totalChecks}</div>
+              <div style={{ fontSize: '11px', color: '#0284C7', marginTop: '2px' }}>4 Disciplines</div>
             </div>
 
-            <div style={{ padding: '12px 16px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-              <div style={{ fontSize: '11px', color: '#065F46', fontWeight: '600' }}>PASSED DIRECTIVES</div>
-              <div style={{ fontSize: '24px', fontWeight: '700', color: '#059669', marginTop: '2px' }}>{passedChecks}</div>
-              <div style={{ fontSize: '11px', color: '#059669', marginTop: '2px' }}>100% Core Compliance</div>
+            <div style={{ padding: '12px 14px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div style={{ fontSize: '10px', color: '#065F46', fontWeight: '700', textTransform: 'uppercase' }}>PASSED</div>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: '#059669', marginTop: '2px' }}>{passedChecks}</div>
+              <div style={{ fontSize: '11px', color: '#059669', marginTop: '2px' }}>Verified Valid</div>
             </div>
 
-            <div style={{ padding: '12px 16px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
-              <div style={{ fontSize: '11px', color: '#92400E', fontWeight: '600' }}>ADVISORY WARNINGS</div>
-              <div style={{ fontSize: '24px', fontWeight: '700', color: '#D97706', marginTop: '2px' }}>{warningChecks}</div>
-              <div style={{ fontSize: '11px', color: '#D97706', marginTop: '2px' }}>Non-blocking optimizations</div>
+            <div style={{ padding: '12px 14px', borderRadius: '8px', background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+              <div style={{ fontSize: '10px', color: '#92400E', fontWeight: '700', textTransform: 'uppercase' }}>ADVISORY</div>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: '#D97706', marginTop: '2px' }}>{warningChecks}</div>
+              <div style={{ fontSize: '11px', color: '#D97706', marginTop: '2px' }}>Optimizations</div>
             </div>
 
-            <div style={{ padding: '12px 16px', borderRadius: '8px', background: failedChecks > 0 ? 'rgba(239, 68, 68, 0.08)' : '#F8FAFC', border: '1px solid ' + (failedChecks > 0 ? 'rgba(239, 68, 68, 0.2)' : '#E2E8F0') }}>
-              <div style={{ fontSize: '11px', color: failedChecks > 0 ? '#991B1B' : '#64748B', fontWeight: '600' }}>CRITICAL FAILURES</div>
-              <div style={{ fontSize: '24px', fontWeight: '700', color: failedChecks > 0 ? '#DC2626' : '#10263D', marginTop: '2px' }}>{failedChecks}</div>
+            <div style={{ padding: '12px 14px', borderRadius: '8px', background: failedChecks > 0 ? 'rgba(239, 68, 68, 0.08)' : '#F8FAFC', border: '1px solid ' + (failedChecks > 0 ? 'rgba(239, 68, 68, 0.2)' : '#E2E8F0') }}>
+              <div style={{ fontSize: '10px', color: failedChecks > 0 ? '#991B1B' : '#64748B', fontWeight: '700', textTransform: 'uppercase' }}>FAILURES</div>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: failedChecks > 0 ? '#DC2626' : '#10263D', marginTop: '2px' }}>{failedChecks}</div>
               <div style={{ fontSize: '11px', color: failedChecks === 0 ? '#059669' : '#DC2626', marginTop: '2px' }}>
                 {failedChecks === 0 ? 'Zero Blockers' : 'Action Required'}
               </div>
+            </div>
+
+            <div style={{ padding: '12px 14px', borderRadius: '8px', background: unavailableChecks > 0 ? '#F1F5F9' : '#F8FAFC', border: '1px solid #CBD5E1' }}>
+              <div style={{ fontSize: '10px', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>UNAVAILABLE</div>
+              <div style={{ fontSize: '22px', fontWeight: '800', color: '#475569', marginTop: '2px' }}>{unavailableChecks}</div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Not Connected</div>
             </div>
           </div>
         </div>
 
         {/* Google Search Console Direct Integration Callout */}
-        <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', background: '#F0F9FF', padding: '12px 16px', borderRadius: '8px', border: '1px solid #BAE6FD' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ display: 'inline-flex', padding: '6px', background: '#0284C7', color: '#FFFFFF', borderRadius: '6px' }}>
-              <CRMIcon name="check" size={14} />
+        <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', background: '#FFFBEB', padding: '14px 18px', borderRadius: '8px', border: '1px solid #FDE68A' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ display: 'inline-flex', padding: '8px', background: '#D97706', color: '#FFFFFF', borderRadius: '6px' }}>
+              <CRMIcon name="clock" size={16} />
             </span>
             <div>
-              <strong style={{ fontSize: '13px', color: '#0369A1' }}>
-                Google Search Console Token: Active in Public Root
-              </strong>
-              <div style={{ fontSize: '12px', color: '#0284C7' }}>
-                Verification file: <code>{GOOGLE_VERIFICATION_FILE}</code> served directly at <code>{CANONICAL_ORIGIN}/{GOOGLE_VERIFICATION_FILE}</code>.
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <strong style={{ fontSize: '13px', color: '#92400E' }}>
+                  Google Search Console: Not Connected
+                </strong>
+                <span style={{ fontSize: '10px', background: '#FEE2E2', color: '#DC2626', padding: '1px 6px', borderRadius: '4px', fontWeight: '700' }}>
+                  Action Required
+                </span>
+              </div>
+              <div style={{ fontSize: '12px', color: '#78350F', marginTop: '3px', fontWeight: 600 }}>
+                Google Search Console is not connected. Connect your property to view verified search performance data.
+              </div>
+              <div style={{ fontSize: '11px', color: '#B45309', marginTop: '2px' }}>
+                Verification file: <code>{GOOGLE_VERIFICATION_FILE}</code> is deployed to the public root ready for ownership verification.
               </div>
             </div>
           </div>
@@ -231,13 +242,13 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
               <CRMIcon name="externalLink" size={12} />
             </a>
             <a
-              href="/sitemap.xml"
+              href="https://search.google.com/search-console"
               target="_blank"
               rel="noopener noreferrer"
-              className="crm-btn crm-btn-secondary crm-btn-sm"
+              className="crm-btn crm-btn-primary crm-btn-sm"
               style={{ fontSize: '11px', textDecoration: 'none' }}
             >
-              <span>View sitemap.xml</span>
+              <span>Open Search Console</span>
               <CRMIcon name="externalLink" size={12} />
             </a>
           </div>
@@ -258,7 +269,7 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
                     {cat.title}
                   </h4>
                 </div>
-                <div style={{ fontSize: '18px', fontWeight: '800', color: cat.score >= 90 ? '#059669' : '#0284C7' }}>
+                <div style={{ fontSize: '18px', fontWeight: '800', color: cat.score >= 85 ? '#059669' : cat.score >= 70 ? '#0284C7' : '#D97706' }}>
                   {cat.score}%
                 </div>
               </div>
@@ -269,7 +280,7 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
                   style={{
                     width: `${cat.score}%`,
                     height: '100%',
-                    background: cat.score >= 90 ? '#10B981' : '#0284C7',
+                    background: cat.score >= 85 ? '#10B981' : cat.score >= 70 ? '#0284C7' : '#F59E0B',
                     borderRadius: '3px',
                     transition: 'width 0.6s ease'
                   }}
@@ -329,11 +340,14 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
               ))}
             </div>
 
-            <div style={{ display: 'flex', background: '#F1F5F9', borderRadius: '6px', padding: '2px' }}>
+            <div style={{ display: 'flex', background: '#F1F5F9', borderRadius: '6px', padding: '2px', flexWrap: 'wrap', gap: '2px' }}>
               {[
                 { id: 'all', label: 'All Status' },
-                { id: 'pass', label: `Passed (${passedChecks})` },
-                { id: 'warning', label: `Warnings (${warningChecks})` }
+                { id: 'pass', label: `Pass (${passedChecks})` },
+                { id: 'warning', label: `Advisory (${warningChecks})` },
+                ...(failedChecks > 0 ? [{ id: 'fail', label: `Fail (${failedChecks})` }] : []),
+                ...(notTestedChecks > 0 ? [{ id: 'not-tested', label: `Not Tested (${notTestedChecks})` }] : []),
+                ...(unavailableChecks > 0 ? [{ id: 'unavailable', label: `Unavailable (${unavailableChecks})` }] : [])
               ].map((f) => (
                 <button
                   key={f.id}
@@ -363,7 +377,7 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
             <table className="crm-table">
               <thead>
                 <tr>
-                  <th style={{ width: '100px' }}>Status</th>
+                  <th style={{ width: '110px' }}>Status</th>
                   <th style={{ width: '220px' }}>Directive / Metric</th>
                   <th style={{ width: '120px' }}>Category</th>
                   <th style={{ width: '90px' }}>Impact</th>
@@ -391,6 +405,16 @@ export const CRMSeoView = ({ isSuperAdmin = false, onNotify }) => {
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: '700', backgroundColor: '#FEE2E2', color: '#DC2626' }}>
                             <CRMIcon name="close" size={12} />
                             FAIL
+                          </span>
+                        )}
+                        {check.status === 'not-tested' && (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: '700', backgroundColor: '#F1F5F9', color: '#64748B' }}>
+                            NOT TESTED
+                          </span>
+                        )}
+                        {check.status === 'unavailable' && (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: '700', backgroundColor: '#E2E8F0', color: '#475569' }}>
+                            UNAVAILABLE
                           </span>
                         )}
                       </td>

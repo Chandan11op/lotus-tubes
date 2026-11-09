@@ -180,7 +180,7 @@ router.post('/agents/inquiry-task/:id/confirm-reply', authenticate, requireSuper
 // Agent 2 (Riya Shah): Invoicing dispatch on WhatsApp
 router.post('/agents/request-invoice-whatsapp', publicFormLimiter, optionalAuth, requestInvoiceWhatsAppHandler);
 
-// Agent 4 (Arjun Yadav): 24/7 Live Chat Concierge
-router.post('/agents/chat-inquiry', publicFormLimiter, optionalAuth, chatInquiryHandler);
+// Agent 4 (Arjun Yadav): 24/7 Live Chat Concierge (Requires Authentication)
+router.post('/agents/chat-inquiry', publicFormLimiter, authenticate, chatInquiryHandler);
 
 export default router;
