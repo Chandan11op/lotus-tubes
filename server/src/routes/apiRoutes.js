@@ -66,6 +66,16 @@ import {
   confirmInquiryReplyHandler,
   requestInvoiceWhatsAppHandler
 } from '../controllers/agentController.js';
+import {
+  getInvoices,
+  getInvoiceById,
+  createInvoice,
+  updateInvoice,
+  approveInvoice,
+  rejectInvoice,
+  sendInvoice,
+  getMyInvoices
+} from '../controllers/invoiceController.js';
 import { validateEnquiry, validateContact, validateQuote } from '../middleware/validateRequest.js';
 import { authenticate, requireStaff, requireSuperAdmin, optionalAuth } from '../middleware/authMiddleware.js';
 import { requireTurnstileForAnonymous } from '../middleware/turnstileMiddleware.js';
@@ -114,6 +124,16 @@ router.post('/quotes/:id/approve', authenticate, requireSuperAdmin, approveQuote
 router.post('/quotes/:id/request-changes', authenticate, requireSuperAdmin, requestChangesQuote);
 router.post('/quotes/:id/reject', authenticate, requireSuperAdmin, rejectQuote);
 router.post('/quotes/:id/send-email', authenticate, requireStaff, sendQuoteByEmail);
+
+// Dedicated Commercial Invoicing (Riya Shah & Super Admin Approval)
+router.get('/invoices', authenticate, requireStaff, getInvoices);
+router.get('/invoices/my', authenticate, getMyInvoices);
+router.get('/invoices/:id', authenticate, requireStaff, getInvoiceById);
+router.post('/invoices', authenticate, requireStaff, createInvoice);
+router.patch('/invoices/:id', authenticate, requireStaff, updateInvoice);
+router.post('/invoices/:id/approve', authenticate, requireSuperAdmin, approveInvoice);
+router.post('/invoices/:id/reject', authenticate, requireSuperAdmin, rejectInvoice);
+router.post('/invoices/:id/send', authenticate, requireStaff, sendInvoice);
 
 // Customer Management (Staff CRM)
 router.get('/customers', authenticate, requireStaff, getCustomers);

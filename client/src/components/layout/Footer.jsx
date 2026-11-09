@@ -208,54 +208,31 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Col 4: Corporate & Mumbai Desk (Cols 10-12) */}
+          {/* Col 4: Quality Assurance & Corporate Policies */}
           <div className="lg:col-span-3 space-y-4">
             <h4 className="text-xs font-mono font-bold tracking-widest text-sky-400 uppercase">
-              {t('footer_col_office', 'Mumbai Sourcing Hub')}
+              Policies &amp; Compliance
             </h4>
-            
-            <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-3">
-              <div>
-                <span className="text-slate-400 block text-[11px] uppercase font-mono mb-1">
-                  {t('label_office', 'Business Address:')}
-                </span>
-                <p className="text-slate-200 leading-snug">{CONFIG.officeAddress}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800 font-mono text-[11px]">
-                <div>
-                  <span className="text-slate-400 block text-[10px]">GSTIN</span>
-                  <span className="text-sky-300 font-medium">{CONFIG.gstin}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block text-[10px]">IEC CODE</span>
-                  <span className="text-sky-300 font-medium">{CONFIG.iec}</span>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-slate-800">
-                <span className="text-slate-400 block text-[10px] uppercase font-mono">
-                  {t('label_direct_sales', 'Direct Sales Hotline:')}
-                </span>
-                <a href={`tel:${rawPhone}`} className="text-sm font-semibold text-white hover:text-sky-400 transition-colors">
-                  {CONFIG.primaryPhone}
+            <ul className="space-y-2.5 text-sm text-slate-400">
+              <li>
+                <a href={localizePath('/quality', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Quality Assurance Policy
                 </a>
-              </div>
-
-              <div>
-                <span className="text-slate-400 block text-[10px] uppercase font-mono">Sales Desk Email:</span>
-                <a href={`mailto:${'sales' + '@' + 'lotustubes.com'}`} className="text-xs text-slate-300 hover:text-sky-400 transition-colors break-all">
-                  <span>sales</span>&#64;<span>lotustubes</span>&#46;<span>com</span>
+              </li>
+              <li>
+                <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Privacy Policy
                 </a>
-              </div>
-            </div>
-
-            <a
-              href={localizePath('/quote', currentLang)}
-              className="inline-flex items-center justify-center w-full px-4 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs tracking-wide uppercase transition-all shadow-md shadow-sky-900/30"
-            >
-              Request Project BOQ Quote &rarr;
-            </a>
+              </li>
+              <li>
+                <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors flex items-center gap-1.5 group">
+                  <span className="text-sky-500 opacity-60 group-hover:opacity-100 transition-opacity">›</span>
+                  Terms of Supply
+                </a>
+              </li>
+            </ul>
           </div>
 
         </div>
@@ -265,7 +242,7 @@ export const Footer = () => {
       <div className="border-t border-slate-800/80 bg-slate-950/90 py-6 relative z-10">
         <div className="site-container flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p className="text-center md:text-left">
-            &copy; <span>{new Date().getFullYear()}</span> Lotus Tubes ({CONFIG.companyLegalName}).{' '}
+            &copy; <span>{new Date().getFullYear()}</span> Lotus Tubes.{' '}
             <span className="text-slate-400">All rights reserved. Precision Stainless Steel Sanitary Engineering.</span>
           </p>
 
@@ -275,8 +252,6 @@ export const Footer = () => {
             <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors">Privacy Policy</a>
             <span className="text-slate-700">•</span>
             <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors">Terms of Supply</a>
-            <span className="text-slate-700">•</span>
-            <a href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</a>
           </div>
         </div>
       </div>

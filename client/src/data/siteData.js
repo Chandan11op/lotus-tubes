@@ -1137,61 +1137,63 @@ export const LEADERSHIP = {
 export const AI_TEAM_MEMBERS = [
   {
     id: 'ananya-mehta',
-    agentNumber: 'Agent-1',
+    department: 'Technical Quotations',
     name: 'Ananya Mehta',
     email: 'ananyamehta@lotustubes.com',
     initial: 'AM',
     photo: '/assets/images/team/agent-1.jpeg',
-    role: 'Quotation & Commercial RFQ Specialist',
-    channels: ['Email Dispatch', 'WhatsApp Quotes'],
-    summary: 'Coordinates instant requirement qualification, spec sheet matching (ASTM A270, ASME BPE, DIN 11850), and quotation dispatch. Directly sends verified pricing proposals and MTC scopes to customer emails and WhatsApp.',
-    value: 'Eliminates quotation delays and ensures 100% accurate dimensional matching from our Mumbai stock hub.',
+    role: 'Lead Quotation & Sales Coordinator',
+    channels: ['Official Quotations', 'WhatsApp Desk', 'ASME/ASTM Sizing'],
+    summary: 'Manages customer quotation requests, evaluates sanitary tube and fitting specifications (ASTM A270, ASME BPE, DIN 11850), and ensures rapid quotation delivery with verified mill pricing.',
+    value: 'Guarantees immediate turnaround and 100% accurate dimensional matching from our Mumbai stock hub with verified factory pricing.',
     isEmailActive: true,
-    status: 'Active • Verified Bot'
+    status: 'Available • Quotations Desk'
   },
   {
     id: 'riya-shah',
-    agentNumber: 'Agent-2',
+    department: 'Commercial Billing',
     name: 'Riya Shah',
     email: 'riyashah@lotustubes.com',
     initial: 'RS',
     photo: '/assets/images/team/agent-2.jpeg',
-    role: 'Billing & Invoicing Specialist',
-    channels: ['Tax Invoices', 'WhatsApp Billing'],
-    summary: 'Manages verified commercial billing, proforma invoices, GST tax compliance (18% HSN), and payment reconciliation. Dispatches digitally verified commercial invoices and receipts directly to customer inboxes and WhatsApp.',
-    value: 'Accelerates commercial clearance and provides procurement teams with immediate verifiable accounting documents.',
+    role: 'Commercial Accounts & Billing Specialist',
+    channels: ['Tax Invoices', '18% GST Compliance', 'WhatsApp Accounts'],
+    summary: 'Oversees commercial billing records, enforces strict GST tax and HSN code compliance, and provides authorized commercial invoices and client ledger reconciliations.',
+    value: 'Accelerates commercial clearance and provides procurement teams with immediate, verifiable accounting records directly tied to dispatch orders.',
     isEmailActive: true,
-    status: 'Active • Verified Bot'
+    status: 'Available • Accounts Desk'
   },
   {
     id: 'neha-desai',
-    agentNumber: 'Agent-3',
+    department: 'Customer Resolution',
     name: 'Neha Desai',
     email: 'nehadesai@lotustubes.com',
     initial: 'ND',
     photo: '/assets/images/team/agent-3.jpeg',
-    role: 'Customer Inquiries & Support Concierge',
-    channels: ['Contact Us Desk', 'Super Admin Verified'],
-    summary: 'Connects with customers submitting queries via Contact Us and RFQ portals. Escalates questions to staff and engineering teams, enforces strict Super Admin verification on all answers, and dispatches approved resolutions via email and WhatsApp.',
-    value: 'Guarantees that every technical question receives a verified, metallurgically accurate answer without delay, maintaining 100% human accountability and zero hallucinated advice.',
+    role: 'Client Relations & Technical Resolution Lead',
+    channels: ['Enquiry Desk', 'Technical Support', 'Direct Resolution'],
+    summary: 'Manages client enquiries, oversees traceable ticket resolution, and liaises directly with engineering and metallurgical teams to provide comprehensive technical answers.',
+    value: 'Guarantees that every engineering inquiry receives a prompt, metallurgically accurate response backed by complete product documentation.',
     isEmailActive: true,
-    status: 'Active • Verified Bot'
+    status: 'Available • Client Desk'
   },
   {
     id: 'arjun-yadav',
-    agentNumber: 'Agent-4',
+    department: 'Operations & Support',
     name: 'Arjun Yadav',
     email: 'arjunyadav@lotustubes.com',
     initial: 'AY',
     photo: '/assets/images/team/agent-4.jpeg',
-    role: 'AI Operations Manager & Live Chat Concierge',
-    channels: ['24/7 Live Chat', 'Inter-Bot Coordination', 'Executive Desk'],
-    summary: 'Coordinates real-time operations across all bot workflows and directly powers the 24/7 Chat With Us concierge. Interrogates quotation, billing, and inquiry databases, routes live customer update requests to Super Admin for validation/editing, and delivers verified status updates to clients.',
-    value: 'Provides customers with a single omniscient touchpoint for instant order tracking, bridges customer requests with executive oversight, and prevents client support bottlenecks.',
+    role: 'Customer Operations & Support Manager',
+    channels: ['Direct Concierge', 'Order Tracking', 'Operations Desk'],
+    summary: 'Oversees daily customer operations, cross-coordinates between quotations, billing, and technical teams, and directly assists clients with live order status updates.',
+    value: 'Provides a dedicated executive touchpoint for instant order tracking, quotation status, and expedited client communication.',
     isEmailActive: true,
-    status: 'Active • Verified Bot'
+    status: 'Online • Live Concierge'
   }
 ];
+
+export const TEAM_MEMBERS = AI_TEAM_MEMBERS;
 export {
   CONFIG,
   createProductSVG,

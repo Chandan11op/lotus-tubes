@@ -81,11 +81,19 @@ export const SearchModal = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="modal-overlay active fixed inset-0 z-50 flex items-start justify-center pt-12 sm:pt-20 px-4 bg-slate-950/75 backdrop-blur-sm transition-all"
+      className="modal-overlay open active fixed inset-0 flex items-start justify-center pt-12 sm:pt-20 px-4 bg-slate-950/75 backdrop-blur-sm transition-all"
       id="search-modal"
       role="dialog"
       aria-modal="true"
       aria-label="Product Catalogue Search"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 10050,
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'center'
+      }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

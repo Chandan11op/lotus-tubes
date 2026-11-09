@@ -33,8 +33,8 @@ const startServer = async () => {
 
   let port = config.port;
 
-  const server = app.listen(port, () => {
-    console.log(`🚀 Lotus Tubes API Server listening on http://localhost:${port}`);
+  const server = app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Lotus Tubes API Server listening on port ${port}`);
     console.log(`📡 Health endpoint available at http://localhost:${port}/api/health`);
   });
 
@@ -42,7 +42,7 @@ const startServer = async () => {
     if (err.code === 'EADDRINUSE') {
       console.warn(`⚠️ Port ${port} is in use. Trying port ${port + 1}...`);
       port += 1;
-      server.listen(port);
+      server.listen(port, '0.0.0.0');
     } else {
       console.error('Server error:', err);
     }

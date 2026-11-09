@@ -25,6 +25,12 @@ export const CRMSidebar = ({
 
   const navSections = [
     {
+      title: 'AI WORKFLOWS & OPERATIONS',
+      items: [
+        { id: 'ai-operations', label: 'AI Operations & Bots', icon: 'dashboard', badge: { count: '4 Bots', color: 'emerald' } }
+      ]
+    },
+    {
       title: 'SALES & OPERATIONS',
       items: [
         { id: 'dashboard', label: 'Dashboard', icon: 'dashboard', badge: null },

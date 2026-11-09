@@ -86,6 +86,11 @@ const agentTaskSchema = new mongoose.Schema(
       ref: 'Quote',
       default: null
     },
+    invoiceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Invoice',
+      default: null
+    },
     // The structured content/draft proposed by the agent
     proposedPayload: {
       type: mongoose.Schema.Types.Mixed,
