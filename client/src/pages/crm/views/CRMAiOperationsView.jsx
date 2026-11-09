@@ -7,14 +7,31 @@ export const CRMAiOperationsView = ({
   user,
   isSuperAdmin = false,
   onNotify,
-  onRefresh
+  onRefresh,
+  initialAgentId = null,
+  onNavigateTab
 }) => {
   const [tasks, setTasks] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedAgentFilter, setSelectedAgentFilter] = useState('All');
+  const [selectedAgentFilter, setSelectedAgentFilter] = useState(initialAgentId || 'All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Sync selectedAgentFilter if initialAgentId changes via navigation
+  useEffect(() => {
+    if (initialAgentId) {
+      setSelectedAgentFilter(initialAgentId);
+    } else {
+      setSelectedAgentFilter('All');
+    }
+  }, [initialAgentId]);
+
+  const activeAgent = useMemo(() => {
+    const targetId = initialAgentId || (selectedAgentFilter !== 'All' ? selectedAgentFilter : null);
+    if (!targetId) return null;
+    return AI_TEAM_MEMBERS.find((b) => b.id === targetId) || null;
+  }, [initialAgentId, selectedAgentFilter]);
 
   // Active Task for Super Admin Review Modal
   const [activeTask, setActiveTask] = useState(null);
@@ -238,145 +255,287 @@ export const CRMAiOperationsView = ({
 
   return (
     <div className="crm-view-container" style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
-      {/* Header & Title */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.4rem' }}>🤖</span>
-            <h1 style={{ margin: 0, fontSize: '1.5rem', color: '#0F172A', fontWeight: 800 }}>
-              AI Operations &amp; Autonomous Bots Control Center
-            </h1>
-          </div>
-          <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '14px' }}>
-            Executive Human-in-the-Loop oversight for Lotus Tubes’ 4 autonomous customer specialists. Every commercial dispatch requires Super Admin Chirag Shah confirmation.
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            type="button"
-            className="btn btn--outline-dark btn--sm"
-            onClick={loadData}
-            title="Refresh All AI Tasks"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-          >
-            🔄 Refresh Inbox
-          </button>
-          <button
-            type="button"
-            className="btn btn--primary btn--sm"
-            onClick={() => setShowCreateInvoiceModal(true)}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-          >
-            🧾 New Commercial Invoice (Riya Shah)
-          </button>
-        </div>
-      </div>
-
-      {/* Metrics Bar */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '28px' }}>
-        <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Active Bots</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0284C7', marginTop: '4px' }}>4</div>
-          <div style={{ fontSize: '11px', color: '#10B981', marginTop: '2px' }}>● 100% Operational</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid #FBCFE8', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <div style={{ fontSize: '12px', color: '#9D174D', fontWeight: 700, textTransform: 'uppercase' }}>Awaiting Super Admin</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#BE185D', marginTop: '4px' }}>{metrics.pendingCount}</div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Requires Chirag Shah Review</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Quotations (Ananya)</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.ananyaCount}</div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Email &amp; WhatsApp Quotes</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Billing (Riya)</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.riyaCount}</div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Tax Invoices &amp; 18% GST</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Inquiries (Neha)</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.nehaCount}</div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Traceable Support Desk</div>
-        </div>
-
-        <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-          <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Chat Concierge (Arjun)</div>
-          <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.arjunCount}</div>
-          <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>24/7 Operations Desk</div>
-        </div>
-      </div>
-
-      {/* Interactive 4 Agent Directory Cards */}
-      <div style={{ marginBottom: '28px' }}>
-        <h3 style={{ fontSize: '1.1rem', color: '#0F172A', marginBottom: '14px', fontWeight: 700 }}>
-          Assigned Autonomous Workflow Team
-        </h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
-          {AI_TEAM_MEMBERS.map((bot) => {
-            const isSelected = selectedAgentFilter === bot.id;
-            return (
-              <div
-                key={bot.id}
-                onClick={() => setSelectedAgentFilter(isSelected ? 'All' : bot.id)}
-                style={{
-                  background: isSelected ? '#EFF6FF' : '#FFFFFF',
-                  border: isSelected ? '2px solid #0284C7' : '1px solid #E2E8F0',
-                  borderRadius: '14px',
-                  padding: '16px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: isSelected ? '0 4px 14px rgba(2, 132, 199, 0.15)' : '0 2px 6px rgba(0,0,0,0.02)'
+      {/* TASK 2: If an Individual Agent is Selected: Dedicated Agent Dashboard */}
+      {activeAgent ? (
+        <div style={{ marginBottom: '28px' }}>
+          {/* Breadcrumb / Back Navigation */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#64748B' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  if (onNavigateTab) onNavigateTab('ai-operations');
+                  else setSelectedAgentFilter('All');
                 }}
+                style={{ background: 'none', border: 'none', color: '#0284C7', fontWeight: 600, cursor: 'pointer', padding: 0 }}
               >
-                <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
-                  <img
-                    src={bot.photo}
-                    alt={bot.name}
-                    style={{ width: '56px', height: '56px', borderRadius: '12px', objectFit: 'cover', border: '1px solid #E2E8F0' }}
-                  />
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#0F172A', fontWeight: 700 }}>{bot.name}</h4>
-                      <span style={{ fontSize: '10px', background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px', fontWeight: 700, color: '#475569' }}>
-                        {bot.agentNumber}
-                      </span>
-                    </div>
-                    <div style={{ fontSize: '12px', color: '#0284C7', fontWeight: 600, marginTop: '2px' }}>
-                      {bot.role}
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
-                      ✉️ {bot.email}
-                    </div>
-                  </div>
-                </div>
+                ← All AI Agents
+              </button>
+              <span>/</span>
+              <strong style={{ color: '#0F172A' }}>{activeAgent.name}</strong>
+              <span style={{ fontSize: '11px', background: '#E0F2FE', color: '#0369A1', padding: '2px 8px', borderRadius: '12px', fontWeight: 700 }}>
+                {activeAgent.department}
+              </span>
+            </div>
 
-                <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px' }}>
-                  <span style={{ color: '#059669', fontWeight: 700 }}>● Active Bot</span>
-                  <span style={{ color: isSelected ? '#0284C7' : '#64748B', fontWeight: 700 }}>
-                    {isSelected ? '✓ Showing Tasks' : 'Click to Filter Tasks'}
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {activeAgent.id === 'riya-shah' && (
+                <button
+                  type="button"
+                  className="btn btn--primary btn--sm"
+                  onClick={() => setShowCreateInvoiceModal(true)}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  🧾 New Commercial Invoice (18% GST)
+                </button>
+              )}
+              <button
+                type="button"
+                className="btn btn--outline-dark btn--sm"
+                onClick={loadData}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                🔄 Refresh Agent Queue
+              </button>
+            </div>
+          </div>
+
+          {/* Dedicated Agent Profile Card */}
+          <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 16px rgba(0,0,0,0.03)', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+              <img
+                src={activeAgent.photo}
+                alt={activeAgent.name}
+                style={{ width: '84px', height: '84px', borderRadius: '16px', objectFit: 'cover', border: '2px solid #0284C7', boxShadow: '0 4px 12px rgba(2, 132, 199, 0.2)' }}
+              />
+              <div style={{ flex: 1, minWidth: '280px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <h2 style={{ margin: 0, fontSize: '1.35rem', color: '#0F172A', fontWeight: 800 }}>{activeAgent.name}</h2>
+                  <span style={{ fontSize: '12px', background: '#ECFDF5', color: '#059669', padding: '2px 10px', borderRadius: '12px', fontWeight: 700, border: '1px solid #A7F3D0' }}>
+                    {activeAgent.status || '● Active • Operational'}
                   </span>
                 </div>
+                <div style={{ fontSize: '13px', color: '#0284C7', fontWeight: 700, marginTop: '4px' }}>
+                  {activeAgent.role} • {activeAgent.department}
+                </div>
+                <div style={{ fontSize: '12px', color: '#64748B', marginTop: '2px' }}>
+                  ✉️ {activeAgent.email}
+                </div>
+
+                <p style={{ margin: '12px 0 8px 0', fontSize: '13px', color: '#334155', lineHeight: 1.5 }}>
+                  {activeAgent.summary}
+                </p>
+
+                {activeAgent.value && (
+                  <div style={{ fontSize: '12px', background: '#F8FAFC', padding: '8px 12px', borderRadius: '8px', borderLeft: '3px solid #0284C7', color: '#475569', marginTop: '8px' }}>
+                    <strong>Client Value:</strong> {activeAgent.value}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '12px' }}>
+                  {activeAgent.channels?.map((ch, idx) => (
+                    <span key={idx} style={{ fontSize: '11px', background: '#F1F5F9', color: '#475569', padding: '3px 8px', borderRadius: '6px', fontWeight: 600 }}>
+                      ✓ {ch}
+                    </span>
+                  ))}
+                </div>
               </div>
-            );
-          })}
+            </div>
+          </div>
+
+          {/* Dedicated Agent KPIs */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px' }}>
+              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Assigned Tasks</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0284C7', marginTop: '4px' }}>
+                {tasks.filter((t) => t.agentId === activeAgent.id).length + (activeAgent.id === 'riya-shah' ? invoices.length : 0)}
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Total Workflow Execution</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #FBCFE8', borderRadius: '12px', padding: '16px' }}>
+              <div style={{ fontSize: '11px', color: '#9D174D', fontWeight: 700, textTransform: 'uppercase' }}>Awaiting Super Admin</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#BE185D', marginTop: '4px' }}>
+                {tasks.filter((t) => t.agentId === activeAgent.id && (t.approvalStatus === 'pending_review' || t.approvalStatus === 'pending_super_admin_confirmation')).length}
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Requires Confirmation</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px' }}>
+              <div style={{ fontSize: '11px', color: '#059669', fontWeight: 700, textTransform: 'uppercase' }}>Approved &amp; Dispatched</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#059669', marginTop: '4px' }}>
+                {tasks.filter((t) => t.agentId === activeAgent.id && t.approvalStatus === 'approved').length + (activeAgent.id === 'riya-shah' ? invoices.filter((i) => i.status === 'Approved').length : 0)}
+              </div>
+              <div style={{ fontSize: '11px', color: '#059669', marginTop: '2px' }}>Completed Workflows</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px' }}>
+              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>System Status</div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#059669', marginTop: '10px' }}>
+                ● 100% Active
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Autonomous Engine Ready</div>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        /* Overview Mode: Full Metrics Bar + 4 Directory Cards */
+        <>
+          {/* Header & Title */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.4rem' }}>🤖</span>
+                <h1 style={{ margin: 0, fontSize: '1.5rem', color: '#0F172A', fontWeight: 800 }}>
+                  AI Operations &amp; Autonomous Bots Control Center
+                </h1>
+              </div>
+              <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '14px' }}>
+                Executive Human-in-the-Loop oversight for Lotus Tubes’ 4 autonomous customer specialists. Every commercial dispatch requires Super Admin Chirag Shah confirmation.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                type="button"
+                className="btn btn--outline-dark btn--sm"
+                onClick={loadData}
+                title="Refresh All AI Tasks"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                🔄 Refresh Inbox
+              </button>
+              <button
+                type="button"
+                className="btn btn--primary btn--sm"
+                onClick={() => setShowCreateInvoiceModal(true)}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                🧾 New Commercial Invoice (Riya Shah)
+              </button>
+            </div>
+          </div>
+
+          {/* Metrics Bar */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Active Bots</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0284C7', marginTop: '4px' }}>4</div>
+              <div style={{ fontSize: '11px', color: '#10B981', marginTop: '2px' }}>● 100% Operational</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #FBCFE8', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '12px', color: '#9D174D', fontWeight: 700, textTransform: 'uppercase' }}>Awaiting Super Admin</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#BE185D', marginTop: '4px' }}>{metrics.pendingCount}</div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Requires Chirag Shah Review</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Quotations (Ananya)</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.ananyaCount}</div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Email &amp; WhatsApp Quotes</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Billing (Riya)</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.riyaCount}</div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Tax Invoices &amp; 18% GST</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Inquiries (Neha)</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.nehaCount}</div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Traceable Support Desk</div>
+            </div>
+
+            <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Chat Concierge (Arjun)</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.arjunCount}</div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>24/7 Operations Desk</div>
+            </div>
+          </div>
+
+          {/* Interactive 4 Agent Directory Cards */}
+          <div style={{ marginBottom: '28px' }}>
+            <h3 style={{ fontSize: '1.1rem', color: '#0F172A', marginBottom: '14px', fontWeight: 700 }}>
+              Assigned Autonomous Workflow Team
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '16px' }}>
+              {AI_TEAM_MEMBERS.map((bot) => {
+                const isSelected = selectedAgentFilter === bot.id;
+                return (
+                  <div
+                    key={bot.id}
+                    onClick={() => {
+                      if (onNavigateTab) {
+                        const tabKeyMap = {
+                          'ananya-mehta': 'agent-ananya',
+                          'riya-shah': 'agent-riya',
+                          'neha-desai': 'agent-neha',
+                          'arjun-yadav': 'agent-arjun'
+                        };
+                        onNavigateTab(tabKeyMap[bot.id] || 'ai-operations');
+                      } else {
+                        setSelectedAgentFilter(isSelected ? 'All' : bot.id);
+                      }
+                    }}
+                    style={{
+                      background: isSelected ? '#EFF6FF' : '#FFFFFF',
+                      border: isSelected ? '2px solid #0284C7' : '1px solid #E2E8F0',
+                      borderRadius: '14px',
+                      padding: '16px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      boxShadow: isSelected ? '0 4px 14px rgba(2, 132, 199, 0.15)' : '0 2px 6px rgba(0,0,0,0.02)'
+                    }}
+                  >
+                    <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                      <img
+                        src={bot.photo}
+                        alt={bot.name}
+                        style={{ width: '56px', height: '56px', borderRadius: '12px', objectFit: 'cover', border: '1px solid #E2E8F0' }}
+                      />
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <h4 style={{ margin: 0, fontSize: '0.95rem', color: '#0F172A', fontWeight: 700 }}>{bot.name}</h4>
+                          <span style={{ fontSize: '10px', background: '#F1F5F9', padding: '2px 6px', borderRadius: '4px', fontWeight: 700, color: '#475569' }}>
+                            {bot.agentNumber}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#0284C7', fontWeight: 600, marginTop: '2px' }}>
+                          {bot.role}
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
+                          ✉️ {bot.email}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px' }}>
+                      <span style={{ color: '#059669', fontWeight: 700 }}>● Active Bot</span>
+                      <span style={{ color: '#0284C7', fontWeight: 700 }}>
+                        Open Dedicated Dashboard &rarr;
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Central Super Admin Approval Inbox */}
       <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 16px rgba(0,0,0,0.03)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '20px' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#0F172A', fontWeight: 800 }}>
-              Central Approval Inbox &amp; Review Queue
+              {activeAgent ? `${activeAgent.name}'s Tasks & Workflow Execution Log` : 'Central Approval Inbox & Review Queue'}
             </h3>
             <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '13px' }}>
-              Pending drafts from Ananya Mehta, Riya Shah, Neha Desai, and Arjun Yadav awaiting Super Admin verification.
+              {activeAgent
+                ? `Dedicated operational queue, dispatches, and verification history for ${activeAgent.name} (${activeAgent.department}).`
+                : 'Pending drafts from Ananya Mehta, Riya Shah, Neha Desai, and Arjun Yadav awaiting Super Admin verification.'}
             </p>
           </div>
 

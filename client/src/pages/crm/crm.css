@@ -588,6 +588,94 @@
 }
 
 /* ==============================================================================
+   SIDEBAR RESIZE HANDLE & AI AGENTS EXPANDABLE ACCORDION (TASK 1 & TASK 2)
+   ============================================================================== */
+.crm-sidebar-resizer {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  touch-action: none;
+}
+
+.crm-sidebar-resizer::after {
+  content: '';
+  width: 2px;
+  height: 100%;
+  background: transparent;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.crm-sidebar-resizer:hover::after,
+.crm-sidebar-resizer.is-dragging::after,
+.crm-sidebar-resizer:focus-visible::after {
+  background-color: var(--crm-blue, #0284C7);
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.6);
+}
+
+.crm-sidebar-resizer:focus-visible {
+  outline: none;
+}
+
+body.crm-resizing-active {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+
+body.crm-resizing-active .crm-layout,
+body.crm-resizing-active .crm-shell {
+  transition: none !important;
+}
+
+/* AI Workflows & Operations Section Toggle & Submenu */
+.crm-sidebar__section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--crm-radius-sm);
+  color: var(--crm-sidebar-text);
+  transition: background-color var(--crm-transition-fast), color var(--crm-transition-fast);
+  margin-bottom: 4px;
+}
+
+.crm-sidebar__section-toggle:hover {
+  background: var(--crm-sidebar-hover);
+  color: var(--crm-sidebar-text-hover);
+}
+
+.crm-sidebar__section--ai {
+  margin-bottom: 12px;
+}
+
+.crm-nav-item--agent {
+  padding: 6px 10px;
+  margin-bottom: 2px;
+  gap: 10px;
+}
+
+.crm-nav-item--agent .crm-nav-item__label {
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .crm-sidebar-resizer {
+    display: none !important;
+  }
+}
+
+/* ==============================================================================
    4. CRM HEADER BAR & TOOLBARS
    ============================================================================== */
 .crm-header {

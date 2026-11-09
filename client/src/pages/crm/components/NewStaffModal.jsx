@@ -9,7 +9,7 @@ export const NewStaffModal = ({ isOpen, onClose, onStaffCreated }) => {
     contactNumber: '',
     password: '',
     dateOfBirth: '',
-    department: 'Sales Operations',
+    department: 'sales',
     designation: 'Technical Sales Executive',
     role: 'staff',
     permissions: ['read_enquiries', 'create_quotes']
@@ -202,11 +202,11 @@ export const NewStaffModal = ({ isOpen, onClose, onStaffCreated }) => {
                 onChange={handleChange}
                 style={{ width: '100%', padding: '9px 12px', border: '1px solid #CBD5E1', borderRadius: '6px', fontSize: '13px', boxSizing: 'border-box', background: '#FFF' }}
               >
-                <option value="Sales Operations">Sales & Commercial Operations</option>
-                <option value="Sourcing & Procurement">Sourcing & Mill Procurement</option>
-                <option value="Quality & Inspection">Quality & MTC Inspection</option>
-                <option value="Logistics & Dispatch">Logistics & Warehouse Dispatch</option>
-                <option value="Executive Management">Executive Management</option>
+                <option value="sales">Sales & Commercial Operations</option>
+                <option value="accounts">Commercial Accounts & Billing</option>
+                <option value="inventory">Sourcing, Inventory & Mill Dispatch</option>
+                <option value="operations">Quality & Field Operations</option>
+                <option value="management">Executive Management</option>
               </select>
             </div>
           </div>

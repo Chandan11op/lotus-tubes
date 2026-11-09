@@ -6,28 +6,8 @@ import ProductImage from '../components/common/ProductImage';
 export const HomeView = ({ onOpenEnquiry }) => {
   const { t, currentLang, localizePath } = useLanguage();
 
-  // Interactive Quick Spec Finder State
-  const [selectedGrade, setSelectedGrade] = useState('SS 316L');
-  const [selectedCategory, setSelectedCategory] = useState('Sanitary Pipes');
-  const [selectedSize, setSelectedSize] = useState('');
-
   // Core Product Lines Filter Tab State
   const [activeProductTab, setActiveProductTab] = useState('all');
-
-  const handleQuickQuoteClick = (e) => {
-    e.preventDefault();
-    if (onOpenEnquiry) {
-      onOpenEnquiry({
-        name: `${selectedGrade} ${selectedCategory}`,
-        material: selectedGrade,
-        category: selectedCategory,
-        sizes: selectedSize || 'Customer specified dimensions',
-        finish: 'EP / MP, subject to product availability'
-      });
-    } else {
-      window.location.href = localizePath('/quote', currentLang);
-    }
-  };
 
   const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
     'Hello Lotus Tubes, I would like to enquire about stainless steel sanitary pipes, fittings and valves.'

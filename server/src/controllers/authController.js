@@ -274,6 +274,21 @@ export const getStaffUsers = async (req, res, next) => {
 };
 
 /**
+ * Helper: Normalize department strings to canonical database enums
+ */
+const normalizeDepartment = (dept) => {
+  if (!dept) return 'sales';
+  const d = String(dept).trim().toLowerCase();
+  if (d.includes('sales') || d.includes('commercial')) return 'sales';
+  if (d.includes('account') || d.includes('billing') || d.includes('finance')) return 'accounts';
+  if (d.includes('inventory') || d.includes('sourcing') || d.includes('procurement') || d.includes('logistics') || d.includes('dispatch') || d.includes('warehouse')) return 'inventory';
+  if (d.includes('operation') || d.includes('quality') || d.includes('inspection')) return 'operations';
+  if (d.includes('manage') || d.includes('executive') || d.includes('admin')) return 'management';
+  if (d === 'client') return 'client';
+  return 'sales';
+};
+
+/**
  * Super Admin: Create a new Staff Account (New Staff Appointment)
  * Personal fields: Name, Contact Number, Email ID, Password, Date of Birth.
  * Professional fields: Department, Designation, Role, Permissions.
@@ -325,7 +340,7 @@ export const createStaffUser = async (req, res, next) => {
       email: normalizedEmail,
       password,
       role: role === 'admin' ? 'admin' : 'staff',
-      department: department || 'sales',
+      department: normalizeDepartment(department),
       designation: designation.trim() || 'Sales Executive',
       contactNumber: safeContact,
       phone: safeContact,
@@ -410,7 +425,7 @@ export const updateStaffUser = async (req, res, next) => {
     const previousStatus = user.accountStatus;
 
     if (name) user.name = name.trim();
-    if (department) user.department = department;
+    if (department) user.department = normalizeDepartment(department);
     if (designation) user.designation = designation.trim();
     if (role && (role === 'staff' || role === 'admin')) user.role = role;
     if (Array.isArray(permissions)) user.permissions = permissions;

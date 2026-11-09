@@ -12,6 +12,7 @@ import QuickEnquiryModal from './components/modals/QuickEnquiryModal';
 import VideoModal from './components/modals/VideoModal';
 import Toast from './components/common/Toast';
 import ChatWithUs from './components/chat/ChatWithUs';
+import FloatingWhatsApp from './components/common/FloatingWhatsApp';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { RouteProgressBar } from './components/common/Loader';
 import { initAnalytics, trackPageView } from './utils/analytics';
@@ -226,7 +227,7 @@ export const App = () => {
       description = t('seo_quote_desc', 'Submit your Bill of Quantities (BOQ) for instant review and competitive quotation on SS 304 and SS 316L sanitary pipes, fittings, and valves.');
       breadcrumbs.push({ name: t('nav_quote', 'Request Quote'), path: '/quote' });
     } else if (route === 'login') {
-      title = 'Lotus Tubes Secure Portal | Sign In';
+      title = 'Customer Account Sign In | Lotus Tubes Secure Portal';
       description = 'Secure login portal for Lotus Tubes customer accounts and staff workspace management.';
       breadcrumbs.push({ name: 'Secure Portal', path: '/#login' });
     } else if (route === 'register') {
@@ -249,7 +250,11 @@ export const App = () => {
         staff: 'Staff Roles & Permissions | Staff CRM | Lotus Tubes',
         reports: 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
         seo: 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
-        'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes'
+        'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes',
+        'agent-ananya': 'Ananya Mehta | Quotations & Sales Coordination | Staff CRM',
+        'agent-riya': 'Riya Shah | Commercial Billing & Invoicing | Staff CRM',
+        'agent-neha': 'Neha Desai | Client Resolution & Inquiries | Staff CRM',
+        'agent-arjun': 'Arjun Yadav | Operations & Live Concierge | Staff CRM'
       };
       title = crmTitles[param] || 'Lotus Tubes Staff CRM & Operations Portal';
       description = 'Internal operational management system for Lotus Tubes customer enquiries, quotations, pipeline, and staff RBAC.';
@@ -405,8 +410,13 @@ export const App = () => {
         {/* Toast Notifications */}
         <Toast toasts={toasts} onDismiss={dismissToast} />
 
-        {/* 24/7 Operations Concierge Live Chat */}
-        <ChatWithUs />
+        {/* Floating Customer Help Widgets (Strictly Public Website Pages Only — Hidden on Login, Register & CRM) */}
+        {!isCRM && (
+          <>
+            <FloatingWhatsApp />
+            <ChatWithUs />
+          </>
+        )}
       </div>
   );
 };

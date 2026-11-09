@@ -1,6 +1,15 @@
 import React from 'react';
 import { CRMIcon } from '../components/CRMIcon';
 
+export const DEPARTMENT_LABELS = {
+  sales: 'Sales & Commercial Operations',
+  accounts: 'Commercial Accounts & Billing',
+  inventory: 'Sourcing, Inventory & Dispatch',
+  operations: 'Quality & Field Operations',
+  management: 'Executive Management',
+  client: 'Client Portal'
+};
+
 export const CRMStaffView = ({
   staffUsers = [],
   isSuperAdmin = false,
@@ -81,8 +90,8 @@ export const CRMStaffView = ({
                       </span>
                     </td>
                     <td>
-                      <span style={{ textTransform: 'capitalize' }}>
-                        {s.department || 'Sales Operations'}
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: '#334155' }}>
+                        {DEPARTMENT_LABELS[s.department?.toLowerCase()] || s.department || 'Sales & Commercial Operations'}
                       </span>
                     </td>
                     <td>

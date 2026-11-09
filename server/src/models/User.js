@@ -120,6 +120,25 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// Normalize department to canonical enum values before validation
+userSchema.pre('validate', function (next) {
+  if (this.department) {
+    const d = String(this.department).trim().toLowerCase();
+    const valid = ['sales', 'accounts', 'inventory', 'operations', 'management', 'client'];
+    if (!valid.includes(d)) {
+      if (d.includes('sales') || d.includes('commercial')) this.department = 'sales';
+      else if (d.includes('account') || d.includes('billing') || d.includes('finance')) this.department = 'accounts';
+      else if (d.includes('inventory') || d.includes('sourcing') || d.includes('procurement') || d.includes('logistics') || d.includes('dispatch') || d.includes('warehouse')) this.department = 'inventory';
+      else if (d.includes('operation') || d.includes('quality') || d.includes('inspection')) this.department = 'operations';
+      else if (d.includes('manage') || d.includes('executive') || d.includes('admin')) this.department = 'management';
+      else this.department = 'sales';
+    } else {
+      this.department = d;
+    }
+  }
+  next();
+});
+
 // Hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

@@ -57,6 +57,16 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState(subroute || 'dashboard');
 
+  // Sidebar Resizable Width State (Task 1) - Persisted in localStorage
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lotus_crm_sidebar_width');
+      const num = parseInt(saved, 10);
+      if (!isNaN(num) && num >= 220 && num <= 480) return num;
+    }
+    return 260;
+  });
+
   // Sidebar is expanded if pinned OR temporarily hovered on desktop
   const isSidebarExpanded = sidebarPinned || sidebarHovered;
 
@@ -109,7 +119,11 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         'staff': 'Staff Roles & Permissions | Staff CRM | Lotus Tubes',
         'reports': 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
         'seo': 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
-        'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes'
+        'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes',
+        'agent-ananya': 'Ananya Mehta | Quotations & Sales Coordination | Staff CRM',
+        'agent-riya': 'Riya Shah | Commercial Billing & Invoicing | Staff CRM',
+        'agent-neha': 'Neha Desai | Client Resolution & Inquiries | Staff CRM',
+        'agent-arjun': 'Arjun Yadav | Operations & Live Concierge | Staff CRM'
       };
       document.title = crmTitles[activeTab] || 'Staff CRM & Operations Portal | Lotus Tubes';
     }
@@ -821,12 +835,28 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const renderActiveView = () => {
     switch (activeTab) {
       case 'ai-operations':
+      case 'agent-ananya':
+      case 'agent-riya':
+      case 'agent-neha':
+      case 'agent-arjun':
+        const agentIdMap = {
+          'agent-ananya': 'ananya-mehta',
+          'agent-riya': 'riya-shah',
+          'agent-neha': 'neha-desai',
+          'agent-arjun': 'arjun-yadav'
+        };
         return (
           <CRMAiOperationsView
             user={user}
             isSuperAdmin={isSuperAdmin}
             onNotify={onNotify}
             onRefresh={() => loadOperationalData({ isInitial: false })}
+            initialAgentId={agentIdMap[activeTab] || null}
+            activeTabKey={activeTab}
+            onNavigateTab={(tab) => {
+              setActiveTab(tab);
+              window.location.hash = `#crm/${tab}`;
+            }}
           />
         );
       case 'dashboard':
@@ -959,8 +989,11 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
     <div
       className={`crm-layout crm-shell ${isSidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed'}`}
       id="crm-shell"
+      style={{
+        '--sidebar-width': isSidebarExpanded ? `${sidebarWidth}px` : 'var(--crm-sidebar-collapsed-width, 72px)'
+      }}
     >
-      {/* 1. Collapsible & Responsive Navigation Sidebar */}
+      {/* 1. Collapsible, Resizable & Responsive Navigation Sidebar */}
       <CRMSidebar
         currentRoute={activeTab}
         onRouteChange={(route) => {
@@ -974,6 +1007,8 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         isSuperAdmin={isSuperAdmin}
         isExpanded={isSidebarExpanded}
         isPinned={sidebarPinned}
+        sidebarWidth={sidebarWidth}
+        onSidebarResize={setSidebarWidth}
         onTogglePin={() => {
           setSidebarPinned((prev) => !prev);
           setSidebarHovered(false);
