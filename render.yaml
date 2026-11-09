@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: lotus-tubes-api
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        value: https://lotustubes.com,https://www.lotustubes.com,https://lotus-tubes-react-design.vercel.app
+      - key: JWT_SECRET
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: STAFF_INIT_EMAIL
+        value: chirag@lotustubes.com
+      - key: STAFF_INIT_PASSWORD
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: TURNSTILE_SECRET_KEY
+        sync: false
+      - key: WHATSAPP_ACCESS_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_BUSINESS_ACCOUNT_ID
+        sync: false

@@ -6,14 +6,17 @@
   "main": "server/src/server.js",
   "scripts": {
     "start": "npm run server:start",
+    "build": "npm --prefix client run build",
     "dev": "npm run server:dev",
     "videos:generate": "node scripts/generate-product-videos.js --all",
     "videos:force": "node scripts/generate-product-videos.js --all --force",
     "client:dev": "npm --prefix client run dev",
     "client:build": "npm --prefix client run build",
+    "client:install": "npm --prefix client install",
     "client:preview": "npm --prefix client run preview",
     "server:dev": "npm --prefix server run dev",
     "server:start": "npm --prefix server start",
+    "server:install": "npm --prefix server install",
     "install:all": "npm --prefix client install && npm --prefix server install"
   },
   "keywords": [],
