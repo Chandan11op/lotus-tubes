@@ -3,7 +3,6 @@ import { PRODUCTS, CONFIG } from '../data/siteData';
 import { useLanguage } from '../context/LanguageContext';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
 import { ProductVideoPlayer } from '../components/common/ProductVideoPlayer';
-import { Product360Viewer } from '../components/common/Product360Viewer';
 import { updatePageSEO } from '../utils/seo';
 
 /**
@@ -25,27 +24,15 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
-  // Check if deliberate 360 viewer view was requested via URL query/hash parameter
-  const shouldOpen360Initial = () => {
-    if (typeof window === 'undefined') return 0;
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('view') === '360') return '360';
-      const hash = window.location.hash || '';
-      if (hash.includes('view=360')) return '360';
-    } catch {}
-    return 0;
-  };
-
-  // Gallery State: active media index (0..n for images, '360' for 360 viewer, or 'video')
-  const [activeMedia, setActiveMedia] = useState(shouldOpen360Initial);
+  // Gallery State: active media index (0..n for images, or 'video')
+  const [activeMedia, setActiveMedia] = useState(0);
   const [activeTab, setActiveTab] = useState('about');
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [imgFallbacks, setImgFallbacks] = useState({});
 
   // Reset gallery on product change
   useEffect(() => {
-    setActiveMedia(shouldOpen360Initial());
+    setActiveMedia(0);
     setImgFallbacks({});
 
     // Update dynamic technical SEO & Structured Data
@@ -69,11 +56,8 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     ? prod.images
     : [prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name)];
 
-  const video360 = prod.video360 || (prod.has360 ? `/assets/videos/products/${prod.id}/360.mp4` : null);
-  const video360Webm = prod.video360Webm || (prod.has360 ? `/assets/videos/products/${prod.id}/360.webm` : null);
-  const videoShowcase = prod.videoShowcase || `/assets/videos/products/${prod.id}/showcase.mp4`;
-  const has360 = Boolean(prod.has360 && (prod.video360 || prod.video));
-  const hasVideo = Boolean(prod.video || videoShowcase);
+  const videoShowcase = prod.videoShowcase || prod.video || `/assets/videos/products/${prod.id}/showcase.mp4`;
+  const hasVideo = Boolean(prod.video || prod.videoShowcase);
 
   const handleImageError = (key) => {
     setImgFallbacks((prev) => {
@@ -162,29 +146,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               );
             })}
 
-            {/* 2. Interactive 360° Video Button (Only shown when verified 360 video exists) */}
-            {has360 && (
-              <button
-                type="button"
-                onClick={() => setActiveMedia('360')}
-                className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 border-2 transition-all shrink-0 cursor-pointer flex flex-col items-center justify-center text-white ${
-                  activeMedia === '360'
-                    ? 'border-sky-500 shadow-md ring-2 ring-sky-100 scale-102'
-                    : 'border-slate-300 hover:border-sky-400 opacity-90 hover:opacity-100'
-                }`}
-                aria-label="View interactive 360 degree product rotation video"
-                aria-selected={activeMedia === '360'}
-              >
-                <div className="w-7 h-7 rounded-full bg-sky-500 flex items-center justify-center text-white shadow-sm mb-0.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                  </svg>
-                </div>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">360° Video</span>
-              </button>
-            )}
-
-            {/* 3. Cinematic Showcase Video Thumbnail */}
+            {/* 2. Cinematic Showcase Video Thumbnail */}
             {hasVideo && (
               <button
                 type="button"
@@ -207,16 +169,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
 
           {/* Main Display Stage */}
           <div className="relative flex-1 w-full bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[520px] p-0 group">
-            {activeMedia === '360' ? (
-              <Product360Viewer
-                video360={video360}
-                video360Webm={video360Webm}
-                videoShowcase={videoShowcase}
-                poster={productImages[0]}
-                productName={prod.name}
-                category={prod.category}
-              />
-            ) : activeMedia === 'video' && hasVideo ? (
+            {activeMedia === 'video' && hasVideo ? (
               <div className="w-full h-full flex items-center justify-center p-6">
                 <ProductVideoPlayer
                   src={videoShowcase || prod.video}
@@ -276,7 +229,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             </a>
             <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              {prod.availability || t('pdp_in_stock', 'Ready Stock in Mumbai')}
+              {prod.availability || 'Available on request'}
             </span>
           </div>
 
@@ -288,30 +241,21 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           {/* Trust & Specification Badges Strip */}
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <span className={`px-2.5 py-1 text-xs font-bold rounded-md ${is316 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-800'}`}>
-              Grade: {prod.material}
+              Grade: {prod.material || 'Confirm on enquiry'}
             </span>
-            <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-pink-100 text-pink-700 border border-pink-200">
-              {prod.finish}
-            </span>
-            <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-              {prod.standard}
-            </span>
+            {prod.finish && (
+              <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-pink-100 text-pink-700 border border-pink-200">
+                {prod.finish}
+              </span>
+            )}
+            {prod.standard && (
+              <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                {prod.standard}
+              </span>
+            )}
             <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-sky-50 text-sky-700 border border-sky-200">
               EN 10204 3.1 Traceable
             </span>
-            {has360 && (
-              <button
-                type="button"
-                onClick={() => setActiveMedia('360')}
-                className="px-2.5 py-1 text-xs font-bold rounded-md bg-sky-600 hover:bg-sky-700 text-white border border-sky-500 shadow-sm inline-flex items-center gap-1.5 transition cursor-pointer"
-                title="Click to switch to interactive 360° product orbit"
-              >
-                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-                </svg>
-                <span>Interactive 360° View</span>
-              </button>
-            )}
           </div>
 
           {/* Product Concise Overview */}
@@ -327,35 +271,35 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-6 text-xs">
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Material Alloy:</span>
-                <span className="text-slate-900 font-bold">{prod.material}</span>
+                <span className="text-slate-900 font-bold">{prod.material || 'Confirm on enquiry'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Surface Roughness:</span>
-                <span className="text-slate-900 font-semibold">{prod.roughness || 'Ra ≤ 0.4 µm'}</span>
+                <span className="text-slate-900 font-semibold">{prod.roughness || 'Confirm on enquiry'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Manufacturing:</span>
-                <span className="text-slate-900 font-semibold">{prod.manufacturingType || 'Seamless / Welded'}</span>
+                <span className="text-slate-900 font-semibold">{prod.manufacturingType || 'Confirm on enquiry'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Size Range:</span>
-                <span className="text-slate-900 font-semibold">{prod.sizes || '1/2" to 4"'}</span>
+                <span className="text-slate-900 font-semibold">{prod.sizes || 'Per technical schedule'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Wall Thickness:</span>
-                <span className="text-slate-900 font-semibold">{prod.wallThickness || '1.2mm - 2.0mm'}</span>
+                <span className="text-slate-900 font-semibold">{prod.wallThickness || 'Confirm on enquiry'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Standard / Code:</span>
-                <span className="text-slate-900 font-semibold">{prod.standard}</span>
+                <span className="text-slate-900 font-semibold">{prod.standard || 'Confirm on enquiry'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">End Connection:</span>
-                <span className="text-slate-900 font-semibold">{prod.connection || 'Butt Weld / Plain End'}</span>
+                <span className="text-slate-900 font-semibold">{prod.connection || 'Confirm on enquiry'}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-slate-200/80">
                 <span className="text-slate-500 font-medium">Test Certificate:</span>
-                <span className="text-slate-900 font-semibold">{prod.mtc || 'EN 10204 3.1 MTC'}</span>
+                <span className="text-slate-900 font-semibold">{prod.mtc || 'Available on enquiry'}</span>
               </div>
             </div>
           </div>
@@ -494,32 +438,32 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                   <tbody className="divide-y divide-slate-100">
                     <tr>
                       <td className="py-2.5 px-4 font-medium text-slate-600">Material Grade</td>
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{prod.material}</td>
+                      <td className="py-2.5 px-4 font-bold text-slate-900">{prod.material || 'Confirm on enquiry'}</td>
                       <td className="py-2.5 px-4 text-slate-500">AISI / ASTM</td>
                     </tr>
                     <tr>
                       <td className="py-2.5 px-4 font-medium text-slate-600">Surface Finish Quality</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.finish} ({prod.roughness || 'Ra ≤ 0.4 µm'})</td>
+                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.finish ? `${prod.finish}${prod.roughness ? ` (${prod.roughness})` : ''}` : 'Confirm on enquiry'}</td>
                       <td className="py-2.5 px-4 text-slate-500">ASME BPE SF1 / SF4</td>
                     </tr>
                     <tr>
                       <td className="py-2.5 px-4 font-medium text-slate-600">Size / Outside Diameter</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.sizes || '1/2" to 4" OD'}</td>
+                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.sizes || 'Per technical schedule'}</td>
                       <td className="py-2.5 px-4 text-slate-500">ASTM A270 / BS 4825</td>
                     </tr>
                     <tr>
                       <td className="py-2.5 px-4 font-medium text-slate-600">Wall Thickness / Gauge</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.wallThickness || '1.2mm - 2.0mm (16G - 14G)'}</td>
+                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.wallThickness || 'Confirm on enquiry'}</td>
                       <td className="py-2.5 px-4 text-slate-500">Standard Sanitary</td>
                     </tr>
                     <tr>
                       <td className="py-2.5 px-4 font-medium text-slate-600">Standard Length</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.length || '6.0 Meters (Custom cutting available)'}</td>
+                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.length || 'Per order specifications'}</td>
                       <td className="py-2.5 px-4 text-slate-500">Factory Standard</td>
                     </tr>
                     <tr>
                       <td className="py-2.5 px-4 font-medium text-slate-600">Traceability &amp; Certification</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.mtc || 'EN 10204 3.1 Mill Test Certificate'}</td>
+                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.mtc || 'Available on enquiry'}</td>
                       <td className="py-2.5 px-4 text-slate-500">EN 10204</td>
                     </tr>
                     <tr>

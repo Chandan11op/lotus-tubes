@@ -29,17 +29,12 @@ export const ProductCard = ({
     standard,
     sizes,
     image,
-    video,
-    video360,
-    has360
+    video
   } = product;
-
-  // Verified 360° Video presence check
-  const hasVerifiedVideo = Boolean(has360 && (video360 || video));
 
   // Clean, standardized formatters for compact attribute chips
   const formatMaterialChip = (mat = '') => {
-    if (!mat) return 'SS 316L / 304';
+    if (!mat) return null;
     if (/304.*316|316.*304/i.test(mat)) return 'SS 304 / SS 316L';
     if (/316l?/i.test(mat)) return 'SS 316L';
     if (/304l?/i.test(mat)) return 'SS 304';
@@ -87,7 +82,7 @@ export const ProductCard = ({
           aria-hidden="true"
         >
           <ProductCardVideo
-            video={video || video360}
+            video={video}
             poster={image}
             alt={name}
             categorySlug={categorySlug}
@@ -100,26 +95,11 @@ export const ProductCard = ({
       {/* 2. Structured Card Body & Specifications Area */}
       <div className="product-card__body p-4 sm:p-5 flex flex-col flex-1 min-w-0">
         
-        {/* Category & 360° Video Action Header */}
+        {/* Category Header */}
         <div className="flex items-center justify-between gap-2 mb-2 min-w-0">
           <span className="product-card__category text-[11px] font-bold text-sky-700 tracking-wider uppercase truncate">
             {category || 'Sanitary Component'}
           </span>
-
-          {/* Deliberate, subtle 360° Video Action Indicator */}
-          {hasVerifiedVideo && (
-            <a
-              href={`${productPath}?view=360`}
-              className="product-card__video-badge inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10.5px] font-semibold bg-sky-50 text-sky-700 border border-sky-200/80 hover:bg-sky-100 hover:text-sky-800 transition-colors shrink-0"
-              title="Verified 360° interactive rotation video available"
-              aria-label={`View 360° video for ${name}`}
-            >
-              <svg className="w-3 h-3 text-sky-600 animate-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-              </svg>
-              <span>{t('badge_360', '360° Video')}</span>
-            </a>
-          )}
         </div>
 
         {/* Product Title */}
@@ -167,14 +147,14 @@ export const ProductCard = ({
           <div className="flex items-center justify-between gap-2">
             <span className="font-semibold text-slate-500 shrink-0">Standard:</span>
             <span className="text-slate-800 font-medium truncate text-right">
-              {standard || 'ASME BPE / 3-A / ASTM A270'}
+              {standard || 'Confirm on enquiry'}
             </span>
           </div>
 
           <div className="flex items-center justify-between gap-2">
             <span className="font-semibold text-slate-500 shrink-0">Sizes:</span>
             <span className="text-slate-800 font-medium truncate text-right">
-              {sizes || '1/2" to 4" OD (Standard Stock)'}
+              {sizes || 'Per technical schedule'}
             </span>
           </div>
         </div>

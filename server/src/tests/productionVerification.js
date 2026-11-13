@@ -218,7 +218,7 @@ async function runTests() {
       method: 'POST',
       body: JSON.stringify({
         email: 'sales@lotustubes.com',
-        password: process.env.STAFF_INIT_PASSWORD || 'lotustubes11'
+        password: process.env.STAFF_INIT_PASSWORD || 'lotustubes@11'
       })
     });
 
@@ -230,6 +230,7 @@ async function runTests() {
   });
 
   // 9. Operational CRM: Formal Quote Generation with Multi-Line Items & 18% GST
+  let createdFormalQuoteRef = null;
   await test('Staff CRM: Create formal quotation with line items and 18% GST calculation', async () => {
     const payload = {
       customerName: 'Sun Pharma Engineering Dept',
@@ -278,6 +279,7 @@ async function runTests() {
     if (q.subtotal !== 94000 || q.taxTotal !== 16920 || q.grandTotal !== 110920) {
       throw new Error(`Tax calculation mismatch: subtotal=${q.subtotal}, tax=${q.taxTotal}, grandTotal=${q.grandTotal}`);
     }
+    createdFormalQuoteRef = q.quotationNumber;
   });
 
   // 10. CRM Dashboard Aggregation
@@ -346,10 +348,21 @@ async function runTests() {
     }
   });
 
-  // Clean up test records
+  // Clean up all test records
   if (createdEnquiryRef) await Enquiry.deleteOne({ reference: createdEnquiryRef });
   if (createdQuoteRef) await Quote.deleteOne({ quotationNumber: createdQuoteRef });
+  if (createdFormalQuoteRef) await Quote.deleteOne({ quotationNumber: createdFormalQuoteRef });
   if (createdQcRef) await Enquiry.deleteOne({ reference: createdQcRef });
+  await Customer.deleteMany({
+    email: {
+      $in: [
+        'ramesh.test@biopharma-example.com',
+        'pooja.mehta@dairysolutions.example.com',
+        'projects.engg@sunpharma.example.com',
+        'qc.verify@biocon.example.com'
+      ]
+    }
+  });
 
   // Finish
   server.close();

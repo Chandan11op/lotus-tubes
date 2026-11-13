@@ -154,8 +154,8 @@ export const Footer = () => {
                 <a href={localizePath('/category/gaskets', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
                   USP Class VI Gaskets
                 </a>
-                <a href="#immediate-stock" className="hover:text-[#2D8CFF] transition-colors">
-                  Immediate Yard Stock
+                <a href={localizePath('/products', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
+                  Product Catalogue
                 </a>
               </nav>
             </div>
@@ -177,11 +177,11 @@ export const Footer = () => {
                 <a href={localizePath('/industries', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
                   Dairy &amp; Ice Cream Skids
                 </a>
-                <a href="#timeline" className="hover:text-[#2D8CFF] transition-colors">
+                <a href="#why-lotus" className="hover:text-[#2D8CFF] transition-colors">
                   Why Lotus? (Timeline)
                 </a>
-                <a href="#ai-fleet" className="hover:text-[#2D8CFF] transition-colors">
-                  AI Coordination Fleet
+                <a href="#why-lotus" className="hover:text-[#2D8CFF] transition-colors">
+                  Executive Leadership
                 </a>
                 <a href={localizePath('/about', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
                   About Lotus Impex

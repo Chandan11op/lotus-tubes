@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { CONFIG, PRODUCTS, LEADERSHIP, AI_TEAM_MEMBERS } from '../data/siteData';
+import { CONFIG, PRODUCTS, LEADERSHIP } from '../data/siteData';
 import { apiService } from '../services/api';
 import { AnimatedCounter } from '../components/common/AnimatedCounter';
 
@@ -756,162 +756,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          SECTION 3: END-TO-END SANITARY FLUID HANDLING (TRANSPARENT ELECTRIC BLUE)
-          ========================================================================= */}
-      <section className="w-full bg-[#2D8CFF]/[0.04] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-[#2D8CFF]/20" id="fluid-handling">
-        <div className="max-w-7xl mx-auto flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div className="flex flex-col gap-2 max-w-2xl">
-              <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
-                INTEGRATED PROCESS ARCHITECTURE
-              </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#071A52]">
-                End-to-End Sanitary Fluid Handling
-              </h2>
-              <p className="text-sm sm:text-base text-slate-600">
-                A seamless contamination-free processing loop designed for zero bio-burden, automated CIP/SIP washdowns, and orbital weld integrity.
-              </p>
-            </div>
-            <div className="flex items-center gap-3 font-mono text-xs text-slate-600 bg-white px-3.5 py-2 rounded-lg border border-slate-200 shadow-sm self-start md:self-auto">
-              <span className="h-2 w-2 rounded-full bg-[#2D8CFF]" />
-              <span>Laminar Bioprocess</span>
-              <span className="h-2 w-2 rounded-full bg-emerald-500 ml-2" />
-              <span>CIP/SIP Thermal Loop</span>
-            </div>
-          </div>
-
-          {/* 5-Stage Process Flow Schematic */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-            {/* Stage 1: Conduit */}
-            <a
-              href={localizePath('/category/sanitary-pipes', currentLang)}
-              className="bg-white p-5 rounded-2xl hover:border-[#2D8CFF] border border-slate-200 shadow-sm transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-[10px] text-[#2D8CFF] bg-[#2D8CFF]/10 px-2 py-0.5 rounded font-bold">
-                    01 / CONDUIT
-                  </span>
-                  <span className="text-lg">📏</span>
-                </div>
-                <h3 className="font-bold text-sm text-[#071A52] group-hover:text-[#2D8CFF] transition-colors">
-                  Sanitary Tubing
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Seamless &amp; welded ASTM A270 SF1-SF4 electropolished tubes.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1 font-mono text-[10px] text-slate-600">
-                <span>ALLOY: <strong>316L / 304</strong></span>
-                <span>FINISH: <strong>Ra ≤ 0.38µm</strong></span>
-              </div>
-            </a>
-
-            {/* Stage 2: Union */}
-            <a
-              href={localizePath('/category/tri-clamp', currentLang)}
-              className="bg-white p-5 rounded-2xl hover:border-[#2D8CFF] border border-slate-200 shadow-sm transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-[10px] text-[#2D8CFF] bg-[#2D8CFF]/10 px-2 py-0.5 rounded font-bold">
-                    02 / UNION
-                  </span>
-                  <span className="text-lg">🔗</span>
-                </div>
-                <h3 className="font-bold text-sm text-[#071A52] group-hover:text-[#2D8CFF] transition-colors">
-                  Tri-Clamp &amp; Unions
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  ASME BPE ferrules with USP Class VI certified PTFE &amp; EPDM.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1 font-mono text-[10px] text-slate-600">
-                <span>GRADE: <strong>Forged 316L</strong></span>
-                <span>SEAL: <strong>USP VI / FDA</strong></span>
-              </div>
-            </a>
-
-            {/* Stage 3: Control */}
-            <a
-              href={localizePath('/category/manual-valves', currentLang)}
-              className="bg-white p-5 rounded-2xl hover:border-[#2D8CFF] border border-slate-200 shadow-sm transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-[10px] text-[#2D8CFF] bg-[#2D8CFF]/10 px-2 py-0.5 rounded font-bold">
-                    03 / CONTROL
-                  </span>
-                  <span className="text-lg">🎛️</span>
-                </div>
-                <h3 className="font-bold text-sm text-[#071A52] group-hover:text-[#2D8CFF] transition-colors">
-                  Sanitary Valves
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Zero dead-leg diaphragm, sampling, and pneumatic butterfly valves.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1 font-mono text-[10px] text-slate-600">
-                <span>BODY: <strong>316L Forged</strong></span>
-                <span>ACTUATION: <strong>Manual / Pneumatic</strong></span>
-              </div>
-            </a>
-
-            {/* Stage 4: Hygiene */}
-            <a
-              href={localizePath('/category/tank-cleaning', currentLang)}
-              className="bg-white p-5 rounded-2xl hover:border-[#2D8CFF] border border-slate-200 shadow-sm transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-[10px] text-[#2D8CFF] bg-[#2D8CFF]/10 px-2 py-0.5 rounded font-bold">
-                    04 / HYGIENE
-                  </span>
-                  <span className="text-lg">🔄</span>
-                </div>
-                <h3 className="font-bold text-sm text-[#071A52] group-hover:text-[#2D8CFF] transition-colors">
-                  CIP Tank Cleaning
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  360° rotary &amp; static spray heads for residue-free flushing.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1 font-mono text-[10px] text-slate-600">
-                <span>COVERAGE: <strong>360° Spherical</strong></span>
-                <span>FLOW: <strong>3.2 - 28 m³/h</strong></span>
-              </div>
-            </a>
-
-            {/* Stage 5: Modular */}
-            <a
-              href={localizePath('/category/custom-assemblies', currentLang)}
-              className="bg-white p-5 rounded-2xl hover:border-[#2D8CFF] border border-slate-200 shadow-sm transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-[10px] text-[#2D8CFF] bg-[#2D8CFF]/10 px-2 py-0.5 rounded font-bold">
-                    05 / MODULAR
-                  </span>
-                  <span className="text-lg">📦</span>
-                </div>
-                <h3 className="font-bold text-sm text-[#071A52] group-hover:text-[#2D8CFF] transition-colors">
-                  Fabricated Spools
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Custom orbital-welded skids and pre-tested manifold assemblies.
-                </p>
-              </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col gap-1 font-mono text-[10px] text-slate-600">
-                <span>WELD: <strong>Argon Purged</strong></span>
-                <span>CHECK: <strong>Boroscopic NDT</strong></span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 4: FLOATING GLASS PRODUCT CARDS & IN-STOCK CATALOGUE (WHITE #FFFFFF)
+          SECTION 3: FLOATING GLASS PRODUCT CARDS & IN-STOCK CATALOGUE (WHITE #FFFFFF)
           "When hovered The valve rises. Blue glow appears. Specification slides upward.
            Example: Butterfly Valve | DIN / SMS / TC | → View Details"
           ========================================================================= */}
@@ -1475,28 +1320,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* =========================================================================
-          SECTION 8: EXECUTIVE LEADERSHIP & 4 AI FLEET AGENTS (WHITE #FFFFFF)
-          ========================================================================= */}
-      <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="ai-fleet">
-        <div className="max-w-7xl mx-auto flex flex-col gap-10">
-          <div className="text-center max-w-2xl mx-auto flex flex-col gap-2">
-            <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
-              ORGANIZATIONAL INTEGRITY &amp; AUTONOMOUS DISPATCH
-            </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#071A52]">
-              Executive Leadership &amp; AI Coordination Fleet
-            </h2>
-            <p className="text-sm sm:text-base text-slate-600">
-              Human metallurgical vision united with 24/7 AI agents for instant BOQ extraction, MTC compliance checks, and real-time logistics.
-            </p>
-          </div>
-
-          {/* Founder Showcase Card */}
-          <div className="bg-[#F7F8FA] p-6 lg:p-8 rounded-3xl shadow-sm border border-slate-200">
+          {/* Founder & Managing Director Leadership Card */}
+          <div className="bg-white p-6 lg:p-8 rounded-3xl shadow-sm border border-slate-200 mt-2">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-4 flex justify-center">
                 <div className="relative w-44 h-44 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl bg-white border-4 border-[#2D8CFF]/30 p-1">
@@ -1525,7 +1351,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 </h3>
 
                 <p className="text-sm sm:text-base text-slate-600 italic leading-relaxed">
-                  &ldquo;In hygienic fluid architecture, precision is non-negotiable. An undetectable 0.5µm crevice or an unverified heat number can jeopardize an entire pharmaceutical batch or dairy processing campaign. At Lotus Tubes, we have synthesized rigorous metallographic discipline with AI operational speed to ensure our global clients receive verified, mirror-finished conduits within hours of inquiry.&rdquo;
+                  &ldquo;In hygienic fluid architecture, precision is non-negotiable. An undetectable 0.5µm crevice or an unverified heat number can jeopardize an entire pharmaceutical batch or dairy processing campaign. At Lotus Tubes, we have synthesized rigorous metallographic discipline with swift operational responsiveness to ensure our global clients receive verified, mirror-finished conduits within hours of inquiry.&rdquo;
                 </p>
 
                 <div className="flex flex-wrap gap-4 pt-2 font-mono text-xs text-slate-600">
@@ -1542,217 +1368,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </div>
             </div>
           </div>
-
-          {/* 4 AI Agents Grid */}
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                <span className="font-mono text-xs text-[#071A52] font-bold uppercase tracking-wider">
-                  AI Autonomous Operations Fleet (Online 24/7)
-                </span>
-              </div>
-              <span className="font-mono text-xs text-slate-500">
-                LATENCY &lt; 450ms • REAL-TIME ERP SYNC
-              </span>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {AI_TEAM_MEMBERS.map((member, index) => {
-                const agentNumber = `0${index + 1}`;
-
-                return (
-                  <div
-                    key={member.id}
-                    className="bg-[#F7F8FA] p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between hover:border-[#2D8CFF] transition-all"
-                  >
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] text-[#2D8CFF] px-2 py-0.5 rounded bg-[#2D8CFF]/10 font-bold">
-                          AI AGENT • {agentNumber}
-                        </span>
-                        <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={member.photo}
-                          alt={member.name}
-                          className="w-12 h-12 rounded-full object-cover border border-slate-200"
-                          width="48"
-                          height="48"
-                        />
-                        <div>
-                          <h4 className="font-bold text-base text-[#071A52]">
-                            {member.name}
-                          </h4>
-                          <span className="font-mono text-[10px] text-[#2D8CFF] uppercase block font-semibold">
-                            {member.department}
-                          </span>
-                        </div>
-                      </div>
-
-                      <p className="text-xs text-slate-600 leading-relaxed">
-                        {member.summary}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 mt-2 border-t border-slate-200/60">
-                      <a
-                        href={`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(`Hello ${member.name}, I would like to enquire about Lotus Tubes products and specifications.`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full py-2 bg-white hover:bg-slate-100 text-[#071A52] rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-slate-200 text-center"
-                      >
-                        <span>💬</span>
-                        <span>Chat with {member.name.split(' ')[0]}</span>
-                      </a>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
       </section>
 
       {/* =========================================================================
-          SECTION 9: IMMEDIATE STOCK & GLOBAL CORRIDORS (TRANSPARENT ELECTRIC BLUE)
-          ========================================================================= */}
-      <section className="w-full bg-[#2D8CFF]/[0.05] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-[#2D8CFF]/20" id="immediate-stock">
-        <div className="max-w-7xl mx-auto flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
-                YARD INVENTORY TELEMETRY
-              </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#071A52]">
-                Immediate Stock &amp; Global Corridors
-              </h2>
-              <p className="text-sm sm:text-base text-slate-600 mt-1">
-                Live physical inventory ready for 24-hour container loading and expedited ocean freight.
-              </p>
-            </div>
-            <span className="font-mono text-xs text-slate-600 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm self-start md:self-auto">
-              UPDATED: LIVE TELEMETRY
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Stock Matrix */}
-            <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3">
-              <span className="font-mono text-xs text-[#071A52] uppercase font-bold tracking-wider">
-                Warehouse Yards Ready for Immediate Dispatch
-              </span>
-
-              <div className="flex flex-col gap-2.5">
-                <div className="p-3.5 bg-[#F7F8FA] rounded-xl flex items-center justify-between border border-slate-200/80">
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm text-[#071A52]">
-                      SS 316L EP Tubes • 1.0" OD x 1.65mm
-                    </span>
-                    <span className="font-mono text-[10px] text-slate-500">
-                      ASTM A270 • Ra ≤ 0.38µm • Heat: 9021-V4
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-bold text-sm text-[#071A52]">18,400 Mtrs</span>
-                    <span className="block font-mono text-[10px] text-[#2D8CFF] font-semibold">YARD MUMBAI</span>
-                  </div>
-                </div>
-
-                <div className="p-3.5 bg-[#F7F8FA] rounded-xl flex items-center justify-between border border-slate-200/80">
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm text-[#071A52]">
-                      SS 316L EP Tubes • 2.0" OD x 1.65mm
-                    </span>
-                    <span className="font-mono text-[10px] text-slate-500">
-                      ASME BPE SF4 • Ra ≤ 0.38µm • Heat: 8711-K2
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-bold text-sm text-[#071A52]">12,650 Mtrs</span>
-                    <span className="block font-mono text-[10px] text-[#2D8CFF] font-semibold">YARD GUJARAT</span>
-                  </div>
-                </div>
-
-                <div className="p-3.5 bg-[#F7F8FA] rounded-xl flex items-center justify-between border border-slate-200/80">
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm text-[#071A52]">
-                      SS 304 MP Sanitary Tubes • 1.5" OD
-                    </span>
-                    <span className="font-mono text-[10px] text-slate-500">
-                      DIN 11850 Series 2 • Ra ≤ 0.8µm
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-bold text-sm text-[#071A52]">24,100 Mtrs</span>
-                    <span className="block font-mono text-[10px] text-[#2D8CFF] font-semibold">YARD MUMBAI</span>
-                  </div>
-                </div>
-
-                <div className="p-3.5 bg-[#F7F8FA] rounded-xl flex items-center justify-between border border-slate-200/80">
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm text-[#071A52]">
-                      TC Heavy Duty Clamps &amp; Ferrules (1" - 4")
-                    </span>
-                    <span className="font-mono text-[10px] text-slate-500">
-                      316L Forged Ferrules with EPDM USP VI Gaskets
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="font-bold text-sm text-emerald-600">45,000 Pcs</span>
-                    <span className="block font-mono text-[10px] text-emerald-600 font-semibold">JAFZA / DUBAI</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Global Corridors */}
-            <div className="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <span className="font-mono text-xs text-[#071A52] uppercase font-bold tracking-wider">
-                  Certified International Export Hubs
-                </span>
-                <p className="text-xs text-slate-500 mt-1">
-                  Export customs clearance ready for air and multimodal ocean shipping.
-                </p>
-
-                <div className="grid grid-cols-3 gap-2 mt-4 font-mono">
-                  {[
-                    { country: 'India', port: 'Mumbai / Nhava' },
-                    { country: 'UAE', port: 'Jebel Ali Hub' },
-                    { country: 'Saudi Arabia', port: 'Dammam Port' },
-                    { country: 'USA', port: 'Houston Hub' },
-                    { country: 'Germany', port: 'Hamburg Port' },
-                    { country: 'Singapore', port: 'Jurong Terminal' },
-                    { country: 'UK', port: 'Felixstowe Hub' },
-                    { country: 'Australia', port: 'Port Botany' },
-                    { country: 'Canada', port: 'Vancouver Hub' }
-                  ].map((dest) => (
-                    <div key={dest.country} className="bg-[#F7F8FA] p-2.5 rounded-xl text-center border border-slate-200/70">
-                      <span className="font-bold text-xs text-[#071A52] block">{dest.country}</span>
-                      <span className="text-[10px] text-slate-500">{dest.port}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4 p-3 bg-[#F7F8FA] rounded-xl flex items-center justify-between border border-slate-200/70">
-                <span className="font-mono text-[10px] text-slate-500 uppercase">
-                  PACKAGING SPECIFICATION
-                </span>
-                <span className="font-mono text-xs text-[#071A52] font-bold">
-                  ISPM-15 HEAT TREATED CRATES
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 10: INSTANT BOQ & QUOTATION ENGINE (WHITE #FFFFFF)
+          SECTION 8: INSTANT BOQ & QUOTATION ENGINE (WHITE #FFFFFF)
           With Minimal Magenta (#FF007A) CTA Button
           ========================================================================= */}
       <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="boq-request">
@@ -1885,39 +1505,6 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               </div>
             </form>
           )}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SECTION 11: SUPER ADMIN & STAFF CRM DOCK PORTAL LINK (LIGHT GREY #F7F8FA)
-          ========================================================================= */}
-      <section className="w-full bg-[#F7F8FA] px-4 lg:px-8 py-6 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto bg-white p-4 lg:p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-200 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-[#071A52] text-white flex items-center justify-center text-lg font-bold">
-              ⚙
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-[#071A52] font-bold tracking-wider">
-                  STAFF CRM &amp; OPERATIONS PORTAL
-                </span>
-                <span className="font-mono text-[10px] text-[#2D8CFF] px-2 py-0.5 rounded bg-[#2D8CFF]/10 font-semibold">
-                  INTERNAL ACCESS
-                </span>
-              </div>
-              <span className="text-xs text-slate-500">
-                Super Admin Approval Required for outward RFQs, dispatched MTCs, and ERP invoice runs.
-              </span>
-            </div>
-          </div>
-          <a
-            className="shrink-0 px-4 py-2.5 rounded-lg bg-[#F7F8FA] hover:bg-slate-100 text-[#071A52] font-mono text-xs font-bold transition-all flex items-center gap-1.5 border border-slate-300"
-            href="#login"
-          >
-            <span>Enter Staff CRM Portal</span>
-            <span>→</span>
-          </a>
         </div>
       </section>
     </div>

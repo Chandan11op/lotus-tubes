@@ -105,36 +105,12 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
               <span className="text-on-surface-variant font-mono text-xs">›</span>
             </a>
             <a
-              href="#fluid-handling"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface hover:bg-surface-container-high hover:text-primary transition-colors"
-            >
-              <span>{t('nav_fluid_handling', 'Fluid Handling')}</span>
-              <span className="text-on-surface-variant font-mono text-xs">›</span>
-            </a>
-            <a
-              href="#immediate-stock"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface hover:bg-surface-container-high hover:text-primary transition-colors"
-            >
-              <span>{t('nav_stock', 'Immediate Stock')}</span>
-              <span className="text-on-surface-variant font-mono text-xs">›</span>
-            </a>
-            <a
               href={localizePath('/industries', currentLang)}
               onClick={onClose}
               className="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface hover:bg-surface-container-high hover:text-primary transition-colors"
             >
               <span>{t('nav_industries', 'Industries')}</span>
               <span className="text-on-surface-variant font-mono text-xs">›</span>
-            </a>
-            <a
-              href="#ai-fleet"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-lg text-secondary hover:bg-surface-container-high transition-colors"
-            >
-              <span>{t('nav_ai_fleet', 'AI Fleet (Online 24/7)')}</span>
-              <span className="text-secondary font-mono text-xs">›</span>
             </a>
             <a
               href={localizePath('/about', currentLang)}
