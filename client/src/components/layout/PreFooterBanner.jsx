@@ -5,49 +5,53 @@ export const PreFooterBanner = ({ onOpenEnquiry }) => {
   const { t } = useLanguage();
 
   return (
-    <section className="pre-footer-banner" aria-label="Quick Technical Actions">
-      <div className="pre-footer-banner__inner">
-        <div className="pre-footer-banner__half pre-footer-banner__half--pink">
-          <div className="banner-content">
-            <div className="banner-icon" aria-hidden="true">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="16" y1="13" x2="8" y2="13"></line>
-                <line x1="16" y1="17" x2="8" y2="17"></line>
-                <polyline points="10 9 9 9 8 9"></polyline>
-              </svg>
+    <section className="w-full bg-surface-container-lowest px-4 lg:px-8 py-8 border-t border-surface-container-high/40" aria-label="Quick Technical Actions">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Left Action Box */}
+        <div className="p-6 rounded-xl bg-surface-container border border-surface-container-high/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container text-xl shrink-0 border border-surface-container-highest">
+              📋
             </div>
-            <div className="banner-text">
-              <h3>{t('banner_quote_title', 'Looking for a Custom Quote?')}</h3>
-              <p>{t('banner_quote_desc', 'Share your required sizes, material grades (SS 304/316L), and delivery timeline.')}</p>
+            <div className="flex flex-col">
+              <h3 className="font-headline-sm text-base text-primary font-bold">
+                {t('banner_quote_title', 'Looking for a Custom Quote?')}
+              </h3>
+              <p className="font-body-sm text-xs text-on-surface-variant">
+                {t('banner_quote_desc', 'Share your required sizes, material grades (SS 304/316L), and delivery timeline.')}
+              </p>
             </div>
-            <button
-              type="button"
-              className="btn btn--white"
-              onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Custom Sanitary Stainless Steel Piping')}
-            >
-              {t('btn_get_quote', 'Get a Quote →')}
-            </button>
           </div>
+          <button
+            type="button"
+            className="shrink-0 px-4 py-2.5 bg-primary-container hover:bg-primary-fixed text-on-primary-container font-label-technical text-xs font-bold rounded-lg transition-all cursor-pointer shadow-sm"
+            onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Custom Sanitary Stainless Steel Piping')}
+          >
+            {t('btn_get_quote', 'Get a Quote →')}
+          </button>
         </div>
 
-        <div className="pre-footer-banner__half pre-footer-banner__half--navy">
-          <div className="banner-content">
-            <div className="banner-icon" aria-hidden="true">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                <polyline points="13 2 13 9 20 9"></polyline>
-              </svg>
+        {/* Right Action Box */}
+        <div className="p-6 rounded-xl bg-surface-container-low border border-surface-container-high/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary text-xl shrink-0 border border-surface-container-highest">
+              📥
             </div>
-            <div className="banner-text">
-              <h3>{t('banner_docs_title', 'Need Technical Documents?')}</h3>
-              <p>{t('banner_docs_desc', 'MTC • Product Catalogues • Dimensional Charts • Surface Finish Guides')}</p>
+            <div className="flex flex-col">
+              <h3 className="font-headline-sm text-base text-primary font-bold">
+                {t('banner_docs_title', 'Need Technical Documents?')}
+              </h3>
+              <p className="font-body-sm text-xs text-on-surface-variant">
+                {t('banner_docs_desc', 'MTC • Product Catalogues • Dimensional Charts • Surface Finish Guides')}
+              </p>
             </div>
-            <a href="#resources" className="btn btn--outline-light">
-              {t('banner_docs_btn', 'Download →')}
-            </a>
           </div>
+          <a
+            href="/resources"
+            className="shrink-0 px-4 py-2.5 bg-surface-container-high hover:bg-surface-bright text-primary font-label-technical text-xs font-bold rounded-lg transition-all border border-surface-container-highest"
+          >
+            {t('banner_docs_btn', 'Download →')}
+          </a>
         </div>
       </div>
     </section>

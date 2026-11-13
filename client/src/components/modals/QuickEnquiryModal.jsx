@@ -274,9 +274,11 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
           maxHeight: '92vh',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#151c25',
           borderRadius: '12px',
-          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.35)',
+          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.7)',
+          border: '1px solid #242a34',
+          color: '#dce3ef',
           overflow: 'hidden'
         }}
       >
@@ -285,11 +287,11 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
           className="modal-header"
           style={{
             padding: '20px 24px',
-            borderBottom: '1px solid #E2E8F0',
+            borderBottom: '1px solid #242a34',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#F8FAFC'
+            backgroundColor: '#0d141c'
           }}
         >
           <div>
@@ -299,15 +301,15 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                 fontWeight: 700,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--primary-blue, #0284C7)'
+                color: 'var(--color-primary-cyan, #00f0ff)'
               }}
             >
               Official Quotation Desk
             </span>
-            <h3 id="quick-enquiry-title" style={{ margin: '2px 0 0 0', fontSize: '1.25rem', color: '#10263D' }}>
+            <h3 id="quick-enquiry-title" style={{ margin: '2px 0 0 0', fontSize: '1.25rem', color: '#dbfcff' }}>
               Request Official Quotation
             </h3>
-            <p className="modal-subtitle" id="quick-enquiry-subtitle" style={{ margin: '2px 0 0 0', fontSize: '12px', color: '#64748B' }}>
+            <p className="modal-subtitle" id="quick-enquiry-subtitle" style={{ margin: '2px 0 0 0', fontSize: '12px', color: '#b9cacb' }}>
               Formal Commercial Quotation • Dispatched via Email & WhatsApp
             </p>
           </div>
@@ -321,7 +323,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
               border: 'none',
               fontSize: '26px',
               cursor: 'pointer',
-              color: '#64748B',
+              color: '#849495',
               lineHeight: 1,
               padding: '4px 8px',
               borderRadius: '4px'

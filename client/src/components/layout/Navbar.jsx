@@ -1,226 +1,223 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
-  const { t, currentLang, setCurrentLang, languages, activeLangConfig } = useLanguage();
+  const { t, currentLang, localizePath } = useLanguage();
   const { user, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const langDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (langDropdownRef.current && !langDropdownRef.current.contains(e.target)) {
-        setIsLangOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   return (
-    <header className={`executive-header ${isScrolled ? 'executive-header--scrolled' : ''}`} id="site-header">
-      {/* Main Spacious Executive Navigation Header */}
-      <div className="site-container executive-nav-container">
-        {/* Prominent, Significantly Larger Lotus Tubes Logo Banner */}
-        <a href="/" className="executive-brand" aria-label="Lotus Tubes - High-Purity Sanitary Stainless Steel Solutions">
-          <div className="executive-brand__logo-box">
+    <header
+      className={`sticky top-0 left-0 w-full z-40 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.6)] border-b border-surface-container-high/80 py-2.5'
+          : 'bg-surface-container-lowest/85 backdrop-blur-md border-b border-surface-container-high/40 py-3.5'
+      }`}
+      id="site-header"
+    >
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between gap-4">
+        {/* Brand Logo & Wordmark */}
+        <a
+          href={localizePath('/', currentLang)}
+          className="flex items-center gap-3 shrink-0 group focus:outline-none"
+          aria-label="Lotus Tubes - Return to Home"
+        >
+          <div className="flex items-center">
             <img
-              src="/banner-image.png"
+              src="/banner-image-opt.png"
               srcSet="/banner-image-opt.png 1x, /banner-image.png 2x"
               alt="Lotus Tubes - Stainless Steel Sanitary Pipes, Fittings & Valves"
-              className="executive-brand__img"
-              width="240"
-              height="64"
+              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+              width="210"
+              height="50"
             />
           </div>
           <span className="sr-only">Lotus Tubes</span>
         </a>
 
-        {/* Primary Desktop Navigation Bar */}
-        <nav className="executive-nav" aria-label="Primary Navigation">
-          <ul className="executive-nav-list">
-            <li className="executive-nav-item">
-              <a href="/" className="executive-nav-link">
-                <span>{t('nav_home', 'Home')}</span>
-              </a>
-            </li>
+        {/* Desktop Navigation Links */}
+        <nav className="hidden xl:flex items-center gap-1 font-label-technical text-label-technical" aria-label="Primary Navigation">
+          <a
+            href={localizePath('/', currentLang)}
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_home', 'Home')}
+          </a>
 
-            <li className="executive-nav-item">
-              <a href="/about" className="executive-nav-link">
-                <span>{t('nav_about', 'About Us')}</span>
-              </a>
-            </li>
-
-            {/* Products Interactive Mega Menu */}
-            <li
-              className={`executive-nav-item executive-nav-item--dropdown ${activeDropdown === 'products' ? 'is-open' : ''}`}
-              onMouseEnter={() => setActiveDropdown('products')}
-              onMouseLeave={() => setActiveDropdown(null)}
+          {/* Products Mega-Menu Trigger */}
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveDropdown('products')}
+            onMouseLeave={() => setActiveDropdown(null)}
+          >
+            <a
+              href={localizePath('/products', currentLang)}
+              className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider inline-flex items-center gap-1.5"
+              aria-haspopup="true"
+              aria-expanded={activeDropdown === 'products'}
             >
-              <a href="/products" className="executive-nav-link executive-nav-link--has-dropdown" aria-haspopup="true">
-                <span>{t('nav_products', 'Products')}</span>
-                <svg className="executive-nav-arrow" width="10" height="6" viewBox="0 0 10 6" fill="none">
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
+              <span>{t('nav_products', 'Products')}</span>
+              <svg className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === 'products' ? 'rotate-180 text-primary-container' : 'text-on-surface-variant'}`} viewBox="0 0 10 6" fill="none">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
 
-              <div className="executive-mega-menu" role="region" aria-label="Product Catalogue Categories">
-                <div className="executive-mega-menu__container">
-                  <div className="executive-mega-menu__header">
-                    <span className="mega-tagline">Engineered for Aseptic Fluid Handling</span>
-                    <a href="/products" className="mega-view-all">
-                      Browse Full 50+ Component Catalogue &rarr;
+            {/* Glassmorphic Mega Menu */}
+            {activeDropdown === 'products' && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[720px] transition-all"
+                role="region"
+                aria-label="Product Catalogue Categories"
+              >
+                <div className="bg-surface-container-low/95 backdrop-blur-2xl border border-surface-container-high rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-6">
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-container-high/60">
+                    <span className="font-label-code-micro text-label-code-micro text-primary uppercase tracking-widest font-semibold">
+                      ENGINEERED FOR ASEPTIC FLUID HANDLING
+                    </span>
+                    <a
+                      href={localizePath('/products', currentLang)}
+                      className="font-label-code-micro text-label-code-micro text-primary-fixed-dim hover:text-primary transition-colors flex items-center gap-1"
+                    >
+                      <span>BROWSE FULL 30+ CATALOGUE</span>
+                      <span>→</span>
                     </a>
                   </div>
 
-                  <div className="executive-mega-menu__grid">
-                    {/* Col 1: Tubes & Pipes */}
-                    <div className="executive-mega-col">
-                      <div className="mega-col-heading">
-                        <span className="mega-col-icon">🔬</span>
-                        <span>Sanitary Pipes &amp; Tubing</span>
+                  <div className="grid grid-cols-3 gap-6">
+                    {/* Col 1 */}
+                    <div className="flex flex-col gap-2">
+                      <span className="font-headline-sm text-[14px] text-primary font-semibold flex items-center gap-1.5">
+                        <span className="text-primary-container">■</span> Sanitary Pipes & Tubes
+                      </span>
+                      <div className="flex flex-col gap-1.5 font-body-sm text-[13px] text-on-surface-variant">
+                        <a href={localizePath('/product/ss-316l-ep-pipe', currentLang)} className="hover:text-primary transition-colors">
+                          SS 316L EP Sanitary Pipe
+                        </a>
+                        <a href={localizePath('/product/ss-304-ep-pipe', currentLang)} className="hover:text-primary transition-colors">
+                          SS 304 EP Sanitary Pipe
+                        </a>
+                        <a href={localizePath('/product/ss-316l-mp-pipe', currentLang)} className="hover:text-primary transition-colors">
+                          SS 316L MP Sanitary Pipe
+                        </a>
+                        <a href={localizePath('/category/sanitary-pipes', currentLang)} className="text-primary-fixed-dim text-[12px] pt-1 hover:underline">
+                          View All Pipes & Tubes →
+                        </a>
                       </div>
-                      <ul className="mega-links">
-                        <li>
-                          <a href="/product/ss-316l-ep-pipe" className="mega-link-item">
-                            <span className="mega-link-title">SS 316L EP Sanitary Pipe</span>
-                            <span className="mega-link-desc">EP / MP Finish Options &bull; Confirmed per product</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/product/ss-304-ep-pipe" className="mega-link-item">
-                            <span className="mega-link-title">SS 304 EP Sanitary Pipe</span>
-                            <span className="mega-link-desc">High Cleanliness Dairy &amp; Food Grade</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/product/ss-316l-mp-pipe" className="mega-link-item">
-                            <span className="mega-link-title">SS 316L MP Sanitary Pipe</span>
-                            <span className="mega-link-desc">Mechanically Polished 320 Grit</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/sanitary-pipes" className="mega-link-all">
-                            View All Sanitary Pipes &rarr;
-                          </a>
-                        </li>
-                      </ul>
                     </div>
 
-                    {/* Col 2: Fittings & Tri-Clamp */}
-                    <div className="executive-mega-col">
-                      <div className="mega-col-heading">
-                        <span className="mega-col-icon">⚙️</span>
-                        <span>Fittings &amp; Tri-Clamp</span>
+                    {/* Col 2 */}
+                    <div className="flex flex-col gap-2">
+                      <span className="font-headline-sm text-[14px] text-primary font-semibold flex items-center gap-1.5">
+                        <span className="text-primary-container">■</span> Fittings & Tri-Clamp
+                      </span>
+                      <div className="flex flex-col gap-1.5 font-body-sm text-[13px] text-on-surface-variant">
+                        <a href={localizePath('/product/ss-sanitary-90-bend', currentLang)} className="hover:text-primary transition-colors">
+                          SS Sanitary 90° Bend
+                        </a>
+                        <a href={localizePath('/product/ss-sanitary-equal-tee', currentLang)} className="hover:text-primary transition-colors">
+                          SS Sanitary Equal Tee
+                        </a>
+                        <a href={localizePath('/product/ss-tri-clamp-ferrule', currentLang)} className="hover:text-primary transition-colors">
+                          Tri-Clamp Ferrules & Clamps
+                        </a>
+                        <a href={localizePath('/category/sanitary-fittings', currentLang)} className="text-primary-fixed-dim text-[12px] pt-1 hover:underline">
+                          View All Fittings →
+                        </a>
                       </div>
-                      <ul className="mega-links">
-                        <li>
-                          <a href="/category/sanitary-fittings" className="mega-link-item">
-                            <span className="mega-link-title">Sanitary Bends, Tees &amp; Reducers</span>
-                            <span className="mega-link-desc">Butt-Weld &bull; Short &amp; Long Radius</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/tri-clamp" className="mega-link-item">
-                            <span className="mega-link-title">Tri-Clamp Ferrules &amp; Clamps</span>
-                            <span className="mega-link-desc">Heavy-Duty 13MHH &bull; Weld Ferrule</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/gaskets" className="mega-link-item">
-                            <span className="mega-link-title">Hygienic Gaskets &amp; Seals</span>
-                            <span className="mega-link-desc">USP Class VI Silicone, EPDM &amp; PTFE</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/sanitary-fittings" className="mega-link-all">
-                            View All Pipe Fittings &rarr;
-                          </a>
-                        </li>
-                      </ul>
                     </div>
 
-                    {/* Col 3: Hygienic Valves */}
-                    <div className="executive-mega-col">
-                      <div className="mega-col-heading">
-                        <span className="mega-col-icon">🎛️</span>
-                        <span>Process Valves</span>
+                    {/* Col 3 */}
+                    <div className="flex flex-col gap-2">
+                      <span className="font-headline-sm text-[14px] text-primary font-semibold flex items-center gap-1.5">
+                        <span className="text-secondary">■</span> Hygienic Valves
+                      </span>
+                      <div className="flex flex-col gap-1.5 font-body-sm text-[13px] text-on-surface-variant">
+                        <a href={localizePath('/product/ss-sanitary-butterfly-valve', currentLang)} className="hover:text-secondary transition-colors">
+                          Sanitary Butterfly Valves
+                        </a>
+                        <a href={localizePath('/product/ss-316l-diaphragm-valve', currentLang)} className="hover:text-secondary transition-colors">
+                          Aseptic Diaphragm Valves
+                        </a>
+                        <a href={localizePath('/product/pneumatic-sanitary-ball-valve', currentLang)} className="hover:text-secondary transition-colors">
+                          Pneumatic Actuated Valves
+                        </a>
+                        <a href={localizePath('/category/manual-valves', currentLang)} className="text-secondary text-[12px] pt-1 hover:underline">
+                          View All Valves →
+                        </a>
                       </div>
-                      <ul className="mega-links">
-                        <li>
-                          <a href="/category/manual-valves" className="mega-link-item">
-                            <span className="mega-link-title">Sanitary Butterfly Valves</span>
-                            <span className="mega-link-desc">Multi-Position Handle &bull; Tri-Clamp Ends</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/manual-valves" className="mega-link-item">
-                            <span className="mega-link-title">Aseptic Diaphragm Valves</span>
-                            <span className="mega-link-desc">Manual / Pneumatic Options &bull; Check Availability</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/pneumatic-valves" className="mega-link-item">
-                            <span className="mega-link-title">Pneumatic Actuated Valves</span>
-                            <span className="mega-link-desc">Automated Clean-in-Place (CIP) Lines</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/category/manual-valves" className="mega-link-all">
-                            View All Process Valves &rarr;
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* Col 4: Featured Metallurgy Callout */}
-                    <div className="executive-mega-feature">
-                      <div className="mega-feature-badge">Product Documentation</div>
-                      <h4 className="mega-feature-title">SS 316L &amp; SS 304 Product Options</h4>
-                      <p className="mega-feature-text">
-                        Applicable standards and material test documentation can be confirmed for the selected product and supply.
-                      </p>
-                      <a href="/quote" className="mega-feature-btn">
-                        <span>Get Instant BOQ Quote</span>
-                        <span>&rarr;</span>
-                      </a>
                     </div>
                   </div>
                 </div>
               </div>
-            </li>
+            )}
+          </div>
 
-            <li className="executive-nav-item">
-              <a href="/industries" className="executive-nav-link">
-                <span>{t('nav_industries', 'Industries')}</span>
-              </a>
-            </li>
+          <a
+            href="#fluid-handling"
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_fluid_handling', 'Fluid Handling')}
+          </a>
 
-            <li className="executive-nav-item">
-              <a href="/contact" className="executive-nav-link">
-                <span>{t('nav_contact', 'Contact')}</span>
-              </a>
-            </li>
-          </ul>
+          <a
+            href="#immediate-stock"
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_stock', 'Immediate Stock')}
+          </a>
+
+          <a
+            href={localizePath('/industries', currentLang)}
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_industries', 'Industries')}
+          </a>
+
+          <a
+            href="#ai-fleet"
+            className="px-3 py-1.5 rounded text-secondary hover:text-secondary-fixed hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_ai_fleet', 'AI Fleet')}
+          </a>
+
+          <a
+            href={localizePath('/about', currentLang)}
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_about', 'About Us')}
+          </a>
+
+          <a
+            href={localizePath('/quality', currentLang)}
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_quality', 'Quality & Specs')}
+          </a>
+
+          <a
+            href={localizePath('/contact', currentLang)}
+            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+          >
+            {t('nav_contact', 'Contact')}
+          </a>
         </nav>
 
-        {/* Action Controls */}
-        <div className="executive-actions">
-          {/* Search Trigger */}
+        {/* Action Controls: Live Search + CRM Dock Button + Mobile Hamburger */}
+        <div className="flex items-center gap-2.5">
+          {/* Real-time Search Trigger */}
           <button
             type="button"
-            className="executive-action-btn"
+            className="w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary border border-surface-container-high/60 flex items-center justify-center transition-all cursor-pointer shadow-sm"
             onClick={(e) => {
               e.preventDefault();
               if (typeof onOpenSearch === 'function') onOpenSearch();
@@ -229,36 +226,49 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             aria-label="Search product catalogue"
             id="nav-search-btn"
           >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </button>
 
-          {/* Account Profile Trigger */}
+          {/* CRM / User Account Trigger */}
           <a
-            href={isAuthenticated ? (user?.role === 'staff' || user?.role === 'admin' ? '#crm/dashboard' : '#account') : '#login'}
-            className="executive-action-btn executive-profile-btn"
-            title={isAuthenticated ? `Signed in as ${user?.name}` : 'Sign in to Customer Portal'}
-            aria-label="User Account Profile"
+            href={
+              isAuthenticated
+                ? user?.role === 'staff' || user?.role === 'admin'
+                  ? '#crm/dashboard'
+                  : '#account'
+                : '#login'
+            }
+            className="h-10 px-3.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary border border-surface-container-high/60 flex items-center gap-2 transition-all font-label-technical text-label-technical uppercase tracking-wider shadow-sm"
+            title={isAuthenticated ? `Signed in as ${user?.name}` : 'Staff & Client CRM Portal'}
+            aria-label="CRM & Account Portal"
           >
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" />
-            </svg>
-            {isAuthenticated && <span className="profile-active-dot" />}
+            <div className="relative">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" />
+              </svg>
+              {isAuthenticated && (
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container animate-pulse" />
+              )}
+            </div>
+            <span className="hidden sm:inline font-semibold">
+              {isAuthenticated ? (user?.role === 'staff' || user?.role === 'admin' ? 'CRM' : 'Account') : 'Portal'}
+            </span>
           </a>
 
-          {/* Mobile Hamburger Toggle */}
+          {/* Mobile Navigation Drawer Trigger */}
           <button
             type="button"
-            className="executive-mobile-toggle"
+            className="xl:hidden w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface border border-surface-container-high/60 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
             onClick={onToggleMobile}
             aria-label="Toggle Navigation Drawer"
           >
-            <span />
-            <span />
-            <span />
+            <span className="w-5 h-0.5 bg-current rounded-full" />
+            <span className="w-5 h-0.5 bg-current rounded-full" />
+            <span className="w-5 h-0.5 bg-current rounded-full" />
           </button>
         </div>
       </div>
