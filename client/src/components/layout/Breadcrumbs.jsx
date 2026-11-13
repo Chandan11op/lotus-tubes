@@ -52,17 +52,22 @@ export const Breadcrumbs = ({ route, param }) => {
   }
 
   return (
-    <nav id="site-breadcrumbs" className="breadcrumbs-bar" aria-label="Breadcrumb">
-      <div className="site-container">
-        <ol className="breadcrumbs-list" id="breadcrumbs-list">
+    <nav id="site-breadcrumbs" className="w-full bg-surface-container-lowest/80 border-b border-surface-container-high/40 py-2.5 px-4 lg:px-8 font-label-code-micro text-[11px] text-on-surface-variant relative z-20" aria-label="Breadcrumb">
+      <div className="max-w-7xl mx-auto">
+        <ol className="flex items-center gap-2 flex-wrap" id="breadcrumbs-list">
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
             return (
-              <li key={index} aria-current={isLast ? 'page' : undefined}>
+              <li key={index} className="flex items-center gap-2" aria-current={isLast ? 'page' : undefined}>
                 {isLast ? (
-                  <span>{item.label}</span>
+                  <span className="text-primary font-semibold">{item.label}</span>
                 ) : (
-                  <a href={item.link}>{item.label}</a>
+                  <>
+                    <a href={item.link} className="hover:text-primary transition-colors">
+                      {item.label}
+                    </a>
+                    <span className="text-surface-container-highest">/</span>
+                  </>
                 )}
               </li>
             );
