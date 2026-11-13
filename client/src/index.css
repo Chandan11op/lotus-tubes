@@ -173,22 +173,22 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  background-color: #0d141c;
-  color: #dce3ef;
+  background-color: #F7F8FA;
+  color: #071A52;
 }
 
 body {
   font-family: var(--font-body);
-  color: var(--text-main);
-  background-color: #0d141c;
+  color: #071A52;
+  background-color: #F7F8FA;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 .public-shell {
-  background-color: #0d141c;
-  color: #dce3ef;
+  background-color: #F7F8FA;
+  color: #071A52;
   min-height: 100vh;
 }
 
@@ -6830,100 +6830,82 @@ video {
 }
 
 /* ==========================================================================
-   OBSIDIAN PRECISION ENGINEERING — GLOBAL HARMONIZATION RULES
+   FIGMA-ALIGNED LIGHT INDUSTRIAL THEME — SECTIONS & CARDS
    ========================================================================== */
+.section--white,
+.section-white {
+  background-color: #FFFFFF;
+  color: #0F172A;
+}
+
+.section--light,
+.section-light,
+.section--grey,
+.section-grey {
+  background-color: #F7F8FA;
+  color: #0F172A;
+}
+
 .catalogue-layout,
-.filter-sidebar,
 .product-detail-layout,
 .quote-layout,
 .contact-layout,
 .about-layout {
-  color: var(--color-on-surface);
+  color: #0F172A;
 }
 
 .filter-sidebar {
-  background-color: var(--color-surface-container-low) !important;
-  border: 1px solid var(--border-color) !important;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
 }
 
 .filter-sidebar__title {
-  color: var(--color-primary) !important;
+  color: #071A52;
 }
 
 .filter-group__title {
-  color: var(--color-on-surface) !important;
+  color: #1E293B;
 }
 
 .filter-option {
-  color: var(--color-on-surface-variant) !important;
+  color: #475569;
 }
 
 .filter-option:hover {
-  color: var(--color-primary-cyan) !important;
+  color: #2D8CFF;
 }
 
 .product-card {
-  background-color: var(--color-surface-container-low) !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--color-on-surface) !important;
-}
-
-.product-card:hover {
-  border-color: rgba(0, 240, 255, 0.4) !important;
-  box-shadow: 0 0 20px -4px rgba(0, 240, 255, 0.25) !important;
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #0F172A;
 }
 
 .product-card__title {
-  color: var(--color-on-surface) !important;
+  color: #0F172A;
 }
 
 .product-card__title:hover {
-  color: var(--color-primary-cyan) !important;
+  color: #2D8CFF;
 }
 
 .product-card__specs {
-  color: var(--color-on-surface-variant) !important;
+  color: #475569;
 }
 
 .product-card__category {
-  color: var(--color-primary-cyan) !important;
+  color: #0284C7;
 }
 
 .product-card__img-wrap {
-  background-color: var(--color-surface-container-lowest) !important;
-  border-bottom: 1px solid var(--border-color) !important;
-}
-
-.spec-chip--material {
-  background-color: var(--color-surface-container) !important;
-  color: var(--color-primary) !important;
-  border: 1px solid var(--color-surface-container-highest) !important;
-}
-
-.spec-chip--finish {
-  background-color: var(--color-surface-container) !important;
-  color: var(--color-secondary) !important;
-  border: 1px solid var(--color-surface-container-highest) !important;
-}
-
-.spec-chip--standard {
-  background-color: var(--color-surface-container) !important;
-  color: var(--color-on-surface-variant) !important;
-  border: 1px solid var(--color-surface-container-highest) !important;
-}
-
-.section--white,
-.section--light,
-.section-white,
-.section-light {
-  background-color: var(--color-surface) !important;
-  color: var(--color-on-surface) !important;
+  background-color: #F8FAFC;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .editorial-title,
 .section-title,
 .page-title {
-  color: var(--color-primary) !important;
+  color: #071A52;
 }
 
 /* ==========================================================================

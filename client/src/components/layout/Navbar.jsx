@@ -163,31 +163,10 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           </div>
 
           <a
-            href="#fluid-handling"
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
-          >
-            {t('nav_fluid_handling', 'Fluid Handling')}
-          </a>
-
-          <a
-            href="#immediate-stock"
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
-          >
-            {t('nav_stock', 'Immediate Stock')}
-          </a>
-
-          <a
             href={localizePath('/industries', currentLang)}
             className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
           >
             {t('nav_industries', 'Industries')}
-          </a>
-
-          <a
-            href="#ai-fleet"
-            className="px-3 py-1.5 rounded text-secondary hover:text-secondary-fixed hover:bg-surface-container-high transition-colors uppercase tracking-wider"
-          >
-            {t('nav_ai_fleet', 'AI Fleet')}
           </a>
 
           <a

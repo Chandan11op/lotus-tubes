@@ -52,7 +52,7 @@ export const Breadcrumbs = ({ route, param }) => {
   }
 
   return (
-    <nav id="site-breadcrumbs" className="w-full bg-surface-container-lowest/80 border-b border-surface-container-high/40 py-2.5 px-4 lg:px-8 font-label-code-micro text-[11px] text-on-surface-variant relative z-20" aria-label="Breadcrumb">
+    <nav id="site-breadcrumbs" className="w-full bg-slate-100/90 border-b border-slate-200 py-2.5 px-4 lg:px-8 text-xs text-slate-500 relative z-20" aria-label="Breadcrumb">
       <div className="max-w-7xl mx-auto">
         <ol className="flex items-center gap-2 flex-wrap" id="breadcrumbs-list">
           {items.map((item, index) => {
@@ -60,13 +60,13 @@ export const Breadcrumbs = ({ route, param }) => {
             return (
               <li key={index} className="flex items-center gap-2" aria-current={isLast ? 'page' : undefined}>
                 {isLast ? (
-                  <span className="text-primary font-semibold">{item.label}</span>
+                  <span className="text-slate-900 font-semibold">{item.label}</span>
                 ) : (
                   <>
-                    <a href={item.link} className="hover:text-primary transition-colors">
+                    <a href={item.link} className="hover:text-blue-600 transition-colors">
                       {item.label}
                     </a>
-                    <span className="text-surface-container-highest">/</span>
+                    <span className="text-slate-300">/</span>
                   </>
                 )}
               </li>

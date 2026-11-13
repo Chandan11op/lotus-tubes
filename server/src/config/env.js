@@ -30,8 +30,8 @@ export const config = {
   mongoUri: process.env.MONGODB_URI || (isProduction ? '' : 'mongodb://localhost:27017/lotus_tubes'),
   jwtSecret: rawJwtSecret || 'lotus_tubes_jwt_secret_dev_2026_hygienic_valves',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-  staffInitEmail: (process.env.STAFF_INIT_EMAIL || 'chirag@lotustubes.com').toLowerCase().trim(),
-  staffInitPassword: process.env.STAFF_INIT_PASSWORD || (isProduction ? '' : 'LotusTubesDev2026!'),
+  staffInitEmail: (process.env.STAFF_INIT_EMAIL || 'sales@lotustubes.com').toLowerCase().trim(),
+  staffInitPassword: process.env.STAFF_INIT_PASSWORD || (isProduction ? '' : 'lotustubes@11'),
   turnstileSecretKey: process.env.TURNSTILE_SECRET_KEY || process.env.SECRET_KEY || '',
   resend: {
     apiKey: process.env.RESEND_API_KEY || '',
