@@ -51,30 +51,8 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
   const totalIndustries = INDUSTRIES.length;
   const currentIndustry = INDUSTRIES[activeIndex] || INDUSTRIES[0];
 
-  // Verified photography mapping for each industry sector
-  const industryPhotos = useMemo(
-    () => ({
-      pharmaceutical: '/assets/images/industries/pharmaceutical.jpg',
-      biotechnology: '/assets/images/industries/biotechnology.jpg',
-      dairy: '/assets/images/industries/dairy.jpg',
-      'food-processing': '/assets/images/industries/food-processing.jpg',
-      'food-beverage': '/assets/images/industries/food-beverage.jpg',
-      breweries: '/assets/images/industries/breweries.jpg',
-      'water-treatment': '/assets/images/industries/water-treatment.jpg',
-      chemical: '/assets/images/industries/chemical.jpg'
-    }),
-    []
-  );
-
-  // Resolve matching product items for the active industry
-  const matchingProducts = useMemo(() => {
-    if (!currentIndustry.products) return [];
-    return currentIndustry.products
-      .map((pid) => PRODUCTS.find((p) => p.id === pid || p.slug === pid))
-      .filter(Boolean);
-  }, [currentIndustry]);
-
-  const currentPhoto = industryPhotos[currentIndustry.slug] || currentIndustry.image || '/assets/images/industries/pharmaceutical.jpg';
+  // Primary highlighted sanitary product for active industry sector
+  const primaryProduct = matchingProducts[0] || null;
 
   return (
     <div className="industries-page-root bg-[#F7F8FA] text-[#071A52] min-h-screen">
@@ -245,7 +223,9 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 transition-colors"
                 >
-                  <span>🟢</span>
+                  <svg className="w-4 h-4 fill-[#25D366] shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12.031 2C6.496 2 2 6.494 2 12.029c0 1.947.556 3.766 1.521 5.309L2.001 22.5l5.35-1.488a9.97 9.97 0 0 0 4.68 1.168h.005c5.532 0 10.029-4.494 10.029-10.029C22.065 6.494 17.568 2 12.031 2zm5.836 14.199c-.244.688-1.42 1.314-1.956 1.398-.518.082-1.189.117-3.415-.805-2.85-1.18-4.686-4.08-4.83-4.269-.143-.19-1.144-1.522-1.144-2.903 0-1.381.724-2.062.981-2.343.257-.282.56-.352.748-.352.187 0 .374.002.538.01.174.009.408-.066.638.486.235.565.803 1.957.874 2.1.07.143.118.31.024.497-.094.19-.142.308-.282.473-.141.166-.296.37-.424.497-.141.141-.288.295-.124.577.164.281.729 1.203 1.564 1.947 1.074.957 1.979 1.253 2.261 1.393.282.14.448.117.613-.07.165-.188.704-.822.892-1.104.188-.282.376-.235.634-.141.258.094 1.64.773 1.922.914.282.141.47.211.539.329.07.117.07.68-.174 1.368z"/>
+                  </svg>
                   <span>WhatsApp Sourcing Specialist</span>
                 </a>
               </div>
@@ -253,28 +233,72 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
 
             {/* Right Column: Visual Stage & Compatible Products (7 cols) */}
             <div className="lg:col-span-7 flex flex-col justify-between gap-6 min-w-0">
-              {/* High-Definition Photography Stage */}
-              <div className="relative w-full h-[280px] sm:h-[340px] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-sm group">
-                <img
-                  key={currentIndustry.id}
-                  src={currentPhoto}
-                  alt={`${currentIndustry.name} Sanitary Installation`}
-                  className="w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
-
-                {/* Top-Right Sector Tag */}
-                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-lg border border-slate-200 text-xs font-bold text-[#071A52] flex items-center gap-1.5 shadow-sm">
-                  <span>{currentIndustry.icon}</span>
-                  <span>{currentIndustry.name}</span>
+              {/* Clean Technical Component Spotlight (Replaces generic factory photos per Client Feedback Issue 1) */}
+              <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm flex flex-col justify-between gap-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{currentIndustry.icon}</span>
+                    <span className="text-xs font-bold text-[#071A52] uppercase tracking-wider font-mono">
+                      {currentIndustry.name} Sanitary Flow Systems
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                    EN 10204 3.1 Traceable
+                  </span>
                 </div>
 
-                {/* Bottom Metallurgy Highlight */}
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white bg-slate-900/85 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/20">
-                  <span className="font-semibold">
-                    Recommended Metallurgy: SS 316L / SS 304
-                  </span>
-                  <span className="text-emerald-400 font-semibold">EN 10204 3.1 Traceable</span>
+                {primaryProduct && (
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
+                    <div className="sm:col-span-4 aspect-square rounded-lg bg-slate-50 p-3 flex items-center justify-center border border-slate-100 overflow-hidden">
+                      <ProductImage
+                        src={primaryProduct.image}
+                        alt={primaryProduct.name}
+                        aspectRatio="auto"
+                        className="w-full h-full"
+                        imgClassName="max-h-full object-contain hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    <div className="sm:col-span-8 flex flex-col gap-2">
+                      <span className="text-[10px] font-mono text-[#2D8CFF] uppercase font-bold tracking-wider">
+                        PRIMARY SANITARY COMPONENT
+                      </span>
+                      <h4 className="text-base font-extrabold text-[#071A52]">
+                        {primaryProduct.name}
+                      </h4>
+                      <p className="text-xs text-slate-600 line-clamp-2">
+                        {primaryProduct.description || primaryProduct.specs || 'Precision-engineered sanitary component engineered for high-purity fluid transfer.'}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2 pt-1 font-mono text-[11px]">
+                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold border border-slate-200">
+                          {primaryProduct.material || 'SS 316L / SS 304'}
+                        </span>
+                        <span className="px-2 py-0.5 rounded bg-blue-50 text-[#2D8CFF] font-semibold border border-blue-200">
+                          {primaryProduct.standard?.split('/')[0] || 'Sanitary'}
+                        </span>
+                        <a
+                          href={localizePath(`/product/${primaryProduct.slug || primaryProduct.id}`, currentLang)}
+                          className="ml-auto text-xs font-bold text-[#2D8CFF] hover:underline"
+                        >
+                          View Specifications &rarr;
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1 font-mono text-center">
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-100 text-left">
+                    <span className="text-[10px] text-slate-400 uppercase block">Surface Finish</span>
+                    <span className="text-xs font-bold text-[#071A52] block">Ra ≤ 0.38µm / Ra ≤ 0.8µm</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-100 text-left">
+                    <span className="text-[10px] text-slate-400 uppercase block">Metallurgy</span>
+                    <span className="text-xs font-bold text-[#2D8CFF] block">SS 316L &amp; SS 304</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-lg border border-slate-100 text-left col-span-2 sm:col-span-1">
+                    <span className="text-[10px] text-slate-400 uppercase block">Certifications</span>
+                    <span className="text-xs font-bold text-emerald-700 block">EN 10204 3.1 MTC</span>
+                  </div>
                 </div>
               </div>
 

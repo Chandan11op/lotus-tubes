@@ -91,7 +91,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tri-Clamp Fittings & Components',
       desc: 'Sanitary Tri-Clamp ferrules, heavy-duty single/double pin clamps, SMS unions, DIN unions, and blind end caps for rapid hygienic disassembly.',
       icon: '🔗',
-      image: '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg',
+      image: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
       subcategories: ['TC Ferrules', 'TC Clamps', 'SMS Unions', 'DIN Unions', 'TC End Caps']
     },
     {
@@ -109,7 +109,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Manual Sanitary Valves',
       desc: 'Hygienic sanitary butterfly valves, multi-position pull/gripper handles, 3-piece ball valves with TC ends, non-return valves, and diaphragm valves.',
       icon: '🚰',
-      image: '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg',
+      image: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
       subcategories: ['Butterfly Valves', 'Diaphragm Valves', '3-Piece Ball Valves', 'Sampling Valves', 'Check Valves']
     },
     {
@@ -127,7 +127,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tank Cleaning Accessories',
       desc: 'Fixed and 360° rotary spray balls, sanitary manhole covers (round/oval/pressure), CIP tank vent filter housings, and vessel sight glasses.',
       icon: '🚿',
-      image: '/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg',
+      image: '/assets/images/products/accessories/ss-sanitary-spray-ball.svg',
       subcategories: ['Rotary Spray Balls', 'Static Spray Balls', 'Pressure Manholes', 'Tank Sight Glass']
     },
     {
@@ -1126,13 +1126,13 @@ import { MASTER_PRODUCTS } from './productsData.js';
 
 
 export const LEADERSHIP = {
-  name: 'Chirag Shah',
-  title: 'Owner & Managing Director',
-  designation: 'Owner & Managing Director',
-  location: 'Mumbai, Maharashtra, India',
-  summary: 'Guiding the business through customer relationships, commercial coordination, and verified stainless steel sanitary product sourcing. Chirag Shah personally oversees high-purity supply contracts, mill test traceability, and authorizes all quotation and commercial dispatches.',
-  photo: '/assets/images/team/owner.jpeg'
-};
+    name: 'Chirag Shah',
+    title: 'Managing Director',
+    designation: 'Managing Director',
+    location: 'Mumbai, Maharashtra, India',
+    summary: 'Guiding our family enterprise established in 1989 with a steadfast commitment to customer trust, metallurgical precision, and verified stainless steel sourcing. Chirag Shah advances the multi-generational family legacy, personally overseeing high-purity supply contracts, EN 10204 3.1 mill test traceability, and dedicated quotation service.',
+    photo: '/assets/images/team/owner.jpeg'
+  };
 
 export const AI_TEAM_MEMBERS = [
   {

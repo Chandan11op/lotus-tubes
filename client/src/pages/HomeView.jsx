@@ -4,6 +4,143 @@ import { CONFIG, PRODUCTS, LEADERSHIP } from '../data/siteData';
 import { apiService } from '../services/api';
 import { AnimatedCounter } from '../components/common/AnimatedCounter';
 
+
+/**
+ * HomeProductCard
+ * Rich, premium industrial catalogue presentation for Lotus Tubes showcase.
+ * Features:
+ * - Multi-angle gallery thumbnail selector (Main / Detail / Spec)
+ * - Clear category and ready stock badges
+ * - Clean neutral background with smooth hover zoom
+ * - Specification chips: Grade, Finish, MTC
+ * - Technical attribute micro-table
+ * - Distinct Quick RFQ & View Details CTAs
+ */
+const HomeProductCard = ({ product, productUrl, onOpenEnquiry }) => {
+  const images = useMemo(() => {
+    if (product.images && product.images.length > 0) return product.images;
+    return [product.image];
+  }, [product]);
+
+  const [activeImgIndex, setActiveImgIndex] = useState(0);
+  const activeImage = images[activeImgIndex] || product.image;
+
+  const isEP = product.finish?.includes('EP') || product.name?.includes('EP');
+  const specGrade = product.material || 'SS 316L';
+  const specFinish = isEP ? 'EP Ra ≤ 0.38µm' : 'MP Satin Ra ≤ 0.8µm';
+  const specStd = product.standard?.split('/')[0]?.trim() || 'ASTM A270';
+  const categoryLabel = product.category || 'Sanitary Component';
+
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-[#2D8CFF]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+      <div>
+        {/* Top Meta Bar */}
+        <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between font-mono text-[11px]">
+          <span className="font-bold text-[#071A52] uppercase tracking-wider truncate">
+            {categoryLabel}
+          </span>
+          <span className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200/60 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Ready Stock
+          </span>
+        </div>
+
+        {/* Media Container with Multi-Angle Thumbnail Strip */}
+        <div className="relative w-full aspect-[4/3] bg-gradient-to-b from-slate-50/80 to-white p-4 flex items-center justify-center border-b border-slate-100 overflow-hidden">
+          <a href={productUrl} className="block w-full h-full flex items-center justify-center">
+            <img
+              src={activeImage}
+              alt={product.name}
+              width="400"
+              height="300"
+              loading="lazy"
+              className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+            />
+          </a>
+
+          {/* Interactive Multi-Angle Gallery Thumbnails */}
+          {images.length > 1 && (
+            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-center gap-1.5 p-1 bg-white/95 backdrop-blur-md rounded-lg border border-slate-200 shadow-sm opacity-90 group-hover:opacity-100 transition-opacity">
+              <span className="text-[9px] font-mono text-slate-400 uppercase mr-1 hidden sm:inline">Views:</span>
+              {images.slice(0, 3).map((img, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onMouseEnter={() => setActiveImgIndex(idx)}
+                  onClick={() => setActiveImgIndex(idx)}
+                  className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold transition-all cursor-pointer ${
+                    activeImgIndex === idx
+                      ? 'bg-[#071A52] text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {idx === 0 ? 'Main' : idx === 1 ? 'Detail' : 'Spec'}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Card Content & Specifications */}
+        <div className="p-5 flex flex-col gap-3">
+          {/* Specification Pills */}
+          <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px]">
+            <span className="bg-[#2D8CFF]/10 text-[#2D8CFF] px-2.5 py-1 rounded-md font-bold border border-[#2D8CFF]/20">
+              {specGrade}
+            </span>
+            <span className="bg-slate-100 text-[#071A52] px-2.5 py-1 rounded-md font-semibold border border-slate-200">
+              {specFinish}
+            </span>
+            <span className="bg-emerald-50 text-emerald-800 px-2 py-1 rounded-md font-semibold border border-emerald-200 text-[10px]">
+              EN 10204 3.1
+            </span>
+          </div>
+
+          {/* Product Title */}
+          <h3 className="font-bold text-base text-[#071A52] group-hover:text-[#2D8CFF] transition-colors leading-snug line-clamp-2 min-h-[2.8em]">
+            <a href={productUrl}>{product.name}</a>
+          </h3>
+
+          {/* Product Overview Description */}
+          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+            {product.overview || product.desc || 'High-purity stainless steel sanitary component engineered for pharmaceutical, dairy, and food processing lines.'}
+          </p>
+
+          {/* Technical Data Micro-Table */}
+          <div className="bg-slate-50/90 p-3 rounded-xl border border-slate-200/80 grid grid-cols-2 gap-2 font-mono text-[11px]">
+            <div className="flex flex-col">
+              <span className="text-[9px] text-slate-400 uppercase tracking-wider">Standard</span>
+              <span className="text-[#071A52] font-bold truncate">{product.standard || specStd}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[9px] text-slate-400 uppercase tracking-wider">Size Range</span>
+              <span className="text-[#071A52] font-bold truncate">{product.sizes || '1/2" to 4" OD'}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Card Action CTAs */}
+      <div className="p-5 pt-0 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => onOpenEnquiry && onOpenEnquiry(product, product.name)}
+          className="flex-1 py-2.5 px-3 bg-[#071A52] hover:bg-[#2D8CFF] text-white rounded-lg font-bold text-xs transition-colors shadow-sm cursor-pointer text-center"
+        >
+          Quick RFQ
+        </button>
+        <a
+          href={productUrl}
+          className="py-2.5 px-3.5 bg-slate-100 hover:bg-slate-200 text-[#071A52] rounded-lg font-bold text-xs transition-colors flex items-center gap-1"
+        >
+          <span>View Details</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+  );
+};
+
 export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   const { t, currentLang, localizePath } = useLanguage();
 
@@ -38,7 +175,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       finish: 'Ra ≤ 0.40µm (Mirror)',
       dispatch: '24-48 HRS',
       raValue: 'Ra ≤ 0.40 µm (Aseptic)',
-      stockMetric: '18,500 PCS IN YARDS',
+      stockMetric: 'READY STOCK IN WAREHOUSE',
       title: 'Sanitary Butterfly & Diaphragm Valves',
       desc: 'Precision forged SS 316L multi-position manual & pneumatic valves with zero dead-leg seal.',
       img: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
@@ -51,7 +188,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       finish: '0.38µm EP Mirror',
       dispatch: 'SAME DAY',
       raValue: 'Ra ≤ 0.25 µm (EP SF4)',
-      stockMetric: '4,200 MT IN YARDS',
+      stockMetric: 'AVAILABLE FOR IMMEDIATE DISPATCH',
       title: 'Ultra-Pure SS 316L Electropolished Tubes',
       desc: 'Electropolished bore with certified low sulfur chemistry guaranteeing clean orbital welds.',
       img: '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg',
@@ -64,7 +201,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       finish: 'Ra ≤ 0.38µm Precision',
       dispatch: 'IMMEDIATE',
       raValue: 'Ra ≤ 0.38 µm (Precision)',
-      stockMetric: '95,000 PCS IN YARDS',
+      stockMetric: 'READY STOCK IN WAREHOUSE',
       title: 'Tri-Clamp Ferrules & Heavy Duty Clamps',
       desc: 'Forged 316L weld ferrules and sanitary unions pressure-tested to 45 bar hydro-limit.',
       img: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
@@ -77,7 +214,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       finish: 'Ra ≤ 0.40µm Electro',
       dispatch: '24-72 HRS',
       raValue: 'Ra ≤ 0.40 µm (CIP Validated)',
-      stockMetric: '12,400 PCS IN YARDS',
+      stockMetric: 'AVAILABLE FOR IMMEDIATE DISPATCH',
       title: 'Rotary CIP Cleaning Spray Balls',
       desc: '360° spherical coverage hydro-lubricated spray heads for validated residue-free flushing.',
       img: '/assets/images/products/accessories/ss-sanitary-spray-ball.svg',
@@ -139,7 +276,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
   // 4. Interactive Industry Showcase State with dynamic background themes
   const [activeSector, setActiveSector] = useState('pharma');
 
-  const sectorData = {
+    const sectorData = {
     pharma: {
       badge: 'ASME BPE SF4 • EP FINISH Ra ≤ 0.38µm',
       title: 'Sterile Injectable & API Active Pharmaceutical Lines',
@@ -151,8 +288,29 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       alloy: 'SS 316L (UNS S31603)',
       ra: 'Ra ≤ 0.38µm (SF4 Mirror)',
       std: 'ASME BPE / FDA',
-      img: '/assets/images/industries/pharmaceutical.jpg',
-      caption: 'WFI & PURE STEAM DISTRIBUTION LOOP'
+      products: [
+        {
+          name: 'SS 316L EP Sanitary Tube',
+          image: '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg',
+          standard: 'ASME BPE SF4',
+          spec: 'Ra ≤ 0.38µm Mirror',
+          link: '/product/ss-316l-ep-pipe'
+        },
+        {
+          name: 'Sanitary Diaphragm Valve',
+          image: '/assets/images/products/valves/diaphragm-valves/ss-316l-sanitary-diaphragm-valve-001.jpg',
+          standard: 'FDA / USP VI',
+          spec: 'Zero Dead-Leg',
+          link: '/product/ss-316l-diaphragm-valve'
+        },
+        {
+          name: 'Tri-Clamp Ferrule',
+          image: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
+          standard: 'DIN 32676 / BPE',
+          spec: 'Precision Forged',
+          link: '/product/ss-tri-clamp-ferrule'
+        }
+      ]
     },
     dairy: {
       badge: '3-A SANITARY 63-04 • MIRROR FINISH',
@@ -165,8 +323,29 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       alloy: 'SS 304 / SS 316L',
       ra: 'Ra ≤ 0.80µm (32µin)',
       std: '3-A / DIN 11850',
-      img: '/assets/images/industries/dairy.jpg',
-      caption: 'DAIRY PASTEURIZATION & MILK RECEPTION SKID'
+      products: [
+        {
+          name: 'SMS Complete Sanitary Union',
+          image: '/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg',
+          standard: 'SMS 1145',
+          spec: 'Nut + Liner + Male',
+          link: '/product/ss-sms-union'
+        },
+        {
+          name: 'Sanitary Butterfly Valve',
+          image: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
+          standard: '3-A / DIN',
+          spec: 'Multi-Position',
+          link: '/product/ss-sanitary-butterfly-valve'
+        },
+        {
+          name: 'SS 304 Sanitary Pipe',
+          image: '/assets/images/products/pipes/ss-304/ss-304-sanitary-pipe-001.jpg',
+          standard: 'ASTM A270',
+          spec: 'Dairy Spec ID',
+          link: '/product/ss-304-sanitary-pipe'
+        }
+      ]
     },
     brewery: {
       badge: 'BS 4825 / ISO 2037 • FOOD CONTACT COMPLIANT',
@@ -179,8 +358,29 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       alloy: 'SS 304 / SS 316L',
       ra: 'Ra ≤ 0.80µm MP',
       std: 'BS 4825 / ISO 2037',
-      img: '/assets/images/industries/breweries.jpg',
-      caption: 'HIGH-SPEED BEVERAGE BOTTLING & BREWHOUSE MANIFOLD'
+      products: [
+        {
+          name: 'Rotary CIP Spray Ball',
+          image: '/assets/images/products/accessories/ss-sanitary-spray-ball.svg',
+          standard: 'FDA 21 CFR',
+          spec: '360° Spherical',
+          link: '/product/ss-sanitary-spray-ball'
+        },
+        {
+          name: 'Sanitary 90° Elbow Bend',
+          image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg',
+          standard: 'BS 4825 / ISO',
+          spec: 'Weld / Clamp End',
+          link: '/product/ss-sanitary-90-bend'
+        },
+        {
+          name: 'Heavy-Duty Tri-Clamp',
+          image: '/assets/images/products/accessories/ss-tri-clamp-clamp.svg',
+          standard: 'DIN 32676',
+          spec: 'High-Pressure Clamp',
+          link: '/product/ss-tri-clamp-clamp'
+        }
+      ]
     },
     biotech: {
       badge: 'ASME BPE SF1 / SF4 • ULTRA-PURE BIOREACTORS',
@@ -193,8 +393,29 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       alloy: 'SS 316L Remelt Grade',
       ra: 'Ra ≤ 0.25µm (10µin)',
       std: 'ASME BPE / USP VI',
-      img: '/assets/images/industries/biotechnology.jpg',
-      caption: 'ASEPTIC HARVEST & BIOREACTOR MANIFOLD'
+      products: [
+        {
+          name: 'Ultra-Pure SS 316L EP Tube',
+          image: '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg',
+          standard: 'ASME BPE SF4',
+          spec: 'Ra ≤ 0.25µm Mirror',
+          link: '/product/ss-316l-ep-pipe'
+        },
+        {
+          name: 'Sanitary Sampling Valve',
+          image: '/assets/images/products/valves/ss-sanitary-sampling-valve.svg',
+          standard: 'ASME BPE',
+          spec: 'Aseptic Sampling',
+          link: '/product/ss-sanitary-sampling-valve'
+        },
+        {
+          name: 'Tri-Clamp Ferrule',
+          image: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
+          standard: 'ASME BPE SF4',
+          spec: 'Low Sulfur Chem',
+          link: '/product/ss-tri-clamp-ferrule'
+        }
+      ]
     },
     chemical: {
       badge: 'EN 10204 3.1 • HIGH RESISTANCE PASSIVATION',
@@ -207,8 +428,29 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       alloy: 'SS 316L (2.5% Min Mo)',
       ra: 'Ra ≤ 0.51µm (20µin)',
       std: 'ASTM A269 / SEMI',
-      img: '/assets/images/industries/chemical.jpg',
-      caption: 'SPECIALTY CHEMICAL LOOP & SOLVENT DISTRIBUTION'
+      products: [
+        {
+          name: 'Concentric Sanitary Reducer',
+          image: '/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-001.jpg',
+          standard: '3-A / DIN',
+          spec: 'Uniform Flow Path',
+          link: '/product/ss-sanitary-concentric-reducer'
+        },
+        {
+          name: '3-Piece Sanitary Ball Valve',
+          image: '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-006.jpg',
+          standard: 'Cavity Filled',
+          spec: 'Full Port 1000 WOG',
+          link: '/product/ss-3-piece-ball-valve-tc-end'
+        },
+        {
+          name: 'Sanitary Equal Tee',
+          image: '/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg',
+          standard: 'ASTM A270',
+          spec: 'SS 316L Equal Branch',
+          link: '/product/ss-sanitary-equal-tee'
+        }
+      ]
     }
   };
 
@@ -274,11 +516,11 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
           <div className="inline-flex items-center gap-2.5 rounded-full bg-white/10 px-4 py-1.5 backdrop-blur-md self-start border border-white/15 shadow-sm">
             <span className="inline-flex h-2.5 w-2.5 rounded-full bg-[#2D8CFF] animate-pulse" />
             <span className="font-mono text-xs text-[#2D8CFF] uppercase tracking-widest font-bold">
-              ASME BPE SF4 CERTIFIED ELECTROPOLISHED INVENTORY
+              SS 304 &amp; SS 316L SANITARY PIPES, FITTINGS &amp; VALVES
             </span>
             <span className="text-white/40 font-mono text-xs">•</span>
             <span className="font-mono text-xs text-white/90 font-medium">
-              EST. 1989 MUMBAI
+              MUMBAI SOURCING HUB
             </span>
           </div>
 
@@ -465,77 +707,6 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          SECTION 1: ANIMATED STATISTICS (WHITE #FFFFFF)
-          "1000+ Variants ↓ 100+ Countries ↓ 30 Years ↓ 24x7 Support"
-          ========================================================================= */}
-      <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-14 lg:py-16 border-b border-slate-200" id="statistics">
-        <div className="max-w-7xl mx-auto flex flex-col gap-6">
-          <div className="text-center max-w-2xl mx-auto flex flex-col gap-1.5">
-            <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
-              ESTABLISHED 1989 • TRUSTED GLOBAL SOURCE
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#071A52]">
-              Industrial Scale &amp; Proven Metallurgical Heritage
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-4">
-            {/* Stat 1: 1000+ Variants */}
-            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#071A52] tracking-tight">
-                <AnimatedCounter target={1000} suffix="+" duration={1800} />
-              </div>
-              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
-                Hygienic Variants &amp; Sizes
-              </span>
-              <span className="text-xs text-slate-500 mt-1">
-                DIN, SMS, ASME BPE, 3-A catalogue stock
-              </span>
-            </div>
-
-            {/* Stat 2: 100+ Countries */}
-            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2D8CFF] tracking-tight">
-                <AnimatedCounter target={100} suffix="+" duration={1800} />
-              </div>
-              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
-                Countries Supplied
-              </span>
-              <span className="text-xs text-slate-500 mt-1">
-                Direct export hubs across 5 continents
-              </span>
-            </div>
-
-            {/* Stat 3: 30+ Years */}
-            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#071A52] tracking-tight">
-                <AnimatedCounter target={30} suffix="+ Years" duration={1800} />
-              </div>
-              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
-                Industry Heritage
-              </span>
-              <span className="text-xs text-slate-500 mt-1">
-                Continuous trading from Girgaon, Mumbai hub
-              </span>
-            </div>
-
-            {/* Stat 4: 24x7 Support */}
-            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2D8CFF] tracking-tight">
-                <AnimatedCounter target={24} suffix="x7" duration={1800} />
-              </div>
-              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
-                Global Procurement Desk
-              </span>
-              <span className="text-xs text-slate-500 mt-1">
-                AI quotation pipeline + engineer consultation
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
           SECTION 2: PRODUCT CATEGORIES "NETFLIX-STYLE" (LIGHT GREY #F7F8FA)
           "Large horizontal cards. Valve | Huge Image | Butterfly, Ball, Diaphragm → Explore"
           ========================================================================= */}
@@ -557,7 +728,7 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
               href={localizePath('/products', currentLang)}
               className="inline-flex items-center gap-1.5 font-bold text-sm text-[#2D8CFF] hover:text-[#071A52] transition-colors self-start md:self-auto"
             >
-              <span>View Full 1000+ SKU Index</span>
+              <span>View Complete Product Catalogue</span>
               <span>→</span>
             </a>
           </div>
@@ -877,89 +1048,17 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             </div>
           </div>
 
-          {/* Grid of 6 Floating Glass Product Cards */}
+          {/* Grid of 6 Premium Industrial Catalogue Product Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid">
             {filteredCatalogue.map((product) => {
               const productUrl = localizePath(`/product/${product.slug || product.id}`, currentLang);
-              const isEP = product.finish?.includes('EP') || product.name?.includes('EP');
-              const specGrade = product.material || 'SS 316L';
-              const specFinish = isEP ? 'EP Ra ≤ 0.38µm' : 'MP Satin Ra ≤ 0.8µm';
-              const specStd = product.standard || 'DIN / SMS / TC';
-
               return (
-                <div
+                <HomeProductCard
                   key={product.id}
-                  className="floating-glass-card rounded-2xl flex flex-col justify-between group cursor-pointer"
-                >
-                  <div>
-                    {/* Media Container with Rise & Subtle Rotate on Hover */}
-                    <div className="card-media-wrap aspect-[4/3] rounded-t-2xl flex items-center justify-center p-4">
-                      <a href={productUrl} className="block w-full h-full" tabIndex="-1">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          width="400"
-                          height="300"
-                          loading="lazy"
-                          className="w-full h-full object-contain"
-                        />
-                      </a>
-                    </div>
-
-                    {/* Card Content & Sliding Spec Drawer */}
-                    <div className="p-5 flex flex-col gap-2.5">
-                      <div className="flex flex-wrap items-center gap-1.5 font-mono text-[10px]">
-                        <span className="bg-[#2D8CFF]/10 text-[#2D8CFF] px-2 py-0.5 rounded font-bold">
-                          {specGrade}
-                        </span>
-                        <span className="bg-slate-100 text-[#071A52] px-2 py-0.5 rounded font-semibold">
-                          DIN / SMS / TC
-                        </span>
-                        <span className="bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-semibold">
-                          IN STOCK
-                        </span>
-                      </div>
-
-                      <h3 className="font-bold text-base text-[#071A52] group-hover:text-[#2D8CFF] transition-colors leading-snug">
-                        <a href={productUrl}>{product.name}</a>
-                      </h3>
-
-                      <p className="text-xs text-slate-500 line-clamp-2">
-                        {product.overview || product.desc || 'Precision hygienic stainless steel component for sterile pharmaceutical and dairy pipelines.'}
-                      </p>
-
-                      {/* Specification Drawer: Slides upward on hover */}
-                      <div className="spec-drawer mt-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 grid grid-cols-2 gap-2 font-mono text-[11px]">
-                        <div className="flex flex-col">
-                          <span className="text-[9px] text-slate-400 uppercase">Standard</span>
-                          <span className="text-[#071A52] font-bold truncate">{specStd}</span>
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[9px] text-slate-400 uppercase">Surface</span>
-                          <span className="text-[#2D8CFF] font-bold truncate">{specFinish}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Action CTAs */}
-                  <div className="p-5 pt-0 flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => onOpenEnquiry && onOpenEnquiry(product, product.name)}
-                      className="flex-1 py-2.5 bg-[#071A52] hover:bg-[#2D8CFF] text-white rounded-lg font-bold text-xs transition-colors shadow-sm cursor-pointer text-center"
-                    >
-                      Quick RFQ
-                    </button>
-                    <a
-                      href={productUrl}
-                      className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-[#071A52] rounded-lg font-bold text-xs transition-colors flex items-center gap-1"
-                    >
-                      <span>View Details</span>
-                      <span>→</span>
-                    </a>
-                  </div>
-                </div>
+                  product={product}
+                  productUrl={productUrl}
+                  onOpenEnquiry={onOpenEnquiry}
+                />
               );
             })}
           </div>
@@ -978,8 +1077,9 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          SECTION 5: INTERACTIVE INDUSTRY SHOWCASE (DYNAMIC THEME AURAS)
-          "Hover on Dairy: milk factory/pipeline. Pharma: white & blue. Brewery: copper tones."
+          SECTION 5: INTERACTIVE INDUSTRY SHOWCASE (CLEAN PREMIUM CARDS)
+          Client Feedback Issue 1: Removed generic stock background images.
+          Replaced with clean white/neutral cards & verified sanitary component showcase.
           ========================================================================= */}
       <section className="w-full bg-[#F7F8FA] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="industries">
         <div className="max-w-7xl mx-auto flex flex-col gap-10">
@@ -1011,8 +1111,8 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                 onClick={() => setActiveSector(tab.id)}
                 className={`px-4 py-2.5 rounded-xl font-mono text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
                   activeSector === tab.id
-                    ? 'bg-[#071A52] text-white shadow-lg scale-105'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                    ? 'bg-[#071A52] text-white shadow-md scale-102'
+                    : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-sm'
                 }`}
               >
                 <span>{tab.icon}</span>
@@ -1021,11 +1121,12 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
             ))}
           </div>
 
-          {/* Dynamic Sector Showcase Card with Adaptive Aura */}
-          <div className={`rounded-3xl p-6 lg:p-10 shadow-xl border transition-all duration-500 ${currentSector.themeClass}`}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 flex flex-col gap-4">
-                <div className="inline-flex items-center gap-2 font-mono text-xs font-bold px-3 py-1 rounded-full bg-white/80 backdrop-blur-sm self-start border border-slate-200 shadow-sm">
+          {/* Clean Premium Sector Showcase Card */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-md border border-slate-200/90 transition-all duration-300">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Sector Narrative & Technical Metrics */}
+              <div className="lg:col-span-6 flex flex-col gap-4">
+                <div className="inline-flex items-center gap-2 font-mono text-xs font-bold px-3 py-1.5 rounded-full bg-slate-100 self-start border border-slate-200 shadow-sm">
                   <span className="h-2 w-2 rounded-full" style={{ backgroundColor: currentSector.accentColor }} />
                   <span className="text-slate-800">{currentSector.badge}</span>
                 </div>
@@ -1034,43 +1135,73 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
                   {currentSector.title}
                 </h3>
 
-                <p className="text-xs font-mono text-slate-500 uppercase tracking-wide">
-                  ATMOSPHERE: {currentSector.auraDesc}
-                </p>
-
                 <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
                   {currentSector.description}
                 </p>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 font-mono">
-                  <div className="bg-white/90 p-3.5 rounded-xl border border-slate-200/80 shadow-sm">
+                  <div className="bg-[#F7F8FA] p-3 rounded-xl border border-slate-200/80">
                     <span className="text-[10px] text-slate-400 block uppercase">Recommended Alloy</span>
                     <span className="text-xs text-[#071A52] font-bold">{currentSector.alloy}</span>
                   </div>
-                  <div className="bg-white/90 p-3.5 rounded-xl border border-slate-200/80 shadow-sm">
+                  <div className="bg-[#F7F8FA] p-3 rounded-xl border border-slate-200/80">
                     <span className="text-[10px] text-slate-400 block uppercase">Roughness Ceiling</span>
                     <span className="text-xs text-[#2D8CFF] font-bold">{currentSector.ra}</span>
                   </div>
-                  <div className="bg-white/90 p-3.5 rounded-xl border border-slate-200/80 shadow-sm col-span-2 sm:col-span-1">
+                  <div className="bg-[#F7F8FA] p-3 rounded-xl border border-slate-200/80 col-span-2 sm:col-span-1">
                     <span className="text-[10px] text-slate-400 block uppercase">Mandated Standards</span>
                     <span className="text-xs text-[#071A52] font-bold">{currentSector.std}</span>
                   </div>
                 </div>
+
+                <div className="pt-3 flex items-center gap-4">
+                  <a
+                    href={localizePath('/industries', currentLang)}
+                    className="inline-flex items-center gap-2 text-xs font-bold text-[#2D8CFF] hover:underline"
+                  >
+                    <span>View All Industry Process Solutions</span>
+                    <span>→</span>
+                  </a>
+                </div>
               </div>
 
-              <div className="lg:col-span-5">
-                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-xl">
-                  <img
-                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                    src={currentSector.img}
-                    alt={currentSector.title}
-                    width="600"
-                    height="375"
-                    loading="lazy"
-                  />
-                  <div className="absolute bottom-3 left-3 bg-[#071A52]/85 backdrop-blur-md px-3.5 py-1.5 rounded-lg text-white font-mono text-[10px] border border-white/20">
-                    <span>{currentSector.caption}</span>
-                  </div>
+              {/* Verified Product Component Spotlight (Replaces generic factory photos) */}
+              <div className="lg:col-span-6 bg-[#F7F8FA] p-5 sm:p-6 rounded-2xl border border-slate-200/80 flex flex-col gap-3">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                  <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-700">
+                    Key Sanitary Components for this Sector
+                  </span>
+                  <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold">
+                    EN 10204 3.1 Traceable
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                  {currentSector.products?.map((item, idx) => (
+                    <a
+                      key={idx}
+                      href={localizePath(item.link, currentLang)}
+                      className="group bg-white rounded-xl p-3 border border-slate-200 hover:border-[#2D8CFF] hover:shadow-md transition-all flex flex-col justify-between"
+                    >
+                      <div className="w-full aspect-square rounded-lg bg-slate-50 flex items-center justify-center p-2 mb-2 border border-slate-100 overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold text-[#071A52] group-hover:text-[#2D8CFF] transition-colors block line-clamp-1">
+                          {item.name}
+                        </span>
+                        <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 mt-1">
+                          <span className="truncate">{item.standard}</span>
+                          <span className="text-[#2D8CFF] font-semibold shrink-0 ml-1">{item.spec}</span>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1079,148 +1210,234 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          SECTION 6: CERTIFICATIONS ON PREMIUM GLASS CARDS (WHITE #FFFFFF)
-          "Trusted Worldwide: ISO, FDA, 3A, CE. Each certificate on premium glass cards."
+          SECTION 6: QUALITY STANDARDS, COMPLIANCE & METALLURGY TRACEABILITY
+          Client Feedback Issue 5: Redesigned compliance & standards presentation.
+          Accurate distinction between Material Certificates, Dimensional Standards,
+          Elastomer Food Safety, Pressure Directives, and Company QMS.
           ========================================================================= */}
       <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="certifications">
         <div className="max-w-7xl mx-auto flex flex-col gap-10">
           <div className="text-center max-w-3xl mx-auto flex flex-col gap-2">
             <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
-              TRUSTED WORLDWIDE • GLOBAL HYGIENIC COMPLIANCE
+              TECHNICAL SPECIFICATIONS &amp; MATERIAL VERIFICATION
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#071A52]">
-              Global Certifications &amp; Standards
+              Quality Standards, Compliance &amp; Metallurgy Traceability
             </h2>
-            <p className="text-sm sm:text-base text-slate-600">
-              Each component is sourced with authentic mill test certificates (MTC), verifiable heat numbers, and compliance documentation.
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              In sanitary process piping, dimensional standards, mill test certificates, food-contact safety, and company quality frameworks fulfill distinct compliance roles. Every component supplied by Lotus Tubes conforms to verifiable industry criteria backed by authentic documentation.
             </p>
           </div>
 
-          {/* 6 Premium Glass Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Card 1: ISO 9001:2015 */}
-            <div className="cert-glass-card p-6 flex flex-col justify-between">
+          {/* 6 Distinct Compliance & Standards Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Card 1: EN 10204 3.1 MTR */}
+            <div className="bg-[#F7F8FA] rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-[#2D8CFF]/50 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs text-[#2D8CFF] font-extrabold px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
-                    ISO 9001:2015
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#2D8CFF] px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
+                    MATERIAL TEST CERTIFICATE
                   </span>
-                  <span className="text-emerald-500 font-bold">✓ VERIFIED</span>
+                  <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    100% Heat Traceable
+                  </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#071A52]">
-                  Quality Management System
+                <h3 className="text-lg font-bold text-[#071A52] leading-snug">
+                  EN 10204 3.1 Mill Test Reports (MTR)
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Rigorous inventory quality checkpoints, inbound spectroscopic verification, and fully traceable warehousing protocols.
+                <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  Actual manufacturer mill test certificates supplied with each dispatch, documenting spectroscopic chemical analysis (C, Mn, Si, P, S, Cr, Ni, Mo), tensile properties, elongation, and hydrostatic pressure testing.
                 </p>
+                <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5 font-mono text-[10px] text-slate-600">
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Heat No. Etched</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Chemical Analysis</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Tensile &amp; Yield</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500">
-                <span>AUDIT: <strong>Traceable Sourcing</strong></span>
+              <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-500 text-[11px]">Traceability: Original Mill Files</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'EN 10204 3.1 MTC Query')}
+                  className="font-bold text-[#2D8CFF] hover:underline cursor-pointer"
+                >
+                  Request Sample MTC &rarr;
+                </button>
               </div>
             </div>
 
-            {/* Card 2: FDA 21 CFR */}
-            <div className="cert-glass-card p-6 flex flex-col justify-between">
+            {/* Card 2: ASME BPE SF4 / SF1 */}
+            <div className="bg-[#F7F8FA] rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-[#2D8CFF]/50 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs text-[#2D8CFF] font-extrabold px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
-                    FDA 21 CFR §177
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#2D8CFF] px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
+                    BIOPROCESS STANDARD
                   </span>
-                  <span className="text-emerald-500 font-bold">✓ VERIFIED</span>
+                  <span className="text-[11px] font-mono font-bold text-[#071A52] bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                    Compliant Dimensions
+                  </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#071A52]">
-                  Food Contact Materials
+                <h3 className="text-lg font-bold text-[#071A52] leading-snug">
+                  ASME BPE SF4 / SF1 Standards
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Certified hygienic silicone, EPDM, and PTFE sealing compounds ensuring non-cytotoxic and leach-free food contact.
+                <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  Conforming to ASME Bio-Processing Equipment dimensional guidelines, controlled sulfur chemistry (0.005% - 0.017% S) for crack-free automated orbital welding, and interior electropolish ceilings down to Ra ≤ 0.38 µm.
                 </p>
+                <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5 font-mono text-[10px] text-slate-600">
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Ra ≤ 0.38µm (SF4)</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Controlled Sulfur</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Orbital Weld Ends</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500">
-                <span>SECTOR: <strong>Food, Dairy &amp; Pharma</strong></span>
+              <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-500 text-[11px]">Scope: Parenteral &amp; WFI Loops</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'ASME BPE SF4 Specification Query')}
+                  className="font-bold text-[#2D8CFF] hover:underline cursor-pointer"
+                >
+                  View BPE Scope &rarr;
+                </button>
               </div>
             </div>
 
-            {/* Card 3: 3-A Sanitary */}
-            <div className="cert-glass-card p-6 flex flex-col justify-between">
+            {/* Card 3: 3-A Sanitary Standards */}
+            <div className="bg-[#F7F8FA] rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-[#2D8CFF]/50 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs text-[#2D8CFF] font-extrabold px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
-                    3-A SANITARY 63-04
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#2D8CFF] px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
+                    FOOD &amp; DAIRY CRITERIA
                   </span>
-                  <span className="text-emerald-500 font-bold">✓ VERIFIED</span>
+                  <span className="text-[11px] font-mono font-bold text-[#071A52] bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                    Hygienic Geometry
+                  </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#071A52]">
-                  Sanitary Standards Council
+                <h3 className="text-lg font-bold text-[#071A52] leading-snug">
+                  3-A Sanitary Standards (63-04)
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Engineered to meet 3-A sanitary criteria for cleanability, surface roughness inspection, and crevice-free fluid pathways.
+                <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  Sanitary design criteria ensuring all dairy, food, and beverage contact pathways feature crevice-free internal radii, self-draining geometries, and total clean-in-place (CIP) and sanitize-in-place (SIP) washability.
                 </p>
+                <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5 font-mono text-[10px] text-slate-600">
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">CIP / SIP Drainable</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Crevice-Free Radii</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Food Safe ID</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500">
-                <span>SCOPE: <strong>Fittings, Pipes &amp; Valves</strong></span>
+              <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-500 text-[11px]">Scope: Dairy &amp; Food Processing</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, '3-A Sanitary Fittings Query')}
+                  className="font-bold text-[#2D8CFF] hover:underline cursor-pointer"
+                >
+                  View 3-A Criteria &rarr;
+                </button>
               </div>
             </div>
 
-            {/* Card 4: CE / PED */}
-            <div className="cert-glass-card p-6 flex flex-col justify-between">
+            {/* Card 4: FDA 21 CFR §177 */}
+            <div className="bg-[#F7F8FA] rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-[#2D8CFF]/50 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs text-[#2D8CFF] font-extrabold px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
-                    CE / PED 2014/68/EU
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#2D8CFF] px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
+                    FOOD CONTACT SAFETY
                   </span>
-                  <span className="text-emerald-500 font-bold">✓ VERIFIED</span>
+                  <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Food Grade Seals
+                  </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#071A52]">
-                  Pressure Equipment Directive
+                <h3 className="text-lg font-bold text-[#071A52] leading-snug">
+                  FDA 21 CFR §177 Material Compliance
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Hydrostatic pressure validation up to 45 bar for pressurized biopharma autoclaves and high-temperature CIP loops.
+                <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  Certified non-metallic contact sealing compounds (Silicone USP Class VI, food grade EPDM, and virgin PTFE gaskets and diaphragms) verified non-cytotoxic, odorless, non-reactive, and compliant with repeated food contact regulations.
                 </p>
+                <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5 font-mono text-[10px] text-slate-600">
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">FDA 21 CFR 177.2600</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">USP Class VI</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Virgin PTFE</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500">
-                <span>MARKET: <strong>European Union &amp; UK</strong></span>
+              <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-500 text-[11px]">Scope: Gaskets, Seals &amp; Diaphragms</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'FDA Material Compliance Query')}
+                  className="font-bold text-[#2D8CFF] hover:underline cursor-pointer"
+                >
+                  View Gasket Specs &rarr;
+                </button>
               </div>
             </div>
 
-            {/* Card 5: ASME BPE SF1 / SF4 */}
-            <div className="cert-glass-card p-6 flex flex-col justify-between">
+            {/* Card 5: CE / PED 2014/68/EU */}
+            <div className="bg-[#F7F8FA] rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-[#2D8CFF]/50 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs text-[#2D8CFF] font-extrabold px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
-                    ASME BPE SF4
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#2D8CFF] px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
+                    PRESSURE SAFETY DIRECTIVE
                   </span>
-                  <span className="text-emerald-500 font-bold">✓ VERIFIED</span>
+                  <span className="text-[11px] font-mono font-bold text-[#071A52] bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                    Hydro-Tested
+                  </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#071A52]">
-                  Bioprocessing Equipment
+                <h3 className="text-lg font-bold text-[#071A52] leading-snug">
+                  CE / PED 2014/68/EU Pressure Criteria
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Surface electropolish finishing Ra ≤ 0.38µm (15µin) with sulfur chem control for ultra-sterile bioprocess applications.
+                <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  Pressure ratings and hydrostatic proof-testing compliance for sanitary butterfly valves, check valves, and high-pressure Tri-Clamp joints operating under pressurized steam, CIP cycles, and liquid processing lines.
                 </p>
+                <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5 font-mono text-[10px] text-slate-600">
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Hydrostatic Tested</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">10 Bar / 16 Bar</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Sound Eng. Practice</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500">
-                <span>FINISH: <strong>Ra ≤ 0.38µm EP Mirror</strong></span>
+              <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-500 text-[11px]">Scope: Valves &amp; High-Pressure Unions</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Pressure Equipment Directive Query')}
+                  className="font-bold text-[#2D8CFF] hover:underline cursor-pointer"
+                >
+                  View Pressure Ratings &rarr;
+                </button>
               </div>
             </div>
 
-            {/* Card 6: EN 10204 3.1 & 3.2 MTR */}
-            <div className="cert-glass-card p-6 flex flex-col justify-between">
+            {/* Card 6: ISO 9001:2015 Framework */}
+            <div className="bg-[#F7F8FA] rounded-2xl p-6 border border-slate-200/90 shadow-sm hover:shadow-md hover:border-[#2D8CFF]/50 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-xs text-[#2D8CFF] font-extrabold px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
-                    EN 10204 3.1 MTR
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#2D8CFF] px-2.5 py-1 bg-[#2D8CFF]/10 rounded-md">
+                    QUALITY MANAGEMENT SYSTEM
                   </span>
-                  <span className="text-emerald-500 font-bold">✓ VERIFIED</span>
+                  <span className="text-[11px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    QMS Aligned QA
+                  </span>
                 </div>
-                <h3 className="text-lg font-bold text-[#071A52]">
-                  Mill Test Traceability
+                <h3 className="text-lg font-bold text-[#071A52] leading-snug">
+                  ISO 9001:2015 Quality Management
                 </h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                  Every batch is dispatched with complete spectroscopic chemical analysis, mechanical tensile results, and heat number ties.
+                <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  Rigorous quality checkpoints including inbound portable XRF spectrometer alloy verification, digital caliper dimensional audits, contact profilometer roughness testing, and documented batch warehousing.
                 </p>
+                <div className="mt-4 pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5 font-mono text-[10px] text-slate-600">
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Inbound PMI Testing</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Roughness Profilometer</span>
+                  <span className="bg-white px-2 py-0.5 rounded border border-slate-200">Traceable Storage</span>
+                </div>
               </div>
-              <div className="mt-4 pt-3 border-t border-slate-100 font-mono text-[11px] text-slate-500">
-                <span>MTC: <strong>Original Heat Traceable</strong></span>
+              <div className="mt-5 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <span className="font-mono text-slate-500 text-[11px]">Scope: Warehouse QA &amp; Sourcing</span>
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(null, 'Quality Management Protocols')}
+                  className="font-bold text-[#2D8CFF] hover:underline cursor-pointer"
+                >
+                  View QA Protocols &rarr;
+                </button>
               </div>
             </div>
           </div>
@@ -1228,142 +1445,159 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          SECTION 7: WHY LOTUS? MILESTONE TIMELINE (LIGHT GREY #F7F8FA)
-          "1989 Company Started ↓ 1998 Export Begins ↓ 2008 500 Products ↓ 2026 1000+ Products"
+          SECTION 7: BUILT ON FAMILY VALUES. DRIVEN BY ENGINEERING EXCELLENCE.
+          Client Feedback Issue 3: Complete family-business heritage story.
+          Established 1989 by the family in Girgaon, Mumbai.
+          Managing Director Chirag Shah continuing multi-generational legacy.
+          Sharp executive portrait layout preserving authentic image resolution.
           ========================================================================= */}
       <section className="w-full bg-[#F7F8FA] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="why-lotus">
         <div className="max-w-7xl mx-auto flex flex-col gap-12">
-          <div className="text-center max-w-2xl mx-auto flex flex-col gap-2">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto flex flex-col gap-2">
             <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
-              37-YEAR METALLURGICAL JOURNEY
+              FAMILY HERITAGE • ESTABLISHED 1989 IN GIRGAON, MUMBAI
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#071A52]">
-              Why Lotus? Our Story of Precision
+              Built on Family Values. Driven by Engineering Excellence.
             </h2>
-            <p className="text-sm sm:text-base text-slate-600">
-              From a Girgaon raw material sourcing counter to an autonomous AI-driven export operation supplying 100+ countries.
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              Founded in 1989 by our family in the historic metal trading hub of Girgaon, Mumbai, Lotus Tubes has evolved across generations from a regional raw materials trading enterprise into a specialized supplier of certified sanitary stainless steel piping, hygienic fittings, and high-purity process components.
             </p>
           </div>
 
-          {/* Large Timeline Array */}
+          {/* Authentic Timeline Array */}
           <div className="relative">
-            {/* Connecting line */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-[#071A52] via-[#2D8CFF] to-[#2D8CFF] -translate-y-1/2 z-0" />
+            {/* Connecting line on desktop */}
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-[#071A52] via-[#2D8CFF] to-[#071A52] -translate-y-1/2 z-0 opacity-20" />
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
               {/* Milestone 1: 1989 */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3 relative hover:border-[#2D8CFF] transition-all">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#071A52] font-mono">1989</span>
+              <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex flex-col gap-3 relative hover:border-[#2D8CFF] hover:shadow-md transition-all">
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                  <span className="text-xl font-extrabold text-[#071A52] font-mono">1989</span>
                   <span className="w-3 h-3 rounded-full bg-[#071A52]" />
                 </div>
                 <h3 className="font-bold text-base text-[#071A52]">
-                  Company Founded
+                  Family Foundation in Mumbai
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Established in Girgaon, Mumbai as Lotus Impex, supplying stainless steel pipes and fittings to domestic processing units.
+                  Established by our family in Girgaon, Mumbai—the historic commercial center of Indian metallurgy—supplying certified stainless steel tubes, pipes, and raw materials to local processing plants.
                 </p>
-                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-semibold">
-                  MUMBAI TRADING HUB
+                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-bold uppercase tracking-wider">
+                  MUMBAI TRADING ROOTS
                 </span>
               </div>
 
-              {/* Milestone 2: 1998 */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3 relative hover:border-[#2D8CFF] transition-all">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#2D8CFF] font-mono">1998</span>
+              {/* Milestone 2: 2000s */}
+              <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex flex-col gap-3 relative hover:border-[#2D8CFF] hover:shadow-md transition-all">
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                  <span className="text-xl font-extrabold text-[#2D8CFF] font-mono">2000s</span>
                   <span className="w-3 h-3 rounded-full bg-[#2D8CFF]" />
                 </div>
                 <h3 className="font-bold text-base text-[#071A52]">
-                  Direct Export Initiated
+                  Sanitary &amp; Dairy Specialization
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Commenced export containers to the Middle East and Southeast Asia, securing international freight partnerships.
+                  Recognizing the growing hygienic demands of India's dairy, food, and beverage sectors, the business expanded inventory into SMS 1145, DIN 11850, and 3-A sanitary fittings and butterfly valves.
                 </p>
-                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-semibold">
-                  CROSS-BORDER LOGISTICS
+                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-bold uppercase tracking-wider">
+                  FOOD &amp; DAIRY EXPANSION
                 </span>
               </div>
 
-              {/* Milestone 3: 2008 */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-3 relative hover:border-[#2D8CFF] transition-all">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#071A52] font-mono">2008</span>
+              {/* Milestone 3: 2010s */}
+              <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex flex-col gap-3 relative hover:border-[#2D8CFF] hover:shadow-md transition-all">
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                  <span className="text-xl font-extrabold text-[#071A52] font-mono">2010s</span>
                   <span className="w-3 h-3 rounded-full bg-[#071A52]" />
                 </div>
                 <h3 className="font-bold text-base text-[#071A52]">
-                  500+ Product Variants
+                  High-Purity Biopharma Lines
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Expanded into electropolished ASME BPE SF4 sanitary tubes, zero dead-leg diaphragm valves, and 3-A tri-clamp unions.
+                  Introduced specialized ASME BPE SF4 electropolished tubing with Ra ≤ 0.38µm, zero dead-leg diaphragm valves, and Tri-Clamp unions to serve sterile pharmaceutical and biotechnology loops.
                 </p>
-                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-semibold">
-                  ASME BPE PORTFOLIO
+                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-bold uppercase tracking-wider">
+                  BIOPHARMA &amp; WFI SYSTEMS
                 </span>
               </div>
 
-              {/* Milestone 4: 2026 */}
+              {/* Milestone 4: Present Day */}
               <div className="bg-white p-6 rounded-2xl border-2 border-[#2D8CFF] shadow-md flex flex-col gap-3 relative">
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-black text-[#2D8CFF] font-mono">2026</span>
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#FF007A] animate-pulse" />
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                  <span className="text-xl font-extrabold text-[#2D8CFF] font-mono">TODAY</span>
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#2D8CFF] animate-pulse" />
                 </div>
                 <h3 className="font-bold text-base text-[#071A52]">
-                  1000+ Products &amp; AI Fleet
+                  Next-Gen Leadership &amp; RFQ Desk
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Supplying 100+ countries backed by autonomous AI quotation agents, real-time yard inventory, and sub-15 minute RFQs.
+                  Managing Director Chirag Shah advances the multi-generational family legacy, uniting 35+ years of family trade relationships with rapid digital quotation workflows, stringent EN 10204 3.1 MTC inspection, and direct WhatsApp sales support.
                 </p>
-                <span className="mt-auto font-mono text-[10px] text-[#FF007A] font-bold">
-                  AUTONOMOUS DISPATCH
+                <span className="mt-auto font-mono text-[10px] text-[#2D8CFF] font-bold uppercase tracking-wider">
+                  MODERN SOURCING PLATFORM
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Founder & Managing Director Leadership Card */}
-          <div className="bg-white p-6 lg:p-8 rounded-3xl shadow-sm border border-slate-200 mt-2">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Leadership & Family Heritage Executive Card */}
+          <div className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-md border border-slate-200/90 mt-2">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Executive Portrait Column (High-Res 1168x1346 preserved, elegant rectangular framing) */}
               <div className="lg:col-span-4 flex justify-center">
-                <div className="relative w-44 h-44 lg:w-48 lg:h-48 rounded-full overflow-hidden shadow-xl bg-white border-4 border-[#2D8CFF]/30 p-1">
+                <div className="w-60 h-80 sm:w-64 sm:h-88 rounded-2xl overflow-hidden shadow-xl border-2 border-slate-200/80 bg-slate-100 relative group flex items-center justify-center p-1">
                   <img
-                    className="w-full h-full object-cover rounded-full"
+                    className="w-full h-full object-cover object-top rounded-xl transition-transform duration-500 group-hover:scale-102"
                     src={LEADERSHIP.photo || '/assets/images/team/owner.jpeg'}
-                    alt="Chirag Shah - Founder & Managing Director Lotus Tubes"
-                    width="200"
-                    height="200"
+                    alt="Chirag Shah - Managing Director, Lotus Tubes"
+                    width="400"
+                    height="500"
                   />
+                  <div className="absolute bottom-3 left-3 right-3 bg-[#071A52]/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/20 text-center">
+                    <span className="font-mono text-[10px] text-white uppercase font-bold tracking-wider">
+                      MANAGING DIRECTOR
+                    </span>
+                  </div>
                 </div>
               </div>
 
+              {/* Executive Biography & Family Business Perspective */}
               <div className="lg:col-span-8 flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-white uppercase px-2.5 py-0.5 rounded bg-[#071A52] font-bold">
-                    FOUNDER &amp; MANAGING DIRECTOR
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-xs text-white uppercase px-2.5 py-1 rounded bg-[#071A52] font-bold tracking-wider">
+                    MANAGING DIRECTOR'S PERSPECTIVE
                   </span>
-                  <span className="font-mono text-xs text-slate-500">
-                    EST. 1989 LOTUS TUBES
+                  <span className="font-mono text-xs text-[#2D8CFF] font-semibold bg-blue-50 px-2.5 py-1 rounded border border-blue-200">
+                    CONTINUING A MULTI-GENERATIONAL FAMILY LEGACY
                   </span>
                 </div>
 
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-[#071A52]">
                   {LEADERSHIP.name || 'Chirag Shah'}
                 </h3>
+                <span className="text-xs font-mono text-slate-500 uppercase font-semibold">
+                  Managing Director &bull; Lotus Tubes (Est. 1989 Family Business)
+                </span>
 
-                <p className="text-sm sm:text-base text-slate-600 italic leading-relaxed">
-                  &ldquo;In hygienic fluid architecture, precision is non-negotiable. An undetectable 0.5µm crevice or an unverified heat number can jeopardize an entire pharmaceutical batch or dairy processing campaign. At Lotus Tubes, we have synthesized rigorous metallographic discipline with swift operational responsiveness to ensure our global clients receive verified, mirror-finished conduits within hours of inquiry.&rdquo;
+                <p className="text-sm sm:text-base text-slate-700 italic leading-relaxed pt-1">
+                  &ldquo;Lotus Tubes was founded in 1989 by our family on principles of uncompromising integrity, technical precision, and enduring client trust. Growing up immersed in Mumbai's stainless steel trade, I was taught early on that in sanitary fluid architecture, there is zero tolerance for error. An undetected 0.5µm crevice or an unverified heat number can jeopardize an entire pharmaceutical or dairy processing batch. Today, leading our family enterprise into its next chapter, my focus is on pairing our three-decade foundation with responsive, modern technical service, verified mill test traceability, and transparent B2B partnership.&rdquo;
                 </p>
 
-                <div className="flex flex-wrap gap-4 pt-2 font-mono text-xs text-slate-600">
-                  <span className="flex items-center gap-1.5">
-                    <span className="text-[#2D8CFF] font-bold">✓</span> 30+ Years Metallurgical Trade
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="text-[#2D8CFF] font-bold">🌍</span> Cross-Border Supply Chains
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <span className="text-[#2D8CFF] font-bold">⚖</span> Zero-Defect QA Protocol
-                  </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 font-mono text-xs">
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center gap-2">
+                    <span className="text-[#2D8CFF] font-bold text-sm">✓</span>
+                    <span className="text-slate-800 font-semibold">Family Business Est. 1989</span>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center gap-2">
+                    <span className="text-[#2D8CFF] font-bold text-sm">✓</span>
+                    <span className="text-slate-800 font-semibold">SS 304 &amp; SS 316L Stocking</span>
+                  </div>
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center gap-2">
+                    <span className="text-[#2D8CFF] font-bold text-sm">✓</span>
+                    <span className="text-slate-800 font-semibold">EN 10204 3.1 Traceability</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1372,139 +1606,289 @@ export const HomeView = ({ onOpenEnquiry, onOpenVideo }) => {
       </section>
 
       {/* =========================================================================
-          SECTION 8: INSTANT BOQ & QUOTATION ENGINE (WHITE #FFFFFF)
-          With Minimal Magenta (#FF007A) CTA Button
+          STATISTICS SECTION: INDUSTRIAL SCALE & METALLURGICAL HERITAGE (WHITE #FFFFFF)
+          Client Feedback Issue 6: Relocated to bottom of homepage before BOQ engine.
+          Verified metrics: 100+ Specs, Dual Metallurgy, 10+ Years Track Record, Prompt RFQ.
           ========================================================================= */}
-      <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="boq-request">
-        <div className="max-w-4xl mx-auto bg-[#F7F8FA] p-6 sm:p-10 rounded-3xl shadow-xl border border-slate-200">
-          <div className="flex flex-col gap-2 text-center max-w-xl mx-auto mb-8">
-            <span className="font-mono text-xs text-[#2D8CFF] uppercase tracking-widest font-bold">
-              AI-POWERED PROCUREMENT PIPELINE
+      <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-14 lg:py-16 border-b border-slate-200" id="statistics">
+        <div className="max-w-7xl mx-auto flex flex-col gap-6">
+          <div className="text-center max-w-2xl mx-auto flex flex-col gap-1.5">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#2D8CFF] font-bold">
+              VERIFIED METALLURGY • RELIABLE SOURCING
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#071A52]">
-              Instant BOQ &amp; Quotation Engine
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#071A52]">
+              Industrial Scale &amp; Proven Metallurgical Heritage
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600">
-              Paste your bill of quantities or enter tube/fitting specifications for automated parsing and pricing by Ananya Mehta (AI Sales Agent).
-            </p>
           </div>
 
-          {boqSuccess ? (
-            <div className="p-6 bg-white rounded-2xl border border-emerald-300 text-center flex flex-col gap-3 shadow-sm">
-              <span className="text-3xl text-emerald-500">✓</span>
-              <h3 className="font-bold text-lg text-[#071A52]">Quotation Registered</h3>
-              <p className="text-sm text-slate-600">{boqSuccess}</p>
-              <button
-                type="button"
-                onClick={() => setBoqSuccess('')}
-                className="self-center mt-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-[#071A52] rounded-lg font-mono text-xs cursor-pointer"
-              >
-                Submit Another Specification
-              </button>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 pt-4">
+            {/* Stat 1: 100+ Specs */}
+            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#071A52] tracking-tight">
+                <AnimatedCounter target={100} suffix="+" duration={1800} />
+              </div>
+              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
+                Hygienic Specs &amp; Sizes
+              </span>
+              <span className="text-xs text-slate-500 mt-1">
+                ASTM A270, DIN 11850, ASME BPE &amp; 3-A stock
+              </span>
             </div>
-          ) : (
-            <form className="flex flex-col gap-4" onSubmit={handleBoqSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-xs text-slate-600 uppercase">
-                    Full Name • Company Designation *
-                  </label>
-                  <input
-                    className="px-4 py-2.5 bg-white rounded-lg text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-sm"
-                    placeholder="e.g. Dr. Rajesh Verma (Project Lead)"
-                    required
-                    type="text"
-                    value={boqFormData.name}
-                    onChange={(e) => setBoqFormData({ ...boqFormData, name: e.target.value })}
-                  />
+
+            {/* Stat 2: Dual Metallurgy */}
+            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#2D8CFF] tracking-tight py-1.5 sm:py-2">
+                SS 304 / 316L
+              </div>
+              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
+                Dual Metallurgy
+              </span>
+              <span className="text-xs text-slate-500 mt-1">
+                EP Ra ≤ 0.38µm mirror &amp; MP satin finishes
+              </span>
+            </div>
+
+            {/* Stat 3: 10+ Years */}
+            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#071A52] tracking-tight">
+                <AnimatedCounter target={10} suffix="+ Years" duration={1800} />
+              </div>
+              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
+                Industry Track Record
+              </span>
+              <span className="text-xs text-slate-500 mt-1">
+                Continuous sourcing from Girgaon, Mumbai hub
+              </span>
+            </div>
+
+            {/* Stat 4: Prompt RFQ Desk */}
+            <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col items-center text-center hover:border-[#2D8CFF]/50 transition-all">
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#2D8CFF] tracking-tight py-1.5 sm:py-2">
+                Prompt RFQ
+              </div>
+              <span className="mt-2 text-sm sm:text-base font-bold text-[#071A52]">
+                Technical Sourcing Desk
+              </span>
+              <span className="text-xs text-slate-500 mt-1">
+                Direct quotation assistance via WhatsApp &amp; Email
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      {/* =========================================================================
+          SECTION 8: INSTANT BOQ & QUOTATION ENGINE (MODERN INDUSTRIAL PROCUREMENT SUITE)
+          Client Feedback Issue 6: Redesigned 2-column layout.
+          Left column: 3-step quotation workflow & trust metrics.
+          Right column: Premium grouped input fields, clear validation, and AI agent integration.
+          Preserves exact backend payload structure and AI Sales Agent Ananya Mehta integration.
+          ========================================================================= */}
+      <section className="w-full bg-[#FFFFFF] text-[#071A52] px-4 lg:px-8 py-16 lg:py-20 border-b border-slate-200" id="boq-request">
+        <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-200/90 overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+            {/* Left Column: Industrial Procurement Overview & 3-Step Process (5 cols) */}
+            <div className="lg:col-span-5 bg-[#071A52] text-white p-8 sm:p-10 lg:p-12 flex flex-col justify-between gap-8">
+              <div className="flex flex-col gap-4">
+                <div className="inline-flex items-center gap-2 font-mono text-xs uppercase px-3 py-1 rounded-full bg-white/10 text-[#2D8CFF] font-bold self-start border border-white/15">
+                  <span className="w-2 h-2 rounded-full bg-[#2D8CFF] animate-pulse" />
+                  <span>AI-POWERED PROCUREMENT PIPELINE</span>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-xs text-slate-600 uppercase">
-                    Corporate Email • Phone *
-                  </label>
-                  <input
-                    className="px-4 py-2.5 bg-white rounded-lg text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-sm"
-                    placeholder="rajesh@biopharmalead.com or +91 98..."
-                    required
-                    type="text"
-                    value={boqFormData.emailPhone}
-                    onChange={(e) => setBoqFormData({ ...boqFormData, emailPhone: e.target.value })}
-                  />
+
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+                  Instant BOQ &amp; Industrial Quotation Engine
+                </h2>
+
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  Paste your Bill of Quantities or tube schedule. Ananya Mehta (AI Sales Specialist) and our Mumbai engineering desk parse your specifications for rapid commercial review and dispatch of itemized pricing.
+                </p>
+
+                {/* 3 Concise Steps */}
+                <div className="flex flex-col gap-4 pt-4">
+                  <div className="flex items-start gap-3.5">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#2D8CFF] text-white text-xs font-bold shrink-0 font-mono">
+                      1
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">Submit Tube &amp; Fitting Schedule</span>
+                      <span className="text-xs text-slate-300 mt-0.5">Paste your Bill of Quantities or enter required sizes, quantities, and alloy specifications.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/15 text-[#2D8CFF] text-xs font-bold shrink-0 font-mono border border-white/20">
+                      2
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">Technical &amp; MTC Verification</span>
+                      <span className="text-xs text-slate-300 mt-0.5">Our technical desk verifies mill test report (MTC) availability and ready warehouse stock in Mumbai.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/15 text-[#2D8CFF] text-xs font-bold shrink-0 font-mono border border-white/20">
+                      3
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">Itemized Quotation Dispatch</span>
+                      <span className="text-xs text-slate-300 mt-0.5">Receive a formal commercial quotation with transparent pricing, HS codes, and immediate dispatch timelines.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-xs text-slate-600 uppercase">
-                    Target Alloy
-                  </label>
-                  <select
-                    className="px-4 py-2.5 bg-white rounded-lg text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-sm"
-                    value={boqFormData.alloy}
-                    onChange={(e) => setBoqFormData({ ...boqFormData, alloy: e.target.value })}
+              {/* Bottom Trust Ribbons */}
+              <div className="pt-6 border-t border-white/10 flex flex-col gap-2 font-mono text-[11px] text-slate-300">
+                <span className="flex items-center gap-2">
+                  <span className="text-[#2D8CFF] font-bold">✓</span> EN 10204 3.1 Mill Test Certificates Included
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="text-[#2D8CFF] font-bold">✓</span> Direct WhatsApp Assistance on +91 98205 25200
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="text-[#2D8CFF] font-bold">✓</span> Ready Stock Dispatch from Girgaon, Mumbai Hub
+                </span>
+              </div>
+            </div>
+
+            {/* Right Column: Premium Quotation Form (7 cols) */}
+            <div className="lg:col-span-7 bg-[#F7F8FA] p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+              {boqSuccess ? (
+                <div className="p-8 bg-white rounded-2xl border border-emerald-300 text-center flex flex-col items-center justify-center gap-4 shadow-sm my-auto">
+                  <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-2xl font-bold">
+                    ✓
+                  </div>
+                  <h3 className="font-extrabold text-xl text-[#071A52]">Quotation Schedule Logged</h3>
+                  <p className="text-sm text-slate-600 max-w-md leading-relaxed">{boqSuccess}</p>
+                  <button
+                    type="button"
+                    onClick={() => setBoqSuccess('')}
+                    className="mt-2 px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-[#071A52] rounded-xl font-mono text-xs font-bold cursor-pointer transition-colors"
                   >
-                    <option>SS 316L (Parenteral / Biopharma)</option>
-                    <option>SS 304 / 304L (Dairy &amp; Food)</option>
-                    <option>Dual Certified SS 316/316L</option>
-                  </select>
+                    Submit Another BOQ Schedule
+                  </button>
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-xs text-slate-600 uppercase">
-                    Surface Finish
-                  </label>
-                  <select
-                    className="px-4 py-2.5 bg-white rounded-lg text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-sm"
-                    value={boqFormData.finish}
-                    onChange={(e) => setBoqFormData({ ...boqFormData, finish: e.target.value })}
-                  >
-                    <option>Electropolished (EP) Ra ≤ 0.38µm (SF4)</option>
-                    <option>Electropolished (EP) Ra ≤ 0.51µm (SF1)</option>
-                    <option>Mechanical Polish (MP) Ra ≤ 0.8µm</option>
-                  </select>
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-xs text-slate-600 uppercase">
-                    Destination Port / Yard
-                  </label>
-                  <input
-                    className="px-4 py-2.5 bg-white rounded-lg text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-sm"
-                    placeholder="e.g. Houston / JAFZA / Mumbai"
-                    type="text"
-                    value={boqFormData.port}
-                    onChange={(e) => setBoqFormData({ ...boqFormData, port: e.target.value })}
-                  />
-                </div>
-              </div>
+              ) : (
+                <form className="flex flex-col gap-5" onSubmit={handleBoqSubmit}>
+                  <div>
+                    <h3 className="text-xl font-extrabold text-[#071A52]">
+                      Submit Your BOQ / Technical Schedule
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Fill out the specification fields below. Required fields are marked with an asterisk (*).
+                    </p>
+                  </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="font-mono text-xs text-slate-600 uppercase">
-                  Paste BOQ Schedule / Tube Schedule / Fitting List
-                </label>
-                <textarea
-                  className="px-4 py-2.5 bg-white rounded-lg text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-sm"
-                  placeholder="e.g. 500m x 1.5' OD SS 316L EP tubes; 40x 90 deg bend clamp ends; 20x 1.5' diaphragm valves pneumatic actuator..."
-                  rows={4}
-                  value={boqFormData.schedule}
-                  onChange={(e) => setBoqFormData({ ...boqFormData, schedule: e.target.value })}
-                />
-              </div>
+                  {/* Group 1: Contact Details */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+                        Full Name &bull; Company Designation *
+                      </label>
+                      <input
+                        className="px-4 py-3 bg-white rounded-xl text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-xs placeholder:text-slate-400"
+                        placeholder="e.g. Dr. Rajesh Verma (Project Lead)"
+                        required
+                        type="text"
+                        value={boqFormData.name}
+                        onChange={(e) => setBoqFormData({ ...boqFormData, name: e.target.value })}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+                        Corporate Email &bull; Phone / WhatsApp *
+                      </label>
+                      <input
+                        className="px-4 py-3 bg-white rounded-xl text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-xs placeholder:text-slate-400"
+                        placeholder="rajesh@biopharmalead.com or +91 98..."
+                        required
+                        type="text"
+                        value={boqFormData.emailPhone}
+                        onChange={(e) => setBoqFormData({ ...boqFormData, emailPhone: e.target.value })}
+                      />
+                    </div>
+                  </div>
 
-              {/* Action Button: Minimal Magenta (#FF007A) CTA Button */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-                <div className="flex items-center gap-2 font-mono text-xs text-slate-500">
-                  <span className="text-[#2D8CFF]">🔒</span>
-                  <span>MTC EN 10204 3.1 • 3.2 INSPECTION COMPLIANT</span>
-                </div>
-                <button
-                  className="btn-magenta-cta w-full sm:w-auto px-8 py-3.5 font-bold text-sm rounded-xl shadow-lg transition-all cursor-pointer"
-                  type="submit"
-                  disabled={boqSubmitting}
-                >
-                  {boqSubmitting ? 'Processing BOQ...' : 'Generate AI Price Quotation →'}
-                </button>
-              </div>
-            </form>
-          )}
+                  {/* Group 2: Metallurgical Criteria */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+                        Target Alloy Grade
+                      </label>
+                      <select
+                        className="px-4 py-3 bg-white rounded-xl text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-xs cursor-pointer"
+                        value={boqFormData.alloy}
+                        onChange={(e) => setBoqFormData({ ...boqFormData, alloy: e.target.value })}
+                      >
+                        <option>SS 316L (Parenteral / Biopharma)</option>
+                        <option>SS 304 / 304L (Dairy &amp; Food)</option>
+                        <option>Dual Certified SS 316/316L</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+                        Surface Finish Spec
+                      </label>
+                      <select
+                        className="px-4 py-3 bg-white rounded-xl text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-xs cursor-pointer"
+                        value={boqFormData.finish}
+                        onChange={(e) => setBoqFormData({ ...boqFormData, finish: e.target.value })}
+                      >
+                        <option>Electropolished (EP) Ra ≤ 0.38µm (SF4)</option>
+                        <option>Electropolished (EP) Ra ≤ 0.51µm (SF1)</option>
+                        <option>Mechanical Polish (MP) Ra ≤ 0.8µm</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+                        Destination Port / City
+                      </label>
+                      <input
+                        className="px-4 py-3 bg-white rounded-xl text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-xs placeholder:text-slate-400"
+                        placeholder="e.g. Mumbai / Houston / JAFZA"
+                        type="text"
+                        value={boqFormData.port}
+                        onChange={(e) => setBoqFormData({ ...boqFormData, port: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Group 3: BOQ Schedule Textarea */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-mono text-xs text-slate-700 font-bold uppercase tracking-wider">
+                      Paste BOQ Schedule / Tube Schedule / Fitting List *
+                    </label>
+                    <textarea
+                      className="px-4 py-3 bg-white rounded-xl text-[#071A52] text-sm focus:outline-none focus:ring-2 focus:ring-[#2D8CFF] border border-slate-200 shadow-xs font-mono placeholder:text-slate-400"
+                      placeholder="e.g. 500m x 1.5' OD SS 316L EP tubes; 40x 90 deg bend clamp ends; 20x 1.5' diaphragm valves pneumatic actuator..."
+                      rows={5}
+                      required
+                      value={boqFormData.schedule}
+                      onChange={(e) => setBoqFormData({ ...boqFormData, schedule: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Action Bar */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                    <div className="flex items-center gap-2 font-mono text-xs text-slate-500">
+                      <svg className="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      <span>EN 10204 3.1 &bull; Heat Traceable Documentation</span>
+                    </div>
+                    <button
+                      className="btn-magenta-cta w-full sm:w-auto px-8 py-3.5 font-bold text-sm rounded-xl shadow-lg transition-all cursor-pointer"
+                      type="submit"
+                      disabled={boqSubmitting}
+                    >
+                      {boqSubmitting ? 'Processing BOQ Specifications...' : 'Generate AI Price Quotation →'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
         </div>
       </section>
     </div>

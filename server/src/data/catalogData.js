@@ -902,7 +902,7 @@ export const MASTER_PRODUCTS = [
     mtc: "Available",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "1-2 days dispatch",
-    image: "/assets/images/products/accessories/ss-tri-clamp-clamp.svg",
+    image: "/assets/images/products/fittings/custom-fittings/ss-sanitary-fitting-adapter-001.jpg",
     overview: "Engineered transition adapters converting between disparate sanitary standard connections (e.g. Tri-Clamp to SMS Union or DIN 11851 thread).",
     applications: ["Imported machinery interface", "Plant standard cross-conversions", "Temporary test adapters"],
     seo: { title: "SS Sanitary Transition Fitting | Lotus Tubes", metaDescription: "Sanitary transition fittings adapting Tri-Clamp, SMS, DIN, and weld standards." }
@@ -1507,7 +1507,7 @@ export const MASTER_PRODUCTS = [
     mtc: "Function & pressure certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "2-3 days assembly & test",
-    image: "/assets/images/products/valves/pneumatic-sanitary-ball-valve.svg",
+    image: "/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg",
     overview: "Automated pneumatic butterfly valve equipped with a stainless steel pneumatic actuator cylinder and optional smart control top for remote PLC operations.",
     applications: ["Automated dairy routing blocks", "Brewery fermentation manifolds", "CIP return valve matrices"],
     seo: { title: "Pneumatic Sanitary Butterfly Valve | Lotus Tubes", metaDescription: "Automated pneumatic sanitary butterfly valves with feedback sensors and stainless actuators." }

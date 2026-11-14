@@ -95,10 +95,14 @@ export const ProductCard = ({
       {/* 2. Structured Card Body & Specifications Area */}
       <div className="product-card__body p-4 sm:p-5 flex flex-col flex-1 min-w-0">
         
-        {/* Category Header */}
+        {/* Category Header & Stock Status */}
         <div className="flex items-center justify-between gap-2 mb-2 min-w-0">
           <span className="product-card__category text-[11px] font-bold text-sky-700 tracking-wider uppercase truncate">
             {category || 'Sanitary Component'}
+          </span>
+          <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Ready Stock
           </span>
         </div>
 
@@ -140,6 +144,13 @@ export const ProductCard = ({
               {standardChip}
             </span>
           )}
+
+          <span
+            className="spec-chip spec-chip--mtc px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200"
+            title="EN 10204 3.1 Material Test Certificate Traceable"
+          >
+            EN 10204 3.1
+          </span>
         </div>
 
         {/* Concise 2-Row Technical Attribute Summary */}

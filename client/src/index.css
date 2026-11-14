@@ -128,10 +128,11 @@
   --whatsapp-green: #25D366;
   --whatsapp-green-hover: #20BA5A;
 
-  /* Typography */
-  --font-heading: 'Space Grotesk', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Typography System — Plus Jakarta Sans (Headings), Inter (Body), IBM Plex Sans (Specs) */
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-specs: 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Sans', monospace;
 
   /* Spacing */
   --container-max: 1360px;

@@ -191,17 +191,17 @@ export const AboutView = ({ onOpenEnquiry }) => {
         </div>
       </section>
 
-      {/* 4. Strategic Milestone Timeline */}
+      {/* 4. Strategic Milestone Timeline - Authentic Family Business Heritage */}
       <section className="site-container py-16 sm:py-20">
         <div className="max-w-3xl mx-auto text-center mb-14">
           <span className="text-xs font-mono font-bold tracking-widest text-sky-600 uppercase">
-            Evolution &amp; Heritage
+            Evolution &amp; Family Heritage
           </span>
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight mt-2">
             The Journey of Lotus Tubes
           </h2>
           <p className="text-sm text-slate-600 mt-2">
-            From premier metal trading in Girgaon to an advanced digital engineering supply platform.
+            Built on Family Values. Driven by Engineering Excellence since 1989.
           </p>
         </div>
 
@@ -210,11 +210,11 @@ export const AboutView = ({ onOpenEnquiry }) => {
           <div className="relative pl-8">
             <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-sky-600"></span>
             <div className="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-sky-800 font-mono text-xs font-bold mb-1">
-              2019 • Commercial Incorporation
+              1989 • Family Business Founded in Mumbai
             </div>
-            <h3 className="text-lg font-bold text-slate-900">Establishment of Lotus Impex</h3>
-            <p className="text-sm text-slate-600 mt-1 max-w-xl">
-              Incorporated in Mumbai as a licensed trading entity (GSTIN: 27AIIPS0303A1ZU), specializing in industrial stainless steel trading across Western India.
+            <h3 className="text-lg font-bold text-slate-900">Establishment of Lotus Impex / Family Origins</h3>
+            <p className="text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
+              Founded by our family in Girgaon, Mumbai—the historic center of Indian metal trading—supplying quality stainless steel tubes, pipes, and raw materials to local pharmaceutical and processing plants.
             </p>
           </div>
 
@@ -222,11 +222,11 @@ export const AboutView = ({ onOpenEnquiry }) => {
           <div className="relative pl-8">
             <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-sky-600"></span>
             <div className="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-sky-800 font-mono text-xs font-bold mb-1">
-              2021 • High-Purity Sanitary Specialization
+              2000s • Sanitary &amp; Dairy Specialization
             </div>
-            <h3 className="text-lg font-bold text-slate-900">Launch of the Lotus Tubes Hygienic Division</h3>
-            <p className="text-sm text-slate-600 mt-1 max-w-xl">
-              Transitioned focus entirely to high-purity ASTM A270 sanitary tubes, ASME BPE bio-processing components, and precision manual &amp; pneumatic hygienic valves.
+            <h3 className="text-lg font-bold text-slate-900">Expansion into Hygienic Dairy &amp; Food Lines</h3>
+            <p className="text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
+              Recognizing the stringent cleanability needs of India's dairy, food, and beverage boom, the business expanded into certified SMS 1145, DIN 11850, and 3-A sanitary fittings and butterfly valves.
             </p>
           </div>
 
@@ -234,11 +234,11 @@ export const AboutView = ({ onOpenEnquiry }) => {
           <div className="relative pl-8">
             <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-sky-600"></span>
             <div className="inline-block px-2.5 py-0.5 rounded bg-sky-100 text-sky-800 font-mono text-xs font-bold mb-1">
-              2023 • Global Export Capability
+              2010s • High-Purity Biopharma Expansion
             </div>
-            <h3 className="text-lg font-bold text-slate-900">Export Licensing (IEC: 0316902471) &amp; Port Logistics</h3>
-            <p className="text-sm text-slate-600 mt-1 max-w-xl">
-              Acquired formal Indian Director General of Foreign Trade (DGFT) export credentials. Began supplying turnkey sanitary components to Middle Eastern, Southeast Asian, and African processing plants.
+            <h3 className="text-lg font-bold text-slate-900">ASME BPE SF4 Electropolished Range</h3>
+            <p className="text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
+              Introduced specialized ultra-pure ASME BPE SF4 electropolished tubing with Ra ≤ 0.38µm, zero dead-leg diaphragm valves, and precision Tri-Clamp systems for sterile parenteral biopharma loops.
             </p>
           </div>
 
@@ -246,11 +246,11 @@ export const AboutView = ({ onOpenEnquiry }) => {
           <div className="relative pl-8">
             <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-sky-600"></span>
             <div className="inline-block px-2.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono text-xs font-bold mb-1">
-              2026 • AI-Powered Sourcing Platform
+              Present Day • Next-Gen Leadership &amp; Modern RFQ Desk
             </div>
-            <h3 className="text-lg font-bold text-slate-900">Next-Generation Digital B2B Procurement Engine</h3>
-            <p className="text-sm text-slate-600 mt-1 max-w-xl">
-              Deployed real-time dimensional configuration, 360° interactive component inspection, automated MTC verification, and an AI-driven RFQ response orchestrator.
+            <h3 className="text-lg font-bold text-slate-900">Continuing the Multi-Generational Legacy</h3>
+            <p className="text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
+              Managing Director Chirag Shah advances the family enterprise, uniting 35+ years of family trade relationships with modern digital quotation speed, rigorous EN 10204 3.1 MTC inspection, and direct WhatsApp sales support.
             </p>
           </div>
         </div>
@@ -288,7 +288,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
           <div className="lt-owner-copy">
             <div className="lt-owner-header-row">
               <div>
-                <span className="lt-person-label">{LEADERSHIP.title || 'Owner & Managing Director'}</span>
+                <span className="lt-person-label">{LEADERSHIP.title || 'Managing Director'}</span>
                 <h3 className="lt-owner-name">{LEADERSHIP.name}</h3>
               </div>
               <div className="lt-owner-location-pill">
@@ -298,7 +298,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
             </div>
             <p className="lt-owner-summary">{LEADERSHIP.summary}</p>
             <div className="lt-owner-pillars">
-              <span className="lt-pill-tag">✓ 20+ Years Sourcing Mastery</span>
+              <span className="lt-pill-tag">✓ Multi-Generational Family Enterprise (Est. 1989)</span>
               <span className="lt-pill-tag">✓ ASTM A270 &amp; ASME BPE Quality Oversight</span>
               <span className="lt-pill-tag">✓ Mandatory Super Admin Dispatch Review</span>
             </div>

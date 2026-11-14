@@ -86,15 +86,15 @@ export const Footer = () => {
               />
             </a>
 
-            <p className="font-body-sm text-sm text-slate-300 leading-relaxed">
+            <p className="font-sans text-sm text-slate-300 leading-relaxed">
               {t(
                 'footer_desc',
-                'Lotus Tubes (Lotus Impex) is a premier supplier of stainless steel sanitary pipes, tubes, fittings, and valves in SS 304 & SS 316L. Supporting sterile biopharma, dairy, food & beverage, brewery, chemical and water-treatment applications across 100+ global corridors.'
+                'Lotus Tubes (Lotus Impex) is a trusted supplier of stainless steel sanitary pipes, tubes, fittings, and valves in SS 304 & SS 316L, supporting sterile biopharma, dairy, food & beverage, brewery, chemical and water-treatment applications with verified metallurgy and ready stock.'
               )}
             </p>
 
             {/* Precision Standard Badges */}
-            <div className="flex flex-wrap gap-2 pt-1 font-label-code-micro text-[11px]">
+            <div className="flex flex-wrap gap-2 pt-1 font-sans text-xs">
               <span className="px-2.5 py-1 rounded bg-[#0B226D] border border-[#2D8CFF]/30 text-white font-semibold">
                 SS 316L &amp; SS 304
               </span>
@@ -102,29 +102,49 @@ export const Footer = () => {
                 Ra ≤ 0.38µm EP
               </span>
               <span className="px-2.5 py-1 rounded bg-[#0B226D] border border-[#2D8CFF]/30 text-[#FF007A] font-semibold">
-                ASME BPE SF4
+                ASME BPE &amp; 3-A Standards
               </span>
             </div>
 
             {/* Direct Connect Buttons */}
             <div className="pt-2 flex items-center gap-3 flex-wrap">
               <a
-                href={`https://wa.me/${CONFIG.whatsappNumber}?text=Hello%20Lotus%20Tubes%2C%20I%20have%20an%20enquiry%20regarding%20sanitary%20stainless%20steel%20products.`}
+                href={`https://wa.me/${CONFIG.whatsappNumber || '919820525200'}?text=${encodeURIComponent(
+                  'Hello Lotus Tubes, I have an enquiry regarding sanitary stainless steel products.'
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#25D366] text-black font-semibold text-xs transition-all hover:shadow-[0_0_16px_rgba(37,211,102,0.6)] cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#20BA5A] text-slate-950 font-bold text-xs transition-all shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#25D366]/50"
                 title="WhatsApp Business Direct Desk"
               >
-                <span>💬</span>
+                <svg
+                  className="w-4 h-4 fill-current shrink-0"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.3C4.24 14.99 3.8 13.47 3.8 11.91C3.8 7.37 7.5 3.67 12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.56 14.39C16.31 14.26 15.1 13.67 14.87 13.59C14.65 13.51 14.48 13.46 14.32 13.71C14.15 13.96 13.67 14.53 13.53 14.7C13.38 14.86 13.24 14.88 12.99 14.76C12.74 14.63 11.95 14.37 11.01 13.54C10.28 12.89 9.78 12.08 9.64 11.83C9.49 11.58 9.62 11.45 9.75 11.32C9.86 11.21 10 11.04 10.12 10.9C10.25 10.76 10.29 10.66 10.37 10.49C10.45 10.33 10.41 10.18 10.35 10.06C10.29 9.93 9.79 8.71 9.59 8.2C9.39 7.71 9.18 7.78 9.03 7.77C8.89 7.76 8.72 7.76 8.55 7.76C8.38 7.76 8.11 7.82 7.88 8.07C7.65 8.32 7 8.93 7 10.17C7 11.41 7.9 12.61 8.03 12.77C8.15 12.94 9.81 15.5 12.35 16.59C12.95 16.85 13.42 17.01 13.79 17.12C14.4 17.31 14.95 17.29 15.39 17.22C15.88 17.15 16.9 16.61 17.11 16.02C17.32 15.43 17.32 14.93 17.26 14.82C17.2 14.72 17.06 14.66 16.81 14.53L16.56 14.39Z" />
+                </svg>
                 <span>WhatsApp Desk</span>
               </a>
               <a
-                href={`mailto:${'sales' + '@' + 'lotustubes.com'}`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0B226D] hover:bg-[#102C82] text-white border border-[#2D8CFF]/30 font-semibold text-xs transition-all cursor-pointer"
+                href={`mailto:${CONFIG.primaryEmail || 'sales@lotustubes.com'}`}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0B226D] hover:bg-[#102C82] text-white border border-[#2D8CFF]/30 font-semibold text-xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2D8CFF]/50"
                 title="Email Sales Desk"
               >
-                <span>✉</span>
-                <span>sales@lotustubes.com</span>
+                <svg
+                  className="w-3.5 h-3.5 text-[#2D8CFF] shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                <span>{CONFIG.primaryEmail || 'sales@lotustubes.com'}</span>
               </a>
             </div>
           </div>
@@ -132,10 +152,10 @@ export const Footer = () => {
           {/* Quick Navigation Links (Span 4: 2 columns of 2) */}
           <div className="lg:col-span-4 grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-3">
-              <span className="font-label-technical text-xs text-white uppercase tracking-wider font-bold">
+              <span className="font-heading text-xs text-white uppercase tracking-wider font-bold">
                 Process Conduits
               </span>
-              <nav className="flex flex-col gap-2 font-body-sm text-xs text-slate-300">
+              <nav className="flex flex-col gap-2 font-sans text-xs text-slate-300">
                 <a href={localizePath('/category/sanitary-pipes', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
                   Sanitary Tubes &amp; Pipes
                 </a>
@@ -161,10 +181,10 @@ export const Footer = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <span className="font-label-technical text-xs text-white uppercase tracking-wider font-bold">
+              <span className="font-heading text-xs text-white uppercase tracking-wider font-bold">
                 Company &amp; Quality
               </span>
-              <nav className="flex flex-col gap-2 font-body-sm text-xs text-slate-300">
+              <nav className="flex flex-col gap-2 font-sans text-xs text-slate-300">
                 <a href={localizePath('/quality', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
                   MTC EN 10204 3.1 Traceability
                 </a>
@@ -178,10 +198,10 @@ export const Footer = () => {
                   Dairy &amp; Ice Cream Skids
                 </a>
                 <a href="#why-lotus" className="hover:text-[#2D8CFF] transition-colors">
-                  Why Lotus? (Timeline)
+                  Why Lotus? (Overview)
                 </a>
-                <a href="#why-lotus" className="hover:text-[#2D8CFF] transition-colors">
-                  Executive Leadership
+                <a href="#statistics" className="hover:text-[#2D8CFF] transition-colors">
+                  Supply Track Record
                 </a>
                 <a href={localizePath('/about', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
                   About Lotus Impex
@@ -193,11 +213,11 @@ export const Footer = () => {
           {/* Quick RFQ Mini Form inside Footer (Span 4) */}
           <div className="lg:col-span-4 bg-[#05143F] p-6 rounded-2xl border border-[#2D8CFF]/30 shadow-xl flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <span className="font-label-technical text-xs text-[#2D8CFF] font-bold uppercase tracking-wider">
-                ⚡ Quick RFQ Dispatch
+              <span className="font-heading text-xs text-[#2D8CFF] font-bold uppercase tracking-wider">
+                ⚡ Quick RFQ Sourcing
               </span>
-              <span className="text-[10px] font-label-code-micro text-slate-400">
-                Turnaround &lt; 15 Mins
+              <span className="text-[11px] font-sans text-slate-300">
+                Direct Technical Sourcing Desk
               </span>
             </div>
 

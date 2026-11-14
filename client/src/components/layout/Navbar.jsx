@@ -46,7 +46,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
         </a>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-1 font-label-technical text-label-technical" aria-label="Primary Navigation">
+        <nav className="hidden xl:flex items-center gap-1 text-xs font-semibold tracking-wider font-sans" aria-label="Primary Navigation">
           <a
             href={localizePath('/', currentLang)}
             className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
@@ -80,15 +80,15 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                 aria-label="Product Catalogue Categories"
               >
                 <div className="bg-surface-container-low/95 backdrop-blur-2xl border border-surface-container-high rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-6">
-                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-container-high/60">
-                    <span className="font-label-code-micro text-label-code-micro text-primary uppercase tracking-widest font-semibold">
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-container-high/60 font-sans">
+                    <span className="text-xs text-primary uppercase tracking-widest font-semibold">
                       ENGINEERED FOR ASEPTIC FLUID HANDLING
                     </span>
                     <a
                       href={localizePath('/products', currentLang)}
-                      className="font-label-code-micro text-label-code-micro text-primary-fixed-dim hover:text-primary transition-colors flex items-center gap-1"
+                      className="text-xs text-primary-fixed-dim hover:text-primary transition-colors flex items-center gap-1 font-medium"
                     >
-                      <span>BROWSE FULL 30+ CATALOGUE</span>
+                      <span>BROWSE FULL CATALOGUE</span>
                       <span>→</span>
                     </a>
                   </div>
@@ -220,7 +220,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                   : '#account'
                 : '#login'
             }
-            className="h-10 px-3.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary border border-surface-container-high/60 flex items-center gap-2 transition-all font-label-technical text-label-technical uppercase tracking-wider shadow-sm"
+            className="h-10 px-3.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary border border-surface-container-high/60 flex items-center gap-2 transition-all font-sans text-xs uppercase tracking-wider shadow-sm"
             title={isAuthenticated ? `Signed in as ${user?.name}` : 'Staff & Client CRM Portal'}
             aria-label="CRM & Account Portal"
           >
