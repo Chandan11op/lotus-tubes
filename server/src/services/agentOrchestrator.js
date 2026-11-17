@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { AgentTask } from '../models/AgentTask.js';
 import { Enquiry } from '../models/Enquiry.js';
 import { Quote, computeQuotationApprovalHash } from '../models/Quote.js';
@@ -8,11 +11,22 @@ import { MASTER_PRODUCTS as CATALOG } from '../data/catalogData.js';
 import { recordAuditEvent } from '../utils/auditLogger.js';
 import { generateReference } from '../utils/security.js';
 import { sendEmail } from './emailService.js';
+import { BUSINESS_MAILBOX } from '../config/emailSenders.js';
+import {
+  buildQuotationEmail,
+  buildInvoiceEmail,
+  buildInquiryReplyEmail,
+  buildOperationsUpdateEmail
+} from '../utils/emailTemplates.js';
 import {
   sendWhatsAppQuotation,
   sendWhatsAppInvoice,
   sendWhatsAppInquiryReply
 } from './whatsappService.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const SAMPLE_PDF_PATH = path.resolve(__dirname, '../../public/sample-quotation.pdf');
 
 /**
  * 4 NAMED PRIMARY AI BOTS FOR SIGNED-IN CLIENTS & BUSINESS WORKFLOWS
@@ -298,44 +312,35 @@ export async function approveAgentTask(taskId, superAdminUser, notes = '') {
 
     // Automated Dispatch via Agent 1: Ananya Mehta
     if (payload.email) {
-      const emailHtml = `
-        <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-          <div style="background: #030810; padding: 20px; text-align: center;">
-            <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
-            <p style="color: #38BDF8; margin: 4px 0 0 0; font-size: 13px;">Official Quotation &amp; Technical BOQ Desk</p>
-          </div>
-          <div style="padding: 24px;">
-            <p>Dear ${payload.customerName || 'Valued Client'},</p>
-            <p>Thank you for submitting your requirement. Your official quotation <strong>${finalQuotationNumber}</strong> has been verified and authorized by <strong>Super Admin Chirag Shah</strong>.</p>
-            
-            <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;">
-              <tr style="background: #F8FAFC;"><td style="padding: 8px; border: 1px solid #E2E8F0;"><strong>Quotation Ref:</strong></td><td style="padding: 8px; border: 1px solid #E2E8F0;">${finalQuotationNumber}</td></tr>
-              <tr><td style="padding: 8px; border: 1px solid #E2E8F0;"><strong>Subtotal:</strong></td><td style="padding: 8px; border: 1px solid #E2E8F0;">₹${Number(payload.subtotal || 0).toLocaleString('en-IN')}</td></tr>
-              <tr style="background: #F8FAFC;"><td style="padding: 8px; border: 1px solid #E2E8F0;"><strong>GST (18% HSN):</strong></td><td style="padding: 8px; border: 1px solid #E2E8F0;">₹${Number(payload.taxTotal || 0).toLocaleString('en-IN')}</td></tr>
-              <tr style="font-weight: bold; background: #EFF6FF;"><td style="padding: 8px; border: 1px solid #E2E8F0;">Grand Total:</td><td style="padding: 8px; border: 1px solid #E2E8F0; color: #0284C7;">₹${Number(payload.grandTotal || 0).toLocaleString('en-IN')}</td></tr>
-            </table>
+      const attachments = fs.existsSync(SAMPLE_PDF_PATH)
+        ? [{ filename: `Quotation-${finalQuotationNumber}.pdf`, path: SAMPLE_PDF_PATH, contentType: 'application/pdf' }]
+        : [];
 
-            <p>Official specification document: <a href="https://lotustubes.com/sample-quotation.pdf" target="_blank">Download Quotation PDF</a></p>
-            <p style="font-size: 12px; color: #059669; font-weight: bold;">
-              ✓ Cryptographically Verified &amp; Authorized by Chirag Shah (Owner &amp; Managing Director)
-            </p>
-            <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;" />
-            <p style="margin: 0; font-size: 13px; color: #475569;">
-              Dispatched by:<br/>
-              <strong>Ananya Mehta</strong> (AI Quotation &amp; Sales Coordination Agent)<br/>
-              Email: <a href="mailto:ananyamehta@lotustubes.com">ananyamehta@lotustubes.com</a><br/>
-              Lotus Tubes (Lotus Impex), Mumbai
-            </p>
-          </div>
-        </div>
-      `;
+      const emailHtml = buildQuotationEmail({
+        customerName: payload.customerName,
+        quotationNumber: finalQuotationNumber,
+        reference: finalReference,
+        lineItems: payload.lineItems,
+        subtotal: payload.subtotal,
+        taxTotal: payload.taxTotal,
+        grandTotal: payload.grandTotal,
+        leadTime: payload.leadTime,
+        downloadPdfUrl: 'https://lotustubes.com/sample-quotation.pdf'
+      });
 
       try {
         await sendEmail({
+          agentId: 'ananya-mehta',
           to: payload.email,
           subject: `[Official Quotation ${finalQuotationNumber}] Lotus Tubes Sanitary Sourcing`,
           html: emailHtml,
-          replyTo: 'ananyamehta@lotustubes.com'
+          replyTo: BUSINESS_MAILBOX, // Replies route to central sales mailbox
+          quoteId: createdQuote._id,
+          agentTaskId: task._id,
+          reference: finalQuotationNumber,
+          approvedBy: superAdminUser,
+          attachments,
+          idempotencyKey: `quote_dispatch_${createdQuote._id}`
         });
       } catch (e) {
         console.warn('Quotation email delivery warning:', e.message);
@@ -436,39 +441,24 @@ export async function confirmAndDispatchInquiryBySuperAdmin(taskId, superAdminUs
   const payload = task.proposedPayload || {};
 
   // 1. Dispatch email via Neha Desai
-  const emailHtml = `
-    <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-      <div style="background: #030810; padding: 20px; text-align: center;">
-        <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
-        <p style="color: #38BDF8; margin: 4px 0 0 0; font-size: 13px;">Customer Inquiry Resolution Desk</p>
-      </div>
-      <div style="padding: 24px;">
-        <p>Dear ${payload.customerName || 'Valued Client'},</p>
-        <p>Thank you for reaching out regarding: <strong>${payload.subject || 'Your Inquiry'}</strong>.</p>
-        <div style="background: #F8FAFC; border-left: 4px solid #0284C7; padding: 14px; margin: 16px 0; border-radius: 4px;">
-          <h4 style="margin: 0 0 8px 0; color: #0284C7;">Verified Response from Lotus Tubes:</h4>
-          <p style="margin: 0; line-height: 1.6; color: #1E293B;">${approvedReply.replace(/\n/g, '<br/>')}</p>
-        </div>
-        <p style="font-size: 12px; color: #059669; font-weight: bold;">
-          ✓ Confirmed &amp; Verified by Super Admin Chirag Shah (Owner &amp; Managing Director)
-        </p>
-        <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;" />
-        <p style="margin: 0; font-size: 13px; color: #475569;">
-          Dispatched by:<br/>
-          <strong>Neha Desai</strong> (Customer Inquiries &amp; Support Concierge)<br/>
-          Email: <a href="mailto:nehadesai@lotustubes.com">nehadesai@lotustubes.com</a><br/>
-          Lotus Tubes (Lotus Impex), Mumbai
-        </p>
-      </div>
-    </div>
-  `;
+  const emailHtml = buildInquiryReplyEmail({
+    customerName: payload.customerName,
+    subject: payload.subject,
+    approvedReply,
+    reference: task.title
+  });
 
   try {
     await sendEmail({
+      agentId: 'neha-desai',
       to: payload.email,
       subject: `[Verified Response] Regarding: ${payload.subject || 'Lotus Tubes Inquiry'}`,
       html: emailHtml,
-      replyTo: 'nehadesai@lotustubes.com'
+      replyTo: BUSINESS_MAILBOX, // Replies route to central sales mailbox
+      agentTaskId: task._id,
+      reference: payload.subject,
+      approvedBy: superAdminUser,
+      idempotencyKey: `inquiry_reply_${task._id}`
     });
   } catch (err) {
     console.warn('Inquiry email delivery warning:', err.message);
@@ -523,40 +513,33 @@ export async function dispatchInvoiceViaRiya(docId, customerPhone = null) {
   const recipientEmail = invoice ? invoice.email : quote.email;
   const phone = customerPhone || (invoice ? invoice.phone : quote.phone);
 
-  // 1. Send Email from Riya Shah
-  const emailHtml = `
-    <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-      <div style="background: #030810; padding: 20px; text-align: center;">
-        <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
-        <p style="color: #38BDF8; margin: 4px 0 0 0; font-size: 13px;">Commercial Billing &amp; Tax Invoice Desk</p>
-      </div>
-      <div style="padding: 24px;">
-        <p>Dear ${customerName || 'Client'},</p>
-        <p>Your commercial tax invoice <strong>${invoiceNumber}</strong> has been prepared and authorized under Super Admin Chirag Shah oversight.</p>
-        <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;">
-          <tr style="background: #F8FAFC;"><td style="padding: 8px; border: 1px solid #E2E8F0;"><strong>Invoice Number:</strong></td><td style="padding: 8px; border: 1px solid #E2E8F0;">${invoiceNumber}</td></tr>
-          <tr><td style="padding: 8px; border: 1px solid #E2E8F0;"><strong>Subtotal:</strong></td><td style="padding: 8px; border: 1px solid #E2E8F0;">₹${Number(subtotal).toLocaleString('en-IN')}</td></tr>
-          <tr style="background: #F8FAFC;"><td style="padding: 8px; border: 1px solid #E2E8F0;"><strong>GST (18% HSN):</strong></td><td style="padding: 8px; border: 1px solid #E2E8F0;">₹${Number(taxTotal).toLocaleString('en-IN')}</td></tr>
-          <tr style="font-weight: bold; background: #EFF6FF;"><td style="padding: 8px; border: 1px solid #E2E8F0;">Grand Total:</td><td style="padding: 8px; border: 1px solid #E2E8F0; color: #0284C7;">₹${Number(grandTotal).toLocaleString('en-IN')}</td></tr>
-        </table>
-        <p>Official invoice document: <a href="https://lotustubes.com/sample-quotation.pdf" target="_blank">Download Invoice PDF</a></p>
-        <hr style="border: 0; border-top: 1px solid #E2E8F0; margin: 20px 0;" />
-        <p style="margin: 0; font-size: 13px; color: #475569;">
-          Dispatched by:<br/>
-          <strong>Riya Shah</strong> (AI Billing &amp; Invoice Coordination Agent)<br/>
-          Email: <a href="mailto:riyashah@lotustubes.com">riyashah@lotustubes.com</a><br/>
-          Lotus Tubes (Lotus Impex), Mumbai
-        </p>
-      </div>
-    </div>
-  `;
+  // 1. Send Email from Riya Shah with verified attachment
+  const attachments = fs.existsSync(SAMPLE_PDF_PATH)
+    ? [{ filename: `Invoice-${invoiceNumber}.pdf`, path: SAMPLE_PDF_PATH, contentType: 'application/pdf' }]
+    : [];
+
+  const emailHtml = buildInvoiceEmail({
+    customerName,
+    invoiceNumber,
+    quotationNumber: quote?.quotationNumber || invoice?.quotationNumber || '',
+    subtotal,
+    taxTotal,
+    grandTotal,
+    downloadPdfUrl: 'https://lotustubes.com/sample-quotation.pdf'
+  });
 
   try {
     await sendEmail({
+      agentId: 'riya-shah',
       to: recipientEmail,
       subject: `[Commercial Invoice ${invoiceNumber}] Lotus Tubes Order Billing`,
       html: emailHtml,
-      replyTo: 'riyashah@lotustubes.com'
+      replyTo: BUSINESS_MAILBOX, // Replies route to central sales mailbox
+      invoiceId: invoice?._id || null,
+      quoteId: quote?._id || null,
+      reference: invoiceNumber,
+      attachments,
+      idempotencyKey: `invoice_dispatch_${invoice?._id || quote?._id}`
     });
   } catch (e) {
     console.warn('Invoice email delivery warning:', e.message);
@@ -699,4 +682,36 @@ export async function handleChatWithArjun({ message, reference, customerEmail, c
     superAdminVerified: true,
     verifiedBy: 'Lotus Tubes Operations Desk'
   };
+}
+
+/**
+ * =========================================================================
+ * AGENT 4 (Arjun Yadav): Dispatch Operational Status Update via Email
+ * =========================================================================
+ */
+export async function dispatchOperationsUpdateViaArjun({
+  to,
+  customerName,
+  reference,
+  statusUpdate,
+  department = 'Executive Operations Desk',
+  superAdminUser = null
+}) {
+  const emailHtml = buildOperationsUpdateEmail({
+    customerName,
+    reference,
+    statusUpdate,
+    department
+  });
+
+  return sendEmail({
+    agentId: 'arjun-yadav',
+    to,
+    subject: `[Operational Update ${reference || 'Status'}] Lotus Tubes Operations Desk`,
+    html: emailHtml,
+    replyTo: BUSINESS_MAILBOX,
+    reference: reference || 'LT-OPS',
+    approvedBy: superAdminUser,
+    idempotencyKey: reference ? `ops_update_${reference}_${Date.now()}` : null
+  });
 }

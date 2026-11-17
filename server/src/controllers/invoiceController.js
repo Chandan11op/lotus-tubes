@@ -356,14 +356,21 @@ export const approveInvoice = async (req, res, next) => {
     `;
 
     try {
-      await sendEmail({
+      const sendRes = await sendEmail({
+        agentId: 'riya-shah',
         to: invoice.email,
         subject: `[Tax Invoice ${invoice.invoiceNumber}] Lotus Tubes Order Billing`,
         html: emailHtml,
-        replyTo: 'riyashah@lotustubes.com'
+        replyTo: 'sales@lotustubes.com', // Replies route to central sales mailbox
+        invoiceId: invoice._id,
+        reference: invoice.invoiceNumber,
+        approvedBy: req.user,
+        idempotencyKey: `invoice_send_${invoice._id}_${Date.now()}`
       });
-      invoice.deliveryRecords.emailSent = true;
-      invoice.deliveryRecords.emailSentAt = new Date();
+      if (sendRes.accepted || sendRes.delivered) {
+        invoice.deliveryRecords.emailSent = true;
+        invoice.deliveryRecords.emailSentAt = new Date();
+      }
     } catch (e) {
       console.warn('Invoice email delivery exception:', e.message);
     }

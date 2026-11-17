@@ -7,6 +7,8 @@ import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
 import { validateEmail } from '../middleware/validateRequest.js';
+import { config } from '../config/env.js';
+import { wrapEmailTemplate } from '../utils/emailTemplates.js';
 
 export const submitContact = async (req, res, next) => {
   try {
@@ -89,13 +91,48 @@ export const submitContact = async (req, res, next) => {
       </div>
     `;
 
-    // Asynchronously dispatch notification without blocking response
+    // Asynchronously dispatch internal notification and customer acknowledgement
     setImmediate(async () => {
       try {
+        // 1. Internal business notification to sales@lotustubes.com
         await sendEmail({
+          agentId: 'system',
+          to: config.resend.notificationEmail || 'sales@lotustubes.com',
           subject: `[Contact Us ${reference}] ${safeSubject} from ${safeName} (${safeCompany})`,
           html: emailHtml,
-          replyTo: safeEmail
+          replyTo: safeEmail,
+          reference,
+          enquiryId: savedContact?._id,
+          idempotencyKey: `internal_contact_${reference}`
+        });
+
+        // 2. Customer acknowledgement dispatched via Agent 3 (Neha Desai)
+        const ackHtml = wrapEmailTemplate({
+          title: `Inquiry Received - ${reference}`,
+          subtitle: 'Client Inquiries & Support Desk',
+          contentHtml: `
+            <p>Dear <strong>${escapeHtml(safeName)}</strong>,</p>
+            <p>Thank you for reaching out to Lotus Tubes. Your message regarding <strong>${escapeHtml(safeSubject)}</strong> has been registered with reference <strong>${escapeHtml(reference)}</strong>.</p>
+            <p>Our technical team and Super Admin Chirag Shah are reviewing your requirements. We will provide our verified response shortly.</p>
+            <div style="background:#F8FAFC;padding:12px;border-left:4px solid #0284C7;margin:12px 0;font-size:12px;">
+              <strong>Submitted Summary:</strong><br/>
+              Company: ${escapeHtml(safeCompany)}<br/>
+              Phone: ${escapeHtml(safePhone || 'N/A')}<br/>
+              Subject: ${escapeHtml(safeSubject)}
+            </div>
+            <p style="font-size: 12px; color: #64748B;">For urgent assistance, reach our Mumbai desk on WhatsApp at +91 99304 30789.</p>
+          `,
+          agentId: 'neha-desai'
+        });
+
+        await sendEmail({
+          agentId: 'neha-desai',
+          to: safeEmail,
+          subject: `[Lotus Tubes Received: ${reference}] Thank you for contacting our sales desk`,
+          html: ackHtml,
+          replyTo: 'sales@lotustubes.com',
+          reference,
+          idempotencyKey: `customer_ack_${reference}`
         });
       } catch (err) {
         console.error('Async contact email failed', reference, err.message);
@@ -186,13 +223,45 @@ export const submitQualityRequest = async (req, res, next) => {
       </div>
     `;
 
-    // Asynchronously dispatch quality doc request notification
+    // Asynchronously dispatch internal notification and customer acknowledgement
     setImmediate(async () => {
       try {
+        // 1. Internal business notification to sales@lotustubes.com
         await sendEmail({
+          agentId: 'system',
+          to: config.resend.notificationEmail || 'sales@lotustubes.com',
           subject: `[Quality Document Request ${reference}] ${safeDocType} - ${safeCompany}`,
           html: emailHtml,
-          replyTo: safeEmail
+          replyTo: safeEmail,
+          reference,
+          idempotencyKey: `internal_qc_${reference}`
+        });
+
+        // 2. Customer acknowledgement from Agent 3 (Neha Desai)
+        const ackHtml = wrapEmailTemplate({
+          title: `Technical Document Request - ${reference}`,
+          subtitle: 'Quality Control & Documentation Desk',
+          contentHtml: `
+            <p>Dear <strong>${escapeHtml(safeCompany)}</strong> Team,</p>
+            <p>We have received your technical document request for <strong>${escapeHtml(safeDocType)}</strong> (Ref: <strong>${escapeHtml(reference)}</strong>).</p>
+            <p>Our quality control department is verifying the heat number / batch record for <em>${escapeHtml(safeProduct)}</em>. We will dispatch the verified document to this email address within 24 hours.</p>
+            <div style="background:#F8FAFC;padding:12px;border-left:4px solid #0284C7;margin:12px 0;font-size:12px;">
+              <strong>Requested Document:</strong> ${escapeHtml(safeDocType)}<br/>
+              <strong>Product / Heat No.:</strong> ${escapeHtml(safeProduct)}<br/>
+              <strong>Standard:</strong> EN 10204 3.1 / ASME BPE Inspection Certificate
+            </div>
+          `,
+          agentId: 'neha-desai'
+        });
+
+        await sendEmail({
+          agentId: 'neha-desai',
+          to: safeEmail,
+          subject: `[Quality Desk ${reference}] Document Request Received - ${safeDocType}`,
+          html: ackHtml,
+          replyTo: 'sales@lotustubes.com',
+          reference,
+          idempotencyKey: `customer_qc_ack_${reference}`
         });
       } catch (err) {
         console.error('Async quality email failed', reference, err.message);
