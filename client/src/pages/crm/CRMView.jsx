@@ -21,6 +21,7 @@ import { CRMStaffView } from './views/CRMStaffView';
 import { CRMReportsView } from './views/CRMReportsView';
 import { CRMSeoView } from './views/CRMSeoView';
 import { CRMAiOperationsView } from './views/CRMAiOperationsView';
+import { CRMEmailCommunicationsView } from './views/CRMEmailCommunicationsView';
 import { NewStaffModal } from './components/NewStaffModal';
 
 export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }) => {
@@ -924,6 +925,14 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMTasksView
             tasks={tasks}
             onUpdateTask={handleUpdateTask}
+          />
+        );
+      case 'emails':
+        return (
+          <CRMEmailCommunicationsView
+            user={user}
+            isSuperAdmin={isSuperAdmin}
+            onNotify={onNotify}
           />
         );
       case 'products':

@@ -852,13 +852,18 @@ export const sendQuoteByEmail = async (req, res, next) => {
     `;
 
     const sendRes = await sendEmail({
+      agentId: 'ananya-mehta',
       to: quote.email,
       subject: `[Quotation ${quote.quotationNumber}] Lotus Tubes Commercial Offer`,
       html: emailHtml,
-      replyTo: 'sales@lotustubes.com'
+      replyTo: 'sales@lotustubes.com',
+      quoteId: quote._id,
+      reference: quote.quotationNumber,
+      approvedBy: req.user,
+      idempotencyKey: `quote_send_${quote._id}_${Date.now()}`
     });
 
-    quote.emailStatus = sendRes.delivered ? 'sent' : 'failed';
+    quote.emailStatus = (sendRes.accepted || sendRes.delivered) ? 'accepted' : 'failed';
     quote.status = 'Sent';
     quote.sentAt = new Date();
     quote.sentBy = req.user?.id || null;
@@ -866,18 +871,18 @@ export const sendQuoteByEmail = async (req, res, next) => {
     quote.activityLog.push({
       action: 'Dispatched',
       performedBy: req.user?.name || 'Staff',
-      note: `Approved quotation sent via email to ${quote.email} (Status: ${quote.emailStatus})`
+      note: `Approved quotation dispatched via Ananya Mehta to ${quote.email} (Provider Status: ${quote.emailStatus})`
     });
 
     await quote.save();
 
     await recordAuditEvent({
       actor: req.user,
-      action: sendRes.delivered ? 'QUOTATION_DISPATCHED' : 'EMAIL_DISPATCH_FAILED',
+      action: (sendRes.accepted || sendRes.delivered) ? 'QUOTATION_DISPATCHED' : 'EMAIL_DISPATCH_FAILED',
       targetType: 'Quote',
       targetId: quote._id,
       targetRef: quote.quotationNumber,
-      metadata: { recipient: quote.email, emailStatus: quote.emailStatus },
+      metadata: { recipient: quote.email, emailStatus: quote.emailStatus, agentId: 'ananya-mehta' },
       ip: req.ip
     });
 

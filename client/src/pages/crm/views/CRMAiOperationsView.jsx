@@ -297,6 +297,17 @@ export const CRMAiOperationsView = ({
               >
                 🔄 Refresh Agent Queue
               </button>
+              <button
+                type="button"
+                className="btn btn--outline-dark btn--sm"
+                onClick={() => {
+                  if (onNavigateTab) onNavigateTab('emails');
+                }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                title="Open Resend email archive and delivery tracking"
+              >
+                📧 Email Communications
+              </button>
             </div>
           </div>
 

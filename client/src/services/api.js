@@ -582,6 +582,40 @@ export const apiService = {
     return await request(`/invoices/${id}/send`, {
       method: 'POST'
     });
+  },
+
+  // Resend Email Archive & 4-Agent Communications Management
+  async getEmailLogs(params = {}) {
+    const query = new URLSearchParams();
+    if (params.page) query.append('page', params.page);
+    if (params.limit) query.append('limit', params.limit);
+    if (params.agentId) query.append('agentId', params.agentId);
+    if (params.status) query.append('status', params.status);
+    if (params.search) query.append('search', params.search);
+    if (params.startDate) query.append('startDate', params.startDate);
+    if (params.endDate) query.append('endDate', params.endDate);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await request(`/emails${qs}`);
+  },
+
+  async getEmailStats() {
+    return await request('/emails/stats');
+  },
+
+  async getEmailLogById(id) {
+    return await request(`/emails/${id}`);
+  },
+
+  async retryEmailDispatch(id) {
+    return await request(`/emails/${id}/retry`, {
+      method: 'POST'
+    });
+  },
+
+  async approveEmailDispatch(id) {
+    return await request(`/emails/${id}/approve`, {
+      method: 'POST'
+    });
   }
 };
 

@@ -76,6 +76,14 @@ import {
   sendInvoice,
   getMyInvoices
 } from '../controllers/invoiceController.js';
+import { handleResendWebhook } from '../controllers/emailWebhookController.js';
+import {
+  getEmailLogs,
+  getEmailStats,
+  getEmailLogById,
+  retryEmailDispatch,
+  approveEmailDispatch
+} from '../controllers/emailController.js';
 import { validateEnquiry, validateContact, validateQuote } from '../middleware/validateRequest.js';
 import { authenticate, requireStaff, requireSuperAdmin, optionalAuth } from '../middleware/authMiddleware.js';
 import { requireTurnstileForAnonymous } from '../middleware/turnstileMiddleware.js';
@@ -182,5 +190,15 @@ router.post('/agents/request-invoice-whatsapp', publicFormLimiter, optionalAuth,
 
 // Agent 4 (Arjun Yadav): 24/7 Live Chat Concierge (Requires Authentication)
 router.post('/agents/chat-inquiry', publicFormLimiter, authenticate, chatInquiryHandler);
+
+// Resend Webhooks Delivery Tracking (Verified via Svix signature)
+router.post('/webhooks/resend', handleResendWebhook);
+
+// CRM Email Archive & 4-Agent Communications Management
+router.get('/emails', authenticate, requireStaff, getEmailLogs);
+router.get('/emails/stats', authenticate, requireStaff, getEmailStats);
+router.get('/emails/:id', authenticate, requireStaff, getEmailLogById);
+router.post('/emails/:id/retry', authenticate, requireSuperAdmin, retryEmailDispatch);
+router.post('/emails/:id/approve', authenticate, requireSuperAdmin, approveEmailDispatch);
 
 export default router;

@@ -36,7 +36,14 @@ export const config = {
   resend: {
     apiKey: process.env.RESEND_API_KEY || '',
     fromEmail: process.env.RESEND_FROM_EMAIL || 'sales@lotustubes.com',
-    notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || 'sales@lotustubes.com'
+    notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || 'sales@lotustubes.com',
+    webhookSecret: process.env.RESEND_WEBHOOK_SECRET || '',
+    agents: {
+      ananya: process.env.RESEND_AGENT_ANANYA_EMAIL || 'ananyamehta@lotustubes.com',
+      riya: process.env.RESEND_AGENT_RIYA_EMAIL || 'riyashah@lotustubes.com',
+      neha: process.env.RESEND_AGENT_NEHA_EMAIL || 'nehadesai@lotustubes.com',
+      arjun: process.env.RESEND_AGENT_ARJUN_EMAIL || 'arjunyadav@lotustubes.com'
+    }
   },
   whatsapp: {
     accessToken: process.env.WHATSAPP_ACCESS_TOKEN || '',

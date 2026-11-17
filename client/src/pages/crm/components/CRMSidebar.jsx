@@ -170,7 +170,8 @@ export const CRMSidebar = ({
         { id: 'enquiries', label: 'Enquiries & RFQs', icon: 'enquiries', badge: enquiryCount > 0 ? { count: enquiryCount, color: 'blue' } : null },
         { id: 'quotations', label: 'Quotations & BOQ', icon: 'quotations', badge: quoteCount > 0 ? { count: quoteCount, color: 'amber' } : null },
         { id: 'customers', label: 'Customers & Directory', icon: 'customers', badge: null },
-        { id: 'tasks', label: 'Tasks & Follow-ups', icon: 'tasks', badge: pendingTaskCount > 0 ? { count: pendingTaskCount, color: 'red' } : null }
+        { id: 'tasks', label: 'Tasks & Follow-ups', icon: 'tasks', badge: pendingTaskCount > 0 ? { count: pendingTaskCount, color: 'red' } : null },
+        { id: 'emails', label: 'Email Communications', icon: 'mail', badge: null }
       ]
     },
     {
