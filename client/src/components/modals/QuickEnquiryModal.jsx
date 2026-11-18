@@ -71,6 +71,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
 
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -87,6 +88,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
 
     return () => {
       document.body.style.overflow = originalOverflow;
+      document.body.classList.remove('modal-open');
       window.removeEventListener('keydown', handleKeyDown);
       clearTimeout(timer);
     };
@@ -174,7 +176,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     // Cloudflare Turnstile validation for anonymous visitors
     if (!isAuthenticated && !turnstileToken) {
       errs.turnstile = 'Please complete the Cloudflare security verification check.';
-      setTurnstileError('Please verify you are human before submitting.');
+      setTurnstileError('Please complete the Cloudflare security verification check before submitting.');
     }
 
     setErrors(errs);
@@ -182,13 +184,23 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (isLoading) return;
 
     setSubmitError(null);
     setTurnstileError(null);
 
-    if (!validate()) return;
+    if (!validate()) {
+      setSubmitError('Please complete all required fields marked with an asterisk (*) and the security check.');
+      setTimeout(() => {
+        const firstErr = document.querySelector('[aria-invalid="true"], .has-field-error, #cf-turnstile-container');
+        if (firstErr) {
+          firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (typeof firstErr.focus === 'function') firstErr.focus();
+        }
+      }, 50);
+      return;
+    }
 
     setIsLoading(true);
 
@@ -437,12 +449,12 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
           </button>
         </div>
 
-        {/* Scrollable Body */}
-        <div style={{ padding: '24px 28px', overflowY: 'auto', flex: 1, backgroundColor: '#FFFFFF' }}>
-          {successRef ? (
-            /* ============================================================ */
-            /* SUCCESS CONFIRMATION STATE                                   */
-            /* ============================================================ */
+        {/* Modal Main Content */}
+        {successRef ? (
+          /* ============================================================ */
+          /* SUCCESS CONFIRMATION STATE                                   */
+          /* ============================================================ */
+          <div style={{ padding: '24px 28px', overflowY: 'auto', flex: 1, backgroundColor: '#FFFFFF' }}>
             <div style={{ padding: '16px 8px', textAlign: 'center' }}>
               <div
                 style={{
@@ -584,11 +596,33 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                 </button>
               </div>
             </div>
-          ) : (
-            /* ============================================================ */
-            /* ACTIVE FORM STATE (LIGHT THEMED)                             */
-            /* ============================================================ */
-            <form id="quick-enquiry-form" onSubmit={handleSubmit} noValidate>
+          </div>
+        ) : (
+          /* ============================================================ */
+          /* ACTIVE FORM STATE (LIGHT THEMED)                             */
+          /* ============================================================ */
+          <form
+            id="quick-enquiry-form"
+            onSubmit={handleSubmit}
+            noValidate
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              minHeight: 0,
+              overflow: 'hidden'
+            }}
+          >
+            {/* Scrollable Body */}
+            <div
+              id="quick-enquiry-body"
+              style={{
+                padding: '24px 28px',
+                overflowY: 'auto',
+                flex: 1,
+                backgroundColor: '#FFFFFF'
+              }}
+            >
               {/* Product Context Banner */}
               {product && (
                 <div
@@ -1101,76 +1135,75 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                   )}
                 </div>
               )}
-            </form>
-          )}
-        </div>
-
-        {/* Sticky Footer */}
-        {!successRef && (
-          <div
-            style={{
-              padding: '16px 28px',
-              backgroundColor: '#F8FAFC',
-              borderTop: '1px solid #E5E7EB',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '16px',
-              position: 'sticky',
-              bottom: 0,
-              zIndex: 10
-            }}
-          >
-            <div style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>🛡️</span>
-              <span>Commercial team reviews &amp; sends quotation within 24 hours.</span>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <button
-                type="button"
-                onClick={onClose}
-                style={{
-                  padding: '10px 18px',
-                  borderRadius: '8px',
-                  border: '1px solid #D1D5DB',
-                  background: '#FFFFFF',
-                  color: '#475569',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isLoading || (!isAuthenticated && !turnstileToken)}
-                style={{
-                  padding: '10px 24px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  background: '#0284C7',
-                  color: '#FFFFFF',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: isLoading || (!isAuthenticated && !turnstileToken) ? 'not-allowed' : 'pointer',
-                  opacity: isLoading || (!isAuthenticated && !turnstileToken) ? 0.75 : 1,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: '0 2px 4px rgba(2, 132, 199, 0.2)'
-                }}
-              >
-                {isLoading ? (
-                  <Loader variant="button" size="sm" color="#FFFFFF" label="Submitting Request..." />
-                ) : (
-                  <span>Request Official Quotation &rarr;</span>
-                )}
-              </button>
+            {/* Sticky Footer */}
+            <div
+              className="quick-enquiry-footer"
+              style={{
+                padding: '16px 28px',
+                backgroundColor: '#F8FAFC',
+                borderTop: '1px solid #E5E7EB',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '16px',
+                position: 'sticky',
+                bottom: 0,
+                zIndex: 10
+              }}
+            >
+              <div style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span>🛡️</span>
+                <span>Commercial team reviews &amp; sends quotation within 24 hours.</span>
+              </div>
+
+              <div className="quick-enquiry-footer-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  style={{
+                    padding: '10px 18px',
+                    borderRadius: '8px',
+                    border: '1px solid #D1D5DB',
+                    background: '#FFFFFF',
+                    color: '#475569',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="quick-enquiry-submit-btn"
+                  style={{
+                    padding: '10px 24px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#0284C7',
+                    color: '#FFFFFF',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    opacity: isLoading ? 0.75 : 1,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    boxShadow: '0 2px 4px rgba(2, 132, 199, 0.2)'
+                  }}
+                >
+                  {isLoading ? (
+                    <Loader variant="button" size="sm" color="#FFFFFF" label="Submitting Request..." />
+                  ) : (
+                    <span>Request Official Quotation &rarr;</span>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
+          </form>
         )}
       </div>
     </div>

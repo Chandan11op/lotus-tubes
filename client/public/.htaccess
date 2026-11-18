@@ -30,8 +30,9 @@ AddDefaultCharset UTF-8
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://lotustubes.com/$1 [L,R=301]
 
-  # 3. Backward Compatibility: Map legacy/cached stylesheet requested by Googlebot to current bundle
-  RewriteRule ^assets/index-B9RX-gnX\.css$ /assets/index.css [NC,L,R=301]
+  # 3. Backward Compatibility: Map legacy/cached stylesheets to current bundle
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^assets/index-.*\.css$ /assets/index.css [NC,L]
 
   # 4. Serve physical directory index.html directly without trailing-slash redirect
   RewriteCond %{REQUEST_FILENAME} -d
@@ -75,6 +76,9 @@ AddDefaultCharset UTF-8
 <IfModule mod_headers.c>
   <FilesMatch "\.(html|htm)$">
     Header set Content-Type "text/html; charset=UTF-8"
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
   </FilesMatch>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"

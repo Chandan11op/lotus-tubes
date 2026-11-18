@@ -5,7 +5,7 @@ import { apiService } from '../../services/api';
 import { isTypographyCustomizerEnabled } from '../../utils/typography';
 import TypographyCustomizer from '../common/TypographyCustomizer';
 
-export const Footer = () => {
+export const Footer = ({ onOpenTypography }) => {
   const { t, currentLang, localizePath } = useLanguage();
   const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
 
@@ -373,7 +373,7 @@ export const Footer = () => {
                 <span>•</span>
                 <button
                   type="button"
-                  onClick={() => setIsTypographyOpen(true)}
+                  onClick={onOpenTypography || (() => setIsTypographyOpen(true))}
                   className="inline-flex items-center gap-1.5 text-slate-400 hover:text-[#00f0ff] transition-colors cursor-pointer bg-transparent border-0 p-0 text-[11px]"
                   title="Website Typography Customizer (Evaluation Mode)"
                 >
@@ -393,8 +393,8 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* Temporary Google Fonts Typography Customizer Modal */}
-      {showTypographyPreview && (
+      {/* Fallback local modal if onOpenTypography not provided */}
+      {!onOpenTypography && showTypographyPreview && (
         <TypographyCustomizer
           isOpen={isTypographyOpen}
           onClose={() => setIsTypographyOpen(false)}

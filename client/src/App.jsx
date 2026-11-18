@@ -16,7 +16,8 @@ import FloatingWhatsApp from './components/common/FloatingWhatsApp';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { RouteProgressBar } from './components/common/Loader';
 import { initAnalytics, trackPageView } from './utils/analytics';
-import { initTypographyFromStorage } from './utils/typography';
+import { initTypographyFromStorage, isTypographyCustomizerEnabled } from './utils/typography';
+import TypographyCustomizer from './components/common/TypographyCustomizer';
 
 // Page Views
 import HomeView from './pages/HomeView';
@@ -84,6 +85,8 @@ export const App = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [enquiryProduct, setEnquiryProduct] = useState(null);
   const [toasts, setToasts] = useState([]);
+  const [isTypographyOpen, setIsTypographyOpen] = useState(false);
+  const showTypographyPreview = isTypographyCustomizerEnabled();
 
   // Client-side domain migration redirect safeguard & Google Analytics initialization
   useEffect(() => {
@@ -387,7 +390,7 @@ export const App = () => {
             {route !== 'home' && <PreFooterBanner onOpenEnquiry={handleOpenEnquiry} />}
 
             {/* Global Public Footer */}
-            <Footer />
+            <Footer onOpenTypography={() => setIsTypographyOpen(true)} />
           </div>
         )}
 
@@ -409,11 +412,64 @@ export const App = () => {
           onClose={() => setIsVideoOpen(false)}
         />
 
+        {/* Temporary Google Fonts Typography Customizer Modal */}
+        {showTypographyPreview && (
+          <TypographyCustomizer
+            isOpen={isTypographyOpen}
+            onClose={() => setIsTypographyOpen(false)}
+          />
+        )}
+
+        {/* Floating Typography Preview Launcher (Bottom-Left — Hidden when Quotation Modal is Open) */}
+        {showTypographyPreview && !isCRM && !enquiryProduct && (
+          <div
+            id="floating-typography-launcher"
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              left: '24px',
+              zIndex: 9000
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setIsTypographyOpen(true)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '9px 16px',
+                borderRadius: '9999px',
+                backgroundColor: '#FFFFFF',
+                color: '#0F172A',
+                border: '1.5px solid #0284C7',
+                boxShadow: '0 4px 14px rgba(2, 132, 199, 0.25)',
+                fontSize: '13px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              className="hover:scale-105 active:scale-95 focus:ring-2 focus:ring-[#0284C7]/40"
+              title="Website Typography Customizer (Evaluation Mode)"
+              aria-label="Open Typography Customizer"
+            >
+              <span style={{ color: '#0284C7', display: 'flex', alignItems: 'center' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="4 7 4 4 20 4 20 7" />
+                  <line x1="9" y1="20" x2="15" y2="20" />
+                  <line x1="12" y1="4" x2="12" y2="20" />
+                </svg>
+              </span>
+              <span>Typography Preview</span>
+            </button>
+          </div>
+        )}
+
         {/* Toast Notifications */}
         <Toast toasts={toasts} onDismiss={dismissToast} />
 
-        {/* Floating Customer Help Widgets (Strictly Public Website Pages Only — Hidden on Login, Register & CRM) */}
-        {!isCRM && (
+        {/* Floating Customer Help Widgets (Strictly Public Website Pages Only — Hidden on Login, Register, CRM & when Quotation Modal is Open) */}
+        {!isCRM && !enquiryProduct && (
           <>
             <FloatingWhatsApp />
             <ChatWithUs />
