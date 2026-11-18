@@ -24,7 +24,8 @@ const generateToken = (user) => {
       department: user.department || 'sales',
       permissions: user.permissions || [],
       company: user.company || '',
-      phone: user.phone || ''
+      phone: user.phone || '',
+      tokenVersion: user.tokenVersion || 0
     },
     config.jwtSecret,
     { expiresIn: config.jwtExpiresIn }
@@ -523,6 +524,274 @@ export const changeStaffPassword = async (req, res, next) => {
   }
 };
 
+// Cryptographically secure keyed HMAC for OTP
+const hashOtp = (otp) => {
+  return crypto
+    .createHmac('sha256', config.passwordResetOtpSecret)
+    .update(String(otp).trim())
+    .digest('hex');
+};
+
+// Timing-safe comparison to prevent side-channel timing attacks
+const timingSafeHashCompare = (hashA, hashB) => {
+  if (!hashA || !hashB || typeof hashA !== 'string' || typeof hashB !== 'string') return false;
+  try {
+    const bufA = Buffer.from(hashA, 'hex');
+    const bufB = Buffer.from(hashB, 'hex');
+    if (bufA.length !== bufB.length) return false;
+    return crypto.timingSafeEqual(bufA, bufB);
+  } catch (err) {
+    return false;
+  }
+};
+
+// Branded HTML email generator for Lotus Tubes Password Reset
+const buildPasswordResetEmailHtml = ({ name, otp, portalName = 'Account Portal' }) => {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lotus Tubes - Verification Code</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #F8FAFC; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1E293B;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #F8FAFC; padding: 40px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" style="max-width: 540px; background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);" cellspacing="0" cellpadding="0">
+          <!-- Header -->
+          <tr>
+            <td style="background-color: #0F172A; padding: 28px 32px; text-align: left;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <h1 style="margin: 0; font-size: 20px; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px;">LOTUS TUBES</h1>
+                    <p style="margin: 4px 0 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #38BDF8;">Hygienic Process Solutions & Security</p>
+                  </td>
+                  <td align="right">
+                    <span style="display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 9999px; font-size: 11px; font-weight: 600; color: #38BDF8;">
+                      Security Verification
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding: 36px 32px;">
+              <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 600; color: #0F172A;">Password Reset Verification Code</h2>
+              <p style="margin: 0 0 20px; font-size: 14px; line-height: 1.6; color: #475569;">
+                Hello <strong>${escapeHtml(name)}</strong>,<br>
+                We received a request to reset your password for the <strong>Lotus Tubes ${escapeHtml(portalName)}</strong>. Enter the 6-digit verification code below to proceed with setting a new password.
+              </p>
+
+              <!-- OTP Box -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 24px 0;">
+                <tr>
+                  <td align="center" style="background: linear-gradient(135deg, #F0FDF4 0%, #F8FAFC 100%); border: 2px dashed #0EA5E9; border-radius: 10px; padding: 22px;">
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #0284C7; margin-bottom: 8px;">Your 6-Digit Verification Code</div>
+                    <div style="font-family: 'Courier New', Courier, monospace; font-size: 34px; font-weight: 800; letter-spacing: 10px; color: #0F172A; text-shadow: 0 1px 2px rgba(0,0,0,0.05); padding-left: 10px;">
+                      ${otp}
+                    </div>
+                    <div style="margin-top: 10px; font-size: 12px; color: #64748B;">
+                      ⏱️ <strong>Valid for 10 minutes only</strong> • Single-use code
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <div style="background-color: #FEF3C7; border-left: 4px solid #F59E0B; padding: 12px 16px; border-radius: 4px; margin-bottom: 24px;">
+                <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #92400E;">
+                  <strong>Security Advisory:</strong> Lotus Tubes staff will never contact you asking for your verification code or password. If you did not initiate this request, you can safely ignore this email; your account credentials remain unchanged.
+                </p>
+              </div>
+
+              <p style="margin: 0; font-size: 13px; color: #64748B; line-height: 1.5;">
+                Need assistance? Contact our support team at <a href="mailto:sales@lotustubes.com" style="color: #0284C7; text-decoration: none; font-weight: 600;">sales@lotustubes.com</a> or phone <a href="tel:+919324718035" style="color: #0284C7; text-decoration: none;">+91 93247 18035</a>.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color: #F1F5F9; padding: 20px 32px; border-top: 1px solid #E2E8F0; text-align: center;">
+              <p style="margin: 0 0 6px; font-size: 11px; color: #64748B;">
+                Sent by Lotus Tubes Support Desk • <a href="https://lotustubes.com" style="color: #0284C7; text-decoration: none;">lotustubes.com</a>
+              </p>
+              <p style="margin: 0; font-size: 10px; color: #94A3B8;">
+                Replies to this email are routed directly to sales@lotustubes.com.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `;
+};
+
+/**
+ * Customer Password Reset Request (OTP Generation)
+ * Sends short-lived, rate-limited OTP to verified email without exposing existence
+ */
+export const forgotCustomerPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return errorResponse(res, 'Please provide your registered customer email address', 400);
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    assertDatabaseConnected();
+
+    const user = await User.findOne({
+      email: normalizedEmail,
+      role: 'customer'
+    });
+
+    if (user) {
+      const now = Date.now();
+      const cooldownMs = 60 * 1000; // 60 seconds cooldown between dispatches
+      const oneHourMs = 60 * 60 * 1000;
+
+      // Rate limit check: hourly window
+      if (!user.resetPasswordOtpWindowStart || now - user.resetPasswordOtpWindowStart.getTime() > oneHourMs) {
+        user.resetPasswordOtpWindowStart = new Date(now);
+        user.resetPasswordOtpRequestCount = 0;
+      }
+
+      // Check cooldown and hourly request cap
+      const isCoolingDown = user.resetPasswordOtpRequestedAt && now - user.resetPasswordOtpRequestedAt.getTime() < cooldownMs;
+      const isExceededCap = (user.resetPasswordOtpRequestCount || 0) >= 5;
+
+      if (!isCoolingDown && !isExceededCap) {
+        const otpNum = crypto.randomInt(100000, 1000000).toString();
+        const otpHash = hashOtp(otpNum);
+
+        user.resetPasswordOtpHash = otpHash;
+        user.resetPasswordOtpExpiresAt = new Date(now + 10 * 60 * 1000); // 10 minutes expiry
+        user.resetPasswordOtpAttempts = 0;
+        user.resetPasswordOtpRequestedAt = new Date(now);
+        user.resetPasswordOtpRequestCount = (user.resetPasswordOtpRequestCount || 0) + 1;
+        await user.save();
+
+        // Dispatch via Lotus Tubes Support identity (replies routed to sales@lotustubes.com)
+        await sendEmail({
+          agentId: 'support',
+          to: user.email,
+          replyTo: 'sales@lotustubes.com',
+          subject: 'Your Lotus Tubes Password Reset Verification Code',
+          html: buildPasswordResetEmailHtml({ name: user.name, otp: otpNum, portalName: 'Customer Portal' }),
+          metadata: { category: 'password_reset', role: 'customer' }
+        });
+
+        await recordAuditEvent({
+          actor: { email: normalizedEmail, role: 'customer' },
+          action: 'CUSTOMER_PASSWORD_RESET_OTP_ISSUED',
+          targetType: 'User',
+          targetId: user._id,
+          targetRef: user.email,
+          metadata: { expiresAt: user.resetPasswordOtpExpiresAt },
+          ip: req.ip
+        });
+      }
+    }
+
+    // Generic response to prevent user account enumeration
+    return successResponse(
+      res,
+      null,
+      'If your account is registered, a secure 6-digit verification code has been dispatched to your email address.'
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Customer Password Reset Verification & Completion
+ */
+export const resetCustomerPasswordWithOtp = async (req, res, next) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+    assertDatabaseConnected();
+
+    if (!email || !otp || !newPassword) {
+      return errorResponse(res, 'Email, OTP verification code, and new password are required', 400);
+    }
+
+    if (newPassword.length < 8) {
+      return errorResponse(res, 'New password must be at least 8 characters long for security', 400);
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({
+      email: normalizedEmail,
+      role: 'customer'
+    }).select('+resetPasswordOtpHash +resetPasswordOtpExpiresAt +resetPasswordOtpAttempts');
+
+    if (!user || !user.resetPasswordOtpHash || !user.resetPasswordOtpExpiresAt) {
+      return errorResponse(res, 'Invalid or expired verification session. Please request a new OTP.', 400);
+    }
+
+    if (new Date() > user.resetPasswordOtpExpiresAt) {
+      user.resetPasswordOtpHash = null;
+      user.resetPasswordOtpExpiresAt = null;
+      user.resetPasswordOtpAttempts = 0;
+      await user.save();
+      return errorResponse(res, 'Verification code has expired. Please request a new OTP.', 400);
+    }
+
+    if ((user.resetPasswordOtpAttempts || 0) >= 3) {
+      user.resetPasswordOtpHash = null;
+      user.resetPasswordOtpExpiresAt = null;
+      user.resetPasswordOtpAttempts = 0;
+      await user.save();
+      return errorResponse(res, 'Maximum verification attempts exceeded. Please request a new OTP.', 429);
+    }
+
+    const suppliedHash = hashOtp(otp);
+    if (!timingSafeHashCompare(suppliedHash, user.resetPasswordOtpHash)) {
+      user.resetPasswordOtpAttempts = (user.resetPasswordOtpAttempts || 0) + 1;
+      if (user.resetPasswordOtpAttempts >= 3) {
+        user.resetPasswordOtpHash = null;
+        user.resetPasswordOtpExpiresAt = null;
+      }
+      await user.save();
+      return errorResponse(res, 'Invalid verification code. Please check and try again.', 401);
+    }
+
+    // Validated: Reset password securely and increment tokenVersion to revoke old sessions
+    user.password = newPassword;
+    user.passwordChangedAt = new Date();
+    user.tokenVersion = (user.tokenVersion || 0) + 1;
+    user.resetPasswordOtpHash = null;
+    user.resetPasswordOtpExpiresAt = null;
+    user.resetPasswordOtpAttempts = 0;
+    user.resetPasswordOtpRequestedAt = null;
+    await user.save();
+
+    await recordAuditEvent({
+      actor: { id: user._id, name: user.name, email: user.email, role: user.role },
+      action: 'CUSTOMER_PASSWORD_RESET_COMPLETED',
+      targetType: 'User',
+      targetId: user._id,
+      targetRef: user.email,
+      metadata: { reason: 'Password successfully reset via customer OTP' },
+      ip: req.ip
+    });
+
+    return successResponse(res, null, 'Password reset successfully. You may now log in with your new password.');
+  } catch (error) {
+    next(error);
+  }
+};
+
 /**
  * Staff Password Reset Request (OTP Generation)
  * Sends short-lived, rate-limited OTP to verified email without exposing existence
@@ -543,41 +812,49 @@ export const forgotStaffPassword = async (req, res, next) => {
     });
 
     if (user) {
-      // Generate cryptographically secure 6-digit numeric OTP
-      const otpNum = Math.floor(100000 + crypto.randomInt(900000)).toString();
-      const otpHash = crypto.createHash('sha256').update(otpNum).digest('hex');
+      const now = Date.now();
+      const cooldownMs = 60 * 1000;
+      const oneHourMs = 60 * 60 * 1000;
 
-      user.resetPasswordOtpHash = otpHash;
-      user.resetPasswordOtpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
-      user.resetPasswordOtpAttempts = 0;
-      await user.save();
+      if (!user.resetPasswordOtpWindowStart || now - user.resetPasswordOtpWindowStart.getTime() > oneHourMs) {
+        user.resetPasswordOtpWindowStart = new Date(now);
+        user.resetPasswordOtpRequestCount = 0;
+      }
 
-      // Dispatch OTP email
-      await sendEmail({
-        to: user.email,
-        subject: '[Lotus Tubes Security] Your One-Time Password (OTP) for Staff Access',
-        html: `
-          <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 500px; margin: 0 auto; border: 1px solid #E2E8F0; border-radius: 8px; padding: 24px;">
-            <h2 style="color: #0284C7; margin-top: 0;">Password Reset Verification</h2>
-            <p>Dear ${escapeHtml(user.name)},</p>
-            <p>A password reset was requested for your Lotus Tubes staff account.</p>
-            <div style="background: #F1F5F9; border-radius: 6px; padding: 16px; text-align: center; margin: 20px 0;">
-              <span style="font-size: 28px; font-weight: bold; letter-spacing: 6px; color: #10263D;">${otpNum}</span>
-            </div>
-            <p style="font-size: 12px; color: #64748B;">This code is valid for 10 minutes. If you did not request this, please notify your Super Admin immediately.</p>
-          </div>
-        `
-      });
+      const isCoolingDown = user.resetPasswordOtpRequestedAt && now - user.resetPasswordOtpRequestedAt.getTime() < cooldownMs;
+      const isExceededCap = (user.resetPasswordOtpRequestCount || 0) >= 5;
 
-      await recordAuditEvent({
-        actor: { email: normalizedEmail, role: 'staff' },
-        action: 'PASSWORD_RESET_OTP_ISSUED',
-        targetType: 'User',
-        targetId: user._id,
-        targetRef: user.email,
-        metadata: { expiresAt: user.resetPasswordOtpExpiresAt },
-        ip: req.ip
-      });
+      if (!isCoolingDown && !isExceededCap) {
+        const otpNum = crypto.randomInt(100000, 1000000).toString();
+        const otpHash = hashOtp(otpNum);
+
+        user.resetPasswordOtpHash = otpHash;
+        user.resetPasswordOtpExpiresAt = new Date(now + 10 * 60 * 1000); // 10 minutes expiry
+        user.resetPasswordOtpAttempts = 0;
+        user.resetPasswordOtpRequestedAt = new Date(now);
+        user.resetPasswordOtpRequestCount = (user.resetPasswordOtpRequestCount || 0) + 1;
+        await user.save();
+
+        // Dispatch via Lotus Tubes Support identity (replies routed to sales@lotustubes.com)
+        await sendEmail({
+          agentId: 'support',
+          to: user.email,
+          replyTo: 'sales@lotustubes.com',
+          subject: '[Lotus Tubes Staff Security] Your Password Reset Verification Code',
+          html: buildPasswordResetEmailHtml({ name: user.name, otp: otpNum, portalName: 'Staff Workspace' }),
+          metadata: { category: 'password_reset', role: user.role }
+        });
+
+        await recordAuditEvent({
+          actor: { email: normalizedEmail, role: user.role },
+          action: 'STAFF_PASSWORD_RESET_OTP_ISSUED',
+          targetType: 'User',
+          targetId: user._id,
+          targetRef: user.email,
+          metadata: { expiresAt: user.resetPasswordOtpExpiresAt },
+          ip: req.ip
+        });
+      }
     }
 
     // Generic response to prevent user enumeration
@@ -604,7 +881,7 @@ export const resetStaffPasswordWithOtp = async (req, res, next) => {
     }
 
     if (newPassword.length < 8) {
-      return errorResponse(res, 'New password must be at least 8 characters long', 400);
+      return errorResponse(res, 'New password must be at least 8 characters long for security', 400);
     }
 
     const normalizedEmail = email.toLowerCase().trim();
@@ -620,6 +897,7 @@ export const resetStaffPasswordWithOtp = async (req, res, next) => {
     if (new Date() > user.resetPasswordOtpExpiresAt) {
       user.resetPasswordOtpHash = null;
       user.resetPasswordOtpExpiresAt = null;
+      user.resetPasswordOtpAttempts = 0;
       await user.save();
       return errorResponse(res, 'Verification code has expired. Please request a new OTP.', 400);
     }
@@ -628,33 +906,40 @@ export const resetStaffPasswordWithOtp = async (req, res, next) => {
     if ((user.resetPasswordOtpAttempts || 0) >= 3) {
       user.resetPasswordOtpHash = null;
       user.resetPasswordOtpExpiresAt = null;
+      user.resetPasswordOtpAttempts = 0;
       await user.save();
       return errorResponse(res, 'Maximum verification attempts exceeded. Please request a new OTP.', 429);
     }
 
-    const suppliedHash = crypto.createHash('sha256').update(String(otp).trim()).digest('hex');
-    if (suppliedHash !== user.resetPasswordOtpHash) {
+    const suppliedHash = hashOtp(otp);
+    if (!timingSafeHashCompare(suppliedHash, user.resetPasswordOtpHash)) {
       user.resetPasswordOtpAttempts = (user.resetPasswordOtpAttempts || 0) + 1;
+      if (user.resetPasswordOtpAttempts >= 3) {
+        user.resetPasswordOtpHash = null;
+        user.resetPasswordOtpExpiresAt = null;
+      }
       await user.save();
       return errorResponse(res, 'Invalid verification code. Please check and try again.', 401);
     }
 
-    // Validated: Reset password securely
+    // Validated: Reset password securely and increment tokenVersion to revoke old sessions
     user.password = newPassword;
     user.passwordChangedAt = new Date();
     user.mustChangePassword = false;
+    user.tokenVersion = (user.tokenVersion || 0) + 1;
     user.resetPasswordOtpHash = null;
     user.resetPasswordOtpExpiresAt = null;
     user.resetPasswordOtpAttempts = 0;
+    user.resetPasswordOtpRequestedAt = null;
     await user.save();
 
     await recordAuditEvent({
       actor: { id: user._id, name: user.name, email: user.email, role: user.role },
-      action: 'PASSWORD_RESET_COMPLETED',
+      action: 'STAFF_PASSWORD_RESET_COMPLETED',
       targetType: 'User',
       targetId: user._id,
       targetRef: user.email,
-      metadata: { reason: 'Password successfully reset via OTP' },
+      metadata: { reason: 'Password successfully reset via staff OTP' },
       ip: req.ip
     });
 

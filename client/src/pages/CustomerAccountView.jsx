@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import apiService from '../services/api';
 import { Loader } from '../components/common/Loader';
 import { AI_TEAM_MEMBERS } from '../data/siteData';
+import { PasswordResetModal } from '../components/modals/PasswordResetModal';
 
 export const CustomerAccountView = ({ onNotify }) => {
   const { user, logout } = useAuth();
@@ -10,6 +11,7 @@ export const CustomerAccountView = ({ onNotify }) => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('quotes'); // 'quotes' | 'billing' | 'support'
   const [sendingInvoiceId, setSendingInvoiceId] = useState(null);
+  const [showResetModal, setShowResetModal] = useState(false);
 
   // Synchronize document.title dynamically with active customer portal tab
   useEffect(() => {
@@ -124,6 +126,39 @@ export const CustomerAccountView = ({ onNotify }) => {
         };
       });
 
+  if (!user) {
+    return (
+      <div className="site-container section" style={{ maxWidth: '540px', padding: '60px 20px', textAlign: 'center' }}>
+        <div className="card" style={{ background: '#FFFFFF', padding: '36px 28px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🔒</div>
+          <h2 style={{ margin: '0 0 8px 0', color: '#0F172A', fontSize: '1.4rem' }}>Customer Authentication Required</h2>
+          <p style={{ color: '#64748B', fontSize: '14px', lineHeight: 1.6, marginBottom: '24px' }}>
+            Please sign in to access your verified quotations, formal BOQs, tax invoices, and dedicated AI team portfolio.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="#login" className="btn btn--primary" style={{ padding: '10px 20px' }}>
+              Sign In to Account →
+            </a>
+            <button
+              type="button"
+              onClick={() => setShowResetModal(true)}
+              className="btn btn--outline"
+              style={{ padding: '10px 20px' }}
+            >
+              Reset Password
+            </button>
+          </div>
+        </div>
+        <PasswordResetModal
+          isOpen={showResetModal}
+          onClose={() => setShowResetModal(false)}
+          portalMode="customer"
+          onNotify={onNotify}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="page-hero">
@@ -181,6 +216,13 @@ export const CustomerAccountView = ({ onNotify }) => {
               style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
               💬 Live Chat (Arjun Yadav)
+            </button>
+            <button
+              type="button"
+              className="btn btn--outline btn--sm"
+              onClick={() => setShowResetModal(true)}
+            >
+              🔑 Change Password
             </button>
             <a href="/products" className="btn btn--outline btn--sm">
               Browse Catalogue
@@ -611,6 +653,14 @@ export const CustomerAccountView = ({ onNotify }) => {
           </div>
         )}
       </div>
+
+      <PasswordResetModal
+        isOpen={showResetModal}
+        onClose={() => setShowResetModal(false)}
+        portalMode="customer"
+        initialEmail={user?.email || ''}
+        onNotify={onNotify}
+      />
     </>
   );
 };

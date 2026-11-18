@@ -65,6 +65,17 @@ export const AI_AGENT_SENDERS = {
     department: 'System & Security',
     defaultReplyTo: BUSINESS_MAILBOX,
     photoUrl: '/banner-image-opt.png'
+  },
+  'support': {
+    id: 'support',
+    botNumber: 5,
+    name: 'Lotus Tubes Support',
+    email: 'support@lotustubes.com',
+    role: 'support_notification',
+    title: 'Lotus Tubes Support Desk',
+    department: 'Client Support & Security',
+    defaultReplyTo: BUSINESS_MAILBOX,
+    photoUrl: '/banner-image-opt.png'
   }
 };
 

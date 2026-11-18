@@ -195,6 +195,44 @@ export const apiService = {
     return await request('/auth/my-quotes');
   },
 
+  /**
+   * Password Recovery & OTP Verification (Customer & Staff)
+   */
+  async forgotCustomerPassword(email) {
+    return await request('/auth/customer/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
+  },
+
+  async resetCustomerPasswordWithOtp(email, otp, newPassword) {
+    return await request('/auth/customer/reset-password-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp, newPassword })
+    });
+  },
+
+  async forgotStaffPassword(email) {
+    return await request('/auth/staff/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
+  },
+
+  async resetStaffPasswordWithOtp(email, otp, newPassword) {
+    return await request('/auth/staff/reset-password-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp, newPassword })
+    });
+  },
+
+  async changeStaffPassword(currentPassword, newPassword) {
+    return await request('/auth/staff/change-password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+  },
+
   logout() {
     clearAuthData();
   },

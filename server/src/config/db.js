@@ -29,7 +29,8 @@ export const connectDB = async () => {
   try {
     const conn = await mongoose.connect(config.mongoUri, {
       dbName: 'lotus_tubes',
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
       autoIndex: true
     });
     isConnected = true;

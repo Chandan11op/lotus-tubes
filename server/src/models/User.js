@@ -100,6 +100,25 @@ const userSchema = new mongoose.Schema(
       select: false,
       default: 0
     },
+    resetPasswordOtpRequestedAt: {
+      type: Date,
+      select: false,
+      default: null
+    },
+    resetPasswordOtpRequestCount: {
+      type: Number,
+      select: false,
+      default: 0
+    },
+    resetPasswordOtpWindowStart: {
+      type: Date,
+      select: false,
+      default: null
+    },
+    tokenVersion: {
+      type: Number,
+      default: 0
+    },
     country: {
       type: String,
       trim: true,

@@ -21,7 +21,7 @@ const emailLogSchema = new mongoose.Schema(
     },
     agentId: {
       type: String,
-      enum: ['ananya-mehta', 'riya-shah', 'neha-desai', 'arjun-yadav', 'system'],
+      enum: ['ananya-mehta', 'riya-shah', 'neha-desai', 'arjun-yadav', 'system', 'support'],
       default: 'system',
       index: true
     },

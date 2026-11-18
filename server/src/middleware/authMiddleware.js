@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 import { errorResponse } from '../utils/responseHandler.js';
+import { User } from '../models/User.js';
 
 /**
  * Enforces authenticated user across any active role
@@ -18,6 +19,13 @@ export const authenticate = async (req, res, next) => {
       decoded = jwt.verify(token, config.jwtSecret);
     } catch (jwtErr) {
       return errorResponse(res, 'Session expired or invalid token. Please log in again.', 401);
+    }
+
+    if (decoded.id && decoded.tokenVersion !== undefined) {
+      const liveUser = await User.findById(decoded.id).select('tokenVersion accountStatus').lean();
+      if (!liveUser || liveUser.accountStatus === 'suspended' || (liveUser.tokenVersion || 0) !== decoded.tokenVersion) {
+        return errorResponse(res, 'Session invalidated or password changed. Please log in again.', 401);
+      }
     }
 
     req.user = decoded;

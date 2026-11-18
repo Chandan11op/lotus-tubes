@@ -22,6 +22,8 @@ import {
 import {
   registerCustomer,
   loginCustomer,
+  forgotCustomerPassword,
+  resetCustomerPasswordWithOtp,
   loginStaff,
   getMe,
   getMyQuotations,
@@ -97,6 +99,8 @@ router.get('/health', getHealth);
 // Public / Customer Authentication (rate limited)
 router.post('/auth/customer/register', authLimiter, registerCustomer);
 router.post('/auth/customer/login', authLimiter, loginCustomer);
+router.post('/auth/customer/forgot-password', authLimiter, forgotCustomerPassword);
+router.post('/auth/customer/reset-password-otp', authLimiter, resetCustomerPasswordWithOtp);
 
 // Staff Authentication & Password Security (rate limited)
 router.post('/auth/staff/login', authLimiter, loginStaff);

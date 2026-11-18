@@ -211,7 +211,9 @@ async function runEmailTestSuite() {
 
   // 6. Resend Webhook Svix Signature Verification
   await test('Svix cryptographic webhook signature verification succeeds for authentic payloads and rejects tampered bodies', async () => {
-    const testSecret = 'whsec_mfKQ9rJ7gC5bY4bYyH0bN2zL9xV1wQ7p';
+    // Generate dynamic in-memory test secret without static scanner patterns
+    const dynamicKey = crypto.randomBytes(32).toString('base64');
+    const testSecret = `whsec_${dynamicKey}`;
     const msgId = 'msg_test_12345';
     const msgTimestamp = Math.floor(Date.now() / 1000).toString();
     const rawBody = JSON.stringify({ type: 'email.delivered', data: { email_id: 're_test_999' } });
