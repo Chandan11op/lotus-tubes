@@ -3,10 +3,15 @@ import { config } from '../config/env.js';
 
 export const getHealth = (req, res) => {
   const dbStatus = getDBStatus();
-  return res.status(200).json({
-    status: 'success',
-    success: true,
-    message: 'Lotus Tubes API is running',
+  const isHealthy = dbStatus.connected;
+  const statusCode = isHealthy ? 200 : 503;
+
+  return res.status(statusCode).json({
+    status: isHealthy ? 'success' : 'unhealthy',
+    success: isHealthy,
+    message: isHealthy ? 'Lotus Tubes API is running' : 'Lotus Tubes API service degraded: Database disconnected',
+    version: '2.0.0',
+    environment: config.nodeEnv,
     timestamp: new Date().toISOString(),
     uptime: Math.floor(process.uptime()),
     database: {
@@ -15,7 +20,7 @@ export const getHealth = (req, res) => {
     },
     // Backwards compatibility for existing tests and client consumers
     data: {
-      status: 'healthy',
+      status: isHealthy ? 'healthy' : 'degraded',
       database: dbStatus,
       services: {
         resend: !!config.resend.apiKey && !config.resend.apiKey.includes('placeholder')

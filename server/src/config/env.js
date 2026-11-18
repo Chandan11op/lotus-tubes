@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,12 +31,18 @@ export const config = {
   mongoUri: process.env.MONGODB_URI || (isProduction ? '' : 'mongodb://localhost:27017/lotus_tubes'),
   jwtSecret: rawJwtSecret || 'lotus_tubes_jwt_secret_dev_2026_hygienic_valves',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
+  passwordResetOtpSecret:
+    process.env.PASSWORD_RESET_OTP_SECRET ||
+    (rawJwtSecret
+      ? crypto.createHmac('sha256', rawJwtSecret).update('lotus_tubes_otp_fallback_salt').digest('hex')
+      : 'lotus_tubes_otp_hmac_secret_dev_32bytes_min!'),
   staffInitEmail: (process.env.STAFF_INIT_EMAIL || 'sales@lotustubes.com').toLowerCase().trim(),
   staffInitPassword: process.env.STAFF_INIT_PASSWORD || (isProduction ? '' : 'lotustubes@11'),
   turnstileSecretKey: process.env.TURNSTILE_SECRET_KEY || process.env.SECRET_KEY || '',
   resend: {
     apiKey: process.env.RESEND_API_KEY || '',
     fromEmail: process.env.RESEND_FROM_EMAIL || 'sales@lotustubes.com',
+    supportEmail: process.env.RESEND_SUPPORT_EMAIL || 'support@lotustubes.com',
     notificationEmail: process.env.CONTACT_NOTIFICATION_EMAIL || 'sales@lotustubes.com',
     webhookSecret: process.env.RESEND_WEBHOOK_SECRET || '',
     agents: {

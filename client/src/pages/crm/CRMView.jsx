@@ -23,6 +23,7 @@ import { CRMSeoView } from './views/CRMSeoView';
 import { CRMAiOperationsView } from './views/CRMAiOperationsView';
 import { CRMEmailCommunicationsView } from './views/CRMEmailCommunicationsView';
 import { NewStaffModal } from './components/NewStaffModal';
+import { PasswordResetModal } from '../../components/modals/PasswordResetModal';
 
 export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }) => {
   const { user, loginStaff, loginCustomer, registerCustomer, logout, isStaff } = useAuth();
@@ -37,6 +38,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [authPhone, setAuthPhone] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
 
   // Operational CRM State
   const [enquiries, setEnquiries] = useState([]);
@@ -766,7 +768,27 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
             </div>
 
             <div className="crm-form-group">
-              <label>Password *</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{ margin: 0 }}>Password *</label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthError('');
+                    setShowPasswordResetModal(true);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--crm-blue, #0284C7)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    padding: 0
+                  }}
+                >
+                  Forgot Password?
+                </button>
+              </div>
               <input
                 type="password"
                 required
@@ -793,6 +815,18 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
               )}
             </button>
           </form>
+
+          <PasswordResetModal
+            isOpen={showPasswordResetModal}
+            onClose={() => setShowPasswordResetModal(false)}
+            portalMode={authMode === 'staff' ? 'staff' : 'customer'}
+            initialEmail={authEmail}
+            onNotify={onNotify}
+            onSuccess={(resetEmail) => {
+              setAuthEmail(resetEmail);
+              setShowPasswordResetModal(false);
+            }}
+          />
 
           {authMode === 'customer' && (
             <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: '#64748B' }}>

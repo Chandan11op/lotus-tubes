@@ -13,6 +13,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Trust reverse proxy (Hostinger CloudLinux / Nginx reverse proxy)
+app.set('trust proxy', 1);
+
 // Security Headers with Helmet
 app.use(
   helmet({
