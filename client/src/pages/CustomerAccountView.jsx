@@ -241,68 +241,183 @@ export const CustomerAccountView = ({ onNotify }) => {
           </div>
         </div>
 
-        {/* Dedicated 4 AI Agents Operational Grid */}
-        <div
-          className="card mb-4"
+        {/* Dedicated 4 AI Staff Profiles - Premium Corporate Portfolio Grid */}
+        <section
+          aria-labelledby="assigned-team-heading"
+          className="card mb-8"
           style={{
-            background: 'linear-gradient(135deg, #030810 0%, #0F172A 100%)',
-            color: '#FFFFFF',
-            padding: '24px',
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
             borderRadius: '16px',
-            border: '1px solid rgba(56, 189, 248, 0.2)'
+            padding: '24px',
+            boxShadow: '0 4px 18px rgba(15, 23, 42, 0.04)'
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
             <div>
-              <span style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: '#38BDF8', letterSpacing: '0.1em' }}>
-                Assigned Business Portfolio Team
-              </span>
-              <h3 style={{ margin: '4px 0 0 0', color: '#FFFFFF', fontSize: '1.2rem' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', color: '#0284C7', letterSpacing: '0.08em', background: '#F0F9FF', padding: '3px 10px', borderRadius: '9999px', border: '1px solid #BAE6FD' }}>
+                <span>🛡️</span> Supervised Client Operations Desk
+              </div>
+              <h3 id="assigned-team-heading" style={{ margin: '8px 0 4px 0', color: '#0F172A', fontSize: '1.35rem', fontWeight: 800, letterSpacing: '-0.01em' }}>
                 Your Dedicated Account Management Team
               </h3>
+              <p style={{ margin: 0, fontSize: '13px', color: '#64748B', maxWidth: '680px', lineHeight: 1.5 }}>
+                Our specialized AI representatives manage quotation evaluations, commercial billing, technical documentation, and order dispatches with guaranteed 24-hour turnaround under Super Admin oversight.
+              </p>
             </div>
-            <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
-              Supervised by Chirag Shah (Owner &amp; Managing Director)
-            </span>
+            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '8px 14px', textAlign: 'right' }}>
+              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>Executive Direction</div>
+              <div style={{ fontSize: '12px', color: '#0F172A', fontWeight: 700 }}>Chirag Shah • Managing Director</div>
+            </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '18px' }}>
             {AI_TEAM_MEMBERS.map((bot) => (
-              <div
+              <article
                 key={bot.id}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
-                  padding: '14px',
+                  background: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '14px',
+                  overflow: 'hidden',
                   display: 'flex',
-                  gap: '12px',
-                  alignItems: 'center'
+                  flexDirection: 'column',
+                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease'
                 }}
               >
-                <img
-                  src={bot.photo}
-                  alt={bot.name}
-                  style={{ width: '46px', height: '46px', borderRadius: '10px', objectFit: 'cover', border: '1px solid #38BDF8' }}
-                />
-                <div style={{ minWidth: 0, flex: 1 }}>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#F1F5F9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {/* Portrait Frame with Generous Headroom and Calibrated Focal Point */}
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '240px',
+                    background: 'linear-gradient(180deg, #F8FAFC 0%, #E2E8F0 100%)',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <img
+                    src={bot.photo}
+                    alt={bot.name + ' - ' + bot.role + ' (AI Representative)'}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: bot.focalPoint || 'center 7%',
+                      display: 'block'
+                    }}
+                    loading="lazy"
+                  />
+                  {/* Department Pill */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      left: '10px',
+                      background: 'rgba(255, 255, 255, 0.95)',
+                      backdropFilter: 'blur(6px)',
+                      color: '#0369A1',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: '6px',
+                      border: '1px solid #BAE6FD',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)'
+                    }}
+                  >
+                    {bot.department || 'Operations'}
+                  </div>
+
+                  {/* Status Pill */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      background: 'rgba(240, 253, 244, 0.95)',
+                      color: '#15803D',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: '9999px',
+                      border: '1px solid #BBF7D0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)'
+                    }}
+                  >
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
+                    {bot.status?.split('•')[0]?.trim() || 'Available'}
+                  </div>
+                </div>
+
+                {/* Card Information Body */}
+                <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0F172A', lineHeight: 1.25, marginBottom: '4px' }}>
                     {bot.name}
                   </div>
-                  <div style={{ fontSize: '0.7rem', color: '#38BDF8', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div style={{ fontSize: '0.78rem', color: '#0284C7', fontWeight: 700, lineHeight: 1.35, marginBottom: '8px' }}>
                     {bot.role}
                   </div>
+
+                  {/* AI Representative Disclosure */}
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '10.5px', color: '#64748B', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '2px 8px', borderRadius: '4px', alignSelf: 'flex-start', marginBottom: '10px' }}>
+                    <span>🤖</span> AI Representative • Supervised
+                  </div>
+
+                  <p style={{ fontSize: '0.78rem', color: '#475569', lineHeight: 1.5, margin: '0 0 12px 0', flex: 1 }}>
+                    {bot.summary}
+                  </p>
+
+                  {/* Key Channels */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '12px' }}>
+                    {(bot.channels || []).slice(0, 2).map((ch, idx) => (
+                      <span
+                        key={idx}
+                        style={{
+                          fontSize: '10px',
+                          color: '#1E40AF',
+                          background: '#EFF6FF',
+                          border: '1px solid #DBEAFE',
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          fontWeight: 600
+                        }}
+                      >
+                        {ch}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Direct Contact Button */}
                   <a
-                    href={`mailto:${bot.email}`}
-                    style={{ fontSize: '0.68rem', color: '#94A3B8', textDecoration: 'none', display: 'block', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                    href={'mailto:' + bot.email}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      fontSize: '0.74rem',
+                      fontFamily: 'ui-monospace, monospace',
+                      color: '#0369A1',
+                      background: '#F0F9FF',
+                      border: '1px solid #BAE6FD',
+                      borderRadius: '8px',
+                      padding: '7px 10px',
+                      textDecoration: 'none',
+                      fontWeight: 700,
+                      transition: 'background 0.15s ease'
+                    }}
+                    title={'Direct Email to ' + bot.name}
                   >
                     ✉️ {bot.email}
                   </a>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* Tab Navigation */}
         <div style={{ display: 'flex', gap: '8px', borderBottom: '2px solid #E2E8F0', marginBottom: '20px' }}>

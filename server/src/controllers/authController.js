@@ -12,6 +12,7 @@ import { getDBStatus, assertDatabaseConnected } from '../config/db.js';
 import { recordAuditEvent } from '../utils/auditLogger.js';
 import { sendEmail } from '../services/emailService.js';
 import { escapeHtml, sanitizeText } from '../utils/security.js';
+import { buildPasswordResetOtpEmail, buildPasswordResetSuccessEmail } from '../utils/emailTemplates.js';
 
 // Helper to generate JWT token with full RBAC claims
 const generateToken = (user) => {
@@ -686,7 +687,7 @@ export const forgotCustomerPassword = async (req, res, next) => {
           to: user.email,
           replyTo: 'sales@lotustubes.com',
           subject: 'Your Lotus Tubes Password Reset Verification Code',
-          html: buildPasswordResetEmailHtml({ name: user.name, otp: otpNum, portalName: 'Customer Portal' }),
+          html: buildPasswordResetOtpEmail({ name: user.name, otp: otpNum, portalName: 'Customer Portal' }),
           metadata: { category: 'password_reset', role: 'customer' }
         });
 
@@ -841,7 +842,7 @@ export const forgotStaffPassword = async (req, res, next) => {
           to: user.email,
           replyTo: 'sales@lotustubes.com',
           subject: '[Lotus Tubes Staff Security] Your Password Reset Verification Code',
-          html: buildPasswordResetEmailHtml({ name: user.name, otp: otpNum, portalName: 'Staff Workspace' }),
+          html: buildPasswordResetOtpEmail({ name: user.name, otp: otpNum, portalName: 'Staff Workspace' }),
           metadata: { category: 'password_reset', role: user.role }
         });
 

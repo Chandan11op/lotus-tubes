@@ -7,6 +7,7 @@ import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { generateReference } from '../utils/security.js';
 import { sendEmail } from '../services/emailService.js';
+import { buildInvoiceDeliveryEmail } from '../utils/emailTemplates.js';
 import { sendWhatsAppInvoice } from '../services/whatsappService.js';
 
 /**
