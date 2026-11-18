@@ -13,6 +13,18 @@ import {
   getSpecsForCategory
 } from '../../data/productSpecsConfig';
 
+/**
+ * Lotus Tubes - Premium Industrial Quotation Modal (Light Theme)
+ * Features:
+ * - Clean white (#FFFFFF) & subtle slate (#F8FAFC) aesthetics with dark (#111827) readable typography
+ * - Structured 4-section layout:
+ *   Section A: Product Specifications
+ *   Section B: Quantity Requirements
+ *   Section C: Delivery Information
+ *   Section D: Customer Information
+ * - High-contrast form labels, dropdowns, inputs, and placeholders
+ * - 24-hour turnaround commitment & automated customer acknowledgement
+ */
 export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
   const { user, isAuthenticated } = useAuth();
   const { t, currentLang } = useLanguage();
@@ -24,6 +36,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     company: '',
     email: '',
     phone: '',
+    country: 'India',
     grade: 'SS 316L',
     productType: '',
     nominalSize: '1" (25.4mm OD)',
@@ -66,12 +79,11 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     };
     window.addEventListener('keydown', handleKeyDown);
 
-    // Focus initial input
     const timer = setTimeout(() => {
       if (firstInputRef.current) {
         firstInputRef.current.focus();
       }
-    }, 100);
+    }, 120);
 
     return () => {
       document.body.style.overflow = originalOverflow;
@@ -97,6 +109,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
         company: isAuthenticated && user?.company ? user.company : (prev.company || ''),
         email: isAuthenticated && user?.email ? user.email : (prev.email || ''),
         phone: isAuthenticated && user?.phone ? user.phone : (prev.phone || ''),
+        country: isAuthenticated && user?.country ? user.country : (prev.country || 'India'),
         grade: product?.material?.includes('304') ? 'SS 304L' : 'SS 316L',
         productType: specs.itemTypes[0]?.value || '',
         nominalSize: '1" (25.4mm OD)',
@@ -120,18 +133,18 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
   const validate = () => {
     const errs = {};
 
-    // For anonymous visitors, validate customer profile fields
+    // Section D: Customer Profile Validation
     if (!isAuthenticated) {
       if (!formData.name.trim()) errs.name = 'Please enter your full name';
-      if (!formData.company.trim()) errs.company = 'Please enter your company / business name';
+      if (!formData.company.trim()) errs.company = 'Please enter your company or business name';
       if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-        errs.email = 'Please provide a valid business email';
+        errs.email = 'Please provide a valid business email address';
       }
       if (!formData.phone.trim() || formData.phone.length < 7) {
         errs.phone = 'Please enter a valid phone or WhatsApp number with country code';
       }
+      if (!formData.country.trim()) errs.country = 'Please select or enter your country';
     } else {
-      // For authenticated user: only validate fields missing from profile
       if (!user?.phone && (!formData.phone || formData.phone.trim().length < 7)) {
         errs.phone = 'Please provide a contact phone/WhatsApp number for quotation delivery';
       }
@@ -140,14 +153,28 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
       }
     }
 
-    // Required product specification fields for both guest and authenticated customers
-    if (!formData.quantity.trim()) errs.quantity = 'Please specify required quantity (e.g. 50 meters, 200 pcs)';
-    if (!formData.location.trim()) errs.location = 'Please specify delivery destination city and country';
+    // Section A & B: Product Specifications & Quantity
+    if (!formData.quantity || String(formData.quantity).trim() === '') {
+      errs.quantity = 'Please specify required quantity (e.g. 50 meters, 200 pcs)';
+    }
+
+    if (formData.nominalSize === 'Custom Size' && !formData.customSize.trim()) {
+      errs.customSize = 'Please specify your custom dimensions';
+    }
+
+    if (formData.wallThickness === 'Custom' && categorySpecs.hasThickness && !formData.customThickness.trim()) {
+      errs.customThickness = 'Please specify your required custom wall thickness';
+    }
+
+    // Section C: Delivery Destination
+    if (!formData.location.trim()) {
+      errs.location = 'Please specify delivery destination city, state or port';
+    }
 
     // Cloudflare Turnstile validation for anonymous visitors
     if (!isAuthenticated && !turnstileToken) {
       errs.turnstile = 'Please complete the Cloudflare security verification check.';
-      setTurnstileError('Please check the verification box before submitting.');
+      setTurnstileError('Please verify you are human before submitting.');
     }
 
     setErrors(errs);
@@ -186,23 +213,24 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
         quantity: formData.quantity,
         unit: formData.unit,
         location: formData.location,
+        country: formData.country,
         notes: formData.notes,
         finish: formData.finish,
         sizes: `${selectedSize} (${outsideDiameter || ''}) x ${selectedThickness}`,
         language: currentLang,
-        // If guest, pass customer fields and Turnstile token
         ...(!isAuthenticated
           ? {
               name: formData.name,
               company: formData.company,
               email: formData.email,
               phone: formData.phone,
+              country: formData.country,
               turnstileToken
             }
           : {
-              // Pass missing profile info if user entered it
               ...(formData.phone ? { phone: formData.phone } : {}),
-              ...(formData.company ? { company: formData.company } : {})
+              ...(formData.company ? { company: formData.company } : {}),
+              ...(formData.country ? { country: formData.country } : {})
             })
       };
 
@@ -217,6 +245,7 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
           email: payload.email || user?.email,
           phone: payload.phone || user?.phone,
           company: payload.company || user?.company,
+          country: payload.country || user?.country || 'India',
           reference
         });
         if (onSuccess) onSuccess(reference, payload);
@@ -226,7 +255,6 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     } catch (err) {
       console.error('Error submitting quotation request:', err);
       setSubmitError(err.message || 'Server error occurred while submitting quotation. Please try again.');
-      // Reset Turnstile token on failed attempt
       setTurnstileToken('');
       setTurnstileResetKey((k) => k + 1);
     } finally {
@@ -242,6 +270,59 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
     }
   };
 
+  // Shared light-theme style constants
+  const inputStyle = {
+    width: '100%',
+    padding: '10px 14px',
+    fontSize: '14px',
+    color: '#111827',
+    backgroundColor: '#FFFFFF',
+    border: '1px solid #D1D5DB',
+    borderRadius: '8px',
+    outline: 'none',
+    boxSizing: 'border-box',
+    transition: 'border-color 0.15s, box-shadow 0.15s'
+  };
+
+  const labelStyle = {
+    display: 'block',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: '#1F2937',
+    marginBottom: '6px'
+  };
+
+  const sectionBoxStyle = {
+    background: '#F8FAFC',
+    border: '1px solid #E2E8F0',
+    borderRadius: '12px',
+    padding: '20px',
+    marginBottom: '20px'
+  };
+
+  const sectionHeaderStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    marginBottom: '16px',
+    paddingBottom: '10px',
+    borderBottom: '1px solid #E2E8F0'
+  };
+
+  const pillNumberStyle = {
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    background: '#0284C7',
+    color: '#FFFFFF',
+    fontSize: '12px',
+    fontWeight: 700,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0
+  };
+
   return (
     <div
       className="modal-overlay active"
@@ -253,8 +334,8 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        backgroundColor: 'rgba(16, 38, 61, 0.75)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(15, 23, 42, 0.75)',
+        backdropFilter: 'blur(6px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -269,173 +350,258 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
         className="modal-box modal-box--enquiry"
         style={{
           position: 'relative',
-          maxWidth: '680px',
+          maxWidth: '880px',
           width: '100%',
           maxHeight: '92vh',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#151c25',
-          borderRadius: '12px',
-          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.7)',
-          border: '1px solid #242a34',
-          color: '#dce3ef',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '16px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          border: '1px solid #E2E8F0',
+          color: '#111827',
           overflow: 'hidden'
         }}
       >
-        {/* Modal Header */}
+        {/* Sticky Header */}
         <div
-          className="modal-header"
           style={{
-            padding: '20px 24px',
-            borderBottom: '1px solid #242a34',
+            padding: '20px 28px',
+            backgroundColor: '#FFFFFF',
+            borderBottom: '1px solid #E5E7EB',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            backgroundColor: '#0d141c'
+            position: 'sticky',
+            top: 0,
+            zIndex: 10
           }}
         >
           <div>
-            <span
-              style={{
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--color-primary-cyan, #00f0ff)'
-              }}
-            >
-              Official Quotation Desk
-            </span>
-            <h3 id="quick-enquiry-title" style={{ margin: '2px 0 0 0', fontSize: '1.25rem', color: '#dbfcff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: '#0284C7',
+                  backgroundColor: '#E0F2FE',
+                  padding: '3px 10px',
+                  borderRadius: '9999px'
+                }}
+              >
+                Lotus Tubes Commercial Desk
+              </span>
+              <span style={{ fontSize: '12px', color: '#64748B' }}>•</span>
+              <span style={{ fontSize: '12px', color: '#16A34A', fontWeight: 600 }}>
+                ⏱️ 24h Official Quotation Turnaround
+              </span>
+            </div>
+            <h3 id="quick-enquiry-title" style={{ margin: '6px 0 0 0', fontSize: '1.35rem', fontWeight: 700, color: '#0F172A' }}>
               Request Official Quotation
             </h3>
-            <p className="modal-subtitle" id="quick-enquiry-subtitle" style={{ margin: '2px 0 0 0', fontSize: '12px', color: '#b9cacb' }}>
-              Formal Commercial Quotation • Dispatched via Email & WhatsApp
+            <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: '#64748B' }}>
+              Hygienic Process Piping, Fittings &amp; Valves • ASME BPE &bull; DIN 11850 &bull; ASTM A270
             </p>
           </div>
           <button
             type="button"
-            className="modal-close-btn"
             onClick={onClose}
             aria-label="Close modal"
             style={{
-              background: 'transparent',
-              border: 'none',
-              fontSize: '26px',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '1px solid #E2E8F0',
+              background: '#F8FAFC',
+              color: '#64748B',
+              fontSize: '22px',
               cursor: 'pointer',
-              color: '#849495',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               lineHeight: 1,
-              padding: '4px 8px',
-              borderRadius: '4px'
+              transition: 'background-color 0.15s, color 0.15s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#F1F5F9';
+              e.currentTarget.style.color = '#0F172A';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#F8FAFC';
+              e.currentTarget.style.color = '#64748B';
             }}
           >
             &times;
           </button>
         </div>
 
-        {/* Modal Body with internal scroll */}
-        <div className="modal-body" style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+        {/* Scrollable Body */}
+        <div style={{ padding: '24px 28px', overflowY: 'auto', flex: 1, backgroundColor: '#FFFFFF' }}>
           {successRef ? (
-            /* Confirmation State */
-            <div
-              className="form-success-box"
-              id="quick-enquiry-success"
-              style={{ display: 'block', padding: '16px', textAlign: 'center' }}
-            >
-              <div className="success-icon" style={{ fontSize: '42px', color: '#10B981', marginBottom: '8px' }}>
+            /* ============================================================ */
+            /* SUCCESS CONFIRMATION STATE                                   */
+            /* ============================================================ */
+            <div style={{ padding: '16px 8px', textAlign: 'center' }}>
+              <div
+                style={{
+                  width: '68px',
+                  height: '68px',
+                  borderRadius: '50%',
+                  background: '#DCFCE7',
+                  color: '#15803D',
+                  fontSize: '34px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px auto',
+                  boxShadow: '0 4px 12px rgba(21, 128, 61, 0.15)'
+                }}
+              >
                 ✓
               </div>
-              <h4 style={{ color: '#10263D', fontSize: '1.35rem', marginBottom: '6px' }}>
+
+              <h4 style={{ color: '#0F172A', fontSize: '1.45rem', fontWeight: 700, margin: '0 0 8px 0' }}>
                 Quotation Request Confirmed
               </h4>
-              <p className="success-ref" style={{ fontSize: '14px', color: '#10263D', marginBottom: '14px' }}>
-                Quotation Reference:{' '}
-                <strong id="success-enquiry-ref" style={{ color: 'var(--primary-blue, #0284C7)', fontSize: '16px' }}>
-                  {successRef}
-                </strong>
-              </p>
 
               <div
                 style={{
+                  display: 'inline-block',
+                  background: '#EFF6FF',
+                  border: '1px solid #BFDBFE',
+                  borderRadius: '9999px',
+                  padding: '6px 16px',
+                  marginBottom: '18px'
+                }}
+              >
+                <span style={{ fontSize: '12px', color: '#1E40AF', fontWeight: 600 }}>Quotation Reference: </span>
+                <strong style={{ fontSize: '15px', color: '#0284C7', fontFamily: 'monospace' }}>{successRef}</strong>
+              </div>
+
+              {/* High-Priority Turnaround Commitment Notice */}
+              <div
+                style={{
+                  background: '#F0FDF4',
+                  border: '1.5px solid #86EFAC',
+                  borderRadius: '10px',
+                  padding: '16px 20px',
+                  maxWidth: '680px',
+                  margin: '0 auto 24px auto',
+                  textAlign: 'left'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <span style={{ fontSize: '18px' }}>⏱️</span>
+                  <strong style={{ color: '#166534', fontSize: '14px' }}>
+                    Commercial Review in Progress (Turnaround: Within 24 Hours)
+                  </strong>
+                </div>
+                <p style={{ margin: 0, fontSize: '13px', color: '#15803D', lineHeight: 1.6 }}>
+                  Your quotation request has been successfully submitted. Our commercial sales engineering team will review your requirements and send your formal quotation within <strong>24 hours</strong>. An automated confirmation email has also been dispatched to <strong>{submittedData?.email || user?.email}</strong>.
+                </p>
+              </div>
+
+              {/* Submitted Specifications Card */}
+              <div
+                style={{
                   background: '#F8FAFC',
-                  padding: '16px',
-                  borderRadius: '8px',
+                  padding: '18px 24px',
+                  borderRadius: '10px',
                   border: '1px solid #E2E8F0',
                   textAlign: 'left',
                   fontSize: '13px',
-                  lineHeight: 1.6,
-                  marginBottom: '16px'
+                  lineHeight: 1.7,
+                  maxWidth: '680px',
+                  margin: '0 auto 24px auto'
                 }}
               >
-                <div><strong>Product:</strong> {product?.name || 'Sanitary Component'}</div>
-                <div><strong>Material Grade:</strong> {formData.grade}</div>
-                <div><strong>Requested Quantity:</strong> {submittedData?.quantity || formData.quantity}</div>
-                <div><strong>Destination:</strong> {submittedData?.location || formData.location}</div>
-                <div><strong>Customer:</strong> {submittedData?.name || user?.name} ({submittedData?.email || user?.email})</div>
-                <div style={{ marginTop: '8px', color: '#64748B', fontSize: '12px', borderTop: '1px solid #E2E8F0', paddingTop: '6px' }}>
-                  A sample quotation PDF document has been assigned to this request and recorded in the database.
+                <div style={{ fontWeight: 700, color: '#0F172A', marginBottom: '8px', fontSize: '14px', borderBottom: '1px solid #E2E8F0', paddingBottom: '6px' }}>
+                  Submitted Specification Summary
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '8px 16px' }}>
+                  <div><span style={{ color: '#64748B' }}>Product:</span> <strong style={{ color: '#111827' }}>{product?.name || 'Sanitary Component'}</strong></div>
+                  <div><span style={{ color: '#64748B' }}>Material Grade:</span> <strong style={{ color: '#111827' }}>{formData.grade}</strong></div>
+                  <div><span style={{ color: '#64748B' }}>Dimensions:</span> <strong style={{ color: '#111827' }}>{formData.nominalSize} ({formData.wallThickness})</strong></div>
+                  <div><span style={{ color: '#64748B' }}>Quantity:</span> <strong style={{ color: '#111827' }}>{submittedData?.quantity || formData.quantity} {formData.unit}</strong></div>
+                  <div><span style={{ color: '#64748B' }}>Destination:</span> <strong style={{ color: '#111827' }}>{submittedData?.location || formData.location}</strong></div>
+                  <div><span style={{ color: '#64748B' }}>Applicant:</span> <strong style={{ color: '#111827' }}>{submittedData?.name || user?.name} ({submittedData?.company || user?.company})</strong></div>
                 </div>
               </div>
 
-              {/* Sample Quotation Actions */}
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '16px' }}>
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
                 <a
                   href="/sample-quotation.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn--primary btn--sm"
                   download={`LotusTubes-Quotation-${successRef}.pdf`}
+                  style={{ padding: '10px 18px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
                   📥 Download Sample Quotation PDF
                 </a>
                 <a
                   href={`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
-                    `Hello Lotus Tubes, I have requested quotation ${successRef} for ${product?.name || 'Sanitary Component'}. Please review and update me.`
+                    `Hello Lotus Tubes, I have submitted quotation request ${successRef} for ${product?.name || 'Sanitary Component'}. Please review and update me.`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn--whatsapp btn--sm"
+                  style={{ padding: '10px 18px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
-                  <span>🟢 WhatsApp Desk ({successRef})</span>
+                  💬 WhatsApp Sales Desk
                 </a>
                 {isAuthenticated ? (
                   <a
                     href="#account"
                     onClick={onClose}
                     className="btn btn--outline-dark btn--sm"
+                    style={{ padding: '10px 18px', fontSize: '13px' }}
                   >
-                    View in My Customer Account &rarr;
+                    View in Customer Account &rarr;
                   </a>
                 ) : null}
               </div>
 
-              <p style={{ fontSize: '11px', color: '#94A3B8', margin: 0, fontStyle: 'italic' }}>
-                Disclaimer: The generated document is a sample quotation for evaluation purposes. Final commercial pricing, lead time, and terms are confirmed upon review by Lotus Tubes sales engineering.
-              </p>
-
-              <div className="success-actions mt-3">
-                <button type="button" className="btn btn--secondary btn--sm" onClick={onClose}>
+              <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '16px' }}>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  style={{
+                    background: '#F1F5F9',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '8px',
+                    color: '#475569',
+                    padding: '8px 24px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
                   Done • Close Window
                 </button>
               </div>
             </div>
           ) : (
-            /* Active Form State */
-            <form id="quick-enquiry-form" className="enquiry-form" onSubmit={handleSubmit} noValidate>
+            /* ============================================================ */
+            /* ACTIVE FORM STATE (LIGHT THEMED)                             */
+            /* ============================================================ */
+            <form id="quick-enquiry-form" onSubmit={handleSubmit} noValidate>
               {/* Product Context Banner */}
               {product && (
                 <div
-                  className="selected-product-preview"
                   style={{
-                    marginBottom: '16px',
-                    padding: '12px 14px',
+                    marginBottom: '20px',
+                    padding: '14px 18px',
                     background: '#F8FAFC',
-                    borderRadius: '8px',
+                    borderRadius: '10px',
                     border: '1px solid #E2E8F0',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    gap: '12px'
+                    gap: '16px'
                   }}
                 >
                   <div>
@@ -443,14 +609,14 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                       style={{
                         fontSize: '11px',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
-                        color: 'var(--primary-blue, #0284C7)',
-                        fontWeight: 600
+                        letterSpacing: '0.06em',
+                        color: '#0284C7',
+                        fontWeight: 700
                       }}
                     >
                       Selected Product
                     </span>
-                    <h4 style={{ margin: 0, color: '#10263D', fontSize: '1rem', fontWeight: 600 }}>
+                    <h4 style={{ margin: '2px 0 0 0', color: '#0F172A', fontSize: '1.05rem', fontWeight: 700 }}>
                       {product.name}
                     </h4>
                     <div style={{ fontSize: '12px', color: '#64748B', marginTop: '2px' }}>
@@ -462,11 +628,12 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                       src={product.image}
                       alt={product.name}
                       style={{
-                        width: '52px',
-                        height: '52px',
+                        width: '56px',
+                        height: '56px',
                         objectFit: 'cover',
-                        borderRadius: '6px',
-                        border: '1px solid #CBD5E1',
+                        borderRadius: '8px',
+                        border: '1px solid #E2E8F0',
+                        backgroundColor: '#FFFFFF',
                         flexShrink: 0
                       }}
                     />
@@ -477,312 +644,262 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
               {/* Submission Error Banner */}
               {submitError && (
                 <div
-                  className="alert alert--danger"
                   style={{
-                    marginBottom: '14px',
-                    padding: '10px 14px',
-                    background: '#FEF2F2',
-                    border: '1px solid #F87171',
-                    borderRadius: '6px',
-                    fontSize: '13px',
-                    color: '#991B1B'
-                  }}
-                >
-                  <strong>⚠️ Submission Error:</strong> {submitError}
-                </div>
-              )}
-
-              {/* Authenticated Customer Information Card */}
-              {isAuthenticated ? (
-                <div
-                  className="authenticated-customer-card"
-                  style={{
-                    marginBottom: '16px',
+                    marginBottom: '18px',
                     padding: '12px 16px',
-                    background: '#F0FDF4',
-                    border: '1px solid #BBF7D0',
+                    background: '#FEF2F2',
+                    border: '1px solid #FECACA',
                     borderRadius: '8px',
                     fontSize: '13px',
-                    color: '#166534'
+                    color: '#B91C1C',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '16px' }}>✓</span>
-                    <span style={{ fontWeight: 600 }}>Authenticated Customer Session</span>
-                  </div>
-                  <div style={{ color: '#374151', fontSize: '12px', lineHeight: 1.5 }}>
-                    <div><strong>Customer Name:</strong> {user?.name}</div>
-                    <div><strong>Email:</strong> {user?.email}</div>
-                    {user?.company && <div><strong>Company:</strong> {user.company}</div>}
-                    {user?.phone && <div><strong>Phone / WhatsApp:</strong> {user.phone}</div>}
-                  </div>
-                  <div style={{ marginTop: '6px', fontSize: '11px', color: '#059669' }}>
-                    Account details will be attached automatically without re-entry.
-                  </div>
-                </div>
-              ) : null}
-
-              {/* Anonymous Visitor Information Fields */}
-              {!isAuthenticated && (
-                <>
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="eq-name">Full Name <span className="required">*</span></label>
-                      <input
-                        ref={firstInputRef}
-                        type="text"
-                        id="eq-name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="e.g. Rajesh Kumar"
-                      />
-                      {errors.name && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.name}</span>}
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="eq-company">Company / Business Name <span className="required">*</span></label>
-                      <input
-                        type="text"
-                        id="eq-company"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        required
-                        placeholder="e.g. BioPharma Engineering Ltd"
-                      />
-                      {errors.company && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.company}</span>}
-                    </div>
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="eq-email">Business Email <span className="required">*</span></label>
-                      <input
-                        type="email"
-                        id="eq-email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="procurement@company.com"
-                      />
-                      {errors.email && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.email}</span>}
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="eq-phone">WhatsApp / Contact Number <span className="required">*</span></label>
-                      <input
-                        type="tel"
-                        id="eq-phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        placeholder="+91 98765 43210"
-                      />
-                      {errors.phone && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.phone}</span>}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* If authenticated user has missing phone or company in their profile, ask only for those */}
-              {isAuthenticated && (!user?.phone || !user?.company) && (
-                <div className="form-row" style={{ marginBottom: '14px' }}>
-                  {!user?.company && (
-                    <div className="form-group">
-                      <label htmlFor="eq-company">Company / Factory Name <span className="required">*</span></label>
-                      <input
-                        type="text"
-                        id="eq-company"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        required
-                        placeholder="e.g. BioPharma Engineering Ltd"
-                      />
-                      {errors.company && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.company}</span>}
-                    </div>
-                  )}
-                  {!user?.phone && (
-                    <div className="form-group">
-                      <label htmlFor="eq-phone">WhatsApp / Contact Number <span className="required">*</span></label>
-                      <input
-                        type="tel"
-                        id="eq-phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                        placeholder="+91 98765 43210"
-                      />
-                      {errors.phone && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.phone}</span>}
-                    </div>
-                  )}
+                  <span>⚠️</span>
+                  <span>{submitError}</span>
                 </div>
               )}
 
-              {/* Product Specifications Section */}
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="eq-grade">Material Grade <span className="required">*</span></label>
-                  <select id="eq-grade" name="grade" value={formData.grade} onChange={handleChange}>
-                    {MATERIAL_GRADES.map((m) => (
-                      <option key={m.value} value={m.value}>
-                        {m.label}
-                      </option>
-                    ))}
-                  </select>
+              {/* ========================================================== */}
+              {/* SECTION A: PRODUCT SPECIFICATIONS                          */}
+              {/* ========================================================== */}
+              <div style={sectionBoxStyle}>
+                <div style={sectionHeaderStyle}>
+                  <div style={pillNumberStyle}>A</div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Product Specifications
+                  </h4>
+                  <span style={{ fontSize: '12px', color: '#64748B', marginLeft: 'auto' }}>
+                    Material, dimensions &amp; standards
+                  </span>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="eq-nominalSize">Nominal Size & Outside Diameter <span className="required">*</span></label>
-                  <select
-                    id="eq-nominalSize"
-                    name="nominalSize"
-                    value={formData.nominalSize}
-                    onChange={handleChange}
-                  >
-                    {NOMINAL_SIZES.map((s) => (
-                      <option key={s.value} value={s.value}>
-                        {s.nominal} {s.odMm !== 'Custom' ? `(OD: ${s.odMm})` : '(Custom Dimension)'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
 
-              {formData.nominalSize === 'Custom Size' && (
-                <div className="form-group" style={{ marginBottom: '12px' }}>
-                  <label htmlFor="eq-customSize">Custom Size / Dimensions <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    id="eq-customSize"
-                    name="customSize"
-                    value={formData.customSize}
-                    onChange={handleChange}
-                    placeholder="e.g. 5 inch OD (127mm) / customized drawing"
-                  />
-                  {errors.customSize && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.customSize}</span>}
-                </div>
-              )}
-
-              <div className="form-row">
-                {categorySpecs.hasThickness ? (
-                  <div className="form-group">
-                    <label htmlFor="eq-wallThickness">Wall Thickness</label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+                  {/* Material Grade */}
+                  <div>
+                    <label htmlFor="eq-grade" style={labelStyle}>
+                      Material Grade <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
                     <select
-                      id="eq-wallThickness"
-                      name="wallThickness"
-                      value={formData.wallThickness}
+                      id="eq-grade"
+                      name="grade"
+                      value={formData.grade}
                       onChange={handleChange}
+                      style={inputStyle}
                     >
-                      {WALL_THICKNESSES.map((w) => (
-                        <option key={w.value} value={w.value}>
-                          {w.label}
+                      {MATERIAL_GRADES.map((m) => (
+                        <option key={m.value} value={m.value} style={{ color: '#111827', backgroundColor: '#FFFFFF' }}>
+                          {m.label}
                         </option>
                       ))}
                     </select>
                   </div>
-                ) : (
-                  <div className="form-group">
-                    <label htmlFor="eq-conn">End Connection</label>
+
+                  {/* Nominal Size & OD */}
+                  <div>
+                    <label htmlFor="eq-nominalSize" style={labelStyle}>
+                      Nominal Size &amp; Outside Diameter <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
+                    <select
+                      id="eq-nominalSize"
+                      name="nominalSize"
+                      value={formData.nominalSize}
+                      onChange={handleChange}
+                      style={inputStyle}
+                    >
+                      {NOMINAL_SIZES.map((s) => (
+                        <option key={s.value} value={s.value} style={{ color: '#111827', backgroundColor: '#FFFFFF' }}>
+                          {s.nominal} {s.odMm !== 'Custom' ? `(OD: ${s.odMm})` : '(Custom Dimension)'}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Custom Size field if selected */}
+                {formData.nominalSize === 'Custom Size' && (
+                  <div style={{ marginBottom: '16px' }}>
+                    <label htmlFor="eq-customSize" style={labelStyle}>
+                      Custom Size / Dimensional Drawing Requirements <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
                     <input
                       type="text"
-                      id="eq-conn"
-                      name="wallThickness"
-                      value={formData.wallThickness}
+                      id="eq-customSize"
+                      name="customSize"
+                      value={formData.customSize}
                       onChange={handleChange}
-                      placeholder="e.g. Tri-Clamp, SMS, DIN, Welded"
+                      placeholder="e.g. 5 inch OD (127mm) / customized drawing DWG-2026"
+                      style={inputStyle}
                     />
+                    {errors.customSize && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.customSize}</span>}
                   </div>
                 )}
 
-                <div className="form-group">
-                  <label htmlFor="eq-standard">Applicable Standard</label>
-                  <select
-                    id="eq-standard"
-                    name="standard"
-                    value={formData.standard}
-                    onChange={handleChange}
-                  >
-                    {categorySpecs.standards.map((st) => (
-                      <option key={st.value} value={st.value}>
-                        {st.label}
-                      </option>
-                    ))}
-                  </select>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+                  {/* Wall Thickness or End Connection */}
+                  <div>
+                    <label htmlFor="eq-wallThickness" style={labelStyle}>
+                      {categorySpecs.hasThickness ? 'Wall Thickness' : 'End Connection Type'} <span style={{ color: '#64748B', fontWeight: 400 }}>(Standard)</span>
+                    </label>
+                    {categorySpecs.hasThickness ? (
+                      <select
+                        id="eq-wallThickness"
+                        name="wallThickness"
+                        value={formData.wallThickness}
+                        onChange={handleChange}
+                        style={inputStyle}
+                      >
+                        {WALL_THICKNESSES.map((w) => (
+                          <option key={w.value} value={w.value} style={{ color: '#111827', backgroundColor: '#FFFFFF' }}>
+                            {w.label}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input
+                        type="text"
+                        id="eq-wallThickness"
+                        name="wallThickness"
+                        value={formData.wallThickness}
+                        onChange={handleChange}
+                        placeholder="e.g. Tri-Clamp, SMS, DIN, Welded"
+                        style={inputStyle}
+                      />
+                    )}
+                  </div>
+
+                  {/* Applicable Standard */}
+                  <div>
+                    <label htmlFor="eq-standard" style={labelStyle}>
+                      Applicable Standard
+                    </label>
+                    <select
+                      id="eq-standard"
+                      name="standard"
+                      value={formData.standard}
+                      onChange={handleChange}
+                      style={inputStyle}
+                    >
+                      {categorySpecs.standards.map((st) => (
+                        <option key={st.value} value={st.value} style={{ color: '#111827', backgroundColor: '#FFFFFF' }}>
+                          {st.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {formData.wallThickness === 'Custom' && categorySpecs.hasThickness && (
+                  <div style={{ marginTop: '16px' }}>
+                    <label htmlFor="eq-customThickness" style={labelStyle}>
+                      Custom Wall Thickness <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="eq-customThickness"
+                      name="customThickness"
+                      value={formData.customThickness}
+                      onChange={handleChange}
+                      placeholder="e.g. 1.25 mm or Schedule 40S"
+                      style={inputStyle}
+                    />
+                    {errors.customThickness && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.customThickness}</span>}
+                  </div>
+                )}
+
+                {formData.standard === 'Custom' && (
+                  <div style={{ marginTop: '16px' }}>
+                    <label htmlFor="eq-customStandard" style={labelStyle}>
+                      Custom Standard / Requirement <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="eq-customStandard"
+                      name="customStandard"
+                      value={formData.customStandard}
+                      onChange={handleChange}
+                      placeholder="e.g. ISO 1127 / Client Specification Standard"
+                      style={inputStyle}
+                    />
+                    {errors.customStandard && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.customStandard}</span>}
+                  </div>
+                )}
+              </div>
+
+              {/* ========================================================== */}
+              {/* SECTION B: QUANTITY REQUIREMENTS                           */}
+              {/* ========================================================== */}
+              <div style={sectionBoxStyle}>
+                <div style={sectionHeaderStyle}>
+                  <div style={pillNumberStyle}>B</div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Quantity Requirements
+                  </h4>
+                  <span style={{ fontSize: '12px', color: '#64748B', marginLeft: 'auto' }}>
+                    Commercial volume &amp; unit
+                  </span>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '16px' }}>
+                  <div>
+                    <label htmlFor="eq-quantity" style={labelStyle}>
+                      Required Quantity <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="eq-quantity"
+                      name="quantity"
+                      min="0.1"
+                      step="any"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                      required
+                      placeholder="e.g. 50"
+                      style={inputStyle}
+                    />
+                    {errors.quantity && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.quantity}</span>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="eq-unit" style={labelStyle}>
+                      Unit of Measure <span style={{ color: '#DC2626' }}>*</span>
+                    </label>
+                    <select
+                      id="eq-unit"
+                      name="unit"
+                      value={formData.unit}
+                      onChange={handleChange}
+                      style={inputStyle}
+                    >
+                      {UNITS_OF_MEASUREMENT.map((u) => (
+                        <option key={u.value} value={u.value} style={{ color: '#111827', backgroundColor: '#FFFFFF' }}>
+                          {u.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              {formData.wallThickness === 'Custom' && categorySpecs.hasThickness && (
-                <div className="form-group" style={{ marginBottom: '12px' }}>
-                  <label htmlFor="eq-customThickness">Custom Wall Thickness <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    id="eq-customThickness"
-                    name="customThickness"
-                    value={formData.customThickness}
-                    onChange={handleChange}
-                    placeholder="e.g. 1.25 mm or Schedule 40S"
-                  />
-                  {errors.customThickness && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.customThickness}</span>}
-                </div>
-              )}
-
-              {formData.standard === 'Custom' && (
-                <div className="form-group" style={{ marginBottom: '12px' }}>
-                  <label htmlFor="eq-customStandard">Custom Standard / Requirement <span className="required">*</span></label>
-                  <input
-                    type="text"
-                    id="eq-customStandard"
-                    name="customStandard"
-                    value={formData.customStandard}
-                    onChange={handleChange}
-                    placeholder="e.g. Client Drawing DWG-2026 / ISO 1127"
-                  />
-                  {errors.customStandard && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.customStandard}</span>}
-                </div>
-              )}
-
-              <div className="form-row">
-                <div className="form-group" style={{ flex: '2 1 180px' }}>
-                  <label htmlFor="eq-quantity">
-                    Required Quantity <span className="required">*</span>
-                  </label>
-                  <input
-                    ref={isAuthenticated ? firstInputRef : null}
-                    type="number"
-                    id="eq-quantity"
-                    name="quantity"
-                    min="0.1"
-                    step="any"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                    required
-                    placeholder="e.g. 50"
-                  />
-                  {errors.quantity && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.quantity}</span>}
+              {/* ========================================================== */}
+              {/* SECTION C: DELIVERY INFORMATION                            */}
+              {/* ========================================================== */}
+              <div style={sectionBoxStyle}>
+                <div style={sectionHeaderStyle}>
+                  <div style={pillNumberStyle}>C</div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Delivery Information
+                  </h4>
+                  <span style={{ fontSize: '12px', color: '#64748B', marginLeft: 'auto' }}>
+                    Destination &amp; custom engineering notes
+                  </span>
                 </div>
 
-                <div className="form-group" style={{ flex: '1 1 120px' }}>
-                  <label htmlFor="eq-unit">Unit <span className="required">*</span></label>
-                  <select
-                    id="eq-unit"
-                    name="unit"
-                    value={formData.unit}
-                    onChange={handleChange}
-                  >
-                    {UNITS_OF_MEASUREMENT.map((u) => (
-                      <option key={u.value} value={u.value}>
-                        {u.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group" style={{ flex: '3 1 200px' }}>
-                  <label htmlFor="eq-location">
-                    Delivery Destination <span className="required">*</span>
+                <div style={{ marginBottom: '16px' }}>
+                  <label htmlFor="eq-location" style={labelStyle}>
+                    Delivery Destination (City, State / Port) <span style={{ color: '#DC2626' }}>*</span>
                   </label>
                   <input
                     type="text"
@@ -792,28 +909,172 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                     onChange={handleChange}
                     required
                     placeholder="e.g. Mumbai, India or Dubai, UAE"
+                    style={inputStyle}
                   />
-                  {errors.location && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.location}</span>}
+                  {errors.location && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.location}</span>}
+                </div>
+
+                <div>
+                  <label htmlFor="eq-notes" style={labelStyle}>
+                    Additional Dimensions or Technical Requirements <span style={{ color: '#64748B', fontWeight: 400 }}>(Optional)</span>
+                  </label>
+                  <textarea
+                    id="eq-notes"
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleChange}
+                    rows={2}
+                    placeholder="e.g. Surface finish Ra ≤ 0.38µm, EN 10204 3.1 MTC inspection certification, special cleanroom packaging, or customized spools..."
+                    style={{ ...inputStyle, minHeight: '64px', resize: 'vertical' }}
+                  />
                 </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="eq-notes">Additional Dimensions or Technical Requirements (Optional)</label>
-                <textarea
-                  id="eq-notes"
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleChange}
-                  rows={2}
-                  placeholder="Surface finish requirements (e.g. Ra ≤ 0.38µm), end connection types, or inspection certifications needed..."
-                ></textarea>
+              {/* ========================================================== */}
+              {/* SECTION D: CUSTOMER INFORMATION                            */}
+              {/* ========================================================== */}
+              <div style={sectionBoxStyle}>
+                <div style={sectionHeaderStyle}>
+                  <div style={pillNumberStyle}>D</div>
+                  <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Customer Information
+                  </h4>
+                  <span style={{ fontSize: '12px', color: '#64748B', marginLeft: 'auto' }}>
+                    Commercial contact &amp; proposal delivery
+                  </span>
+                </div>
+
+                {isAuthenticated ? (
+                  <div
+                    style={{
+                      padding: '14px 18px',
+                      background: '#F0FDF4',
+                      border: '1px solid #BBF7D0',
+                      borderRadius: '8px',
+                      marginBottom: '16px',
+                      fontSize: '13px'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#166534', fontWeight: 700, marginBottom: '6px' }}>
+                      <span>✓</span>
+                      <span>Verified Authenticated Customer Session</span>
+                    </div>
+                    <div style={{ color: '#374151', lineHeight: 1.6 }}>
+                      <div><strong>Customer Name:</strong> {user?.name}</div>
+                      <div><strong>Email:</strong> {user?.email}</div>
+                      {user?.company && <div><strong>Company:</strong> {user.company}</div>}
+                      {user?.phone && <div><strong>Phone:</strong> {user.phone}</div>}
+                    </div>
+                  </div>
+                ) : null}
+
+                {/* Show fields if not authenticated OR if authenticated user has missing phone/company */}
+                {(!isAuthenticated || !user?.phone || !user?.company) && (
+                  <>
+                    {!isAuthenticated && (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+                        <div>
+                          <label htmlFor="eq-name" style={labelStyle}>
+                            Customer Full Name <span style={{ color: '#DC2626' }}>*</span>
+                          </label>
+                          <input
+                            ref={firstInputRef}
+                            type="text"
+                            id="eq-name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                            placeholder="e.g. Ramesh Patel"
+                            style={inputStyle}
+                          />
+                          {errors.name && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.name}</span>}
+                        </div>
+
+                        <div>
+                          <label htmlFor="eq-company" style={labelStyle}>
+                            Company / Organization Name <span style={{ color: '#DC2626' }}>*</span>
+                          </label>
+                          <input
+                            type="text"
+                            id="eq-company"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleChange}
+                            required
+                            placeholder="e.g. BioPharma Process Ltd"
+                            style={inputStyle}
+                          />
+                          {errors.company && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.company}</span>}
+                        </div>
+                      </div>
+                    )}
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+                      {!isAuthenticated && (
+                        <div>
+                          <label htmlFor="eq-email" style={labelStyle}>
+                            Business Email <span style={{ color: '#DC2626' }}>*</span>
+                          </label>
+                          <input
+                            type="email"
+                            id="eq-email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            placeholder="procurement@company.com"
+                            style={inputStyle}
+                          />
+                          {errors.email && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.email}</span>}
+                        </div>
+                      )}
+
+                      {(!isAuthenticated || !user?.phone) && (
+                        <div>
+                          <label htmlFor="eq-phone" style={labelStyle}>
+                            Phone / WhatsApp Number <span style={{ color: '#DC2626' }}>*</span>
+                          </label>
+                          <input
+                            type="tel"
+                            id="eq-phone"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            required
+                            placeholder="+91 98765 43210"
+                            style={inputStyle}
+                          />
+                          {errors.phone && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.phone}</span>}
+                        </div>
+                      )}
+
+                      <div>
+                        <label htmlFor="eq-country" style={labelStyle}>
+                          Country <span style={{ color: '#DC2626' }}>*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="eq-country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleChange}
+                          required
+                          placeholder="India / UAE / Singapore"
+                          style={inputStyle}
+                        />
+                        {errors.country && <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>{errors.country}</span>}
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
-              {/* Cloudflare Turnstile Bot Protection: Rendered exclusively for Anonymous Visitors */}
+              {/* Bot Security: Cloudflare Turnstile */}
               {!isAuthenticated && (
-                <div className="turnstile-section" style={{ marginTop: '10px' }}>
-                  <div style={{ fontSize: '12px', color: '#64748B', marginBottom: '4px' }}>
-                    Security verification:
+                <div style={{ marginBottom: '16px', padding: '14px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#475569', marginBottom: '8px' }}>
+                    Security verification (Anti-Bot Protection):
                   </div>
                   <TurnstileWidget
                     onVerify={(token) => {
@@ -833,39 +1094,84 @@ export const QuickEnquiryModal = ({ isOpen, onClose, product, onSuccess }) => {
                     }}
                     resetKey={turnstileResetKey}
                   />
-                  {errors.turnstile && (
-                    <span className="field-error" style={{ color: '#EF4444', fontSize: '12px', display: 'block', marginTop: '-8px', marginBottom: '8px' }}>
-                      {errors.turnstile}
+                  {turnstileError && (
+                    <span style={{ color: '#DC2626', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                      {turnstileError}
                     </span>
                   )}
                 </div>
               )}
-
-              <div style={{ fontSize: '12px', color: '#64748B', margin: '12px 0' }}>
-                ℹ️ Official commercial quotation with itemized pricing and lead times will be dispatched promptly.
-              </div>
-
-              <div className="form-actions" style={{ position: 'relative' }}>
-                <button
-                  type="submit"
-                  className="btn btn--primary btn--block btn--lg"
-                  id="eq-submit-btn"
-                  disabled={isLoading || (!isAuthenticated && !turnstileToken)}
-                  style={{
-                    opacity: isLoading || (!isAuthenticated && !turnstileToken) ? 0.75 : 1,
-                    cursor: isLoading || (!isAuthenticated && !turnstileToken) ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  {isLoading ? (
-                    <Loader variant="button" size="sm" color="#FFFFFF" label="Processing quotation request..." />
-                  ) : (
-                    <span>Request Official Quotation &rarr;</span>
-                  )}
-                </button>
-              </div>
             </form>
           )}
         </div>
+
+        {/* Sticky Footer */}
+        {!successRef && (
+          <div
+            style={{
+              padding: '16px 28px',
+              backgroundColor: '#F8FAFC',
+              borderTop: '1px solid #E5E7EB',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              position: 'sticky',
+              bottom: 0,
+              zIndex: 10
+            }}
+          >
+            <div style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>🛡️</span>
+              <span>Commercial team reviews &amp; sends quotation within 24 hours.</span>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <button
+                type="button"
+                onClick={onClose}
+                style={{
+                  padding: '10px 18px',
+                  borderRadius: '8px',
+                  border: '1px solid #D1D5DB',
+                  background: '#FFFFFF',
+                  color: '#475569',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isLoading || (!isAuthenticated && !turnstileToken)}
+                style={{
+                  padding: '10px 24px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: '#0284C7',
+                  color: '#FFFFFF',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  cursor: isLoading || (!isAuthenticated && !turnstileToken) ? 'not-allowed' : 'pointer',
+                  opacity: isLoading || (!isAuthenticated && !turnstileToken) ? 0.75 : 1,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 2px 4px rgba(2, 132, 199, 0.2)'
+                }}
+              >
+                {isLoading ? (
+                  <Loader variant="button" size="sm" color="#FFFFFF" label="Submitting Request..." />
+                ) : (
+                  <span>Request Official Quotation &rarr;</span>
+                )}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

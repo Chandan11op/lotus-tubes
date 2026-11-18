@@ -6,6 +6,10 @@ import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
 import { recordAuditEvent } from '../utils/auditLogger.js';
+import {
+  buildQuotationAcknowledgementEmail,
+  buildQuotationAcknowledgementText
+} from '../utils/emailTemplates.js';
 
 /**
  * Public detailed RFQ / BOQ Quote Request Submission
@@ -165,45 +169,56 @@ export const submitQuote = async (req, res, next) => {
       ip: req.ip
     });
 
-    // Send confirmation email to client with escaped HTML
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-        <div style="background: #10263D; padding: 20px; text-align: center;">
-          <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
-          <p style="color: #CBD5E1; margin: 4px 0 0 0; font-size: 13px;">Sanitary Piping &bull; Fittings &bull; Valves</p>
-        </div>
-        <div style="padding: 24px;">
-          <h3 style="color: #0284C7; margin-top: 0;">BOQ / RFQ Submission Received</h3>
-          <p>Dear <strong>${escapeHtml(safeName)}</strong>,</p>
-          <p>We have successfully received your Bill of Quantities (BOQ) for <strong>${escapeHtml(safeCompany)}</strong>.</p>
-          <p>Quotation Request Reference: <strong>${escapeHtml(reference)}</strong></p>
+    // Send automated quotation acknowledgement email to client
+    const emailHtml = buildQuotationAcknowledgementEmail({
+      customerName: safeName,
+      referenceNumber: reference,
+      productName: safeProjectType,
+      materialGrade: safeGrade,
+      nominalSize,
+      outsideDiameter,
+      wallThickness,
+      standard,
+      quantity,
+      unit,
+      destination: safeLocation,
+      notes: safeBoqSummary
+    });
 
-          <div style="background: #F8FAFC; border: 1px solid #E3E8EF; border-radius: 6px; padding: 16px; margin: 20px 0;">
-            <p style="margin: 4px 0;"><strong>Project Type:</strong> ${escapeHtml(safeProjectType)}</p>
-            <p style="margin: 4px 0;"><strong>Material Grade:</strong> ${escapeHtml(safeGrade)}</p>
-            ${nominalSize ? `<p style="margin: 4px 0;"><strong>Size:</strong> ${escapeHtml(nominalSize)} (${escapeHtml(outsideDiameter || '')})</p>` : ''}
-            ${wallThickness ? `<p style="margin: 4px 0;"><strong>Wall Thickness:</strong> ${escapeHtml(wallThickness)}</p>` : ''}
-            ${standard ? `<p style="margin: 4px 0;"><strong>Requested Standard:</strong> ${escapeHtml(standard)}</p>` : ''}
-            <p style="margin: 4px 0;"><strong>Surface Finish:</strong> ${escapeHtml(safeFinish)}</p>
-            <p style="margin: 4px 0;"><strong>Delivery Timeline:</strong> ${escapeHtml(safeTimeline)}</p>
-          </div>
-
-          <p>Our sales engineering team in Mumbai is reviewing your bill of materials and will issue your formal priced commercial quotation upon Super Admin authorization.</p>
-          <p style="font-size: 13px; color: #64748B;">
-            Sales Desk: +91 99304 30789 | Email: sales@lotustubes.com
-          </p>
-        </div>
-      </div>
-    `;
+    const emailText = buildQuotationAcknowledgementText({
+      customerName: safeName,
+      referenceNumber: reference,
+      productName: safeProjectType,
+      materialGrade: safeGrade,
+      nominalSize,
+      outsideDiameter,
+      wallThickness,
+      standard,
+      quantity,
+      unit,
+      destination: safeLocation,
+      notes: safeBoqSummary
+    });
 
     // Asynchronously dispatch confirmation email without blocking or timing out the HTTP response
     setImmediate(async () => {
       try {
         await sendEmail({
+          agentId: 'sales',
           to: safeEmail,
-          subject: `[BOQ Received ${reference}] Lotus Tubes - ${safeCompany}`,
+          subject: 'Your Quotation Request Has Been Received — Lotus Tubes',
           html: emailHtml,
-          replyTo: 'sales@lotustubes.com'
+          text: emailText,
+          replyTo: 'sales@lotustubes.com',
+          idempotencyKey: `ack_${reference}`,
+          reference,
+          quoteId: newQuote._id,
+          customerId: customer._id,
+          metadata: {
+            category: 'quotation_acknowledgement',
+            reference,
+            quotationNumber
+          }
         });
       } catch (emailErr) {
         console.error('Async email dispatch failed for BOQ', reference, emailErr.message);

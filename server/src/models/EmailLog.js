@@ -21,7 +21,7 @@ const emailLogSchema = new mongoose.Schema(
     },
     agentId: {
       type: String,
-      enum: ['ananya-mehta', 'riya-shah', 'neha-desai', 'arjun-yadav', 'system', 'support'],
+      enum: ['ananya-mehta', 'riya-shah', 'neha-desai', 'arjun-yadav', 'system', 'support', 'sales'],
       default: 'system',
       index: true
     },
@@ -69,6 +69,21 @@ const emailLogSchema = new mongoose.Schema(
       type: String,
       index: true,
       default: ''
+    },
+    category: {
+      type: String,
+      enum: [
+        'general',
+        'quotation',
+        'quotation_acknowledgement',
+        'invoice',
+        'inquiry_reply',
+        'operations_update',
+        'password_reset',
+        'system_notification'
+      ],
+      default: 'general',
+      index: true
     },
     // Entity linkages
     customerId: {

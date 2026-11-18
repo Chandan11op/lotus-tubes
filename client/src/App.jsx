@@ -16,6 +16,7 @@ import FloatingWhatsApp from './components/common/FloatingWhatsApp';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { RouteProgressBar } from './components/common/Loader';
 import { initAnalytics, trackPageView } from './utils/analytics';
+import { initTypographyFromStorage } from './utils/typography';
 
 // Page Views
 import HomeView from './pages/HomeView';
@@ -86,6 +87,7 @@ export const App = () => {
 
   // Client-side domain migration redirect safeguard & Google Analytics initialization
   useEffect(() => {
+    initTypographyFromStorage();
     initAnalytics();
 
     if (typeof window !== 'undefined' && window.location) {
