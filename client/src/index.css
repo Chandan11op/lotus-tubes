@@ -7094,3 +7094,75 @@ video {
   animation: blueLightReflection 6s infinite ease-in-out;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   SCOPED LIGHT-THEMED INDUSTRIAL B2B QUOTATION MODAL
+   Guarantees high-contrast white background, dark readable labels & inputs
+   ========================================================================== */
+#quick-enquiry-modal.modal-overlay {
+  background-color: rgba(15, 23, 42, 0.75) !important;
+  z-index: 99999 !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+#quick-enquiry-modal .modal-box,
+#quick-enquiry-modal .modal-box--enquiry {
+  background-color: #FFFFFF !important;
+  color: #111827 !important;
+  border: 1px solid #D1D5DB !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+#quick-enquiry-modal label {
+  color: #1F2937 !important;
+  font-weight: 600 !important;
+  display: block;
+}
+
+#quick-enquiry-modal input,
+#quick-enquiry-modal select,
+#quick-enquiry-modal textarea {
+  background-color: #FFFFFF !important;
+  color: #111827 !important;
+  border: 1px solid #D1D5DB !important;
+  border-radius: 8px !important;
+}
+
+#quick-enquiry-modal input::placeholder,
+#quick-enquiry-modal textarea::placeholder {
+  color: #9CA3AF !important;
+  opacity: 1 !important;
+}
+
+#quick-enquiry-modal select option {
+  background-color: #FFFFFF !important;
+  color: #111827 !important;
+}
+
+#quick-enquiry-modal input:focus,
+#quick-enquiry-modal select:focus,
+#quick-enquiry-modal textarea:focus {
+  border-color: #0284C7 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.18) !important;
+}
+
+/* Suppress overlapping widgets when quotation modal is active */
+body.modal-open #floating-whatsapp,
+body.modal-open #chat-with-us,
+body.modal-open #floating-typography-launcher,
+body.modal-open .floating-help-widget {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Centralized Dynamic Typography Application */
+body, button, input, select, textarea, p, a, td, th, li {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6, .heading-font, [class*="headline"], [class*="display-hero"] {
+  font-family: var(--font-heading);
+}

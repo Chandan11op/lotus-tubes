@@ -369,13 +369,17 @@ for (const langConfig of SUPPORTED_LANGUAGES) {
 
 console.log(`✅ Multilingual static pre-rendering complete. ${totalGeneratedCount} static HTML files generated across all languages.`);
 
-// Ensure backward compatibility alias /assets/index.css exists
+// Ensure backward compatibility alias /assets/index.css and legacy hashes exist
 const assetsDir = path.join(DIST_DIR, 'assets');
 if (fs.existsSync(assetsDir)) {
   const cssFiles = fs.readdirSync(assetsDir).filter((f) => f.startsWith('index-') && f.endsWith('.css'));
   if (cssFiles.length > 0) {
-    fs.copyFileSync(path.join(assetsDir, cssFiles[0]), path.join(assetsDir, 'index.css'));
-    console.log(`Copied current CSS ${cssFiles[0]} -> dist/assets/index.css for backward compatibility.`);
+    const currentCss = path.join(assetsDir, cssFiles[0]);
+    const legacyAliases = ['index.css', 'index-DLVWeXHg.css', 'index-DLVWeXHq.css', 'index-B9RX-gnX.css'];
+    for (const alias of legacyAliases) {
+      fs.copyFileSync(currentCss, path.join(assetsDir, alias));
+      console.log(`Copied current CSS ${cssFiles[0]} -> dist/assets/${alias} for backward compatibility.`);
+    }
   }
 }
 
