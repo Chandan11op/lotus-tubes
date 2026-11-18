@@ -11,7 +11,8 @@
     "seed:staff": "node src/scripts/provisionStaff.js",
     "test": "node src/tests/productionVerification.js",
     "test:email": "node src/tests/resendEmailAutomation.test.js",
-    "test:auth": "node src/tests/passwordReset.test.js"
+    "test:auth": "node src/tests/passwordReset.test.js",
+    "test:quotation": "node src/tests/quotationAcknowledgement.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

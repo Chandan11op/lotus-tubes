@@ -228,7 +228,7 @@ export const QuoteView = ({ onNotify }) => {
             <div id="full-rfq-success" className="form-success-box mt-3" style={{ display: 'block' }}>
               <div className="success-icon" style={{ fontSize: '42px', color: '#10B981', marginBottom: '8px' }}>✓</div>
               <h3 style={{ fontSize: '1.4rem', color: '#10263D', marginBottom: '6px' }}>
-                Quotation Request Successfully Logged!
+                Quotation Request Successfully Submitted!
               </h3>
               <p>
                 Your official reference number:{' '}
@@ -236,9 +236,11 @@ export const QuoteView = ({ onNotify }) => {
                   {successCode}
                 </strong>
               </p>
-              <p style={{ color: '#475569', fontSize: '13px', lineHeight: 1.6 }}>
-                Your request has been routed to our Mumbai sales engineering team. Upon review and mandatory Super Admin authorization, an official formal commercial quotation with itemized pricing, delivery lead times, and MTC documentation will be dispatched to your email address.
-              </p>
+              <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '8px', padding: '12px 16px', margin: '14px 0', textAlign: 'left' }}>
+                <p style={{ margin: 0, color: '#15803D', fontSize: '13px', lineHeight: 1.6 }}>
+                  ⏱️ <strong>24-Hour Commitment:</strong> Your quotation request has been successfully submitted. Our commercial team will review your requirements and send your quotation within <strong>24 hours</strong>. An automated confirmation email has been dispatched to your email address.
+                </p>
+              </div>
 
               <div className="success-actions mt-3" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <a

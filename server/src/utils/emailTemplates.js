@@ -309,3 +309,162 @@ export const buildOperationsUpdateEmail = ({
     agentId: 'arjun-yadav'
   });
 };
+
+/**
+ * Quotation Request Acknowledgement Email Template
+ * Sent automatically upon quotation submission to confirm receipt and 24h turnaround.
+ */
+export const buildQuotationAcknowledgementEmail = ({
+  customerName,
+  referenceNumber,
+  reference,
+  productName,
+  materialGrade,
+  nominalSize,
+  outsideDiameter,
+  wallThickness,
+  standard,
+  quantity,
+  unit = 'Meter',
+  destination,
+  notes
+}) => {
+  const displayRef = referenceNumber || reference || 'QT-PENDING';
+  const contentHtml = `
+    <h2 style="color: ${BRAND_NAVY}; margin: 0 0 12px 0; font-size: 18px; font-weight: 700;">Quotation Request Received</h2>
+    
+    <p style="margin: 0 0 14px 0; font-size: 14px; line-height: 1.6; color: #334155;">
+      Dear <strong>${escapeHtml(customerName || 'Valued Client')}</strong>,
+    </p>
+
+    <p style="margin: 0 0 14px 0; font-size: 14px; line-height: 1.6; color: #334155;">
+      Thank you for your interest in Lotus Tubes. We have successfully received your official quotation request.
+    </p>
+
+    <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 14px 16px; margin: 18px 0;">
+      <p style="margin: 0; font-size: 13px; color: #166534; line-height: 1.6;">
+        ⏱️ <strong>Guaranteed Turnaround:</strong> Our commercial sales engineering team is reviewing your product requirements and delivery specifications. Our team will prepare and share your official quotation within the next <strong>24 hours</strong>.
+      </p>
+    </div>
+
+    <div style="background: ${BRAND_LIGHT_BG}; border: 1px solid ${BRAND_BORDER}; border-radius: 8px; padding: 18px; margin: 20px 0;">
+      <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700; color: ${BRAND_NAVY}; text-transform: uppercase; letter-spacing: 0.5px;">
+        Request Summary
+      </h3>
+      <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 13px; line-height: 1.8;">
+        <tr>
+          <td style="width: 40%; color: ${BRAND_MUTED};"><strong>Request Reference:</strong></td>
+          <td style="color: ${BRAND_BLUE}; font-weight: 700; font-family: monospace; font-size: 14px;">${escapeHtml(displayRef)}</td>
+        </tr>
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Product:</strong></td>
+          <td style="color: ${BRAND_TEXT}; font-weight: 600;">${escapeHtml(productName || 'Sanitary Component')}</td>
+        </tr>
+        ${materialGrade ? `
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Material Grade:</strong></td>
+          <td style="color: ${BRAND_TEXT};">${escapeHtml(materialGrade)}</td>
+        </tr>` : ''}
+        ${nominalSize ? `
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Nominal Size:</strong></td>
+          <td style="color: ${BRAND_TEXT};">${escapeHtml(nominalSize)}${outsideDiameter ? ` (OD: ${escapeHtml(outsideDiameter)})` : ''}</td>
+        </tr>` : ''}
+        ${wallThickness ? `
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Wall Thickness:</strong></td>
+          <td style="color: ${BRAND_TEXT};">${escapeHtml(wallThickness)}</td>
+        </tr>` : ''}
+        ${standard ? `
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Applicable Standard:</strong></td>
+          <td style="color: ${BRAND_TEXT};">${escapeHtml(standard)}</td>
+        </tr>` : ''}
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Required Quantity:</strong></td>
+          <td style="color: ${BRAND_TEXT}; font-weight: 600;">${escapeHtml(String(quantity))} ${escapeHtml(unit)}</td>
+        </tr>
+        ${destination ? `
+        <tr>
+          <td style="color: ${BRAND_MUTED};"><strong>Delivery Destination:</strong></td>
+          <td style="color: ${BRAND_TEXT};">${escapeHtml(destination)}</td>
+        </tr>` : ''}
+        ${notes ? `
+        <tr>
+          <td style="color: ${BRAND_MUTED}; vertical-align: top;"><strong>Technical Notes:</strong></td>
+          <td style="color: ${BRAND_TEXT};">${escapeHtml(notes)}</td>
+        </tr>` : ''}
+      </table>
+    </div>
+
+    <p style="margin: 0 0 14px 0; font-size: 13px; line-height: 1.6; color: #475569;">
+      If additional technical information is required, our team may contact you.
+    </p>
+
+    <div style="background-color: #F8FAFC; border-left: 3px solid ${BRAND_BLUE}; padding: 12px 14px; margin: 18px 0; font-size: 13px; color: #334155;">
+      For any assistance, contact: <a href="mailto:${BUSINESS_MAILBOX}" style="color: ${BRAND_BLUE}; font-weight: 600; text-decoration: none;">${BUSINESS_MAILBOX}</a> or call <strong>+91 93247 18035</strong>.
+    </div>
+
+    <p style="margin: 18px 0 0 0; font-size: 13px; color: #475569; line-height: 1.5;">
+      Thank you for considering Lotus Tubes.<br><br>
+      Regards,<br>
+      <strong>Lotus Tubes Commercial Team</strong><br>
+      SS Sanitary Pipes, Fittings &amp; Valves<br>
+      Official Website: <a href="https://lotustubes.com/" style="color: ${BRAND_BLUE}; text-decoration: none;">https://lotustubes.com/</a>
+    </p>
+  `;
+
+  return wrapEmailTemplate({
+    title: 'Your Quotation Request Has Been Received — Lotus Tubes',
+    subtitle: 'Commercial Quotation Request Acknowledgement',
+    contentHtml,
+    agentId: 'sales'
+  });
+};
+
+/**
+ * Quotation Request Acknowledgement Plain Text Fallback
+ */
+export const buildQuotationAcknowledgementText = ({
+  customerName,
+  referenceNumber,
+  reference,
+  productName,
+  materialGrade,
+  nominalSize,
+  outsideDiameter,
+  wallThickness,
+  standard,
+  quantity,
+  unit = 'Meter',
+  destination,
+  notes
+}) => {
+  const displayRef = referenceNumber || reference || 'QT-PENDING';
+  return `
+Dear ${customerName || 'Valued Client'},
+
+Thank you for your interest in Lotus Tubes.
+We have successfully received your official quotation request.
+
+Our commercial team is reviewing your product requirements and delivery specifications.
+Our team will prepare and share your quotation within the next 24 hours.
+
+Request Summary:
+- Request Reference: ${displayRef}
+- Product: ${productName || 'Sanitary Component'}
+${materialGrade ? `- Material Grade: ${materialGrade}\n` : ''}${nominalSize ? `- Nominal Size: ${nominalSize}${outsideDiameter ? ` (OD: ${outsideDiameter})` : ''}\n` : ''}${wallThickness ? `- Wall Thickness: ${wallThickness}\n` : ''}${standard ? `- Applicable Standard: ${standard}\n` : ''}- Required Quantity: ${quantity} ${unit}
+${destination ? `- Delivery Destination: ${destination}\n` : ''}${notes ? `- Technical Notes: ${notes}\n` : ''}
+If additional technical information is required, our team may contact you.
+
+For any assistance, contact:
+sales@lotustubes.com | +91 93247 18035
+
+Thank you for considering Lotus Tubes.
+
+Regards,
+Lotus Tubes Commercial Team
+SS Sanitary Pipes, Fittings & Valves
+Official Website: https://lotustubes.com/
+`.trim();
+};

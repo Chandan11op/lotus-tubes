@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { CONFIG } from '../../data/siteData';
 import { apiService } from '../../services/api';
+import { isTypographyCustomizerEnabled } from '../../utils/typography';
+import TypographyCustomizer from '../common/TypographyCustomizer';
 
 export const Footer = () => {
   const { t, currentLang, localizePath } = useLanguage();
   const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
+
+  // Typography Customizer State (Temporary Design Evaluation)
+  const [isTypographyOpen, setIsTypographyOpen] = useState(false);
+  const showTypographyPreview = isTypographyCustomizerEnabled();
 
   // Footer Quick RFQ State
   const [rfqName, setRfqName] = useState('');
@@ -354,7 +360,7 @@ export const Footer = () => {
           <div>
             © 2026 LOTUS TUBES (LOTUS IMPEX). ALL TOLERANCES CONFORM TO DIN / ASME / ISO / 3-A.
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             <a href={localizePath('/about', currentLang)} className="hover:text-white transition-colors">
               Founder Statement
             </a>
@@ -362,9 +368,38 @@ export const Footer = () => {
             <a href={localizePath('/quality', currentLang)} className="hover:text-white transition-colors">
               MTC Quality Policy
             </a>
+            {showTypographyPreview && (
+              <>
+                <span>•</span>
+                <button
+                  type="button"
+                  onClick={() => setIsTypographyOpen(true)}
+                  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-[#00f0ff] transition-colors cursor-pointer bg-transparent border-0 p-0 text-[11px]"
+                  title="Website Typography Customizer (Evaluation Mode)"
+                >
+                  <svg className="w-3.5 h-3.5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                    />
+                  </svg>
+                  <span>Typography Preview</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Temporary Google Fonts Typography Customizer Modal */}
+      {showTypographyPreview && (
+        <TypographyCustomizer
+          isOpen={isTypographyOpen}
+          onClose={() => setIsTypographyOpen(false)}
+        />
+      )}
     </footer>
   );
 };

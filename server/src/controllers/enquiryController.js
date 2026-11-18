@@ -6,6 +6,10 @@ import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
 import { recordAuditEvent } from '../utils/auditLogger.js';
+import {
+  buildQuotationAcknowledgementEmail,
+  buildQuotationAcknowledgementText
+} from '../utils/emailTemplates.js';
 
 export const createEnquiry = async (req, res, next) => {
   try {
@@ -137,42 +141,35 @@ export const createEnquiry = async (req, res, next) => {
     });
 
     // 2. Prepare HTML Templates
-    const customerEmailHtml = `
-      <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 600px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-        <div style="background: #10263D; padding: 20px; text-align: center;">
-          <h2 style="color: #FFFFFF; margin: 0;">Lotus Tubes</h2>
-          <p style="color: #CBD5E1; margin: 4px 0 0 0; font-size: 13px;">Stainless Steel Sanitary Solutions &bull; Mumbai, India</p>
-        </div>
-        <div style="padding: 24px;">
-          <h3 style="color: #0284C7; margin-top: 0;">Quotation Request Confirmation</h3>
-          <p>Dear <strong>${escapeHtml(name)}</strong>,</p>
-          <p>Thank you for submitting your quotation request for <strong>${escapeHtml(safeProductName)}</strong>. Your official reference number is <strong>${escapeHtml(reference)}</strong>.</p>
-          
-          <div style="background: #F8FAFC; border: 1px solid #E3E8EF; border-radius: 6px; padding: 16px; margin: 20px 0;">
-            <h4 style="margin: 0 0 10px 0; color: #10263D;">Summary of Requested Specifications:</h4>
-            <p style="margin: 4px 0;"><strong>Product:</strong> ${escapeHtml(safeProductName)}</p>
-            <p style="margin: 4px 0;"><strong>Material Grade:</strong> ${escapeHtml(safeGrade)}</p>
-            <p style="margin: 4px 0;"><strong>Surface Finish:</strong> ${escapeHtml(safeFinish)}</p>
-            ${safeSizes ? `<p style="margin: 4px 0;"><strong>Size / Diameter:</strong> ${escapeHtml(safeSizes)}</p>` : ''}
-            <p style="margin: 4px 0;"><strong>Requested Quantity:</strong> ${escapeHtml(safeQuantity)}</p>
-            <p style="margin: 4px 0;"><strong>Delivery Location:</strong> ${escapeHtml(safeLocation)}</p>
-            ${safeNotes ? `<p style="margin: 4px 0;"><strong>Special Requirements:</strong> ${escapeHtml(safeNotes)}</p>` : ''}
-          </div>
+    const customerEmailHtml = buildQuotationAcknowledgementEmail({
+      customerName: name,
+      referenceNumber: reference,
+      productName: safeProductName,
+      materialGrade: safeGrade,
+      nominalSize: safeNominalSize,
+      outsideDiameter: safeOD,
+      wallThickness: safeThickness,
+      standard: safeStandard,
+      quantity: safeQuantity,
+      unit: safeUnit,
+      destination: safeLocation,
+      notes: safeNotes
+    });
 
-          <p><strong>Sample Quotation Document:</strong></p>
-          <p>You can inspect our standard commercial quotation format here: <a href="https://lotustubes.com/sample-quotation.pdf" style="color: #E83E83; font-weight: bold;">Download Sample Quotation PDF</a></p>
-
-          <div style="background: #FFF0F6; border-left: 4px solid #E83E83; padding: 12px; margin: 20px 0; font-size: 13px; color: #831843;">
-            <strong>Commercial Notice:</strong> A Lotus Tubes sales engineer will review your specification requirements and provide a formal priced quotation including MTC availability, ready stock dispatch status, and delivery lead time.
-          </div>
-
-          <p style="font-size: 13px; color: #64748B;">
-            Sales Desk: +91 99304 30789 | Email: sales@lotustubes.com<br>
-            Office: Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, Khetwadi, Girgaon, Mumbai 400004
-          </p>
-        </div>
-      </div>
-    `;
+    const customerEmailText = buildQuotationAcknowledgementText({
+      customerName: name,
+      referenceNumber: reference,
+      productName: safeProductName,
+      materialGrade: safeGrade,
+      nominalSize: safeNominalSize,
+      outsideDiameter: safeOD,
+      wallThickness: safeThickness,
+      standard: safeStandard,
+      quantity: safeQuantity,
+      unit: safeUnit,
+      destination: safeLocation,
+      notes: safeNotes
+    });
 
     const internalEmailHtml = `
       <h2>New Website Quotation Request (${escapeHtml(reference)})</h2>
@@ -182,7 +179,10 @@ export const createEnquiry = async (req, res, next) => {
       <p><strong>Phone:</strong> ${escapeHtml(phone)}</p>
       <p><strong>Product:</strong> ${escapeHtml(safeProductName)}</p>
       <p><strong>Grade:</strong> ${escapeHtml(safeGrade)}</p>
-      <p><strong>Quantity:</strong> ${escapeHtml(safeQuantity)}</p>
+      <p><strong>Nominal Size:</strong> ${escapeHtml(safeNominalSize)} ${safeOD ? `(OD: ${escapeHtml(safeOD)})` : ''}</p>
+      <p><strong>Wall Thickness:</strong> ${escapeHtml(safeThickness)}</p>
+      <p><strong>Standard:</strong> ${escapeHtml(safeStandard)}</p>
+      <p><strong>Quantity:</strong> ${escapeHtml(safeQuantity)} ${escapeHtml(safeUnit)}</p>
       <p><strong>Delivery Location:</strong> ${escapeHtml(safeLocation)}</p>
       <p><strong>Notes:</strong> ${escapeHtml(safeNotes || 'None')}</p>
     `;
@@ -191,10 +191,21 @@ export const createEnquiry = async (req, res, next) => {
     setImmediate(async () => {
       try {
         const customerEmailResult = await sendEmail({
+          agentId: 'sales',
           to: email,
-          subject: `[Quotation Request ${reference}] Lotus Tubes - ${safeProductName}`,
+          subject: 'Your Quotation Request Has Been Received — Lotus Tubes',
           html: customerEmailHtml,
-          replyTo: 'sales@lotustubes.com'
+          text: customerEmailText,
+          replyTo: 'sales@lotustubes.com',
+          idempotencyKey: `ack_${reference}`,
+          reference,
+          enquiryId: savedEnquiry._id,
+          customerId: customer._id,
+          metadata: {
+            category: 'quotation_acknowledgement',
+            reference,
+            productName: safeProductName
+          }
         });
 
         const emailStatus = customerEmailResult.delivered

@@ -76,6 +76,17 @@ export const AI_AGENT_SENDERS = {
     department: 'Client Support & Security',
     defaultReplyTo: BUSINESS_MAILBOX,
     photoUrl: '/banner-image-opt.png'
+  },
+  'sales': {
+    id: 'sales',
+    botNumber: 6,
+    name: 'Lotus Tubes Sales Team',
+    email: BUSINESS_MAILBOX,
+    role: 'sales_commercial',
+    title: 'Lotus Tubes Sales & Commercial Desk',
+    department: 'Sales & Commercial Proposals',
+    defaultReplyTo: BUSINESS_MAILBOX,
+    photoUrl: '/banner-image-opt.png'
   }
 };
 
