@@ -39,6 +39,7 @@ export const config = {
   staffInitEmail: (process.env.STAFF_INIT_EMAIL || 'sales@lotustubes.com').toLowerCase().trim(),
   staffInitPassword: process.env.STAFF_INIT_PASSWORD || (isProduction ? '' : 'lotustubes@11'),
   turnstileSecretKey: process.env.TURNSTILE_SECRET_KEY || process.env.SECRET_KEY || '',
+  backendPublicUrl: process.env.BACKEND_PUBLIC_URL || (isProduction ? 'https://chocolate-goldfinch-515434.hostingersite.com' : 'http://localhost:5000'),
   resend: {
     apiKey: process.env.RESEND_API_KEY || '',
     fromEmail: process.env.RESEND_FROM_EMAIL || 'sales@lotustubes.com',
@@ -53,8 +54,21 @@ export const config = {
     }
   },
   whatsapp: {
-    accessToken: process.env.WHATSAPP_ACCESS_TOKEN || '',
+    enabled: process.env.WHATSAPP_ENABLED === 'true',
+    metaAppId: process.env.META_APP_ID || '',
+    metaAppSecret: process.env.META_APP_SECRET || '',
+    businessAccountId: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || '',
     phoneNumberId: process.env.WHATSAPP_PHONE_NUMBER_ID || '',
-    businessAccountId: process.env.WHATSAPP_BUSINESS_ACCOUNT_ID || ''
+    businessNumber: process.env.WHATSAPP_BUSINESS_NUMBER || '+91 99304 30789',
+    accessToken: process.env.WHATSAPP_ACCESS_TOKEN || '',
+    apiVersion: process.env.WHATSAPP_API_VERSION || 'v21.0',
+    webhookVerifyToken: process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN || '',
+    webhookPath: process.env.WHATSAPP_WEBHOOK_PATH || '/api/webhooks/whatsapp',
+    quotationTemplate: process.env.WHATSAPP_QUOTATION_TEMPLATE || 'lotus_quotation_delivery',
+    invoiceTemplate: process.env.WHATSAPP_INVOICE_TEMPLATE || 'lotus_invoice_delivery',
+    templateLanguage: process.env.WHATSAPP_TEMPLATE_LANGUAGE || 'en',
+    botEnabled: process.env.WHATSAPP_BOT_ENABLED !== 'false',
+    botMode: process.env.WHATSAPP_BOT_MODE || 'auto',
+    humanHandoverEnabled: process.env.WHATSAPP_BOT_HUMAN_HANDOVER !== 'false'
   }
 };

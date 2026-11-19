@@ -28,6 +28,37 @@ const customerSchema = new mongoose.Schema(
       trim: true,
       index: true
     },
+    whatsappPhone: {
+      type: String,
+      trim: true,
+      index: true
+    },
+    messagingConsent: {
+      status: {
+        type: String,
+        enum: ['opted_in', 'opted_out', 'unspecified'],
+        default: 'opted_in'
+      },
+      optedInAt: {
+        type: Date,
+        default: Date.now
+      },
+      optedOutAt: {
+        type: Date,
+        default: null
+      },
+      source: {
+        type: String,
+        default: 'website_inquiry'
+      },
+      history: [
+        {
+          action: { type: String, enum: ['opt_in', 'opt_out', 'preference_change'] },
+          timestamp: { type: Date, default: Date.now },
+          reason: { type: String, default: '' }
+        }
+      ]
+    },
     country: {
       type: String,
       trim: true,

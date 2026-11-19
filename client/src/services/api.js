@@ -654,6 +654,42 @@ export const apiService = {
     return await request(`/emails/${id}/approve`, {
       method: 'POST'
     });
+  },
+
+  // Meta WhatsApp Cloud API & CRM Management
+  async getWhatsAppConversations(params = {}) {
+    const query = new URLSearchParams();
+    if (params.page) query.append('page', params.page);
+    if (params.limit) query.append('limit', params.limit);
+    if (params.status) query.append('status', params.status);
+    if (params.search) query.append('search', params.search);
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return await request(`/whatsapp/conversations${qs}`);
+  },
+
+  async getWhatsAppConversationById(id) {
+    return await request(`/whatsapp/conversations/${id}`);
+  },
+
+  async sendStaffWhatsAppMessage(id, text) {
+    return await request(`/whatsapp/conversations/${id}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ text })
+    });
+  },
+
+  async toggleWhatsAppHandover(id, data = {}) {
+    return await request(`/whatsapp/conversations/${id}/handover`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  },
+
+  async sendApprovedDocumentWhatsApp(data) {
+    return await request('/whatsapp/send-document', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
   }
 };
 

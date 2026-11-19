@@ -80,6 +80,15 @@ import {
 } from '../controllers/invoiceController.js';
 import { handleResendWebhook } from '../controllers/emailWebhookController.js';
 import {
+  verifyMetaWebhook,
+  receiveMetaWebhook,
+  getWhatsAppConversations,
+  getWhatsAppConversationById,
+  sendStaffWhatsAppMessage,
+  toggleHumanHandover,
+  triggerApprovedDocumentDispatch
+} from '../controllers/whatsappWebhookController.js';
+import {
   getEmailLogs,
   getEmailStats,
   getEmailLogById,
@@ -197,6 +206,17 @@ router.post('/agents/chat-inquiry', publicFormLimiter, authenticate, chatInquiry
 
 // Resend Webhooks Delivery Tracking (Verified via Svix signature)
 router.post('/webhooks/resend', handleResendWebhook);
+
+// Meta WhatsApp Business Cloud API Webhooks
+router.get('/webhooks/whatsapp', verifyMetaWebhook);
+router.post('/webhooks/whatsapp', receiveMetaWebhook);
+
+// CRM WhatsApp Communications & AI Handover
+router.get('/whatsapp/conversations', authenticate, requireStaff, getWhatsAppConversations);
+router.get('/whatsapp/conversations/:id', authenticate, requireStaff, getWhatsAppConversationById);
+router.post('/whatsapp/conversations/:id/messages', authenticate, requireStaff, sendStaffWhatsAppMessage);
+router.post('/whatsapp/conversations/:id/handover', authenticate, requireStaff, toggleHumanHandover);
+router.post('/whatsapp/send-document', authenticate, requireStaff, triggerApprovedDocumentDispatch);
 
 // CRM Email Archive & 4-Agent Communications Management
 router.get('/emails', authenticate, requireStaff, getEmailLogs);

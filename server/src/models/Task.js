@@ -14,7 +14,7 @@ const taskSchema = new mongoose.Schema(
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      default: null,
       index: true
     },
     createdBy: {
@@ -44,7 +44,7 @@ const taskSchema = new mongoose.Schema(
     },
     priority: {
       type: String,
-      enum: ['High', 'Medium', 'Low'],
+      enum: ['Urgent', 'High', 'Medium', 'Low'],
       default: 'Medium'
     },
     status: {

@@ -69,7 +69,13 @@ export const CRMEnquiriesView = ({
     const map = {
       sent: { label: 'Sent', cls: 'crm-badge-green' },
       delivered: { label: 'Delivered', cls: 'crm-badge-green' },
+      DELIVERED: { label: 'Delivered', cls: 'crm-badge-green' },
+      READ: { label: 'Read', cls: 'crm-badge-blue' },
+      PROVIDER_ACCEPTED: { label: 'Accepted', cls: 'crm-badge-green' },
+      SEND_ATTEMPTED: { label: 'Sending', cls: 'crm-badge-amber' },
       failed: { label: 'Failed', cls: 'crm-badge-red' },
+      FAILED: { label: 'Failed', cls: 'crm-badge-red' },
+      SKIPPED_NO_CONSENT: { label: 'Opt-Out', cls: 'crm-badge-amber' },
       not_configured: { label: 'Manual', cls: 'crm-badge-gray' },
       pending: { label: 'Pending', cls: 'crm-badge-amber' }
     };

@@ -22,6 +22,7 @@ import { CRMReportsView } from './views/CRMReportsView';
 import { CRMSeoView } from './views/CRMSeoView';
 import { CRMAiOperationsView } from './views/CRMAiOperationsView';
 import { CRMEmailCommunicationsView } from './views/CRMEmailCommunicationsView';
+import { CRMWhatsAppView } from './views/CRMWhatsAppView';
 import { NewStaffModal } from './components/NewStaffModal';
 import { PasswordResetModal } from '../../components/modals/PasswordResetModal';
 
@@ -117,6 +118,8 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         'quotations': 'Quotation Management & RFQs | Staff CRM | Lotus Tubes',
         'customers': 'Customer Directory & Accounts | Staff CRM | Lotus Tubes',
         'tasks': 'Operational Tasks & Workflow | Staff CRM | Lotus Tubes',
+        'emails': 'Email Communications Archive | Staff CRM | Lotus Tubes',
+        'whatsapp': 'WhatsApp Communications & AI Bot Inbox | Staff CRM | Lotus Tubes',
         'products': 'Product Master Catalogue | Staff CRM | Lotus Tubes',
         'videos': 'Video Assets & Facility Media | Staff CRM | Lotus Tubes',
         'staff': 'Staff Roles & Permissions | Staff CRM | Lotus Tubes',
@@ -964,6 +967,14 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
       case 'emails':
         return (
           <CRMEmailCommunicationsView
+            user={user}
+            isSuperAdmin={isSuperAdmin}
+            onNotify={onNotify}
+          />
+        );
+      case 'whatsapp':
+        return (
+          <CRMWhatsAppView
             user={user}
             isSuperAdmin={isSuperAdmin}
             onNotify={onNotify}

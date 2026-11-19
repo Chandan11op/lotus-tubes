@@ -2,6 +2,7 @@ import { Quote, computeQuotationApprovalHash } from '../models/Quote.js';
 import { Customer } from '../models/Customer.js';
 import { Enquiry } from '../models/Enquiry.js';
 import { sendEmail } from '../services/emailService.js';
+import { sendApprovedDocument } from '../services/notificationService.js';
 import { successResponse, errorResponse } from '../utils/responseHandler.js';
 import { assertDatabaseConnected } from '../config/db.js';
 import { escapeHtml, generateReference, sanitizeText } from '../utils/security.js';
@@ -723,186 +724,37 @@ export const updateQuote = async (req, res, next) => {
 };
 
 /**
- * Staff CRM: Send quotation by email to customer
+ * Staff CRM: Send approved quotation across Email & WhatsApp
  * STRICT BUSINESS RULE: Cannot be sent until explicitly approved by Super Admin!
  */
 export const sendQuoteByEmail = async (req, res, next) => {
   try {
     assertDatabaseConnected();
     const { id } = req.params;
-    const quote = await Quote.findById(id);
-    if (!quote) {
-      return errorResponse(res, 'Quotation not found', 404);
-    }
+    const channels = req.body?.channels || ['email', 'whatsapp'];
 
-    // MANDATORY BACKEND CHECK 1: Must be explicitly approved
-    if (quote.status !== 'Approved' || quote.approvalStatus !== 'approved') {
-      await recordAuditEvent({
-        actor: req.user,
-        action: 'UNAUTHORIZED_DISPATCH_BLOCKED',
-        targetType: 'Quote',
-        targetId: quote._id,
-        targetRef: quote.quotationNumber,
-        metadata: { attemptedStatus: quote.status, reason: 'Quotation has not been approved by the Super Admin' },
-        ip: req.ip
-      });
-
-      return errorResponse(
-        res,
-        'FORBIDDEN: Critical Security Rule — No quotation may be sent to a customer until the Super Admin has explicitly approved it.',
-        403
-      );
-    }
-
-    // MANDATORY BACKEND CHECK 2: Approval hash integrity verification
-    const currentHash = computeQuotationApprovalHash(quote);
-    if (quote.approvalHash && currentHash !== quote.approvalHash) {
-      quote.status = 'Draft';
-      quote.approvalStatus = 'draft';
-      quote.approvalHash = null;
-      quote.approvedBy = null;
-      await quote.save();
-
-      await recordAuditEvent({
-        actor: req.user,
-        action: 'QUOTATION_APPROVAL_INVALIDATED',
-        targetType: 'Quote',
-        targetId: quote._id,
-        targetRef: quote.quotationNumber,
-        metadata: { reason: 'Quotation content altered after approval' },
-        ip: req.ip
-      });
-
-      return errorResponse(
-        res,
-        'FORBIDDEN: Quotation content was modified after approval. Approval has been revoked. Please submit for Super Admin re-approval.',
-        403
-      );
-    }
-
-    const itemsRows = quote.lineItems
-      .map(
-        (it, idx) => `
-        <tr style="border-bottom: 1px solid #E2E8F0;">
-          <td style="padding: 10px; font-size: 13px;">${idx + 1}</td>
-          <td style="padding: 10px; font-size: 13px;">
-            <strong>${escapeHtml(it.description)}</strong><br>
-            <span style="color: #64748B; font-size: 11px;">
-              Grade: ${escapeHtml(it.grade)} | Finish: ${escapeHtml(it.finish)}
-              ${it.nominalSize ? ` | Size: ${escapeHtml(it.nominalSize)} (${escapeHtml(it.outsideDiameter || '')})` : ''}
-              ${it.wallThickness ? ` | Wall: ${escapeHtml(it.wallThickness)}` : ''}
-              ${it.standard ? ` | Std: ${escapeHtml(it.standard)}` : ''}
-            </span>
-          </td>
-          <td style="padding: 10px; font-size: 13px; text-align: center;">${it.quantity} ${escapeHtml(it.unit)}</td>
-          <td style="padding: 10px; font-size: 13px; text-align: right;">${quote.currency} ${Number(it.unitPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-          <td style="padding: 10px; font-size: 13px; text-align: right; font-weight: bold;">${quote.currency} ${Number(it.lineTotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-        </tr>
-      `
-      )
-      .join('');
-
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; color: #10263D; max-width: 650px; margin: 0 auto; border: 1px solid #E3E8EF; border-radius: 8px; overflow: hidden;">
-        <div style="background: #10263D; padding: 24px; color: #FFF;">
-          <table width="100%">
-            <tr>
-              <td>
-                <h2 style="margin: 0; color: #FFF;">Lotus Tubes</h2>
-                <p style="margin: 4px 0 0 0; color: #94A3B8; font-size: 12px;">Lotus Impex &bull; Mumbai, India</p>
-              </td>
-              <td style="text-align: right;">
-                <span style="background: #0284C7; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold;">COMMERCIAL QUOTATION</span>
-                <p style="margin: 4px 0 0 0; font-size: 12px; color: #E2E8F0;">${escapeHtml(quote.quotationNumber)} (v${quote.version || 1})</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div style="padding: 24px;">
-          <p>Dear <strong>${escapeHtml(quote.customerName)}</strong> (${escapeHtml(quote.company)}),</p>
-          <p>Please find below the official commercial quotation for your stainless steel sanitary components requirement:</p>
-
-          <table width="100%" style="border-collapse: collapse; margin: 16px 0;">
-            <thead>
-              <tr style="background: #F8FAFC; border-bottom: 2px solid #CBD5E1; text-align: left;">
-                <th style="padding: 8px; font-size: 12px;">#</th>
-                <th style="padding: 8px; font-size: 12px;">Item & Specifications</th>
-                <th style="padding: 8px; font-size: 12px; text-align: center;">Qty</th>
-                <th style="padding: 8px; font-size: 12px; text-align: right;">Unit Rate</th>
-                <th style="padding: 8px; font-size: 12px; text-align: right;">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsRows}
-            </tbody>
-            <tfoot>
-              <tr style="border-top: 2px solid #E2E8F0;">
-                <td colspan="4" style="padding: 8px; text-align: right; font-size: 13px;">Subtotal:</td>
-                <td style="padding: 8px; text-align: right; font-size: 13px; font-weight: bold;">${quote.currency} ${Number(quote.subtotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-              </tr>
-              <tr>
-                <td colspan="4" style="padding: 8px; text-align: right; font-size: 13px;">GST (18%):</td>
-                <td style="padding: 8px; text-align: right; font-size: 13px;">${quote.currency} ${Number(quote.taxTotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-              </tr>
-              <tr style="background: #F1F5F9; font-weight: bold;">
-                <td colspan="4" style="padding: 10px; text-align: right; font-size: 14px;">Grand Total:</td>
-                <td style="padding: 10px; text-align: right; font-size: 15px; color: #0284C7;">${quote.currency} ${Number(quote.grandTotal).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
-              </tr>
-            </tfoot>
-          </table>
-
-          <div style="background: #F8FAFC; border: 1px solid #E3E8EF; border-radius: 6px; padding: 12px; font-size: 12px; line-height: 1.6; margin-top: 16px;">
-            <p style="margin: 0;"><strong>Payment Terms:</strong> ${escapeHtml(quote.paymentTerms)}</p>
-            <p style="margin: 0;"><strong>Delivery Lead Time:</strong> ${escapeHtml(quote.leadTime)}</p>
-            <p style="margin: 0;"><strong>Delivery Terms:</strong> ${escapeHtml(quote.deliveryTerms)}</p>
-            <p style="margin: 0;"><strong>Validity:</strong> Valid for ${quote.validityDays} days from quotation date</p>
-          </div>
-
-          <p style="font-size: 12px; color: #64748B; margin-top: 20px;">
-            To confirm this quotation or request technical MTC documentation, please reply directly to this email or reach our sales desk on WhatsApp at +91 99304 30789.
-          </p>
-        </div>
-      </div>
-    `;
-
-    const sendRes = await sendEmail({
-      agentId: 'ananya-mehta',
-      to: quote.email,
-      subject: `[Quotation ${quote.quotationNumber}] Lotus Tubes Commercial Offer`,
-      html: emailHtml,
-      replyTo: 'sales@lotustubes.com',
-      quoteId: quote._id,
-      reference: quote.quotationNumber,
-      approvedBy: req.user,
-      idempotencyKey: `quote_send_${quote._id}_${Date.now()}`
+    const dispatchResult = await sendApprovedDocument({
+      documentId: id,
+      documentType: 'quotation',
+      channels,
+      actor: req.user
     });
 
-    quote.emailStatus = (sendRes.accepted || sendRes.delivered) ? 'accepted' : 'failed';
-    quote.status = 'Sent';
-    quote.sentAt = new Date();
-    quote.sentBy = req.user?.id || null;
-
-    quote.activityLog.push({
-      action: 'Dispatched',
-      performedBy: req.user?.name || 'Staff',
-      note: `Approved quotation dispatched via Ananya Mehta to ${quote.email} (Provider Status: ${quote.emailStatus})`
-    });
-
-    await quote.save();
-
-    await recordAuditEvent({
-      actor: req.user,
-      action: (sendRes.accepted || sendRes.delivered) ? 'QUOTATION_DISPATCHED' : 'EMAIL_DISPATCH_FAILED',
-      targetType: 'Quote',
-      targetId: quote._id,
-      targetRef: quote.quotationNumber,
-      metadata: { recipient: quote.email, emailStatus: quote.emailStatus, agentId: 'ananya-mehta' },
-      ip: req.ip
-    });
-
-    return successResponse(res, { quote, emailStatus: quote.emailStatus }, 'Approved quotation dispatched via email successfully');
+    const updatedQuote = await Quote.findById(id);
+    return successResponse(
+      res,
+      {
+        quote: updatedQuote,
+        dispatchResult,
+        emailStatus: updatedQuote.emailStatus,
+        whatsappStatus: updatedQuote.whatsappStatus
+      },
+      'Approved quotation dispatched via email and WhatsApp successfully'
+    );
   } catch (error) {
+    if (error.message.includes('SECURITY') || error.message.includes('approved') || error.message.includes('revoked') || error.message.includes('FORBIDDEN')) {
+      return errorResponse(res, error.message, 403);
+    }
     next(error);
   }
 };

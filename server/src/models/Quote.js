@@ -218,6 +218,35 @@ const quoteSchema = new mongoose.Schema(
       enum: ['pending', 'sent', 'delivered', 'failed', 'not_configured'],
       default: 'pending'
     },
+    whatsappStatus: {
+      type: String,
+      enum: [
+        'DRAFT',
+        'PENDING_APPROVAL',
+        'APPROVED',
+        'SEND_ATTEMPTED',
+        'PROVIDER_ACCEPTED',
+        'DELIVERED',
+        'READ',
+        'FAILED',
+        'SKIPPED_NO_CONSENT',
+        'not_configured'
+      ],
+      default: 'DRAFT',
+      index: true
+    },
+    whatsappSentAt: {
+      type: Date,
+      default: null
+    },
+    whatsappMessageId: {
+      type: String,
+      default: ''
+    },
+    whatsappError: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null
+    },
     pdfUrl: {
       type: String,
       default: ''

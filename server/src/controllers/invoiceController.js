@@ -9,6 +9,7 @@ import { generateReference } from '../utils/security.js';
 import { sendEmail } from '../services/emailService.js';
 import { buildInvoiceDeliveryEmail } from '../utils/emailTemplates.js';
 import { sendWhatsAppInvoice } from '../services/whatsappService.js';
+import { sendApprovedDocument } from '../services/notificationService.js';
 
 /**
  * Super Admin & Staff: Get list of invoices with filters
@@ -471,39 +472,37 @@ export const rejectInvoice = async (req, res, next) => {
 };
 
 /**
- * Staff / Super Admin: Send / Resend Invoice
+ * Staff / Super Admin: Send / Resend Invoice across Email & WhatsApp
  * STRICT INVARIANT: Cannot send unapproved invoice!
  */
 export const sendInvoice = async (req, res, next) => {
   try {
     assertDatabaseConnected();
     const { id } = req.params;
-    const invoice = await Invoice.findById(id);
-    if (!invoice) {
-      return errorResponse(res, 'Invoice not found', 404);
-    }
+    const channels = req.body?.channels || ['email', 'whatsapp'];
 
-    if (invoice.status !== 'Approved' && invoice.status !== 'Sent' && invoice.status !== 'Paid') {
-      return errorResponse(
-        res,
-        'FORBIDDEN: Invoices must be officially approved by Super Admin Chirag Shah before customer dispatch.',
-        403
-      );
-    }
+    const dispatchResult = await sendApprovedDocument({
+      documentId: id,
+      documentType: 'invoice',
+      channels,
+      actor: req.user
+    });
 
-    // Resend via Riya Shah
-    if (invoice.phone) {
-      await sendWhatsAppInvoice({
-        phone: invoice.phone,
-        customerName: invoice.customerName,
-        invoiceNumber: invoice.invoiceNumber,
-        grandTotal: invoice.grandTotal,
-        pdfUrl: 'https://lotustubes.com/sample-quotation.pdf'
-      });
-    }
-
-    return successResponse(res, invoice, `Invoice ${invoice.invoiceNumber} re-dispatched via Riya Shah.`);
+    const updatedInvoice = await Invoice.findById(id);
+    return successResponse(
+      res,
+      {
+        invoice: updatedInvoice,
+        dispatchResult,
+        whatsappStatus: updatedInvoice.whatsappStatus,
+        deliveryRecords: updatedInvoice.deliveryRecords
+      },
+      `Invoice ${updatedInvoice.invoiceNumber} dispatched via email and WhatsApp.`
+    );
   } catch (error) {
+    if (error.message.includes('SECURITY') || error.message.includes('approved') || error.message.includes('FORBIDDEN')) {
+      return errorResponse(res, error.message, 403);
+    }
     next(error);
   }
 };

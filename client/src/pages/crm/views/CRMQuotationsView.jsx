@@ -65,27 +65,46 @@ export const CRMQuotationsView = ({
     return <span className={`crm-status-pill crm-status-${cls}`}>{s}</span>;
   };
 
-  const renderDeliveryBadge = (status, quoteStatus) => {
+  const renderDeliveryBadge = (emailStatus, whatsappStatus, quoteStatus) => {
     if (quoteStatus !== 'Approved' && quoteStatus !== 'Sent' && quoteStatus !== 'Accepted') {
       return (
         <span
           className="crm-badge crm-badge-amber"
-          title="Mandatory Super Admin approval required prior to customer email dispatch"
+          title="Mandatory Super Admin approval required prior to customer email & WhatsApp dispatch"
         >
           🔒 Approval Required
         </span>
       );
     }
 
-    const map = {
-      sent: { label: 'Dispatched', cls: 'crm-badge-green' },
-      delivered: { label: 'Delivered', cls: 'crm-badge-green' },
-      failed: { label: 'Failed', cls: 'crm-badge-red' },
-      not_configured: { label: 'Manual/Ready', cls: 'crm-badge-gray' },
-      pending: { label: 'Pending', cls: 'crm-badge-amber' }
+    const emailMap = {
+      sent: { label: 'Email Sent', cls: 'crm-badge-green' },
+      delivered: { label: 'Email Delivered', cls: 'crm-badge-green' },
+      failed: { label: 'Email Failed', cls: 'crm-badge-red' },
+      not_configured: { label: 'Email Manual', cls: 'crm-badge-gray' },
+      pending: { label: 'Email Pending', cls: 'crm-badge-amber' }
     };
-    const s = map[status] || { label: status || 'Ready to Send', cls: 'crm-badge-green' };
-    return <span className={`crm-badge ${s.cls}`}>{s.label}</span>;
+
+    const waMap = {
+      DELIVERED: { label: 'WA Delivered', cls: 'crm-badge-emerald' },
+      READ: { label: 'WA Read', cls: 'crm-badge-blue' },
+      PROVIDER_ACCEPTED: { label: 'WA Accepted', cls: 'crm-badge-green' },
+      SEND_ATTEMPTED: { label: 'WA Sending', cls: 'crm-badge-amber' },
+      FAILED: { label: 'WA Failed', cls: 'crm-badge-red' },
+      SKIPPED_NO_CONSENT: { label: 'WA Opt-Out', cls: 'crm-badge-amber' },
+      not_configured: { label: 'WA Ready', cls: 'crm-badge-gray' },
+      DRAFT: { label: 'WA Ready', cls: 'crm-badge-gray' }
+    };
+
+    const e = emailMap[emailStatus] || { label: 'Email Ready', cls: 'crm-badge-gray' };
+    const w = waMap[whatsappStatus] || null;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+        <span className={`crm-badge ${e.cls}`} style={{ fontSize: '10px' }}>{e.label}</span>
+        {w && <span className={`crm-badge ${w.cls}`} style={{ fontSize: '10px' }}>{w.label}</span>}
+      </div>
+    );
   };
 
   return (
@@ -276,7 +295,7 @@ export const CRMQuotationsView = ({
                             )}
                           </div>
                         </td>
-                        <td>{renderDeliveryBadge(q.emailStatus, q.status)}</td>
+                        <td>{renderDeliveryBadge(q.emailStatus, q.whatsappStatus, q.status)}</td>
                         <td style={{ textAlign: 'right' }}>
                           <div className="crm-table-actions">
                             {/* Letterhead Modal */}

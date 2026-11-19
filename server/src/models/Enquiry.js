@@ -105,7 +105,7 @@ const enquirySchema = new mongoose.Schema(
     },
     sourceChannel: {
       type: String,
-      enum: ['Website RFQ', 'WhatsApp Business', 'Direct Email', 'Phone Call', 'IndiaMART / Trade Portal'],
+      enum: ['Website RFQ', 'WhatsApp Business', 'WhatsApp RFQ', 'Direct Email', 'Phone Call', 'IndiaMART / Trade Portal'],
       default: 'Website RFQ'
     },
     priority: {

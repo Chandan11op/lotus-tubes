@@ -192,12 +192,31 @@ const invoiceSchema = new mongoose.Schema(
       type: String,
       default: '/sample-quotation.pdf'
     },
+    whatsappStatus: {
+      type: String,
+      enum: [
+        'DRAFT',
+        'PENDING_APPROVAL',
+        'APPROVED',
+        'SEND_ATTEMPTED',
+        'PROVIDER_ACCEPTED',
+        'DELIVERED',
+        'READ',
+        'FAILED',
+        'SKIPPED_NO_CONSENT',
+        'not_configured'
+      ],
+      default: 'DRAFT',
+      index: true
+    },
     deliveryRecords: {
       emailSent: { type: Boolean, default: false },
       emailSentAt: { type: Date, default: null },
       whatsappSent: { type: Boolean, default: false },
       whatsappSentAt: { type: Date, default: null },
-      error: { type: String, default: null }
+      whatsappMessageId: { type: String, default: '' },
+      error: { type: String, default: null },
+      whatsappError: { type: mongoose.Schema.Types.Mixed, default: null }
     },
     notes: {
       type: String,
