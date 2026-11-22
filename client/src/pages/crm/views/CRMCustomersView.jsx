@@ -401,7 +401,7 @@ export const CRMCustomersView = ({
                       type="tel"
                       value={newCustomer.phone}
                       onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                      placeholder="+91 98205 12345"
+                      placeholder="+91 98673 04316"
                       className="crm-input"
                     />
                   </div>

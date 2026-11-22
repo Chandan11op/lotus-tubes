@@ -8,13 +8,13 @@ import { MASTER_PRODUCTS } from './productsData.js';
   const CONFIG = {
     brandName: 'Lotus Tubes',
     companyLegalName: 'Lotus Impex',
-    gstin: '27AIIPS0303A1ZU',
+    gstin: '27AAFHC5384L1ZX',
     iec: '0316902471',
-    primaryPhone: '+91 98205 25200',
-    primaryPhoneRaw: '+919820525200',
+    primaryPhone: '+91 9867304316',
+    primaryPhoneRaw: '+919867304316',
     primaryEmail: 'sales@lotustubes.com',
     secondaryEmail: 'info@lotustubes.com',
-    whatsappNumber: '919820525200',
+    whatsappNumber: '919867304316',
     officeAddress: 'Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, opp. to 11th Lane, Charni Road East, Khetwadi, Girgaon, Mumbai, Maharashtra 400004, India',
     sourcingHub: 'Girgaon, Mumbai - 400004, Maharashtra, India'
   };
@@ -251,7 +251,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
     {
       q: 'How fast can I receive an official technical quotation?',
-      a: 'Enquiries submitted via our website quotation form or directly through our WhatsApp desk (+91 98205 25200) receive prompt same-day quotation assistance and stock availability confirmation during business hours.'
+      a: 'Enquiries submitted via our website quotation form or directly through our WhatsApp desk (+91 9867304316) receive prompt same-day quotation assistance and stock availability confirmation during business hours.'
     },
     {
       q: 'Can you supply custom fabricated spools or drawing-based fittings?',
@@ -270,7 +270,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       employees: [],
       integrations: {
         whatsappStatus: 'Cloud API Ready',
-        whatsappPhone: '+91 98205 25200',
+        whatsappPhone: '+91 9867304316',
         emailSMTP: 'Configured (sales@lotustubes.com)',
         autoEnquiryCapture: true
       }

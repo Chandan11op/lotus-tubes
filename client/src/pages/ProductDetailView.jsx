@@ -2,37 +2,38 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { PRODUCTS, CONFIG } from '../data/siteData';
 import { useLanguage } from '../context/LanguageContext';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
-import { ProductVideoPlayer } from '../components/common/ProductVideoPlayer';
 import { updatePageSEO } from '../utils/seo';
 
 /**
  * ProductDetailView
- * Professional B2B product presentation inspired by high-conversion e-commerce layouts (e.g. Amazon)
- * adapted specifically for hygienic industrial sanitary piping, fittings, and valves.
+ * Strict Figma Design-System Aligned Industrial B2B Product Detail View
+ *
+ * Media Requirement (Section 5):
+ * STRICTLY STATIC PRODUCT PHOTOGRAPHS ONLY.
+ * No 3D models, no 360-degree rotation, no simulated rotation, no video players.
  *
  * Features:
- * - Two-column desktop layout with left-hand vertical thumbnail gallery and large main viewing stage
- * - Smooth image transitions, distortion-free contain scaling, and responsive horizontal mobile strip
- * - Dedicated video thumbnail and responsive native video player integration
- * - Accessible Fullscreen Lightbox Modal with zoom and keyboard navigation
- * - Structured information hierarchy: Title, Badges, Short Overview, Quick Specs Grid, Key Benefits, CTAs
+ * - Two-column responsive layout with left-hand vertical thumbnail gallery and large main viewing stage
+ * - Click-to-change static main image with smooth transitions and distortion-free contain scaling
+ * - Fullscreen Lightbox Modal with zoom and previous/next keyboard navigation
+ * - Structured information hierarchy: Title, Badges, Overview, Technical Parameters Table, Advantages, CTAs
  * - In-depth tabbed specification sections: About & Construction, Technical Specs, Metallurgy, Compliance, Applications
- * - Complementary related products and direct quotation actions
+ * - Direct quotation actions & WhatsApp sales desk integration
  */
 export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const { t, currentLang, localizePath } = useLanguage();
   const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
-  // Gallery State: active media index (0..n for images, or 'video')
-  const [activeMedia, setActiveMedia] = useState(0);
+  // Gallery State: active static photograph index (0..n)
+  const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('about');
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [imgFallbacks, setImgFallbacks] = useState({});
 
   // Reset gallery on product change
   useEffect(() => {
-    setActiveMedia(0);
+    setActivePhotoIndex(0);
     setImgFallbacks({});
 
     // Update dynamic technical SEO & Structured Data
@@ -56,9 +57,6 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     ? prod.images
     : [prod.image || getCategoryFallbackImage(prod.categorySlug, prod.name)];
 
-  const videoShowcase = prod.videoShowcase || prod.video || `/assets/videos/products/${prod.id}/showcase.mp4`;
-  const hasVideo = Boolean(prod.video || prod.videoShowcase);
-
   const handleImageError = (key) => {
     setImgFallbacks((prev) => {
       const currentLevel = prev[key] || 0;
@@ -74,9 +72,10 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     return INLINE_SVG_FAILSAFE;
   };
 
-  const currentImageSrc = typeof activeMedia === 'number'
-    ? resolveImage(productImages[activeMedia] || productImages[0], `main-${activeMedia}`)
-    : resolveImage(productImages[0], 'main-default');
+  const currentImageSrc = resolveImage(
+    productImages[activePhotoIndex] || productImages[0],
+    `main-${activePhotoIndex}`
+  );
 
   // Lightbox keyboard navigation
   const handleKeyDown = useCallback(
@@ -84,13 +83,13 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
       if (!isLightboxOpen) return;
       if (e.key === 'Escape') {
         setIsLightboxOpen(false);
-      } else if (e.key === 'ArrowRight' && typeof activeMedia === 'number') {
-        setActiveMedia((prev) => (prev + 1) % productImages.length);
-      } else if (e.key === 'ArrowLeft' && typeof activeMedia === 'number') {
-        setActiveMedia((prev) => (prev - 1 + productImages.length) % productImages.length);
+      } else if (e.key === 'ArrowRight') {
+        setActivePhotoIndex((prev) => (prev + 1) % productImages.length);
+      } else if (e.key === 'ArrowLeft') {
+        setActivePhotoIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
       }
     },
-    [isLightboxOpen, activeMedia, productImages.length]
+    [isLightboxOpen, productImages.length]
   );
 
   useEffect(() => {
@@ -107,111 +106,85 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   }, [isLightboxOpen, handleKeyDown]);
 
   const is316 = prod.material?.includes('316');
+  const waNumber = (CONFIG.whatsapp || '919867304316').replace(/\D/g, '');
+  const waMessage = `Hello Lotus Tubes, I would like to enquire about ${prod.name} (Material: ${prod.material || 'SS 316L'}, Standard: ${prod.standard || 'Sanitary Standard'}). Please share pricing and availability.`;
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
 
   return (
-    <div className="product-detail-view-container site-container py-8 sm:py-12">
+    <div className="product-detail-view-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Upper Two-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
         {/* ========================================================================= */}
-        {/* LEFT COLUMN: AMAZON-INSPIRED PRODUCT GALLERY & LIGHTBOX                  */}
+        {/* LEFT COLUMN: STATIC PRODUCT PHOTOGRAPHY GALLERY & FULLSCREEN LIGHTBOX     */}
         {/* ========================================================================= */}
         <div className="lg:col-span-6 flex flex-col-reverse lg:flex-row gap-4 items-start w-full">
           
-          {/* Vertical Thumbnail Strip (Horizontal on Mobile) */}
-          <div className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-y-auto max-h-[540px] w-full lg:w-20 shrink-0 scrollbar-none pb-2 lg:pb-0">
-            {/* 1. Image Thumbnails */}
-            {productImages.map((imgSrc, idx) => {
-              const isSelected = activeMedia === idx;
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setActiveMedia(idx)}
-                  className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden bg-white p-1 border-2 transition-all shrink-0 cursor-pointer ${
-                    isSelected
-                      ? 'border-sky-600 shadow-md ring-2 ring-sky-100 scale-102'
-                      : 'border-slate-200 hover:border-slate-400 opacity-80 hover:opacity-100'
-                  }`}
-                  aria-label={`View product image ${idx + 1}`}
-                  aria-selected={isSelected}
-                >
-                  <img
-                    src={resolveImage(imgSrc, `thumb-${idx}`)}
-                    alt={`${prod.name} thumbnail ${idx + 1}`}
-                    className="w-full h-full object-contain"
-                    onError={() => handleImageError(`thumb-${idx}`)}
-                  />
-                </button>
-              );
-            })}
+          {/* Static Thumbnail Selector (Vertical on Desktop, Horizontal on Mobile) */}
+          {productImages.length > 1 && (
+            <div className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-y-auto max-h-[520px] w-full lg:w-20 shrink-0 scrollbar-none pb-2 lg:pb-0">
+              {productImages.map((imgSrc, idx) => {
+                const isSelected = activePhotoIndex === idx;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActivePhotoIndex(idx)}
+                    className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-xl overflow-hidden bg-white p-1 border-2 transition-all shrink-0 cursor-pointer ${
+                      isSelected
+                        ? 'border-[#E93984] shadow-md ring-2 ring-pink-100 scale-102'
+                        : 'border-slate-200 hover:border-slate-400 opacity-80 hover:opacity-100'
+                    }`}
+                    aria-label={`View product photo ${idx + 1}`}
+                    aria-selected={isSelected}
+                  >
+                    <img
+                      src={resolveImage(imgSrc, `thumb-${idx}`)}
+                      alt={`${prod.name} thumbnail ${idx + 1}`}
+                      className="w-full h-full object-contain"
+                      onError={() => handleImageError(`thumb-${idx}`)}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
-            {/* 2. Cinematic Showcase Video Thumbnail */}
-            {hasVideo && (
+          {/* Main Static Photograph Stage */}
+          <div className="relative flex-1 w-full bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] p-6 group">
+            <div
+              className="relative w-full h-full flex items-center justify-center cursor-zoom-in"
+              onClick={() => setIsLightboxOpen(true)}
+              title="Click to expand high-resolution photograph"
+            >
+              <img
+                src={currentImageSrc}
+                alt={prod.name}
+                className="max-h-[400px] max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                onError={() => handleImageError(`main-${activePhotoIndex}`)}
+              />
+
+              {/* Floating Fullscreen Zoom Action */}
               <button
                 type="button"
-                onClick={() => setActiveMedia('video')}
-                className={`relative w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden bg-slate-900 border-2 transition-all shrink-0 cursor-pointer flex flex-col items-center justify-center text-white ${
-                  activeMedia === 'video'
-                    ? 'border-sky-600 shadow-md ring-2 ring-sky-100 scale-102'
-                    : 'border-slate-700 hover:border-slate-500 opacity-85 hover:opacity-100'
-                }`}
-                aria-label="View product demonstration video"
-                aria-selected={activeMedia === 'video'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsLightboxOpen(true);
+                }}
+                className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 hover:text-[#E93984] p-2.5 rounded-xl border border-slate-200 shadow-md text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                aria-label="Open Fullscreen Image View"
               >
-                <div className="w-7 h-7 rounded-full bg-sky-500/90 flex items-center justify-center text-white shadow-sm mb-0.5">
-                  <span className="text-xs ml-0.5">▶</span>
-                </div>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-sky-200">Showcase</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+                <span>Zoom</span>
               </button>
-            )}
-          </div>
 
-          {/* Main Display Stage */}
-          <div className="relative flex-1 w-full bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[520px] p-0 group">
-            {activeMedia === 'video' && hasVideo ? (
-              <div className="w-full h-full flex items-center justify-center p-6">
-                <ProductVideoPlayer
-                  src={videoShowcase || prod.video}
-                  poster={productImages[0]}
-                  title={`${prod.name} - Technical Overview`}
-                />
+              {/* Static Photo Counter Badge */}
+              <div className="absolute top-2 left-2 bg-[#081D5B]/90 text-white text-[11px] font-sans px-2.5 py-1 rounded-md backdrop-blur-sm pointer-events-none">
+                Photo {activePhotoIndex + 1} of {productImages.length}
               </div>
-            ) : (
-              <div
-                className="relative w-full h-full flex items-center justify-center cursor-zoom-in p-6"
-                onClick={() => setIsLightboxOpen(true)}
-                title="Click to expand high-resolution image"
-              >
-                <img
-                  src={currentImageSrc}
-                  alt={prod.name}
-                  className="max-h-[420px] max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  onError={() => handleImageError(`main-${activeMedia}`)}
-                />
-
-                {/* Floating Fullscreen Lightbox Button */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsLightboxOpen(true);
-                  }}
-                  className="absolute bottom-3 right-3 bg-white/90 hover:bg-white text-slate-700 hover:text-sky-600 p-2.5 rounded-xl border border-slate-200 shadow-md text-xs font-semibold flex items-center gap-1.5 transition-colors"
-                  aria-label="Open Fullscreen Image View"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                  </svg>
-                  <span>Fullscreen Zoom</span>
-                </button>
-
-                {/* Image Counter Badge */}
-                <div className="absolute top-3 left-3 bg-slate-900/80 text-white text-[11px] font-mono px-2.5 py-1 rounded-md backdrop-blur-sm pointer-events-none">
-                  {typeof activeMedia === 'number' ? `Photo ${activeMedia + 1} of ${productImages.length}` : 'Technical Video'}
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
 
@@ -223,7 +196,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           <div className="flex items-center justify-between gap-2 mb-2">
             <a
               href={localizePath(`/category/${prod.categorySlug}`, currentLang)}
-              className="text-xs font-bold text-sky-600 uppercase tracking-wider hover:underline"
+              className="text-xs font-bold text-[#E93984] uppercase tracking-wider hover:underline"
             >
               {prod.category}
             </a>
@@ -234,17 +207,17 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           </div>
 
           {/* Product Headline */}
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight leading-snug mb-3">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug mb-3">
             {prod.name}
           </h1>
 
           {/* Trust & Specification Badges Strip */}
           <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className={`px-2.5 py-1 text-xs font-bold rounded-md ${is316 ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-800'}`}>
+            <span className={`px-2.5 py-1 text-xs font-bold rounded-md ${is316 ? 'bg-[#081D5B] text-white' : 'bg-slate-200 text-slate-800'}`}>
               Grade: {prod.material || 'Confirm on enquiry'}
             </span>
             {prod.finish && (
-              <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-pink-100 text-pink-700 border border-pink-200">
+              <span className="px-2.5 py-1 text-xs font-bold rounded-md bg-pink-50 text-[#E93984] border border-pink-200">
                 {prod.finish}
               </span>
             )}
@@ -253,19 +226,19 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 {prod.standard}
               </span>
             )}
-            <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-sky-50 text-sky-700 border border-sky-200">
+            <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-sky-50 text-sky-800 border border-sky-200">
               EN 10204 3.1 Traceable
             </span>
           </div>
 
-          {/* Product Concise Overview */}
+          {/* Product Overview */}
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6">
             {prod.overview}
           </p>
 
-          {/* Quick Technical Overview Table (Amazon B2B Style) */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 mb-6">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+          {/* Technical Specifications Table */}
+          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
               Technical Parameters &amp; Sourcing Specifications
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2.5 gap-x-6 text-xs">
@@ -304,23 +277,23 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             </div>
           </div>
 
-          {/* Key Hygienic Engineering Benefits */}
+          {/* Key Advantages */}
           <div className="mb-6">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2.5">
               Key Process Engineering Advantages:
             </h3>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-600">
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold">✓</span>
+                <span className="text-[#E93984] font-bold">✓</span>
                 <span><strong>Hygienic Internal Bore:</strong> Smooth, crevice-free internal finish preventing product build-up and biofilm growth.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold">✓</span>
-                <span><strong>100% Heat Traceable:</strong> Positive Material Identification (PMI) confirmed with complete mill metallurgy certificates.</span>
+                <span className="text-[#E93984] font-bold">✓</span>
+                <span><strong>100% Heat Traceable:</strong> Positive Material Identification (PMI) verified with mill metallurgy test certificates.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold">✓</span>
-                <span><strong>CIP/SIP Compatibility:</strong> Resistant to intensive caustic cleaning washdowns, acid circulation, and high-pressure steam.</span>
+                <span className="text-[#E93984] font-bold">✓</span>
+                <span><strong>CIP/SIP Compatibility:</strong> High chemical resistance to caustic cleaning washdowns and high-temperature steam sterilization.</span>
               </li>
             </ul>
           </div>
@@ -330,27 +303,25 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             <button
               type="button"
               onClick={() => onOpenEnquiry && onOpenEnquiry(prod, prod.name)}
-              className="btn btn--primary flex-1 py-3.5 px-6 text-sm font-bold shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2"
+              className="flex-1 py-3.5 px-6 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg hover:shadow-pink-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>{t('pdp_btn_rfq', 'Request Official Quotation')}</span>
-              <span>&rarr;</span>
+              <span>Request Official Quotation</span>
+              <span>↗</span>
             </button>
 
             <a
-              href={`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(
-                `Hello Lotus Tubes, I would like to enquire about ${prod.name} (Material: ${prod.material}, Standard: ${prod.standard}). Please share pricing and stock availability.`
-              )}`}
+              href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-lg text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full text-xs sm:text-sm font-bold text-white bg-[#25D366] hover:bg-[#20BD5A] shadow-md transition-all cursor-pointer"
             >
-              <span>🟢</span>
-              <span>{t('pdp_btn_whatsapp', 'Enquire on WhatsApp')}</span>
+              <span>💬</span>
+              <span>WhatsApp Price</span>
             </a>
 
             <a
               href={localizePath('/quote', currentLang)}
-              className="btn btn--outline py-3.5 px-5 text-sm font-semibold border-slate-300 text-slate-700 hover:bg-slate-100"
+              className="py-3.5 px-5 rounded-full text-xs sm:text-sm font-semibold border border-slate-300 text-slate-700 hover:bg-slate-100 text-center transition-colors"
             >
               Attach BOQ
             </a>
@@ -359,7 +330,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           <div className="flex items-center gap-4 mt-3 text-[11px] text-slate-500">
             <span>⚡ Typical Quote Turnaround: &lt; 2 Hours</span>
             <span>•</span>
-            <span>📍 Mumbai Central Warehouse Dispatch</span>
+            <span>📍 Mumbai Central Sourcing Hub</span>
           </div>
         </div>
 
@@ -382,9 +353,9 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border ${
+              className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all border cursor-pointer ${
                 activeTab === tab.id
-                  ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                  ? 'bg-[#081D5B] text-white border-[#081D5B] shadow-sm'
                   : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
               }`}
             >
@@ -394,29 +365,22 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
         </div>
 
         {/* Tab Content Panes */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm">
           {/* Tab 1: About & Construction */}
           {activeTab === 'about' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Hygienic Engineering Overview</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {prod.overview}
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Manufacturing Precision</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Fabricated to stringent dimensional tolerances adhering to ASTM A270, ASME BPE, and 3-A Sanitary Standards. Internal bores are mechanically honed and electro-chemically passivated to ensure an inert, chromium-rich oxide barrier.
-                  </p>
+            <div className="space-y-6 text-sm text-slate-700">
+              <h3 className="text-base font-bold text-slate-900">Manufacturing &amp; Engineering Construction</h3>
+              <p className="leading-relaxed">
+                {prod.overview}
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <h4 className="font-bold text-xs uppercase text-slate-800 mb-1">Hygienic Design Principle</h4>
+                  <p className="text-xs text-slate-600">Zero dead-leg geometry engineered specifically to ensure self-draining in sterile fluid circuits and clean-in-place CIP lines.</p>
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Clean-in-Place Cleanability</h4>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Designed without dead legs, deep crevices, or irregular weld margins to facilitate rapid, turbulent CIP fluid contact and complete drainage during Steam-In-Place (SIP) sterilization cycles.
-                  </p>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                  <h4 className="font-bold text-xs uppercase text-slate-800 mb-1">Quality Inspection Verification</h4>
+                  <p className="text-xs text-slate-600">100% dimensional check against verified drawings with material test certification EN 10204 3.1 supplied with shipment.</p>
                 </div>
               </div>
             </div>
@@ -424,53 +388,24 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
 
           {/* Tab 2: Technical Specifications */}
           {activeTab === 'specs' && (
-            <div>
-              <h3 className="text-lg font-bold text-slate-900 mb-4">Complete Parameter Breakdown</h3>
+            <div className="space-y-4">
+              <h3 className="text-base font-bold text-slate-900 mb-2">Technical Specification Details</h3>
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs sm:text-sm border-collapse">
+                <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-slate-100 text-slate-700">
-                      <th className="py-2.5 px-4 font-bold border-b border-slate-200">Specification Parameter</th>
-                      <th className="py-2.5 px-4 font-bold border-b border-slate-200">Verified Technical Value</th>
-                      <th className="py-2.5 px-4 font-bold border-b border-slate-200">Standard Reference</th>
+                    <tr className="border-b border-slate-200 bg-slate-50">
+                      <th className="py-2.5 px-4 font-bold text-slate-700">Attribute</th>
+                      <th className="py-2.5 px-4 font-bold text-slate-700">Verified Specification</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Material Grade</td>
-                      <td className="py-2.5 px-4 font-bold text-slate-900">{prod.material || 'Confirm on enquiry'}</td>
-                      <td className="py-2.5 px-4 text-slate-500">AISI / ASTM</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Surface Finish Quality</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.finish ? `${prod.finish}${prod.roughness ? ` (${prod.roughness})` : ''}` : 'Confirm on enquiry'}</td>
-                      <td className="py-2.5 px-4 text-slate-500">ASME BPE SF1 / SF4</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Size / Outside Diameter</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.sizes || 'Per technical schedule'}</td>
-                      <td className="py-2.5 px-4 text-slate-500">ASTM A270 / BS 4825</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Wall Thickness / Gauge</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.wallThickness || 'Confirm on enquiry'}</td>
-                      <td className="py-2.5 px-4 text-slate-500">Standard Sanitary</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Standard Length</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.length || 'Per order specifications'}</td>
-                      <td className="py-2.5 px-4 text-slate-500">Factory Standard</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Traceability &amp; Certification</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">{prod.mtc || 'Available on enquiry'}</td>
-                      <td className="py-2.5 px-4 text-slate-500">EN 10204</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2.5 px-4 font-medium text-slate-600">Inspection &amp; Testing</td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">Hydrostatic test, Boroscopy, PMI spectro analysis</td>
-                      <td className="py-2.5 px-4 text-slate-500">100% Verified</td>
-                    </tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">Material Grade</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.material || 'SS 316L / SS 304'}</td></tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">Manufacturing Method</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.manufacturingType || 'Welded / Seamless'}</td></tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">Surface Finish</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.finish || 'EP / MP'} ({prod.roughness || 'Ra ≤ 0.38µm'})</td></tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">Outside Diameter / Size</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.sizes || '1/2" to 4" OD'}</td></tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">Wall Thickness</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.wallThickness || '1.2mm, 1.65mm, 2.0mm'}</td></tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">Standard</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.standard || 'ASTM A270 / BS 4825'}</td></tr>
+                    <tr><td className="py-2.5 px-4 text-slate-500">End Connection</td><td className="py-2.5 px-4 font-semibold text-slate-800">{prod.connection || 'Weld / Tri-Clamp / SMS'}</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -479,86 +414,38 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
 
           {/* Tab 3: Material & Surface Finish */}
           {activeTab === 'metallurgy' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">Alloy Chemistry &amp; Surface Metallurgy</h3>
-                <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                  Sanitary process applications mandate high-purity austenitic stainless steel alloys capable of withstanding corrosive organic acids and aggressive sterilizing agents.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                  <h4 className="text-sm font-bold text-slate-900 mb-1">SS 316L (UNS S31603)</h4>
-                  <p className="text-xs text-slate-600 mb-3">
-                    Low-carbon austenitic alloy with 2.0–3.0% Molybdenum. Engineered specifically for sterile pharma WFI loops, bio-reactors, and chloride-exposed environments.
-                  </p>
-                  <ul className="text-xs space-y-1 text-slate-700">
-                    <li>• Chromium: 16.0 - 18.0%</li>
-                    <li>• Nickel: 10.0 - 14.0%</li>
-                    <li>• Molybdenum: 2.0 - 3.0%</li>
-                    <li>• Carbon: ≤ 0.03% (Resists intergranular carbide precipitation)</li>
-                  </ul>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                  <h4 className="text-sm font-bold text-slate-900 mb-1">SS 304 (UNS S30400)</h4>
-                  <p className="text-xs text-slate-600 mb-3">
-                    High-strength 18/8 austenitic stainless steel delivering outstanding hygienic cleanability for dairy, brewery, and food-grade fluid lines.
-                  </p>
-                  <ul className="text-xs space-y-1 text-slate-700">
-                    <li>• Chromium: 18.0 - 20.0%</li>
-                    <li>• Nickel: 8.0 - 10.5%</li>
-                    <li>• Molybdenum: Trace</li>
-                    <li>• Carbon: ≤ 0.08%</li>
-                  </ul>
-                </div>
+            <div className="space-y-4 text-xs sm:text-sm text-slate-700">
+              <h3 className="text-base font-bold text-slate-900">Alloy Metallurgy &amp; Electropolishing</h3>
+              <p className="leading-relaxed">
+                Available in low-carbon surgical-grade austenitic stainless steel SS 316L (UNS S31603 / 1.4404) for aggressive organic acids and chloride media, as well as SS 304 (UNS S30400 / 1.4301) for standard food and dairy processing systems.
+              </p>
+              <div className="p-4 rounded-2xl bg-pink-50/60 border border-pink-100 text-xs text-pink-950">
+                <strong>Electropolishing (EP) Finish:</strong> Micro-smooth passive chromium-oxide enriched layer with typical surface roughness Ra ≤ 0.38µm (15 µin), reducing friction, minimizing bacteria adhesion, and facilitating validated CIP cycles.
               </div>
             </div>
           )}
 
           {/* Tab 4: Standards & Compliance */}
           {activeTab === 'standards' && (
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Recognized Sanitary Compliance Standards</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Lotus Tubes supplies sanitary stainless steel components verified against premier global process standards:
+            <div className="space-y-4 text-xs sm:text-sm text-slate-700">
+              <h3 className="text-base font-bold text-slate-900">Applicable Codes &amp; Quality Documents</h3>
+              <p className="leading-relaxed">
+                Manufacturing tolerances and hygienic sanitary design follow ASTM A270, ASTM A269, BS 4825, DIN 11850, and 3-A Sanitary Standards, confirmed against actual product supply.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-                <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-                  <strong>ASTM A270:</strong> Specification for Seamless and Welded Austenitic and Ferritic/Austenitic Stainless Steel Sanitary Tubing.
-                </div>
-                <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-                  <strong>ASME BPE:</strong> Bio-Processing Equipment standard for high-purity pharmaceutical water, clean steam, and biopharma vessels.
-                </div>
-                <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-                  <strong>3-A Sanitary Standards:</strong> Hygienic design criteria for milk, dairy products, and food processing lines.
-                </div>
-                <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50">
-                  <strong>EN 10204 3.1:</strong> Inspection certificate documenting chemical composition, mechanical tests, and heat traceability.
-                </div>
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+                <strong>Documentation Available:</strong> Mill Test Certificate (MTC) conforming to EN 10204 Type 3.1 with heat number, chemical composition analysis, mechanical test records, and surface roughness verification.
               </div>
             </div>
           )}
 
-          {/* Tab 5: Applications & Industries */}
+          {/* Tab 5: Applications & Skids */}
           {activeTab === 'applications' && (
-            <div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Verified Process Applications</h3>
-              <p className="text-sm text-slate-600 leading-relaxed mb-4">
-                This component is widely deployed across critical fluid transport applications:
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                {(prod.applications || [
-                  'Water For Injection (WFI) loops',
-                  'Clean-In-Place (CIP) circulation manifolds',
-                  'Sterile pharmaceutical bulk manufacturing',
-                  'Dairy milk reception and pasteurization',
-                  'Brewery cellar transfer piping',
-                  'Biotech fermentation process skids'
-                ]).map((app, i) => (
-                  <div key={i} className="flex items-center gap-2.5 p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs sm:text-sm font-medium text-slate-800">
-                    <span className="text-sky-600 font-bold">✓</span>
+            <div className="space-y-4 text-xs sm:text-sm text-slate-700">
+              <h3 className="text-base font-bold text-slate-900">Industrial Process Applications</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1">
+                {['Pharmaceutical & Biotech', 'Dairy Processing & Skids', 'Food & Beverage Bottling', 'Brewery & Fermentation', 'WFI High Purity Water Loops', 'Chemical & Aseptic Systems'].map((app, i) => (
+                  <div key={i} className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 flex items-center gap-2">
+                    <span className="text-[#E93984]">●</span>
                     <span>{app}</span>
                   </div>
                 ))}
@@ -568,49 +455,37 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* RELATED COMPLEMENTARY PRODUCTS                                           */}
-      {/* ========================================================================= */}
+      {/* Related Products */}
       {related.length > 0 && (
-        <div className="mt-16">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <span className="text-xs font-bold text-sky-600 uppercase tracking-wider block">Complementary Equipment</span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
-                Related Products in {prod.category}
-              </h3>
-            </div>
-            <a href={localizePath('/products', currentLang)} className="text-xs font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1">
-              <span>{t('view_catalogue', 'View Full Catalogue')}</span>
-              <span>&rarr;</span>
-            </a>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="mt-14 border-t border-slate-200 pt-10">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-6">
+            Related {prod.category} Products
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
             {related.map((rel) => (
               <a
                 key={rel.id}
                 href={localizePath(`/product/${rel.slug || rel.id}`, currentLang)}
-                className="group flex flex-col p-4 rounded-xl bg-white border border-slate-200 hover:border-sky-500 hover:shadow-lg transition-all"
+                className="group bg-white rounded-2xl p-4 border border-slate-200 shadow-xs hover:shadow-lg hover:border-[#E93984]/50 transition-all flex flex-col"
               >
-                <div className="aspect-square w-full rounded-lg overflow-hidden bg-slate-50 mb-3 flex items-center justify-center p-3">
+                <div className="aspect-square w-full rounded-xl bg-slate-50 flex items-center justify-center p-3 mb-3 overflow-hidden">
                   <img
-                    src={rel.image || productImages[0]}
+                    src={rel.image}
                     alt={rel.name}
                     loading="lazy"
                     className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-sky-600 transition-colors">
+                <h4 className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-[#E93984] transition-colors">
                   {rel.name}
-                </div>
-                <div className="text-[11px] text-slate-500 mt-1">
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-1">
                   Grade: {rel.material} &bull; {rel.finish}
-                </div>
-                <div className="mt-auto pt-3 text-xs font-semibold text-sky-600 flex items-center gap-1">
-                  <span>{t('view_details', 'View Details')}</span>
-                  <span>&rarr;</span>
-                </div>
+                </p>
+                <span className="mt-auto pt-3 text-xs font-bold text-[#E93984] flex items-center gap-1">
+                  <span>View Details</span>
+                  <span>↗</span>
+                </span>
               </a>
             ))}
           </div>
@@ -618,7 +493,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
       )}
 
       {/* ========================================================================= */}
-      {/* FULLSCREEN LIGHTBOX MODAL                                                */}
+      {/* FULLSCREEN STATIC PHOTOGRAPH LIGHTBOX MODAL                              */}
       {/* ========================================================================= */}
       {isLightboxOpen && (
         <div
@@ -626,13 +501,13 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           onClick={() => setIsLightboxOpen(false)}
           role="dialog"
           aria-modal="true"
-          aria-label="High Resolution Lightbox View"
+          aria-label="High Resolution Photograph Lightbox"
         >
           {/* Close Button */}
           <button
             type="button"
             onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-4 right-4 text-white hover:text-sky-400 p-2 text-2xl font-bold z-50 transition-colors"
+            className="absolute top-4 right-4 text-white hover:text-[#FC63A7] p-2 text-2xl font-bold z-50 transition-colors cursor-pointer"
             aria-label="Close fullscreen view"
           >
             ✕
@@ -645,14 +520,12 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActiveMedia((prev) =>
-                    typeof prev === 'number'
-                      ? (prev - 1 + productImages.length) % productImages.length
-                      : 0
+                  setActivePhotoIndex((prev) =>
+                    (prev - 1 + productImages.length) % productImages.length
                   );
                 }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-slate-900/80 text-white hover:bg-sky-600 text-xl z-50 transition-colors"
-                aria-label="Previous image"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#081D5B] text-white hover:bg-[#E93984] text-xl z-50 flex items-center justify-center shadow-lg transition-colors cursor-pointer"
+                aria-label="Previous photograph"
               >
                 ‹
               </button>
@@ -660,14 +533,12 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setActiveMedia((prev) =>
-                    typeof prev === 'number'
-                      ? (prev + 1) % productImages.length
-                      : 0
+                  setActivePhotoIndex((prev) =>
+                    (prev + 1) % productImages.length
                   );
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-slate-900/80 text-white hover:bg-sky-600 text-xl z-50 transition-colors"
-                aria-label="Next image"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-[#081D5B] text-white hover:bg-[#E93984] text-xl z-50 flex items-center justify-center shadow-lg transition-colors cursor-pointer"
+                aria-label="Next photograph"
               >
                 ›
               </button>
@@ -681,13 +552,13 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
           >
             <img
               src={currentImageSrc}
-              alt={`${prod.name} high resolution preview`}
-              className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
+              alt={`${prod.name} high resolution static photograph`}
+              className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
             />
             <div className="mt-4 text-center text-white text-xs sm:text-sm">
               <span className="font-bold">{prod.name}</span>
               <span className="text-slate-400 ml-2">
-                ({typeof activeMedia === 'number' ? `${activeMedia + 1} of ${productImages.length}` : 'Video'})
+                (Photo {activePhotoIndex + 1} of {productImages.length})
               </span>
             </div>
           </div>

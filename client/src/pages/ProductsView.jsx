@@ -113,7 +113,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           </button>,
           <a
             key="whatsapp"
-            href="https://wa.me/919820525200?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20catalogue%20ready%20stock."
+            href="https://wa.me/919867304316?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20catalogue%20ready%20stock."
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--whatsapp"

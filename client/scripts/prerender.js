@@ -40,12 +40,19 @@ const baseHtml = fs.readFileSync(BASE_HTML_FILE, 'utf8');
 
 const LOCALE_OG_MAP = {
   en: 'en_US',
+  'en-in': 'en_IN',
+  'ar-ae': 'ar_AE',
+  'ar-sa': 'ar_SA',
   de: 'de_DE',
-  ar: 'ar_AE',
-  fr: 'fr_FR',
-  vi: 'vi_VN',
+  'en-sg': 'en_SG',
+  'en-gb': 'en_GB',
+  'en-au': 'en_AU',
+  'en-ca': 'en_CA',
   bn: 'bn_BD',
-  ms: 'ms_MY'
+  vi: 'vi_VN',
+  ms: 'ms_MY',
+  ar: 'ar_AE',
+  fr: 'fr_FR'
 };
 
 // 1. Core Public Routes
@@ -248,9 +255,9 @@ for (const langConfig of SUPPORTED_LANGUAGES) {
         logo: `${CANONICAL_BASE}/banner-image-opt.png`,
         image: `${CANONICAL_BASE}/banner-image-opt.png`,
         description: 'Supplier and stockist of stainless steel sanitary pipes, pipe fittings, tri-clamp components, and hygienic valves in SS 304 and SS 316L.',
-        telephone: '+91-9820525200',
+        telephone: '+91-9867304316',
         email: 'sales@lotustubes.com',
-        taxID: '27AIIPS0303A1ZU',
+        taxID: '27AAFHC5384L1ZX',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Shop no 9, Jain bhavan chsl, Dr Bhajekar Ln, opp. to 11th Lane, Charni Road East, Khetwadi, Girgaon',
@@ -274,7 +281,7 @@ for (const langConfig of SUPPORTED_LANGUAGES) {
         ],
         sameAs: [
           'https://www.linkedin.com/company/lotus-tubes',
-          'https://wa.me/919820525200'
+          'https://wa.me/919867304316'
         ]
       }
     ];

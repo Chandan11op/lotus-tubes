@@ -1,8 +1,8 @@
 /**
  * Lotus Tubes - Master Internationalization (i18n) Engine
  * 
- * Central hub for multi-language translations, URL prefixing, path localization,
- * and reciprocal hreflang generation across all 7 supported languages.
+ * Central hub for multi-country translations, URL prefixing, path localization,
+ * and reciprocal hreflang generation across all 12 target countries.
  */
 
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, LANGUAGE_CODES, NON_DEFAULT_LANG_CODES } from './languages.js';
@@ -23,17 +23,28 @@ export const TRANSLATIONS = {
   fr,
   vi,
   bn,
-  ms
+  ms,
+  'en-in': en,
+  'ar-ae': ar,
+  'ar-sa': ar,
+  'en-sg': en,
+  'en-gb': en,
+  'en-au': en,
+  'en-ca': en
 };
 
 /**
- * Returns the localized string for a key in the given language.
- * Falls back to English, then to the provided fallback or the key itself.
+ * Returns the localized string for a key in the given country/language.
+ * Checks direct translation, then base language, then falls back to English.
  */
 export function t(key, lang = DEFAULT_LANGUAGE, fallback = '') {
   const activeLang = LANGUAGE_CODES.includes(lang) ? lang : DEFAULT_LANGUAGE;
   if (TRANSLATIONS[activeLang] && TRANSLATIONS[activeLang][key] !== undefined) {
     return TRANSLATIONS[activeLang][key];
+  }
+  const langConfig = SUPPORTED_LANGUAGES.find((l) => l.code === activeLang);
+  if (langConfig?.baseLang && TRANSLATIONS[langConfig.baseLang] && TRANSLATIONS[langConfig.baseLang][key] !== undefined) {
+    return TRANSLATIONS[langConfig.baseLang][key];
   }
   if (TRANSLATIONS[DEFAULT_LANGUAGE] && TRANSLATIONS[DEFAULT_LANGUAGE][key] !== undefined) {
     return TRANSLATIONS[DEFAULT_LANGUAGE][key];
@@ -44,13 +55,6 @@ export function t(key, lang = DEFAULT_LANGUAGE, fallback = '') {
 /**
  * Parses any incoming URL pathname (or hash) to extract the active language code
  * and the clean path without language prefix.
- * 
- * Example:
- * '/de/products' -> { lang: 'de', cleanPath: '/products' }
- * '/ar/product/ss-316l-ep-pipe' -> { lang: 'ar', cleanPath: '/product/ss-316l-ep-pipe' }
- * '/products' -> { lang: 'en', cleanPath: '/products' }
- * '/de/' -> { lang: 'de', cleanPath: '/' }
- * '/' -> { lang: 'en', cleanPath: '/' }
  */
 export function extractLangFromPath(rawPath = '/') {
   const clean = (rawPath || '/').replace(/^#\/?/, '/');
@@ -69,12 +73,6 @@ export function extractLangFromPath(rawPath = '/') {
 
 /**
  * Converts a clean relative path to its localized URL equivalent for the given language.
- * 
- * Example:
- * localizePath('/products', 'en') -> '/products'
- * localizePath('/products', 'de') -> '/de/products'
- * localizePath('/', 'ar') -> '/ar/'
- * localizePath('/product/ss-316l-ep-pipe', 'fr') -> '/fr/product/ss-316l-ep-pipe'
  */
 export function localizePath(cleanPath = '/', lang = DEFAULT_LANGUAGE) {
   // First ensure cleanPath has no existing language prefix
@@ -121,4 +119,3 @@ export function getHreflangLinks(cleanPath = '/', domain = 'https://lotustubes.c
 
   return links;
 }
-

@@ -54,7 +54,7 @@ export const ContactView = ({ onNotify }) => {
     } catch (err) {
       console.error('Contact submission error:', err);
       if (onNotify) {
-        onNotify('Could not submit message to server. Please contact our desk directly via WhatsApp (+91 98205 25200) or email sales@lotustubes.com.', 'danger');
+        onNotify('Could not submit message to server. Please contact our desk directly via WhatsApp (+91 9867304316) or email sales@lotustubes.com.', 'danger');
       }
     } finally {
       setIsLoading(false);
@@ -99,13 +99,13 @@ export const ContactView = ({ onNotify }) => {
           </a>,
           <a
             key="call"
-            href={`tel:${(CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '')}`}
+            href={`tel:${(CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '')}`}
             className="btn btn--outline inline-flex items-center gap-2"
           >
             <svg className="w-4 h-4 text-[#2D8CFF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            <span>Direct Phone: {CONFIG.primaryPhone || '+91 98205 25200'}</span>
+            <span>Direct Phone: {CONFIG.primaryPhone || '+91 9867304316'}</span>
           </a>
         ]}
       />
@@ -145,7 +145,7 @@ export const ContactView = ({ onNotify }) => {
                 <div className="flex flex-col">
                   <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-500">Direct Phone Desk</span>
                   <a
-                    href={`tel:${(CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '')}`}
+                    href={`tel:${(CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '')}`}
                     className="text-base font-bold text-[#071A52] hover:text-[#2D8CFF] transition-colors mt-0.5"
                   >
                     {CONFIG.primaryPhone}

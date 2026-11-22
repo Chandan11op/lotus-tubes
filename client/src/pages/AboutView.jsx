@@ -5,7 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 export const AboutView = ({ onOpenEnquiry }) => {
   const { t, currentLang, localizePath } = useLanguage();
-  const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
+  const rawPhone = (CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '');
 
   return (
     <div className="about-page-view">

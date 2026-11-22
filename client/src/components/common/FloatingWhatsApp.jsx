@@ -7,7 +7,7 @@ import { CONFIG } from '../../data/siteData';
  * Uses verified Meta WhatsApp brand mark geometry with high-contrast accessibility.
  */
 export const FloatingWhatsApp = () => {
-  const whatsappNumber = CONFIG.whatsappNumber || '919820525200';
+  const whatsappNumber = CONFIG.whatsappNumber || '919867304316';
   const defaultMessage = 'Hello Lotus Tubes, I have an enquiry regarding stainless steel sanitary products.';
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`;
 
@@ -18,8 +18,8 @@ export const FloatingWhatsApp = () => {
         target="_blank"
         rel="noopener noreferrer"
         className="lt-floating-whatsapp-btn"
-        aria-label="Enquire with Lotus Tubes on WhatsApp (+91 98205 25200)"
-        title="Enquire on WhatsApp (+91 98205 25200)"
+        aria-label="Enquire with Lotus Tubes on WhatsApp (+91 9867304316)"
+        title="Enquire on WhatsApp (+91 9867304316)"
       >
         <span className="lt-whatsapp-ping" />
         {/* Official Meta WhatsApp Vector Icon */}

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
+import { CATEGORIES_MANIFEST } from '../../data/categoriesManifest';
 
 export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
   const { t, currentLang, localizePath } = useLanguage();
   const { user, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [hoveredCategoryId, setHoveredCategoryId] = useState(CATEGORIES_MANIFEST[0].id);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,17 +18,20 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const activeCategory =
+    CATEGORIES_MANIFEST.find((cat) => cat.id === hoveredCategoryId) || CATEGORIES_MANIFEST[0];
+
   return (
     <header
       className={`sticky top-0 left-0 w-full z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.6)] border-b border-surface-container-high/80 py-2.5'
-          : 'bg-surface-container-lowest/85 backdrop-blur-md border-b border-surface-container-high/40 py-3.5'
+          ? 'bg-white/98 backdrop-blur-md shadow-md border-b border-slate-200/80 py-2.5'
+          : 'bg-white border-b border-slate-100 py-3.5'
       }`}
       id="site-header"
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between gap-4">
-        {/* Brand Logo & Wordmark */}
+        {/* Brand Logo */}
         <a
           href={localizePath('/', currentLang)}
           className="flex items-center gap-3 shrink-0 group focus:outline-none"
@@ -45,16 +50,17 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           <span className="sr-only">Lotus Tubes</span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden xl:flex items-center gap-1 text-xs font-semibold tracking-wider font-sans" aria-label="Primary Navigation">
+        {/* Primary Desktop Navigation: [Home, Products, About Us, News & Social, Contact Us] */}
+        <nav className="hidden xl:flex items-center gap-1.5 text-sm font-semibold tracking-normal text-slate-700" aria-label="Primary Navigation">
+          {/* 1. Home */}
           <a
             href={localizePath('/', currentLang)}
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+            className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
           >
             {t('nav_home', 'Home')}
           </a>
 
-          {/* Products Mega-Menu Trigger */}
+          {/* 2. Products (Interactive Mega-Menu with 11 Categories & Real Photos on Hover) */}
           <div
             className="relative"
             onMouseEnter={() => setActiveDropdown('products')}
@@ -62,97 +68,161 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           >
             <a
               href={localizePath('/products', currentLang)}
-              className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider inline-flex items-center gap-1.5"
+              className={`px-3.5 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer ${
+                activeDropdown === 'products'
+                  ? 'text-[#E93984] bg-pink-50/70'
+                  : 'text-slate-800 hover:text-[#E93984] hover:bg-slate-50'
+              }`}
               aria-haspopup="true"
               aria-expanded={activeDropdown === 'products'}
             >
               <span>{t('nav_products', 'Products')}</span>
-              <svg className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === 'products' ? 'rotate-180 text-primary-container' : 'text-on-surface-variant'}`} viewBox="0 0 10 6" fill="none">
+              <svg
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                  activeDropdown === 'products' ? 'rotate-180 text-[#E93984]' : 'text-slate-400'
+                }`}
+                viewBox="0 0 10 6"
+                fill="none"
+              >
                 <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
 
-            {/* Glassmorphic Mega Menu */}
+            {/* Interactive Mega Menu Overlay */}
             {activeDropdown === 'products' && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[720px] transition-all"
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[920px] transition-all z-50"
                 role="region"
                 aria-label="Product Catalogue Categories"
               >
-                <div className="bg-surface-container-low/95 backdrop-blur-2xl border border-surface-container-high rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-6">
-                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-container-high/60 font-sans">
-                    <span className="text-xs text-primary uppercase tracking-widest font-semibold">
-                      ENGINEERED FOR ASEPTIC FLUID HANDLING
-                    </span>
+                <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden divide-y divide-slate-100 font-sans">
+                  {/* Top Header of Mega Menu */}
+                  <div className="px-6 py-3.5 bg-gradient-to-r from-[#061A5A] to-[#0D225E] text-white flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#E93984]" />
+                      <span className="text-xs uppercase font-extrabold tracking-wider">
+                        11 PRODUCT CATEGORIES &amp; REAL SOURCING CATALOGUE
+                      </span>
+                    </div>
                     <a
                       href={localizePath('/products', currentLang)}
-                      className="text-xs text-primary-fixed-dim hover:text-primary transition-colors flex items-center gap-1 font-medium"
+                      className="text-xs text-[#FC63A7] hover:text-white font-bold transition-colors flex items-center gap-1"
                     >
-                      <span>BROWSE FULL CATALOGUE</span>
+                      <span>BROWSE COMPLETE CATALOGUE</span>
                       <span>→</span>
                     </a>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-6">
-                    {/* Col 1 */}
-                    <div className="flex flex-col gap-2">
-                      <span className="font-headline-sm text-[14px] text-primary font-semibold flex items-center gap-1.5">
-                        <span className="text-primary-container">■</span> Sanitary Pipes & Tubes
-                      </span>
-                      <div className="flex flex-col gap-1.5 font-body-sm text-[13px] text-on-surface-variant">
-                        <a href={localizePath('/product/ss-316l-ep-pipe', currentLang)} className="hover:text-primary transition-colors">
-                          SS 316L EP Sanitary Pipe
-                        </a>
-                        <a href={localizePath('/product/ss-304-ep-pipe', currentLang)} className="hover:text-primary transition-colors">
-                          SS 304 EP Sanitary Pipe
-                        </a>
-                        <a href={localizePath('/product/ss-316l-mp-pipe', currentLang)} className="hover:text-primary transition-colors">
-                          SS 316L MP Sanitary Pipe
-                        </a>
-                        <a href={localizePath('/category/sanitary-pipes', currentLang)} className="text-primary-fixed-dim text-[12px] pt-1 hover:underline">
-                          View All Pipes & Tubes →
-                        </a>
-                      </div>
+                  {/* 2-Column Split: Left 11 Categories List | Right Real Products & Images */}
+                  <div className="grid grid-cols-12 min-h-[440px]">
+                    {/* Left: 11 Categories Sidebar */}
+                    <div className="col-span-4 bg-slate-50/80 border-r border-slate-200/80 p-2.5 space-y-1 overflow-y-auto max-h-[480px]">
+                      {CATEGORIES_MANIFEST.map((cat, idx) => {
+                        const isSelected = cat.id === activeCategory.id;
+                        return (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onMouseEnter={() => setHoveredCategoryId(cat.id)}
+                            onFocus={() => setHoveredCategoryId(cat.id)}
+                            className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between cursor-pointer group ${
+                              isSelected
+                                ? 'bg-white text-[#E93984] font-bold shadow-sm border border-pink-200/80'
+                                : 'text-slate-700 hover:bg-white/80 hover:text-slate-900 font-medium'
+                            }`}
+                          >
+                            <span className="flex items-center gap-2 truncate">
+                              <span
+                                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono shrink-0 ${
+                                  isSelected
+                                    ? 'bg-[#E93984] text-white font-bold'
+                                    : 'bg-slate-200 text-slate-600 group-hover:bg-slate-300'
+                                }`}
+                              >
+                                {idx + 1}
+                              </span>
+                              <span className="truncate">{cat.title}</span>
+                            </span>
+                            <span
+                              className={`text-[10px] shrink-0 font-mono transition-transform ${
+                                isSelected ? 'text-[#E93984] translate-x-0.5' : 'text-slate-400 group-hover:text-slate-600'
+                              }`}
+                            >
+                              ›
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
 
-                    {/* Col 2 */}
-                    <div className="flex flex-col gap-2">
-                      <span className="font-headline-sm text-[14px] text-primary font-semibold flex items-center gap-1.5">
-                        <span className="text-primary-container">■</span> Fittings & Tri-Clamp
-                      </span>
-                      <div className="flex flex-col gap-1.5 font-body-sm text-[13px] text-on-surface-variant">
-                        <a href={localizePath('/product/ss-sanitary-90-bend', currentLang)} className="hover:text-primary transition-colors">
-                          SS Sanitary 90° Bend
-                        </a>
-                        <a href={localizePath('/product/ss-sanitary-equal-tee', currentLang)} className="hover:text-primary transition-colors">
-                          SS Sanitary Equal Tee
-                        </a>
-                        <a href={localizePath('/product/ss-tri-clamp-ferrule', currentLang)} className="hover:text-primary transition-colors">
-                          Tri-Clamp Ferrules & Clamps
-                        </a>
-                        <a href={localizePath('/category/sanitary-fittings', currentLang)} className="text-primary-fixed-dim text-[12px] pt-1 hover:underline">
-                          View All Fittings →
-                        </a>
-                      </div>
-                    </div>
+                    {/* Right: Active Category Showcase with Real Photographs */}
+                    <div className="col-span-8 p-5 flex flex-col justify-between max-h-[480px] overflow-y-auto">
+                      <div>
+                        {/* Category Heading & Meta */}
+                        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
+                          <div>
+                            <div className="text-[11px] font-mono uppercase tracking-wider text-[#E93984] font-bold">
+                              {activeCategory.countBadge} Available
+                            </div>
+                            <h3 className="text-base font-extrabold text-[#0C225E] mt-0.5">
+                              {activeCategory.title}
+                            </h3>
+                          </div>
+                          <a
+                            href={localizePath(activeCategory.viewAllLink, currentLang)}
+                            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 hover:bg-[#E93984] hover:text-white text-slate-700 text-xs font-semibold transition-all"
+                          >
+                            <span>Explore Category</span>
+                            <span className="text-[10px]">↗</span>
+                          </a>
+                        </div>
 
-                    {/* Col 3 */}
-                    <div className="flex flex-col gap-2">
-                      <span className="font-headline-sm text-[14px] text-primary font-semibold flex items-center gap-1.5">
-                        <span className="text-secondary">■</span> Hygienic Valves
-                      </span>
-                      <div className="flex flex-col gap-1.5 font-body-sm text-[13px] text-on-surface-variant">
-                        <a href={localizePath('/product/ss-sanitary-butterfly-valve', currentLang)} className="hover:text-secondary transition-colors">
-                          Sanitary Butterfly Valves
-                        </a>
-                        <a href={localizePath('/product/ss-316l-diaphragm-valve', currentLang)} className="hover:text-secondary transition-colors">
-                          Aseptic Diaphragm Valves
-                        </a>
-                        <a href={localizePath('/product/pneumatic-sanitary-ball-valve', currentLang)} className="hover:text-secondary transition-colors">
-                          Pneumatic Actuated Valves
-                        </a>
-                        <a href={localizePath('/category/manual-valves', currentLang)} className="text-secondary text-[12px] pt-1 hover:underline">
-                          View All Valves →
+                        <p className="text-xs text-slate-500 mb-4 leading-relaxed">
+                          {activeCategory.description}
+                        </p>
+
+                        {/* Real Product Cards Grid */}
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {activeCategory.products.map((prod, pIdx) => (
+                            <a
+                              key={pIdx}
+                              href={localizePath(prod.link, currentLang)}
+                              className="group flex items-center gap-3 p-2 rounded-xl border border-slate-100 bg-white hover:border-pink-200 hover:shadow-md transition-all"
+                            >
+                              {/* Real Product Photo Thumbnail */}
+                              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-lg bg-slate-50 border border-slate-200/70 p-1 flex items-center justify-center shrink-0 overflow-hidden group-hover:border-[#E93984]/50">
+                                <img
+                                  src={prod.image}
+                                  alt={prod.name}
+                                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
+                                  loading="lazy"
+                                  width="56"
+                                  height="56"
+                                />
+                              </div>
+
+                              {/* Title & Spec */}
+                              <div className="min-w-0 flex-1">
+                                <h4 className="text-xs font-bold text-slate-800 group-hover:text-[#E93984] truncate transition-colors leading-snug">
+                                  {prod.name}
+                                </h4>
+                                <p className="text-[11px] text-slate-500 truncate mt-0.5 font-normal">
+                                  {prod.spec}
+                                </p>
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Bottom Footer Notice */}
+                      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>SS 304 &amp; SS 316L • Mill Test Certified (EN 10204 3.1)</span>
+                        <a
+                          href="#get-quotation"
+                          className="text-[#E93984] hover:underline font-bold"
+                        >
+                          Request Custom Quotation →
                         </a>
                       </div>
                     </div>
@@ -162,56 +232,67 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             )}
           </div>
 
-          <a
-            href={localizePath('/industries', currentLang)}
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
-          >
-            {t('nav_industries', 'Industries')}
-          </a>
-
+          {/* 3. About Us */}
           <a
             href={localizePath('/about', currentLang)}
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+            className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
           >
             {t('nav_about', 'About Us')}
           </a>
 
+          {/* 4. News & Social */}
           <a
-            href={localizePath('/quality', currentLang)}
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+            href={localizePath('/resources', currentLang)}
+            className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
           >
-            {t('nav_quality', 'Quality & Specs')}
+            {t('nav_news_social', 'News & Social')}
           </a>
 
+          {/* 5. Contact Us */}
           <a
             href={localizePath('/contact', currentLang)}
-            className="px-3 py-1.5 rounded text-on-surface hover:text-primary hover:bg-surface-container-high transition-colors uppercase tracking-wider"
+            className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
           >
-            {t('nav_contact', 'Contact')}
+            {t('nav_contact', 'Contact Us')}
           </a>
         </nav>
 
-        {/* Action Controls: Live Search + CRM Dock Button + Mobile Hamburger */}
-        <div className="flex items-center gap-2.5">
-          {/* Real-time Search Trigger */}
+        {/* Action Controls: Expanded Search Bar + CRM Profile Button + Mobile Drawer Toggle */}
+        <div className="flex items-center gap-3">
+          {/* Expanded Search Bar */}
           <button
             type="button"
-            className="w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary border border-surface-container-high/60 flex items-center justify-center transition-all cursor-pointer shadow-sm"
+            className="w-36 sm:w-56 md:w-64 h-9 px-3 rounded-full bg-slate-100 hover:bg-slate-200/90 text-slate-500 hover:text-slate-800 flex items-center justify-between text-xs transition-all border border-slate-200/80 cursor-pointer shadow-inner group"
             onClick={(e) => {
               e.preventDefault();
               if (typeof onOpenSearch === 'function') onOpenSearch();
             }}
-            title="Search products, sizes, ASTM standards"
+            title="Search products, sizes, ASTM standards..."
             aria-label="Search product catalogue"
             id="nav-search-btn"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
+            <span className="flex items-center gap-2 truncate">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                className="text-slate-400 group-hover:text-[#E93984] shrink-0 transition-colors"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <span className="truncate text-slate-500 text-xs hidden sm:inline">Search products, sizes...</span>
+              <span className="truncate text-slate-500 text-xs sm:hidden">Search...</span>
+            </span>
+            <kbd className="hidden md:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-white border border-slate-200 rounded">
+              ⌘K
+            </kbd>
           </button>
 
-          {/* CRM / User Account Trigger */}
+          {/* Clean User Profile Button (Icon Only — Zero Text Like CRM or Portal) */}
           <a
             href={
               isAuthenticated
@@ -220,34 +301,27 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                   : '#account'
                 : '#login'
             }
-            className="h-10 px-3.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface hover:text-primary border border-surface-container-high/60 flex items-center gap-2 transition-all font-sans text-xs uppercase tracking-wider shadow-sm"
-            title={isAuthenticated ? `Signed in as ${user?.name}` : 'Staff & Client CRM Portal'}
-            aria-label="CRM & Account Portal"
+            className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-[#0C225E] flex items-center justify-center transition-all border border-slate-200/70 cursor-pointer shrink-0"
+            title={isAuthenticated ? `User Account: ${user?.name}` : 'User Profile & Sign In'}
+            aria-label="User Profile"
+            id="nav-user-profile-btn"
           >
-            <div className="relative">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" />
-              </svg>
-              {isAuthenticated && (
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary-container animate-pulse" />
-              )}
-            </div>
-            <span className="hidden sm:inline font-semibold">
-              {isAuthenticated ? (user?.role === 'staff' || user?.role === 'admin' ? 'CRM' : 'Account') : 'Portal'}
-            </span>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
           </a>
 
           {/* Mobile Navigation Drawer Trigger */}
           <button
             type="button"
-            className="xl:hidden w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface border border-surface-container-high/60 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer"
+            className="xl:hidden w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 flex flex-col items-center justify-center gap-1.5 transition-all cursor-pointer shrink-0"
             onClick={onToggleMobile}
             aria-label="Toggle Navigation Drawer"
           >
-            <span className="w-5 h-0.5 bg-current rounded-full" />
-            <span className="w-5 h-0.5 bg-current rounded-full" />
-            <span className="w-5 h-0.5 bg-current rounded-full" />
+            <span className="w-4 h-0.5 bg-current rounded-full" />
+            <span className="w-4 h-0.5 bg-current rounded-full" />
+            <span className="w-4 h-0.5 bg-current rounded-full" />
           </button>
         </div>
       </div>

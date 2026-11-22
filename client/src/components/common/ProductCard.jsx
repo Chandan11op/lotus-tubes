@@ -1,13 +1,15 @@
-import React from 'react';
-import ProductCardVideo from './ProductCardVideo';
+import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../../utils/mediaFallback';
 
 /**
  * LOTUS TUBES - Professional Industrial Product Card
  *
- * Designed to eliminate floating label clutter from product photography while
- * presenting verified technical attributes, clean specification chips, and deliberate
- * 360° video access in a responsive, structured hierarchy.
+ * Strict Figma Design System Implementation:
+ * - 100% STATIC PRODUCT PHOTOGRAPHS ONLY (No 3D models, no 360-degree rotation, no video players)
+ * - Clear category and ready stock badges
+ * - Aligned specification chips (Material, Finish, Standard, MTC)
+ * - Quick RFQ & View Details CTAs matching Figma pink/navy styling
  */
 export const ProductCard = ({
   product,
@@ -17,6 +19,7 @@ export const ProductCard = ({
   if (!product) return null;
 
   const { t, currentLang, localizePath } = useLanguage();
+  const [imgFallbackLevel, setImgFallbackLevel] = useState(0);
 
   const {
     id,
@@ -28,11 +31,21 @@ export const ProductCard = ({
     finish,
     standard,
     sizes,
-    image,
-    video
+    image
   } = product;
 
-  // Clean, standardized formatters for compact attribute chips
+  const handleImageError = () => {
+    setImgFallbackLevel((prev) => prev + 1);
+  };
+
+  const resolveImage = () => {
+    if (imgFallbackLevel === 0) return image || getCategoryFallbackImage(categorySlug, name);
+    if (imgFallbackLevel === 1) return getCategoryFallbackImage(categorySlug, name);
+    if (imgFallbackLevel === 2) return UNIVERSAL_FALLBACK_IMAGE;
+    return INLINE_SVG_FAILSAFE;
+  };
+
+  // Clean formatters for compact attribute chips
   const formatMaterialChip = (mat = '') => {
     if (!mat) return null;
     if (/304.*316|316.*304/i.test(mat)) return 'SS 304 / SS 316L';
@@ -71,23 +84,22 @@ export const ProductCard = ({
   const productPath = localizePath(`/product/${slug || id}`, currentLang);
 
   return (
-    <article className={`product-card group flex flex-col h-full bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-sky-500/40 transition-all duration-300 ${className}`}>
+    <article className={`product-card group flex flex-col h-full bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 ${className}`}>
       
-      {/* 1. Unobstructed Product Media Stage */}
-      <div className="product-card__img-wrap aspect-[4/3] bg-slate-50 relative overflow-hidden border-b border-slate-100">
+      {/* 1. Static Product Photograph Stage */}
+      <div className="product-card__img-wrap aspect-[4/3] bg-slate-50 relative overflow-hidden border-b border-slate-100 p-4 flex items-center justify-center">
         <a
           href={productPath}
-          className="block w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500"
+          className="block w-full h-full cursor-pointer focus:outline-none flex items-center justify-center"
           tabIndex="-1"
           aria-hidden="true"
         >
-          <ProductCardVideo
-            video={video}
-            poster={image}
+          <img
+            src={resolveImage()}
             alt={name}
-            categorySlug={categorySlug}
-            has360={false}
-            className="product-card__img w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+            onError={handleImageError}
+            className="product-card__img max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
           />
         </a>
       </div>
@@ -97,26 +109,26 @@ export const ProductCard = ({
         
         {/* Category Header & Stock Status */}
         <div className="flex items-center justify-between gap-2 mb-2 min-w-0">
-          <span className="product-card__category text-[11px] font-bold text-sky-700 tracking-wider uppercase truncate">
+          <span className="product-card__category text-[11px] font-bold text-[#E93984] tracking-wider uppercase truncate">
             {category || 'Sanitary Component'}
           </span>
-          <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
+          <span className="flex items-center gap-1 text-[10px] font-sans font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             Ready Stock
           </span>
         </div>
 
         {/* Product Title */}
-        <h3 className="product-card__title text-base font-bold text-slate-900 leading-snug mb-2.5 min-h-[2.6em] line-clamp-2">
+        <h3 className="product-card__title text-sm sm:text-base font-bold text-slate-900 leading-snug mb-2.5 min-h-[2.6em] line-clamp-2">
           <a
             href={productPath}
-            className="hover:text-sky-700 transition-colors"
+            className="hover:text-[#E93984] transition-colors"
           >
             {name}
           </a>
         </h3>
 
-        {/* Compact, Aligned Specification Chips (Material, Finish, Standard) */}
+        {/* Compact, Aligned Specification Chips (Material, Finish, Standard, MTC) */}
         <div className="product-card__chips-row flex flex-wrap items-center gap-1.5 mb-3">
           {materialChip && (
             <span
@@ -129,7 +141,7 @@ export const ProductCard = ({
 
           {finishChip && (
             <span
-              className="spec-chip spec-chip--finish px-2 py-0.5 rounded text-[11px] font-medium bg-cyan-50 text-cyan-800 border border-cyan-200/70"
+              className="spec-chip spec-chip--finish px-2 py-0.5 rounded text-[11px] font-medium bg-pink-50 text-[#E93984] border border-pink-200/70"
               title={`Surface Finish: ${finish}`}
             >
               {finishChip}
@@ -138,7 +150,7 @@ export const ProductCard = ({
 
           {standardChip && (
             <span
-              className="spec-chip spec-chip--standard px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/70"
+              className="spec-chip spec-chip--standard px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200"
               title={`Compliance Standard: ${standard}`}
             >
               {standardChip}
@@ -154,7 +166,7 @@ export const ProductCard = ({
         </div>
 
         {/* Concise 2-Row Technical Attribute Summary */}
-        <div className="product-card__specs-table bg-slate-50/80 border border-slate-200/70 rounded-lg p-2.5 text-xs text-slate-600 mb-4 flex flex-col gap-1.5">
+        <div className="product-card__specs-table bg-slate-50 border border-slate-200/70 rounded-xl p-2.5 text-xs text-slate-600 mb-4 flex flex-col gap-1.5">
           <div className="flex items-center justify-between gap-2">
             <span className="font-semibold text-slate-500 shrink-0">Standard:</span>
             <span className="text-slate-800 font-medium truncate text-right">
@@ -174,14 +186,14 @@ export const ProductCard = ({
         <div className="product-card__actions mt-auto flex items-center gap-2 pt-2 border-t border-slate-100">
           <a
             href={productPath}
-            className="btn btn--outline-dark btn--sm flex-1 text-center py-2 text-xs font-semibold rounded-lg border border-slate-300 hover:border-slate-800 hover:bg-slate-50 transition-colors"
+            className="flex-1 text-center py-2 px-3 text-xs font-semibold rounded-full border border-slate-300 text-slate-700 hover:border-slate-800 hover:bg-slate-50 transition-colors"
           >
             {t('view_details', 'View Details')}
           </a>
 
           <button
             type="button"
-            className="btn btn--primary btn--sm quick-rfq-btn flex-1 py-2 text-xs font-bold rounded-lg shadow-sm hover:shadow transition-all"
+            className="flex-1 py-2 px-3 text-xs font-bold rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white shadow-sm hover:shadow transition-all cursor-pointer"
             onClick={() => onOpenEnquiry && onOpenEnquiry(id, name)}
           >
             {t('btn_request_rfq', 'Request RFQ')}
@@ -195,4 +207,3 @@ export const ProductCard = ({
 };
 
 export default ProductCard;
-

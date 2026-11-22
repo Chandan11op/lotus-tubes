@@ -12,6 +12,7 @@ function getAllHtmlFiles(dir, fileList = []) {
   for (const file of files) {
     const fullPath = path.join(dir, file);
     if (fs.statSync(fullPath).isDirectory()) {
+      if (file === 'assets') continue;
       getAllHtmlFiles(fullPath, fileList);
     } else if (file.endsWith('.html') && !file.startsWith('google')) {
       fileList.push(fullPath);

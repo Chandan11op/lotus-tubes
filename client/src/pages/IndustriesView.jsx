@@ -216,7 +216,7 @@ export const IndustriesView = ({ slug, onOpenEnquiry }) => {
                 </button>
 
                 <a
-                  href={`https://wa.me/${CONFIG.whatsappNumber || '919820525200'}?text=${encodeURIComponent(
+                  href={`https://wa.me/${CONFIG.whatsappNumber || '919867304316'}?text=${encodeURIComponent(
                     `Hello Lotus Tubes, I have an enquiry for ${currentIndustry.name} sanitary piping.`
                   )}`}
                   target="_blank"

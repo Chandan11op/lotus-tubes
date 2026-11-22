@@ -7166,3 +7166,25 @@ body, button, input, select, textarea, p, a, td, th, li {
 h1, h2, h3, h4, h5, h6, .heading-font, [class*="headline"], [class*="display-hero"] {
   font-family: var(--font-heading);
 }
+
+/* Infinite Marquee Animation for Best Selling Products */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-infinite {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-infinite:hover {
+  animation-play-state: paused;
+}
+

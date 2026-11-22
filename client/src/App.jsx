@@ -225,7 +225,7 @@ export const App = () => {
       breadcrumbs.push({ name: t('nav_resources', 'Resources'), path: '/resources' });
     } else if (route === 'contact') {
       title = t('seo_contact_title', 'Contact Lotus Tubes | Girgaon Mumbai Sales Office');
-      description = t('seo_contact_desc', 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.');
+      description = t('seo_contact_desc', 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 9867304316.');
       breadcrumbs.push({ name: t('nav_contact', 'Contact'), path: '/contact' });
     } else if (route === 'quote') {
       title = t('seo_quote_title', 'Request a Formal B2B Quotation | Lotus Tubes');
