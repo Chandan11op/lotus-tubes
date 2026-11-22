@@ -23,6 +23,7 @@ import { CRMSeoView } from './views/CRMSeoView';
 import { CRMAiOperationsView } from './views/CRMAiOperationsView';
 import { CRMEmailCommunicationsView } from './views/CRMEmailCommunicationsView';
 import { CRMWhatsAppView } from './views/CRMWhatsAppView';
+import { CRMNewsSocialView } from './views/CRMNewsSocialView';
 import { NewStaffModal } from './components/NewStaffModal';
 import { PasswordResetModal } from '../../components/modals/PasswordResetModal';
 
@@ -985,6 +986,12 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMProductsView
             products={productsList}
             searchQuery={searchQuery}
+          />
+        );
+      case 'news-social':
+        return (
+          <CRMNewsSocialView
+            isSuperAdmin={isSuperAdmin}
           />
         );
       case 'videos':

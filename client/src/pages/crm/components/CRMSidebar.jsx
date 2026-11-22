@@ -176,10 +176,10 @@ export const CRMSidebar = ({
       ]
     },
     {
-      title: 'CATALOGUE & SPECS',
+      title: 'CATALOGUE & CONTENT',
       items: [
-        { id: 'products', label: 'Product Administration', icon: 'products', badge: null }
-        // Task 3: 360° Studio & Videos removed from sidebar
+        { id: 'products', label: 'Product Administration', icon: 'products', badge: null },
+        { id: 'news-social', label: 'News & Social Posts', icon: 'reports', badge: null }
       ]
     },
     {

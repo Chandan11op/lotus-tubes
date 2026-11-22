@@ -50,8 +50,8 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           <span className="sr-only">Lotus Tubes</span>
         </a>
 
-        {/* Primary Desktop Navigation: [Home, Products, About Us, News & Social, Contact Us] */}
-        <nav className="hidden xl:flex items-center gap-1.5 text-sm font-semibold tracking-normal text-slate-700" aria-label="Primary Navigation">
+        {/* Primary Desktop Navigation: Logo on left, Navigation in center, Controls on right */}
+        <nav className="hidden xl:flex items-center justify-center flex-1 mx-4 gap-1.5 text-sm font-semibold tracking-normal text-slate-700" aria-label="Primary Navigation">
           {/* 1. Home */}
           <a
             href={localizePath('/', currentLang)}
@@ -234,23 +234,23 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
 
           {/* 3. About Us */}
           <a
-            href={localizePath('/about', currentLang)}
+            href="#about"
             className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
           >
             {t('nav_about', 'About Us')}
           </a>
 
-          {/* 4. News & Social */}
+          {/* 4. News and Social Activities */}
           <a
-            href={localizePath('/resources', currentLang)}
-            className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
+            href="#news-social"
+            className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors whitespace-nowrap"
           >
-            {t('nav_news_social', 'News & Social')}
+            {t('nav_news_social', 'News and Social Activities')}
           </a>
 
           {/* 5. Contact Us */}
           <a
-            href={localizePath('/contact', currentLang)}
+            href="#contact"
             className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
           >
             {t('nav_contact', 'Contact Us')}

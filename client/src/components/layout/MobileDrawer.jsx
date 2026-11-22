@@ -148,7 +148,7 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
 
             {/* 3. About Us */}
             <a
-              href={localizePath('/about', currentLang)}
+              href="#about"
               onClick={onClose}
               className="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-50 hover:text-[#E93984] transition-colors"
             >
@@ -156,19 +156,19 @@ export const MobileDrawer = ({ isOpen, onClose, onOpenEnquiry }) => {
               <span className="text-slate-400 font-mono text-xs">›</span>
             </a>
 
-            {/* 4. News & Social */}
+            {/* 4. News and Social Activities */}
             <a
-              href={localizePath('/resources', currentLang)}
+              href="#news-social"
               onClick={onClose}
               className="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-50 hover:text-[#E93984] transition-colors"
             >
-              <span>{t('nav_news_social', 'News & Social')}</span>
+              <span>{t('nav_news_social', 'News and Social Activities')}</span>
               <span className="text-slate-400 font-mono text-xs">›</span>
             </a>
 
             {/* 5. Contact Us */}
             <a
-              href={localizePath('/contact', currentLang)}
+              href="#contact"
               onClick={onClose}
               className="flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-slate-50 hover:text-[#E93984] transition-colors"
             >
