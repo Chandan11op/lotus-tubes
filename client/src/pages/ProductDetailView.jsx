@@ -391,6 +391,29 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               </div>
             </div>
           </div>
+
+          {/* Amazon-style Side Zoom Preview Flyout Window (Desktop) - Zero Latency Ref Controlled */}
+          <div
+            ref={zoomWindowRef}
+            className="hidden lg:block absolute left-[calc(100%+24px)] top-0 w-[540px] h-[520px] z-50 bg-white border-2 border-slate-200/90 rounded-3xl shadow-2xl overflow-hidden pointer-events-none"
+            style={{
+              display: 'none',
+              backgroundImage: `url(${transparentImageSrc || currentImageSrc})`,
+              backgroundColor: '#ffffff',
+              backgroundSize: '280%',
+              backgroundPosition: '50% 50%',
+              backgroundRepeat: 'no-repeat',
+              willChange: 'background-position'
+            }}
+          >
+            <div className="absolute top-3 left-3 bg-[#081D5B]/90 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider backdrop-blur-sm shadow-md flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#E93984] animate-ping" />
+              <span>🔍 2.8x Optical Surface Inspection</span>
+            </div>
+            <div className="absolute bottom-3 right-3 bg-white/95 text-slate-700 text-[10px] font-semibold px-3 py-1.5 rounded-full border border-slate-200 shadow-sm backdrop-blur-sm">
+              Move cursor over product to inspect surface finish &amp; metallurgy
+            </div>
+          </div>
         </div>
 
         {/* ========================================================================= */}

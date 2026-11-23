@@ -183,7 +183,10 @@ export const Navbar = ({ onToggleMobile }) => {
                     </span>
                     <a
                       href={localizePath('/products', currentLang)}
-                      onClick={() => setIsProductsOpen(false)}
+                      onClick={() => {
+                        setIsProductsOpen(false);
+                        setHoveredCategoryId(null);
+                      }}
                       className="text-[#FC63A7] hover:text-white font-semibold text-[11px] flex items-center gap-1 transition-colors"
                     >
                       <span>Catalogue</span>
@@ -207,7 +210,18 @@ export const Navbar = ({ onToggleMobile }) => {
                             type="button"
                             onMouseEnter={() => setHoveredCategoryId(cat.id)}
                             onClick={() => {
-                              setHoveredCategoryId(cat.id);
+                              const targetLink = localizePath(
+                                cat.primaryProductLink || cat.products?.[0]?.link || cat.viewAllLink || '/products',
+                                currentLang
+                              );
+                              setIsProductsOpen(false);
+                              setHoveredCategoryId(null);
+                              if (window.history && window.history.pushState) {
+                                window.history.pushState({}, '', targetLink);
+                                window.dispatchEvent(new PopStateEvent('popstate'));
+                              } else {
+                                window.location.href = targetLink;
+                              }
                             }}
                             className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between cursor-pointer group ${
                               isSelected
@@ -257,7 +271,10 @@ export const Navbar = ({ onToggleMobile }) => {
                             </div>
                             <a
                               href={localizePath(activeCategory.viewAllLink, currentLang)}
-                              onClick={() => setIsProductsOpen(false)}
+                              onClick={() => {
+                                setIsProductsOpen(false);
+                                setHoveredCategoryId(null);
+                              }}
                               className="text-[11px] font-semibold text-[#0C225E] hover:text-[#E93984] transition-colors"
                             >
                               View All →
@@ -270,8 +287,11 @@ export const Navbar = ({ onToggleMobile }) => {
                               <a
                                 key={pIdx}
                                 href={localizePath(prod.link, currentLang)}
-                                onClick={() => setIsProductsOpen(false)}
-                                className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all group"
+                                onClick={() => {
+                                  setIsProductsOpen(false);
+                                  setHoveredCategoryId(null);
+                                }}
+                                className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all group cursor-pointer"
                               >
                                 {/* Real Product Thumbnail Image */}
                                 <div className="w-10 h-10 rounded-md bg-slate-50 border border-slate-200 p-0.5 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform">
@@ -304,7 +324,10 @@ export const Navbar = ({ onToggleMobile }) => {
                           <span>SS 304 &amp; SS 316L • EN 10204 3.1</span>
                           <a
                             href={localizePath('/products', currentLang)}
-                            onClick={() => setIsProductsOpen(false)}
+                            onClick={() => {
+                              setIsProductsOpen(false);
+                              setHoveredCategoryId(null);
+                            }}
                             className="text-[#E93984] font-bold hover:underline"
                           >
                             All Categories →

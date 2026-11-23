@@ -412,7 +412,17 @@ export const HomeView = ({ onOpenEnquiry }) => {
               {bestSellers.map((item, idx) => (
                 <div
                   key={`g1-${idx}`}
-                  className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden w-[280px] shrink-0"
+                  onClick={(e) => {
+                    if (e.target.closest('a[href^="https://wa.me"]')) return;
+                    const dest = localizePath(item.link, currentLang);
+                    if (window.history && window.history.pushState) {
+                      window.history.pushState({}, '', dest);
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    } else {
+                      window.location.href = dest;
+                    }
+                  }}
+                  className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden w-[280px] shrink-0 cursor-pointer"
                 >
                   {/* Photo Presentation Container — Same Format as Our Products */}
                   <div className="w-full aspect-[4/3] bg-slate-50/80 p-4 flex items-center justify-center relative overflow-hidden border-b border-slate-100 group-hover:bg-pink-50/20 transition-colors">
@@ -480,7 +490,17 @@ export const HomeView = ({ onOpenEnquiry }) => {
               {bestSellers.map((item, idx) => (
                 <div
                   key={`g2-${idx}`}
-                  className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden w-[280px] shrink-0"
+                  onClick={(e) => {
+                    if (e.target.closest('a[href^="https://wa.me"]')) return;
+                    const dest = localizePath(item.link, currentLang);
+                    if (window.history && window.history.pushState) {
+                      window.history.pushState({}, '', dest);
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    } else {
+                      window.location.href = dest;
+                    }
+                  }}
+                  className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden w-[280px] shrink-0 cursor-pointer"
                 >
                   {/* Photo Presentation Container — Same Format as Our Products */}
                   <div className="w-full aspect-[4/3] bg-slate-50/80 p-4 flex items-center justify-center relative overflow-hidden border-b border-slate-100 group-hover:bg-pink-50/20 transition-colors">
@@ -571,7 +591,17 @@ export const HomeView = ({ onOpenEnquiry }) => {
             {realProducts.map((prod, idx) => (
               <div
                 key={idx}
-                className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                onClick={(e) => {
+                  if (e.target.closest('a[href^="https://wa.me"]')) return;
+                  const dest = localizePath(prod.link, currentLang);
+                  if (window.history && window.history.pushState) {
+                    window.history.pushState({}, '', dest);
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                  } else {
+                    window.location.href = dest;
+                  }
+                }}
+                className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
               >
                 {/* Photo Presentation Container — Uncropped & Clean */}
                 <div className="w-full aspect-[4/3] bg-slate-50/80 p-4 flex items-center justify-center relative overflow-hidden border-b border-slate-100 group-hover:bg-pink-50/20 transition-colors">

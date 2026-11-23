@@ -17,17 +17,32 @@ export function getTransparentProductImage(imageUrl) {
     img.onload = () => {
       try {
         const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth || img.width;
-        canvas.height = img.naturalHeight || img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
+        let width = img.naturalWidth || img.width || 800;
+        let height = img.naturalHeight || img.height || 800;
 
-        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        // Cap maximum resolution to 1000px for lightning-fast < 15ms processing and memory efficiency
+        const maxDim = 1000;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const imgData = ctx.getImageData(0, 0, width, height);
         const data = imgData.data;
         const len = data.length;
 
         // Tolerance threshold for studio white / near-white neutral background
-        const threshold = 228;
+        const threshold = 230;
 
         for (let i = 0; i < len; i += 4) {
           const r = data[i];
