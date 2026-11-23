@@ -247,5 +247,27 @@ export default {
   seo_quote_title: 'Minta Sebut Harga B2B & Kiraan Senarai Kuantiti BOQ | Lotus Tubes',
   seo_quote_desc: 'Hantar senarai kuantiti tiub dan kelengkapan sanitari anda untuk sebut harga pantas dengan jaminan sijil EN 10204 3.1 dan harga terus dari kilang.',
   seo_industries_title: 'Sektor Industri | Farmaseutikal, Makanan, Tenusu & Bioteknologi | Lotus Tubes',
-  seo_industries_desc: 'Penyelesaian perpaipan dan injap sanitari keluli tahan karat yang direka khusus untuk loji farmaseutikal, tenusu, makanan dan gelung air suntikan WFI.'
+  seo_industries_desc: 'Penyelesaian perpaipan dan injap sanitari keluli tahan karat yang direka khusus untuk loji farmaseutikal, tenusu, makanan dan gelung air suntikan WFI.',
+
+  // Home Redesign & Dynamic Components
+  nav_news_social: 'Berita & Aktiviti Sosial',
+  hero_badge: 'Hab Sumber Pusat Mumbai • Eksport Global (12 Negara)',
+  hero_h1_line1: 'KELULI TAHAN KARAT',
+  hero_h1_line2: 'INJAP SANITARI',
+  hero_h1_line3: 'PENYELESAIAN',
+  hero_lead: 'Lotus Tubes ialah pembekal yang dipercayai bagi Paip, Kelengkapan dan Injap Sanitari Keluli Tahan Karat premium dalam SS 304 dan SS 316L untuk industri farmaseutikal, tenusu dan makanan.',
+  btn_explore_our_products: 'Terokai produk kami',
+  btn_contact_sales_team: 'Hubungi Pasukan Jualan',
+  ticker_title: 'PRODUK SANITARI PALING LARIS',
+  ticker_badge: 'INVENTORI LANGSUNG BERTERUSAN',
+  ticker_view_all: 'Lihat Semua Produk',
+  our_products_title: 'Produk Kami',
+  our_products_badge: '★ Produk Terlaris • Katalog Studio Disahkan',
+  our_products_sub: 'Injap, tiub dan kelengkapan sanitari berketepatan tinggi dalam SS 304 & SS 316L dengan kemasan permukaan yang disahkan (Penggilapan Elektro Ra ≤ 0.38 µm & Penggilapan Mekanikal).',
+  btn_view_specs: 'Lihat Spesifikasi',
+  btn_explore_all_categories: 'Lihat Semua Produk (Semak Semua 11 Kategori)',
+  about_title: 'Mengenai Lotus Tubes',
+  about_heading: 'Pakar Khusus dalam Keluli Tahan Karat Sanitari Berketulenan Tinggi',
+  news_social_title: 'Berita & Aktiviti Sosial',
+  contact_team_title: 'Hubungi Pasukan Operasi Kami'
 };

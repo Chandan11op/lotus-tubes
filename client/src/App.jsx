@@ -225,7 +225,7 @@ export const App = () => {
       breadcrumbs.push({ name: t('nav_resources', 'Resources'), path: '/resources' });
     } else if (route === 'contact') {
       title = t('seo_contact_title', 'Contact Lotus Tubes | Girgaon Mumbai Sales Office');
-      description = t('seo_contact_desc', 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 98205 25200.');
+      description = t('seo_contact_desc', 'Connect with Lotus Tubes engineering sales team in Mumbai for sanitary tubes, customized fittings, and valve requirements. Call +91 9867304316.');
       breadcrumbs.push({ name: t('nav_contact', 'Contact'), path: '/contact' });
     } else if (route === 'quote') {
       title = t('seo_quote_title', 'Request a Formal B2B Quotation | Lotus Tubes');
@@ -256,7 +256,8 @@ export const App = () => {
         reports: 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
         seo: 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
         'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes',
-        'agent-ananya': 'Ananya Mehta | Quotations & Sales Coordination | Staff CRM',
+        'agent-anjali': 'Anjali Pandey | Quotations & Sales Coordination | Staff CRM',
+        'agent-ananya': 'Anjali Pandey | Quotations & Sales Coordination | Staff CRM',
         'agent-riya': 'Riya Shah | Commercial Billing & Invoicing | Staff CRM',
         'agent-neha': 'Neha Desai | Client Resolution & Inquiries | Staff CRM',
         'agent-arjun': 'Arjun Yadav | Operations & Live Concierge | Staff CRM'
@@ -334,7 +335,6 @@ export const App = () => {
 
             {/* Main Header / Navbar */}
             <Navbar
-              onOpenSearch={() => setIsSearchOpen(true)}
               onToggleMobile={() => setIsMobileOpen(true)}
             />
 

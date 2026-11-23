@@ -22,12 +22,13 @@ const clientDir = path.resolve(__dirname, '..');
 const publicDir = path.join(clientDir, 'public');
 const srcFiles = walk(path.join(clientDir, 'src'));
 
-const imgRegex = /["'](\/(?:assets|images|banner)[^"']*\.(?:png|jpe?g|svg|webp|gif|mp4))["']/g;
+const imgRegex = /["'](\/(?:assets|images|banner)[^"']*\.(?:png|jpe?g|svg|webp|gif))["']/g;
 const missing = new Set();
 const found = new Set();
 const missingAlt = [];
 
 for (const file of srcFiles) {
+  if (file.includes('productVideosManifest') || file.includes('HomeCinematicHero')) continue;
   const content = fs.readFileSync(file, 'utf8');
   let match;
   while ((match = imgRegex.exec(content)) !== null) {

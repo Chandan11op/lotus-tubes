@@ -4,11 +4,19 @@ import { Loader } from '../../../components/common/Loader';
 import { CRMIcon } from '../components/CRMIcon';
 
 const AGENT_META = {
-  'ananya-mehta': {
-    name: 'Ananya Mehta',
+  'anjali-pandey': {
+    name: 'Anjali Pandey',
     role: 'Quotations & Sizing',
     botNumber: 1,
-    photo: '/assets/images/team/agent-1.jpeg',
+    photo: '/assets/images/team/anjali-pandey.png',
+    color: '#0284C7',
+    badgeClass: 'crm-badge-blue'
+  },
+  'ananya-mehta': {
+    name: 'Anjali Pandey',
+    role: 'Quotations & Sizing',
+    botNumber: 1,
+    photo: '/assets/images/team/anjali-pandey.png',
     color: '#0284C7',
     badgeClass: 'crm-badge-blue'
   },
@@ -345,7 +353,8 @@ export const CRMEmailCommunicationsView = ({
               style={{ fontSize: '13px', padding: '6px 12px' }}
             >
               <option value="All">All 4 Agents &amp; System</option>
-              <option value="ananya-mehta">Agent 1: Ananya Mehta (Quotations)</option>
+              <option value="anjali-pandey">Agent 1: Anjali Pandey (Quotations)</option>
+              <option value="ananya-mehta">Agent 1: Anjali Pandey (Quotations - Legacy)</option>
               <option value="riya-shah">Agent 2: Riya Shah (Invoices)</option>
               <option value="neha-desai">Agent 3: Neha Desai (Inquiries)</option>
               <option value="arjun-yadav">Agent 4: Arjun Yadav (Operations)</option>

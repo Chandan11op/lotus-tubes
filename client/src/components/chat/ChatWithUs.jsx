@@ -142,7 +142,7 @@ export const ChatWithUs = () => {
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             botSource: 'Customer Support Desk',
             verifiedBy: 'Lotus Tubes Operations Desk',
-            text: `Status checked: Our customer support team has logged your message: "${textToSend}". For urgent technical inquiries or order updates, you can also reach our direct Mumbai desk at +91 98205 25200 or via WhatsApp.`
+            text: `Status checked: Our customer support team has logged your message: "${textToSend}". For urgent technical inquiries or order updates, you can also reach our direct Mumbai desk at +91 9867304316 or via WhatsApp.`
           }
         ];
       });

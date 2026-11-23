@@ -171,7 +171,7 @@ export const updatePageSEO = ({
       logo: `${siteUrl}/banner-image-opt.png`,
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+91-9820525200',
+        telephone: '+91-9867304316',
         contactType: 'sales',
         areaServed: ['IN', 'US', 'DE', 'GB', 'SG', 'AE', 'AU', 'CA', 'VN', 'MY', 'BD'],
         availableLanguage: ['English', 'German', 'Arabic', 'French', 'Vietnamese', 'Bengali', 'Malay', 'Hindi', 'Gujarati']

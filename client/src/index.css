@@ -3824,9 +3824,9 @@ ol {
 
 @media (prefers-reduced-motion: reduce) {
 
-  *:not(.product-ticker):not(.product-ticker *),
-  *::before:not(.product-ticker *),
-  *::after:not(.product-ticker *) {
+  *:not(.product-ticker):not(.product-ticker *):not(.lotus-marquee-track):not(.lotus-marquee-track *):not(.animate-marquee-ltr):not(.animate-marquee-ltr *),
+  *::before:not(.product-ticker *):not(.lotus-marquee-track *),
+  *::after:not(.product-ticker *):not(.lotus-marquee-track *) {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -7166,3 +7166,65 @@ body, button, input, select, textarea, p, a, td, th, li {
 h1, h2, h3, h4, h5, h6, .heading-font, [class*="headline"], [class*="display-hero"] {
   font-family: var(--font-heading);
 }
+
+/* Continuous Left-to-Right Infinite Marquee Ticker */
+@keyframes marqueeLeftToRight {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+@keyframes marquee-ltr {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+.lotus-marquee-track,
+.animate-marquee-ltr {
+  display: flex !important;
+  width: max-content !important;
+  animation: marqueeLeftToRight 32s linear infinite !important;
+  will-change: transform;
+}
+
+.lotus-marquee-track:hover,
+.animate-marquee-ltr:hover {
+  animation-play-state: paused !important;
+}
+
+.lotus-marquee-group {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding-right: 1rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Fallback RTL ticker if needed */
+@keyframes marquee-rtl {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-rtl {
+  display: flex;
+  width: max-content;
+  animation: marquee-rtl 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl:hover {
+  animation-play-state: paused;
+}
+

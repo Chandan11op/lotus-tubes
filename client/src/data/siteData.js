@@ -8,13 +8,13 @@ import { MASTER_PRODUCTS } from './productsData.js';
   const CONFIG = {
     brandName: 'Lotus Tubes',
     companyLegalName: 'Lotus Impex',
-    gstin: '27AIIPS0303A1ZU',
+    gstin: '27AAFHC5384L1ZX',
     iec: '0316902471',
-    primaryPhone: '+91 98205 25200',
-    primaryPhoneRaw: '+919820525200',
+    primaryPhone: '+91 9867304316',
+    primaryPhoneRaw: '+919867304316',
     primaryEmail: 'sales@lotustubes.com',
     secondaryEmail: 'info@lotustubes.com',
-    whatsappNumber: '919820525200',
+    whatsappNumber: '919867304316',
     officeAddress: 'Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, opp. to 11th Lane, Charni Road East, Khetwadi, Girgaon, Mumbai, Maharashtra 400004, India',
     sourcingHub: 'Girgaon, Mumbai - 400004, Maharashtra, India'
   };
@@ -100,7 +100,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Sanitary Gaskets',
       desc: 'FDA & USP Class VI compliant sealing gaskets in Silicone, EPDM, PTFE, Viton (FKM), and NBR for leak-free hygienic pipe joints.',
       icon: '⭕',
-      image: '/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
+      image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg',
       subcategories: ['Silicone Gaskets', 'EPDM Gaskets', 'PTFE Gaskets', 'Viton Gaskets', 'Manhole Gaskets']
     },
     {
@@ -127,7 +127,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tank Cleaning Accessories',
       desc: 'Fixed and 360° rotary spray balls, sanitary manhole covers (round/oval/pressure), CIP tank vent filter housings, and vessel sight glasses.',
       icon: '🚿',
-      image: '/assets/images/products/accessories/ss-sanitary-spray-ball.svg',
+      image: '/assets/images/products images/SS SPRAY BALL VALVE/TPM-310.jpg',
       subcategories: ['Rotary Spray Balls', 'Static Spray Balls', 'Pressure Manholes', 'Tank Sight Glass']
     },
     {
@@ -251,7 +251,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
     },
     {
       q: 'How fast can I receive an official technical quotation?',
-      a: 'Enquiries submitted via our website quotation form or directly through our WhatsApp desk (+91 98205 25200) receive prompt same-day quotation assistance and stock availability confirmation during business hours.'
+      a: 'Enquiries submitted via our website quotation form or directly through our WhatsApp desk (+91 9867304316) receive prompt same-day quotation assistance and stock availability confirmation during business hours.'
     },
     {
       q: 'Can you supply custom fabricated spools or drawing-based fittings?',
@@ -270,7 +270,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       employees: [],
       integrations: {
         whatsappStatus: 'Cloud API Ready',
-        whatsappPhone: '+91 98205 25200',
+        whatsappPhone: '+91 9867304316',
         emailSMTP: 'Configured (sales@lotustubes.com)',
         autoEnquiryCapture: true
       }
@@ -1136,12 +1136,12 @@ export const LEADERSHIP = {
 
 export const AI_TEAM_MEMBERS = [
   {
-    id: 'ananya-mehta',
+    id: 'anjali-pandey',
     department: 'Technical Quotations',
-    name: 'Ananya Mehta',
-    email: 'ananyamehta@lotustubes.com',
-    initial: 'AM',
-    photo: '/assets/images/team/agent-1.jpeg',
+    name: 'Anjali Pandey',
+    email: 'anjalipandey@lotustubes.com',
+    initial: 'AP',
+    photo: '/assets/images/team/anjali-pandey.png',
     focalPoint: 'center 7%',
     role: 'Lead Quotation & Sales Coordinator',
     channels: ['Official Quotations', 'WhatsApp Desk', 'ASME/ASTM Sizing'],

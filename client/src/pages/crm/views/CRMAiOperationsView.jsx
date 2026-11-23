@@ -122,7 +122,7 @@ export const CRMAiOperationsView = ({
     const pendingCount = tasks.filter(
       (t) => t.approvalStatus === 'pending_review' || t.approvalStatus === 'pending_super_admin_confirmation'
     ).length;
-    const ananyaCount = tasks.filter((t) => t.agentId === 'ananya-mehta').length;
+    const ananyaCount = tasks.filter((t) => t.agentId === 'anjali-pandey' || t.agentId === 'ananya-mehta').length;
     const riyaCount = invoices.length + tasks.filter((t) => t.agentId === 'riya-shah').length;
     const nehaCount = tasks.filter((t) => t.agentId === 'neha-desai').length;
     const arjunCount = tasks.filter((t) => t.agentId === 'arjun-yadav').length;
@@ -442,7 +442,7 @@ export const CRMAiOperationsView = ({
             </div>
 
             <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Quotations (Ananya)</div>
+              <div style={{ fontSize: '12px', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>Quotations (Anjali)</div>
               <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>{metrics.ananyaCount}</div>
               <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>Email &amp; WhatsApp Quotes</div>
             </div>
@@ -480,7 +480,8 @@ export const CRMAiOperationsView = ({
                     onClick={() => {
                       if (onNavigateTab) {
                         const tabKeyMap = {
-                          'ananya-mehta': 'agent-ananya',
+                          'anjali-pandey': 'agent-anjali',
+                          'ananya-mehta': 'agent-anjali',
                           'riya-shah': 'agent-riya',
                           'neha-desai': 'agent-neha',
                           'arjun-yadav': 'agent-arjun'
@@ -546,7 +547,7 @@ export const CRMAiOperationsView = ({
             <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '13px' }}>
               {activeAgent
                 ? `Dedicated operational queue, dispatches, and verification history for ${activeAgent.name} (${activeAgent.department}).`
-                : 'Pending drafts from Ananya Mehta, Riya Shah, Neha Desai, and Arjun Yadav awaiting Super Admin verification.'}
+                : 'Pending drafts from Anjali Pandey, Riya Shah, Neha Desai, and Arjun Yadav awaiting Super Admin verification.'}
             </p>
           </div>
 
@@ -572,7 +573,8 @@ export const CRMAiOperationsView = ({
               style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', background: '#FFFFFF' }}
             >
               <option value="All">All 4 Agents</option>
-              <option value="ananya-mehta">Ananya Mehta (Quotations)</option>
+              <option value="anjali-pandey">Anjali Pandey (Quotations)</option>
+              <option value="ananya-mehta">Anjali Pandey (Quotations - Legacy)</option>
               <option value="riya-shah">Riya Shah (Invoicing)</option>
               <option value="neha-desai">Neha Desai (Support Desk)</option>
               <option value="arjun-yadav">Arjun Yadav (Operations)</option>

@@ -129,11 +129,11 @@ export const CRMSidebar = ({
       badge: { count: 'All', color: 'slate' }
     },
     {
-      id: 'agent-ananya',
-      agentId: 'ananya-mehta',
-      label: 'Ananya Mehta',
+      id: 'agent-anjali',
+      agentId: 'anjali-pandey',
+      label: 'Anjali Pandey',
       sub: 'Quotations & Sizing',
-      photo: '/assets/images/team/agent-1.jpeg',
+      photo: '/assets/images/team/anjali-pandey.png',
       badge: { count: 'Agent 1', color: 'blue' }
     },
     {
@@ -176,10 +176,10 @@ export const CRMSidebar = ({
       ]
     },
     {
-      title: 'CATALOGUE & SPECS',
+      title: 'CATALOGUE & CONTENT',
       items: [
-        { id: 'products', label: 'Product Administration', icon: 'products', badge: null }
-        // Task 3: 360° Studio & Videos removed from sidebar
+        { id: 'products', label: 'Product Administration', icon: 'products', badge: null },
+        { id: 'news-social', label: 'News & Social Posts', icon: 'reports', badge: null }
       ]
     },
     {

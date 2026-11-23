@@ -10,8 +10,14 @@ const AGENT_META = {
     badgeClass: 'crm-badge-emerald',
     color: '#059669'
   },
+  'anjali-pandey': {
+    name: 'Anjali Pandey',
+    role: 'Quotations & Specifications',
+    badgeClass: 'crm-badge-blue',
+    color: '#0284C7'
+  },
   'ananya-mehta': {
-    name: 'Ananya Mehta',
+    name: 'Anjali Pandey',
     role: 'Quotations & Specifications',
     badgeClass: 'crm-badge-blue',
     color: '#0284C7'

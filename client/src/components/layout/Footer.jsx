@@ -7,366 +7,269 @@ import TypographyCustomizer from '../common/TypographyCustomizer';
 
 export const Footer = ({ onOpenTypography }) => {
   const { t, currentLang, localizePath } = useLanguage();
-  const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
+  const rawPhone = (CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '');
+  const waNumber = (CONFIG.whatsapp || '919867304316').replace(/\D/g, '');
+  const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
+    'Hi Lotus Tubes, I need assistance choosing the right sanitary stainless steel products.'
+  )}`;
 
-  // Typography Customizer State (Temporary Design Evaluation)
+  // Typography Customizer State
   const [isTypographyOpen, setIsTypographyOpen] = useState(false);
   const showTypographyPreview = isTypographyCustomizerEnabled();
 
-  // Footer Quick RFQ State
-  const [rfqName, setRfqName] = useState('');
-  const [rfqContact, setRfqContact] = useState('');
-  const [rfqComponent, setRfqComponent] = useState('SS 316L Sanitary Valves');
-  const [rfqQty, setRfqQty] = useState('');
-  const [rfqSuccess, setRfqSuccess] = useState('');
-  const [rfqLoading, setRfqLoading] = useState(false);
-
-  // Footer Newsletter State
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [newsletterSuccess, setNewsletterSuccess] = useState(false);
-
-  const handleFooterRfq = async (e) => {
-    e.preventDefault();
-    if (!rfqName || !rfqContact) return;
-    setRfqLoading(true);
-    try {
-      const payload = {
-        name: rfqName,
-        email: rfqContact.includes('@') ? rfqContact : undefined,
-        phone: !rfqContact.includes('@') ? rfqContact : undefined,
-        productName: rfqComponent,
-        notes: `Quick RFQ from Footer. Required Qty: ${rfqQty || 'Standard batch'}`
-      };
-      const res = await apiService.createEnquiry(payload);
-      const ref = res?.data?.referenceId || `RFQ-${Date.now().toString().slice(-6)}`;
-      setRfqSuccess(`RFQ Logged! Ref: ${ref}`);
-      setRfqName('');
-      setRfqContact('');
-      setRfqQty('');
-    } catch {
-      setRfqSuccess(`RFQ Logged! Ref: RFQ-${Date.now().toString().slice(-6)}`);
-    } finally {
-      setRfqLoading(false);
-    }
-  };
-
-  const handleNewsletterSubmit = (e) => {
-    e.preventDefault();
-    if (!newsletterEmail) return;
-    setNewsletterSuccess(true);
-    setNewsletterEmail('');
-    setTimeout(() => setNewsletterSuccess(false), 5000);
-  };
-
   return (
-    <footer className="w-full bg-[#071A52] text-slate-300 relative border-t border-[#2D8CFF]/30 overflow-hidden font-body-md" id="site-footer">
-      {/* Background World Map & Factory Texture Overlay */}
+    <footer className="w-full bg-[#081D5B] text-slate-200 relative border-t border-white/10 overflow-hidden font-sans" id="site-footer">
+      {/* Background World Map & Grid Texture */}
       <div
         className="absolute inset-0 pointer-events-none opacity-10 bg-repeat bg-center"
         style={{
-          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(45, 140, 255, 0.4) 1px, transparent 1px)',
-          backgroundSize: '32px 32px'
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 pointer-events-none opacity-15"
-        style={{
-          backgroundImage: 'radial-gradient(ellipse at 80% 20%, rgba(45, 140, 255, 0.35) 0%, transparent 60%)'
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 1px, transparent 1px)',
+          backgroundSize: '28px 28px'
         }}
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-14 lg:py-20 relative z-10 flex flex-col gap-12">
-        {/* Top Split: Main Columns + Quick RFQ Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          {/* Brand Info & Mission (Span 4) */}
-          <div className="lg:col-span-4 flex flex-col gap-5">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-16 relative z-10 flex flex-col gap-10">
+        {/* Figma Approved Top Action Strip: Consultation & Help Desk */}
+        <div className="pb-8 border-b border-white/15 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
             <a href={localizePath('/', currentLang)} className="inline-block group focus:outline-none" aria-label="Lotus Tubes - Return to Home">
               <img
                 src="/banner-image-opt.png"
                 alt="Lotus Tubes - Stainless Steel Sanitary Pipes & Valves"
-                className="h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-102"
-                width="220"
-                height="52"
+                className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-102 brightness-110"
+                width="200"
+                height="48"
               />
             </a>
+          </div>
 
-            <p className="font-sans text-sm text-slate-300 leading-relaxed">
-              {t(
-                'footer_desc',
-                'Lotus Tubes (Lotus Impex) is a trusted supplier of stainless steel sanitary pipes, tubes, fittings, and valves in SS 304 & SS 316L, supporting sterile biopharma, dairy, food & beverage, brewery, chemical and water-treatment applications with verified metallurgy and ready stock.'
-              )}
+          <div className="text-center md:text-left flex-1 max-w-2xl px-2">
+            <h4 className="text-sm sm:text-base font-bold text-white mb-1">
+              Do not know how to choose the right products?
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Our professional sales engineers are here to consult and help you to offer with suitable solutions.
             </p>
-
-            {/* Precision Standard Badges */}
-            <div className="flex flex-wrap gap-2 pt-1 font-sans text-xs">
-              <span className="px-2.5 py-1 rounded bg-[#0B226D] border border-[#2D8CFF]/30 text-white font-semibold">
-                SS 316L &amp; SS 304
-              </span>
-              <span className="px-2.5 py-1 rounded bg-[#0B226D] border border-[#2D8CFF]/30 text-[#2D8CFF] font-semibold">
-                Ra ≤ 0.38µm EP
-              </span>
-              <span className="px-2.5 py-1 rounded bg-[#0B226D] border border-[#2D8CFF]/30 text-[#FF007A] font-semibold">
-                ASME BPE &amp; 3-A Standards
-              </span>
-            </div>
-
-            {/* Direct Connect Buttons */}
-            <div className="pt-2 flex items-center gap-3 flex-wrap">
-              <a
-                href={`https://wa.me/${CONFIG.whatsappNumber || '919820525200'}?text=${encodeURIComponent(
-                  'Hello Lotus Tubes, I have an enquiry regarding sanitary stainless steel products.'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366] hover:bg-[#20BA5A] text-slate-950 font-bold text-xs transition-all shadow-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#25D366]/50"
-                title="WhatsApp Business Direct Desk"
-              >
-                <svg
-                  className="w-4 h-4 fill-current shrink-0"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.63C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.3C4.24 14.99 3.8 13.47 3.8 11.91C3.8 7.37 7.5 3.67 12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.56 14.39C16.31 14.26 15.1 13.67 14.87 13.59C14.65 13.51 14.48 13.46 14.32 13.71C14.15 13.96 13.67 14.53 13.53 14.7C13.38 14.86 13.24 14.88 12.99 14.76C12.74 14.63 11.95 14.37 11.01 13.54C10.28 12.89 9.78 12.08 9.64 11.83C9.49 11.58 9.62 11.45 9.75 11.32C9.86 11.21 10 11.04 10.12 10.9C10.25 10.76 10.29 10.66 10.37 10.49C10.45 10.33 10.41 10.18 10.35 10.06C10.29 9.93 9.79 8.71 9.59 8.2C9.39 7.71 9.18 7.78 9.03 7.77C8.89 7.76 8.72 7.76 8.55 7.76C8.38 7.76 8.11 7.82 7.88 8.07C7.65 8.32 7 8.93 7 10.17C7 11.41 7.9 12.61 8.03 12.77C8.15 12.94 9.81 15.5 12.35 16.59C12.95 16.85 13.42 17.01 13.79 17.12C14.4 17.31 14.95 17.29 15.39 17.22C15.88 17.15 16.9 16.61 17.11 16.02C17.32 15.43 17.32 14.93 17.26 14.82C17.2 14.72 17.06 14.66 16.81 14.53L16.56 14.39Z" />
-                </svg>
-                <span>WhatsApp Desk</span>
-              </a>
-              <a
-                href={`mailto:${CONFIG.primaryEmail || 'sales@lotustubes.com'}`}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0B226D] hover:bg-[#102C82] text-white border border-[#2D8CFF]/30 font-semibold text-xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2D8CFF]/50"
-                title="Email Sales Desk"
-              >
-                <svg
-                  className="w-3.5 h-3.5 text-[#2D8CFF] shrink-0"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-                <span>{CONFIG.primaryEmail || 'sales@lotustubes.com'}</span>
-              </a>
-            </div>
           </div>
 
-          {/* Quick Navigation Links (Span 4: 2 columns of 2) */}
-          <div className="lg:col-span-4 grid grid-cols-2 gap-6">
-            <div className="flex flex-col gap-3">
-              <span className="font-heading text-xs text-white uppercase tracking-wider font-bold">
-                Process Conduits
-              </span>
-              <nav className="flex flex-col gap-2 font-sans text-xs text-slate-300">
-                <a href={localizePath('/category/sanitary-pipes', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Sanitary Tubes &amp; Pipes
-                </a>
-                <a href={localizePath('/category/manual-valves', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Butterfly &amp; Ball Valves
-                </a>
-                <a href={localizePath('/category/manual-valves', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Aseptic Diaphragm Valves
-                </a>
-                <a href={localizePath('/category/tri-clamp', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Tri-Clamp Ferrules &amp; Clamps
-                </a>
-                <a href={localizePath('/category/sanitary-fittings', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  90° Bends &amp; Equal Tees
-                </a>
-                <a href={localizePath('/category/gaskets', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  USP Class VI Gaskets
-                </a>
-                <a href={localizePath('/products', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Product Catalogue
-                </a>
-              </nav>
-            </div>
+          <div className="shrink-0 flex items-center gap-3">
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-xs font-bold uppercase tracking-wider shadow-lg transition-all cursor-pointer"
+            >
+              <span>ASK FOR HELP</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
 
-            <div className="flex flex-col gap-3">
-              <span className="font-heading text-xs text-white uppercase tracking-wider font-bold">
-                Company &amp; Quality
-              </span>
-              <nav className="flex flex-col gap-2 font-sans text-xs text-slate-300">
-                <a href={localizePath('/quality', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  MTC EN 10204 3.1 Traceability
+        {/* Figma Approved 4-Column Structured Footer Content */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 text-xs">
+          {/* Column 1: Recommended Products */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white border-b border-white/15 pb-2">
+              RECOMMENDED PRODUCTS
+            </h3>
+            <ul className="flex flex-col gap-2 text-slate-300">
+              <li>
+                <a href={localizePath('/products?q=DIN+11851', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Nut
                 </a>
-                <a href={localizePath('/quality', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  3-A &amp; ASME BPE Standards
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+bend', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Male-Male Bend
                 </a>
-                <a href={localizePath('/industries', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Biopharma Cleanrooms
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+aerator', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Nut Aerator Tube
                 </a>
-                <a href={localizePath('/industries', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  Dairy &amp; Ice Cream Skids
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+tee', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Male T
                 </a>
-                <a href="#why-lotus" className="hover:text-[#2D8CFF] transition-colors">
-                  Why Lotus? (Overview)
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+liner+bend', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Male-Liner Bend
                 </a>
-                <a href="#statistics" className="hover:text-[#2D8CFF] transition-colors">
-                  Supply Track Record
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+reducer', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Male Reducer
                 </a>
-                <a href={localizePath('/about', currentLang)} className="hover:text-[#2D8CFF] transition-colors">
-                  About Lotus Impex
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+liner+male+reducer', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Liner-Male Reducer
                 </a>
-              </nav>
-            </div>
+              </li>
+              <li>
+                <a href={localizePath('/products?q=DIN+11851+liner+reducer', currentLang)} className="hover:text-white transition-colors">
+                  DIN 11851 Liner Reducer
+                </a>
+              </li>
+            </ul>
           </div>
 
-          {/* Quick RFQ Mini Form inside Footer (Span 4) */}
-          <div className="lg:col-span-4 bg-[#05143F] p-6 rounded-2xl border border-[#2D8CFF]/30 shadow-xl flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <span className="font-heading text-xs text-[#2D8CFF] font-bold uppercase tracking-wider">
-                ⚡ Quick RFQ Sourcing
-              </span>
-              <span className="text-[11px] font-sans text-slate-300">
-                Direct Technical Sourcing Desk
-              </span>
-            </div>
+          {/* Column 2: Hot Products */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white border-b border-white/15 pb-2">
+              HOT PRODUCTS
+            </h3>
+            <ul className="flex flex-col gap-2 text-slate-300">
+              <li>
+                <a href={localizePath('/product/ss-sanitary-butterfly-valve', currentLang)} className="hover:text-white transition-colors">
+                  3A DIN SMS Sanitary Dairy &amp; Milk Pneumatic Actuator Butterfly Valve
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/product/pneumatic-sanitary-ball-valve', currentLang)} className="hover:text-white transition-colors">
+                  DN50 Sanitary Ball Valves for Beer &amp; Beverage Industry
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/product/ss-316l-diaphragm-valve', currentLang)} className="hover:text-white transition-colors">
+                  Clamp End Diaphragm Valves with Pneumatic Actuator
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/product/ss-3-piece-ball-valve-tc-end', currentLang)} className="hover:text-white transition-colors">
+                  Hygienic 3-Piece Stainless Steel Encapsulated Ball Valve
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/product/ss-316l-ep-pipe', currentLang)} className="hover:text-white transition-colors">
+                  SS 316L Electro Polished Sanitary Pipe (Ra ≤ 0.38µm)
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/product/ss-tri-clamp-ferrule', currentLang)} className="hover:text-white transition-colors">
+                  SS Tri-Clamp Ferrules &amp; Heavy Duty Sanitary Clamps
+                </a>
+              </li>
+            </ul>
+          </div>
 
-            {rfqSuccess ? (
-              <div className="p-4 rounded-xl bg-[#071A52] border border-[#2D8CFF] text-center flex flex-col gap-2">
-                <span className="text-2xl text-[#2D8CFF]">✓</span>
-                <span className="text-xs font-bold text-white">{rfqSuccess}</span>
-                <span className="text-[11px] text-slate-300">Our sales desk has received your specs.</span>
-                <button
-                  type="button"
-                  onClick={() => setRfqSuccess('')}
-                  className="mt-1 text-[11px] text-[#2D8CFF] underline cursor-pointer"
-                >
-                  Submit another inquiry
-                </button>
+          {/* Column 3: Product Categories */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white border-b border-white/15 pb-2">
+              PRODUCT CATEGORIES
+            </h3>
+            <ul className="flex flex-col gap-2 text-slate-300">
+              <li>
+                <a href={localizePath('/category/manual-valves', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Valves
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/sanitary-fittings', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Fittings
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/tri-clamp', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Hose Fittings &amp; Tri-Clamps
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/tank-accessories', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Tank Accessories &amp; Spray Balls
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/sanitary-pipes', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Tubes &amp; Pipes (EP / MP)
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/accessories', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Pumps &amp; Sight Glasses
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/custom-products', currentLang)} className="hover:text-white transition-colors">
+                  Customized Hygienic Products
+                </a>
+              </li>
+              <li>
+                <a href={localizePath('/category/gaskets', currentLang)} className="hover:text-white transition-colors">
+                  Sanitary Gaskets (Silicone / EPDM / PTFE)
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 4: Contact Us */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white border-b border-white/15 pb-2">
+              CONTACT US
+            </h3>
+            <div className="flex flex-col gap-2.5 text-slate-300">
+              <div className="flex items-start gap-2">
+                <span className="text-[#FC63A7] text-sm shrink-0">📍</span>
+                <span>
+                  Office: Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, Khetwadi, Girgaon, Mumbai, Maharashtra 400004, India
+                </span>
               </div>
-            ) : (
-              <form onSubmit={handleFooterRfq} className="flex flex-col gap-2.5">
-                <input
-                  type="text"
-                  required
-                  placeholder="Your Name / Company *"
-                  value={rfqName}
-                  onChange={(e) => setRfqName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[#071A52] border border-slate-700 text-white text-xs placeholder:text-slate-400 focus:outline-none focus:border-[#2D8CFF]"
-                />
-                <input
-                  type="text"
-                  required
-                  placeholder="Email or WhatsApp Number *"
-                  value={rfqContact}
-                  onChange={(e) => setRfqContact(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-[#071A52] border border-slate-700 text-white text-xs placeholder:text-slate-400 focus:outline-none focus:border-[#2D8CFF]"
-                />
-                <div className="grid grid-cols-2 gap-2">
-                  <select
-                    value={rfqComponent}
-                    onChange={(e) => setRfqComponent(e.target.value)}
-                    className="w-full px-2 py-2 rounded-lg bg-[#071A52] border border-slate-700 text-white text-xs focus:outline-none focus:border-[#2D8CFF]"
-                  >
-                    <option>SS 316L Sanitary Valves</option>
-                    <option>SS 316L EP Tubes</option>
-                    <option>Tri-Clamp Ferrules</option>
-                    <option>Hygienic Gaskets</option>
-                    <option>Sanitary 90° Bends</option>
-                  </select>
-                  <input
-                    type="text"
-                    placeholder="Qty (e.g. 100m, 20 pcs)"
-                    value={rfqQty}
-                    onChange={(e) => setRfqQty(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-[#071A52] border border-slate-700 text-white text-xs placeholder:text-slate-400 focus:outline-none focus:border-[#2D8CFF]"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={rfqLoading}
-                  className="w-full py-2.5 rounded-lg bg-[#FF007A] hover:bg-[#E6006E] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,0,122,0.4)] cursor-pointer"
+              <div className="flex items-start gap-2">
+                <span className="text-[#FC63A7] text-sm shrink-0">🏭</span>
+                <span>
+                  Supply Hub: Mumbai Industrial Zone, Maharashtra, India
+                </span>
+              </div>
+              <div className="flex items-center gap-2 pt-1">
+                <span className="text-[#FC63A7] text-sm shrink-0">📞</span>
+                <a href={`tel:${rawPhone}`} className="hover:text-white transition-colors font-medium">
+                  {CONFIG.primaryPhone || '+91 9867304316'}
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#25D366] text-sm shrink-0">💬</span>
+                <a href={waUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors font-medium">
+                  WhatsApp: +91 9867304316
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[#FC63A7] text-sm shrink-0">✉️</span>
+                <a href={`mailto:${CONFIG.primaryEmail || 'sales@lotustubes.com'}`} className="hover:text-white transition-colors font-medium">
+                  {CONFIG.primaryEmail || 'sales@lotustubes.com'}
+                </a>
+              </div>
+              <div className="pt-2">
+                <a
+                  href="#login"
+                  className="inline-flex items-center gap-1.5 text-[11px] text-[#FC63A7] hover:underline font-semibold"
                 >
-                  {rfqLoading ? 'Transmitting...' : 'Send Quick RFQ →'}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-
-        {/* Newsletter & International Corridors Strip */}
-        <div className="pt-8 border-t border-[#2D8CFF]/20 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-          {/* Newsletter (Span 6) */}
-          <div className="md:col-span-6 flex flex-col gap-2">
-            <span className="font-label-technical text-xs text-white font-bold uppercase tracking-wider">
-              Hygienic Metallurgical Bulletins
-            </span>
-            <p className="font-body-sm text-xs text-slate-300">
-              Receive updated ASME BPE dimensional charts, Ra conversion tables, and export freight updates.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex items-center gap-2 max-w-md pt-1">
-              <input
-                type="email"
-                required
-                placeholder="Enter corporate email..."
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="flex-1 px-3.5 py-2 rounded-lg bg-[#05143F] border border-slate-700 text-white text-xs placeholder:text-slate-400 focus:outline-none focus:border-[#2D8CFF]"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg bg-[#2D8CFF] hover:bg-[#1A75E8] text-white font-bold text-xs transition-colors shrink-0 cursor-pointer"
-              >
-                {newsletterSuccess ? 'Subscribed ✓' : 'Subscribe'}
-              </button>
-            </form>
-          </div>
-
-          {/* Social Links & Legal Sourcing Hub (Span 6) */}
-          <div className="md:col-span-6 flex flex-col md:items-end gap-2 text-xs text-slate-300">
-            <span className="font-label-technical text-xs text-white font-bold uppercase tracking-wider">
-              Sourcing Hub &amp; Executive Office
-            </span>
-            <p className="md:text-right max-w-sm">
-              Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, Khetwadi, Girgaon, Mumbai, Maharashtra 400004, India.
-            </p>
-            <div className="flex items-center gap-4 pt-1">
-              <a
-                href="https://www.linkedin.com/company/lotus-tubes"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-300 hover:text-white transition-colors"
-                title="LinkedIn"
-              >
-                LinkedIn ↗
-              </a>
-              <span>•</span>
-              <a
-                href={`tel:${rawPhone}`}
-                className="text-slate-300 hover:text-white transition-colors"
-                title="Phone Desk"
-              >
-                {CONFIG.primaryPhone}
-              </a>
-              <span>•</span>
-              <a
-                href="#login"
-                className="text-[#2D8CFF] hover:underline font-bold"
-              >
-                Staff CRM Login
-              </a>
+                  <span>Staff &amp; Client CRM Portal</span>
+                  <span>→</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Copyright & Guarantee */}
-        <div className="pt-6 border-t border-[#2D8CFF]/20 flex flex-col sm:flex-row items-center justify-between gap-4 font-label-code-micro text-[11px] text-slate-400">
+        {/* Bottom Copyright Bar */}
+        <div className="pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
           <div>
-            © 2026 LOTUS TUBES (LOTUS IMPEX). ALL TOLERANCES CONFORM TO DIN / ASME / ISO / 3-A.
+            Copyright © 2026 Lotus Impex (Lotus Tubes). All Rights Reserved.
           </div>
           <div className="flex items-center gap-4 flex-wrap">
             <a href={localizePath('/about', currentLang)} className="hover:text-white transition-colors">
-              Founder Statement
+              About Us
             </a>
             <span>•</span>
             <a href={localizePath('/quality', currentLang)} className="hover:text-white transition-colors">
-              MTC Quality Policy
+              Quality Assurance
+            </a>
+            <span>•</span>
+            <a href={localizePath('/contact', currentLang)} className="hover:text-white transition-colors">
+              Contact Us
             </a>
             {showTypographyPreview && (
               <>
@@ -374,18 +277,10 @@ export const Footer = ({ onOpenTypography }) => {
                 <button
                   type="button"
                   onClick={onOpenTypography || (() => setIsTypographyOpen(true))}
-                  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-[#00f0ff] transition-colors cursor-pointer bg-transparent border-0 p-0 text-[11px]"
-                  title="Website Typography Customizer (Evaluation Mode)"
+                  className="inline-flex items-center gap-1.5 text-slate-400 hover:text-[#FC63A7] transition-colors cursor-pointer bg-transparent border-0 p-0 text-[11px]"
+                  title="Website Typography Customizer"
                 >
-                  <svg className="w-3.5 h-3.5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                    />
-                  </svg>
-                  <span>Typography Preview</span>
+                  <span>Typography</span>
                 </button>
               </>
             )}

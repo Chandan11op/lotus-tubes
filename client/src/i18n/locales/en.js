@@ -246,5 +246,27 @@ export default {
   seo_quote_title: 'Request a Formal Quotation & BOQ Pricing | Lotus Tubes',
   seo_quote_desc: 'Submit your sanitary stainless steel bill of quantities (BOQ) for fast quotation turnaround with EN 10204 3.1 MTR confirmation and competitive pricing.',
   seo_industries_title: 'Industries Served | Pharma, Food, Dairy & Biotech | Lotus Tubes',
-  seo_industries_desc: 'Discover sanitary stainless steel piping and valve solutions engineered specifically for pharmaceutical, biotechnology, dairy, brewery, and WFI loops.'
+  seo_industries_desc: 'Discover sanitary stainless steel piping and valve solutions engineered specifically for pharmaceutical, biotechnology, dairy, brewery, and WFI loops.',
+
+  // Home Redesign & Dynamic Components
+  nav_news_social: 'News and Social Activities',
+  hero_badge: 'Mumbai Central Sourcing Hub • Global Export (12 Countries)',
+  hero_h1_line1: 'STAINLESS STEEL',
+  hero_h1_line2: 'SANITARY VALVES',
+  hero_h1_line3: 'SOLUTIONS',
+  hero_lead: 'Lotus Tubes is a trusted supplier of premium-quality Stainless Steel Sanitary Pipes, Pipe Fittings, and Valves in SS 304 and SS 316L. Supporting sterile pharmaceutical, dairy, food & beverage, and high-purity process lines.',
+  btn_explore_our_products: 'Explore our products',
+  btn_contact_sales_team: 'Contact Sales Team',
+  ticker_title: 'BEST SELLING SANITARY PRODUCTS',
+  ticker_badge: 'CONTINUOUS LIVE INVENTORY',
+  ticker_view_all: 'View All Products',
+  our_products_title: 'Our Products',
+  our_products_badge: '★ Best Selling Products • Verified Studio Catalogue',
+  our_products_sub: 'Precision manufactured sanitary valves, tubes, and fittings in SS 304 & SS 316L with certified surface finishes (Electro Polished Ra ≤ 0.38 µm & Mechanical Polished).',
+  btn_view_specs: 'View Specifications',
+  btn_explore_all_categories: 'View All Products (Browse All 11 Categories)',
+  about_title: 'About Lotus Tubes',
+  about_heading: 'Dedicated Specialist in High-Purity Sanitary Stainless Steel',
+  news_social_title: 'News and Social Activities',
+  contact_team_title: 'Contact Our Operations Team'
 };

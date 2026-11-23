@@ -7,6 +7,89 @@ import PageHero from '../components/common/PageHero';
 
 export const ContactView = ({ onNotify }) => {
   const { t, currentLang, localizePath } = useLanguage();
+  const rawPhone = (CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '');
+  const waNumber = (CONFIG.whatsapp || CONFIG.whatsappNumber || '919867304316').replace(/\D/g, '');
+
+  // 1. Owner Profile (First Landscape Card)
+  const owner = {
+    id: 'owner',
+    name: 'Chirag Shah',
+    department: 'Owner',
+    role: 'Owner & Managing Director',
+    photo: '/assets/images/team/Owner.png',
+    email: 'sales@lotustubes.com',
+    phone: CONFIG.primaryPhone || '+91 9867304316',
+    summary: 'Continuing more than 35 years of authentic family business lineage in Girgaon, Mumbai (Est. 1989), Chirag Shah leads Lotus Tubes with uncompromising commitment to metallurgical precision, customer trust, and verified EN 10204 3.1 certification. Personally oversees strategic mill drawing partnerships, large-scale pharmaceutical supply contracts, and executive client relationships across India and worldwide.',
+    whatTheyDo: 'Executive direction, strategic mill supply partnerships, enterprise contract execution, and client relationship excellence.',
+    directPhone: `tel:${rawPhone}`,
+    directWa: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Chirag Sir, I would like to consult on high-purity sanitary stainless steel products.')}`,
+    directEmail: 'mailto:sales@lotustubes.com?subject=Direct%20Consultation%20for%20Chirag%20Shah%20-%20Lotus%20Tubes'
+  };
+
+  // 2. Line 1 Agents (Sales & Purchase)
+  const agentRow1 = [
+    {
+      id: 'anjali-pandey',
+      name: 'Anjali Pandey',
+      department: 'Sales',
+      departmentBadge: 'SALES DESK',
+      role: 'Sales & Technical Quotations Lead',
+      email: 'anjalipandey@lotustubes.com',
+      photo: '/assets/images/team/anjali-pandey.png',
+      whatTheyDo: 'Handles client RFQs, provides instant price quotations for SS 304 & SS 316L sanitary tubes, valves, and fittings, and assists customers with technical sizing and ASTM/DIN/BPE standard compliance.',
+      directAction: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Anjali, I would like to request an official quotation.')}`,
+      actionLabel: 'WhatsApp RFQ',
+      emailAction: 'mailto:anjalipandey@lotustubes.com?subject=Quotation%20Request%20-%20Lotus%20Tubes'
+    },
+    {
+      id: 'riya-shah',
+      name: 'Riya Shah',
+      department: 'Purchase',
+      departmentBadge: 'PURCHASE DESK',
+      role: 'Purchase & Material Procurement Specialist',
+      email: 'sales@lotustubes.com',
+      photo: '/assets/images/team/riya-shah.png',
+      whatTheyDo: 'Manages raw material sourcing, mill partner relations, stock replenishment, and vendor verification for premium raw stainless steel alloys and certified forgings.',
+      directAction: 'mailto:sales@lotustubes.com?subject=Purchase%20%26%20Raw%20Material%20Inquiry',
+      actionLabel: 'Email Desk',
+      waAction: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Riya, I have an inquiry regarding raw material procurement.')}`
+    }
+  ];
+
+  // 3. Line 2 Agents (R&D & QC)
+  const agentRow2 = [
+    {
+      id: 'neha-desai',
+      name: 'Neha Desai',
+      department: 'R&D',
+      departmentBadge: 'R&D DESK',
+      role: 'Research & Development (R&D) Lead',
+      email: 'sales@lotustubes.com',
+      photo: '/assets/images/team/neha-desai.png',
+      whatTheyDo: 'Focuses on high-purity hygienic design, surface roughness optimization (Ra ≤ 0.25 µm), CIP/SIP cleanability analysis, and bespoke customer CAD/fabrication development.',
+      directAction: 'mailto:sales@lotustubes.com?subject=R%26D%20Technical%20Consultation',
+      actionLabel: 'R&D Consult',
+      waAction: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Neha, I would like to consult on R&D hygienic design.')}`
+    },
+    {
+      id: 'arjun-yadav',
+      name: 'Arjun Yadav',
+      department: 'QC',
+      departmentBadge: 'QC DESK',
+      role: 'Quality Control & Metallurgy (QC) Inspector',
+      email: 'sales@lotustubes.com',
+      photo: '/assets/images/team/arjun-yadav.png',
+      whatTheyDo: 'Oversees 100% material inspection, PMI spectroscopic testing, boroscopic weld inspection, pressure testing, and EN 10204 3.1 Mill Test Certificate (MTC) verification.',
+      directAction: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Arjun, I have a query regarding Mill Test Certificates & QC reports.')}`,
+      actionLabel: 'QC Verification',
+      emailAction: 'mailto:sales@lotustubes.com?subject=QC%20%26%20MTC%20Inspection%20Query'
+    }
+  ];
+
+  // Interactive Hover/Click state for Line 1 and Line 2
+  const [activeRow1Agent, setActiveRow1Agent] = useState(null);
+  const [activeRow2Agent, setActiveRow2Agent] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -54,7 +137,7 @@ export const ContactView = ({ onNotify }) => {
     } catch (err) {
       console.error('Contact submission error:', err);
       if (onNotify) {
-        onNotify('Could not submit message to server. Please contact our desk directly via WhatsApp (+91 98205 25200) or email sales@lotustubes.com.', 'danger');
+        onNotify('Could not submit message to server. Please contact our desk directly via WhatsApp (+91 9867304316) or email sales@lotustubes.com.', 'danger');
       }
     } finally {
       setIsLoading(false);
@@ -99,13 +182,13 @@ export const ContactView = ({ onNotify }) => {
           </a>,
           <a
             key="call"
-            href={`tel:${(CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '')}`}
+            href={`tel:${(CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '')}`}
             className="btn btn--outline inline-flex items-center gap-2"
           >
             <svg className="w-4 h-4 text-[#2D8CFF] shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            <span>Direct Phone: {CONFIG.primaryPhone || '+91 98205 25200'}</span>
+            <span>Direct Phone: {CONFIG.primaryPhone || '+91 9867304316'}</span>
           </a>
         ]}
       />
@@ -145,7 +228,7 @@ export const ContactView = ({ onNotify }) => {
                 <div className="flex flex-col">
                   <span className="text-xs font-bold font-mono uppercase tracking-wider text-slate-500">Direct Phone Desk</span>
                   <a
-                    href={`tel:${(CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '')}`}
+                    href={`tel:${(CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '')}`}
                     className="text-base font-bold text-[#071A52] hover:text-[#2D8CFF] transition-colors mt-0.5"
                   >
                     {CONFIG.primaryPhone}
@@ -328,6 +411,506 @@ export const ContactView = ({ onNotify }) => {
           </div>
         </div>
       </div>
+
+      {/* ========================================================
+          OUR TEAM & TECHNICAL SPECIALISTS SECTION
+          (Exclusively on Contact Page as per Specification)
+          ======================================================== */}
+      <section className="w-full py-16 sm:py-20 bg-slate-50 border-t border-slate-200" id="team-section">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Section Heading */}
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-block px-3.5 py-1 rounded-full bg-pink-100 text-[#E93984] text-xs font-bold uppercase tracking-wider mb-3">
+              Executive Leadership &amp; Operational Team
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#0C225E] tracking-tight">
+              Connect Directly with Our Department Specialists
+            </h2>
+            <p className="mt-3 text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Direct access to our dedicated team across Owner Management, Sales, Purchase, R&amp;D, and Quality Control.
+            </p>
+          </div>
+
+          {/* ========================================================
+              CARD 1: OWNER LANDSCAPE CARD (DISPLAYED FIRST)
+              ======================================================== */}
+          <div className="mb-14">
+            <div className="bg-gradient-to-br from-[#071A52] via-[#0C225E] to-[#142A68] text-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-slate-700/60 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-[#E93984]/10 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex flex-col lg:flex-row items-center lg:items-stretch gap-8 relative z-10">
+                {/* Owner Photo Stage */}
+                <div className="w-full sm:w-64 lg:w-72 shrink-0 flex flex-col items-center">
+                  <div className="relative w-52 sm:w-60 lg:w-full aspect-[4/5] rounded-2xl overflow-hidden border-2 border-[#E93984]/60 shadow-2xl bg-slate-900 group-hover:border-[#E93984] transition-all duration-300">
+                    <img
+                      src={owner.photo}
+                      alt={`${owner.name} - ${owner.role}`}
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      width="288"
+                      height="360"
+                      loading="lazy"
+                    />
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-3 text-center">
+                      <span className="inline-block px-3.5 py-1 rounded-full bg-[#E93984] text-white text-[11px] font-bold uppercase tracking-wider shadow-sm">
+                        OWNER
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Owner Details & Direct Touchpoints */}
+                <div className="flex-1 flex flex-col justify-between text-left">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="px-3 py-1 rounded-full bg-pink-500/20 text-pink-300 border border-pink-400/30 text-[11px] font-mono font-bold uppercase tracking-wider">
+                        Chief Executive Direction
+                      </span>
+                      <span className="px-3 py-1 rounded-full bg-white/10 text-slate-200 text-[11px] font-mono">
+                        Family Enterprise Est. 1989
+                      </span>
+                      <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold">
+                        ● Available
+                      </span>
+                    </div>
+
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+                      {owner.name}
+                    </h3>
+                    <div className="text-sm sm:text-base font-semibold text-pink-400 mt-1 mb-4">
+                      {owner.role} • Lotus Tubes (Girgaon, Mumbai)
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl mb-6">
+                      {owner.summary}
+                    </p>
+
+                    {/* Operational Coordinates */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
+                        <span className="text-slate-400 block font-mono text-[10px] uppercase">Central Stocking Hub</span>
+                        <strong className="text-white">Girgaon, Mumbai • 24-48h Pan-India &amp; Global Dispatch</strong>
+                      </div>
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
+                        <span className="text-slate-400 block font-mono text-[10px] uppercase">Quality Assurance Oversight</span>
+                        <strong className="text-white">100% EN 10204 3.1 MTC Traceability &amp; Sizing</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Direct Action Touchpoints */}
+                  <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/10">
+                    <a
+                      href={owner.directPhone}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-[#0C225E] hover:bg-slate-100 font-bold text-xs transition-all shadow-md"
+                    >
+                      <span>📞 Direct Phone: {owner.phone}</span>
+                    </a>
+                    <a
+                      href={owner.directWa}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs transition-all shadow-md"
+                    >
+                      <span>🟢 WhatsApp Direct Desk</span>
+                    </a>
+                    <a
+                      href={owner.directEmail}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs border border-white/20 transition-all"
+                    >
+                      <span>✉️ Email: {owner.email}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================
+              CARDS 2-5: 4 AGENTS IN 2 LINES (2x2 GRID)
+              Interactive Hover & Click Landscape Expansion (Seedhe Growth Style)
+              ======================================================== */}
+          <div className="space-y-8">
+            
+            {/* ---------------------------------------------------- */}
+            {/* LINE 1: SALES & PURCHASE (Anjali Pandey & Riya Shah) */}
+            {/* ---------------------------------------------------- */}
+            <div
+              className="relative transition-all duration-300"
+              onMouseLeave={() => setActiveRow1Agent(null)}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0C225E] flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#E93984]" />
+                  Line 1 • Sales &amp; Procurement Departments
+                </span>
+                <span className="text-[11px] text-slate-400">Hover or click to expand agent profile</span>
+              </div>
+
+              {!activeRow1Agent ? (
+                /* Default 2-in-a-line view */
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {agentRow1.map((agent) => (
+                    <div
+                      key={agent.id}
+                      onClick={() => setActiveRow1Agent(agent.id)}
+                      onMouseEnter={() => setActiveRow1Agent(agent.id)}
+                      className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-xl hover:border-[#E93984] transition-all duration-300 cursor-pointer group flex flex-col justify-between text-center"
+                    >
+                      <div>
+                        <div className="relative w-36 h-36 rounded-2xl overflow-hidden mx-auto mb-4 border-2 border-slate-200 group-hover:border-[#E93984] group-hover:scale-105 transition-all shadow-md bg-slate-50">
+                          <img
+                            src={agent.photo}
+                            alt={agent.name}
+                            className="w-full h-full object-cover object-top"
+                            loading="lazy"
+                            width="144"
+                            height="144"
+                          />
+                        </div>
+                        <span className="inline-block px-3 py-0.5 rounded-full bg-[#0C225E] text-white text-[10px] font-bold uppercase tracking-wider mb-2">
+                          {agent.departmentBadge}
+                        </span>
+                        <h4 className="text-lg font-bold text-slate-900 group-hover:text-[#E93984] transition-colors">
+                          {agent.name}
+                        </h4>
+                        <div className="text-xs text-slate-500 font-medium mb-3">
+                          {agent.role}
+                        </div>
+                        <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                          {agent.whatTheyDo}
+                        </p>
+                      </div>
+                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-xs font-bold text-[#E93984]">
+                        <span>View Details &amp; Touchpoints</span>
+                        <span>&rarr;</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Expanded Landscape View with other member below */
+                (() => {
+                  const activeAgent = agentRow1.find((a) => a.id === activeRow1Agent) || agentRow1[0];
+                  const otherAgent = agentRow1.find((a) => a.id !== activeRow1Agent) || agentRow1[1];
+                  return (
+                    <div>
+                      {/* Active Agent Expanded Landscape Card */}
+                      <div className="bg-white rounded-3xl border-2 border-[#E93984] p-6 sm:p-8 shadow-2xl transition-all duration-500 ease-out">
+                        <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-8">
+                          {/* Agent Photo */}
+                          <div className="w-44 sm:w-52 h-52 sm:h-60 rounded-2xl overflow-hidden border-2 border-[#E93984] shadow-lg shrink-0 bg-slate-50">
+                            <img
+                              src={activeAgent.photo}
+                              alt={activeAgent.name}
+                              className="w-full h-full object-cover object-top"
+                              width="208"
+                              height="240"
+                            />
+                          </div>
+
+                          {/* Agent Expanded Details */}
+                          <div className="flex-1 flex flex-col justify-between text-left">
+                            <div>
+                              <div className="flex items-center justify-between gap-3 mb-2">
+                                <span className="inline-block px-3 py-1 rounded-full bg-pink-50 text-[#E93984] border border-pink-200 text-xs font-bold uppercase tracking-wider">
+                                  {activeAgent.departmentBadge}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveRow1Agent(null);
+                                  }}
+                                  className="text-xs text-slate-400 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+                                  title="Collapse details"
+                                >
+                                  ✕ Close View
+                                </button>
+                              </div>
+
+                              <h4 className="text-2xl sm:text-3xl font-black text-[#0C225E] tracking-tight">
+                                {activeAgent.name}
+                              </h4>
+                              <div className="text-sm font-semibold text-slate-600 mb-2">
+                                {activeAgent.role}
+                              </div>
+
+                              <div className="mb-3">
+                                <a
+                                  href={`mailto:${activeAgent.email}`}
+                                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 px-3 py-1 rounded-lg border border-sky-200 transition-colors"
+                                >
+                                  <span>✉️ {activeAgent.email}</span>
+                                </a>
+                              </div>
+
+                              <div className="text-xs sm:text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 leading-relaxed mb-4">
+                                <span className="font-bold text-slate-900 block mb-1">Department Focus &amp; Responsibilities:</span>
+                                {activeAgent.whatTheyDo}
+                              </div>
+                            </div>
+
+                            {/* Direct Actions */}
+                            <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-100">
+                              <a
+                                href={activeAgent.directAction}
+                                target={activeAgent.directAction.startsWith('http') ? '_blank' : '_self'}
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E93984] hover:bg-[#D81B60] text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+                              >
+                                <span>{activeAgent.actionLabel}</span>
+                                <span>&rarr;</span>
+                              </a>
+                              {activeAgent.emailAction && (
+                                <a
+                                  href={activeAgent.emailAction}
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all"
+                                >
+                                  <span>✉️ Direct Email</span>
+                                </a>
+                              )}
+                              {activeAgent.waAction && (
+                                <a
+                                  href={activeAgent.waAction}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs transition-all"
+                                >
+                                  <span>🟢 WhatsApp Desk</span>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Sibling Member moved below */}
+                      <div
+                        onClick={() => setActiveRow1Agent(otherAgent.id)}
+                        onMouseEnter={() => setActiveRow1Agent(otherAgent.id)}
+                        className="mt-4 w-full bg-white hover:bg-pink-50/50 rounded-2xl border border-slate-200 hover:border-[#E93984] p-4 flex items-center justify-between cursor-pointer transition-all shadow-sm group"
+                      >
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={otherAgent.photo}
+                            alt={otherAgent.name}
+                            className="w-12 h-12 rounded-xl object-cover object-top border border-slate-200 group-hover:border-[#E93984]"
+                            width="48"
+                            height="48"
+                          />
+                          <div className="text-left">
+                            <span className="text-[10px] font-bold text-[#0C225E] uppercase tracking-wider block">
+                              {otherAgent.departmentBadge}
+                            </span>
+                            <strong className="text-sm text-slate-900 group-hover:text-[#E93984] transition-colors">
+                              {otherAgent.name}
+                            </strong>
+                            <span className="text-xs text-slate-500 ml-2">({otherAgent.role})</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs font-bold text-[#E93984]">
+                          <span>Switch to {otherAgent.name}</span>
+                          <span>&rarr;</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()
+              )}
+            </div>
+
+            {/* ---------------------------------------------------- */}
+            {/* LINE 2: R&D & QC (Neha Desai & Arjun Yadav)         */}
+            {/* ---------------------------------------------------- */}
+            <div
+              className="relative transition-all duration-300 pt-4"
+              onMouseLeave={() => setActiveRow2Agent(null)}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0C225E] flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#2D8CFF]" />
+                  Line 2 • R&amp;D &amp; Quality Control Metallurgy Departments
+                </span>
+                <span className="text-[11px] text-slate-400">Hover or click to expand agent profile</span>
+              </div>
+
+              {!activeRow2Agent ? (
+                /* Default 2-in-a-line view */
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {agentRow2.map((agent) => (
+                    <div
+                      key={agent.id}
+                      onClick={() => setActiveRow2Agent(agent.id)}
+                      onMouseEnter={() => setActiveRow2Agent(agent.id)}
+                      className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-xl hover:border-[#2D8CFF] transition-all duration-300 cursor-pointer group flex flex-col justify-between text-center"
+                    >
+                      <div>
+                        <div className="relative w-36 h-36 rounded-2xl overflow-hidden mx-auto mb-4 border-2 border-slate-200 group-hover:border-[#2D8CFF] group-hover:scale-105 transition-all shadow-md bg-slate-50">
+                          <img
+                            src={agent.photo}
+                            alt={agent.name}
+                            className="w-full h-full object-cover object-top"
+                            loading="lazy"
+                            width="144"
+                            height="144"
+                          />
+                        </div>
+                        <span className="inline-block px-3 py-0.5 rounded-full bg-[#0C225E] text-white text-[10px] font-bold uppercase tracking-wider mb-2">
+                          {agent.departmentBadge}
+                        </span>
+                        <h4 className="text-lg font-bold text-slate-900 group-hover:text-[#2D8CFF] transition-colors">
+                          {agent.name}
+                        </h4>
+                        <div className="text-xs text-slate-500 font-medium mb-3">
+                          {agent.role}
+                        </div>
+                        <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                          {agent.whatTheyDo}
+                        </p>
+                      </div>
+                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-xs font-bold text-[#2D8CFF]">
+                        <span>View Details &amp; Touchpoints</span>
+                        <span>&rarr;</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* Expanded Landscape View with other member below */
+                (() => {
+                  const activeAgent = agentRow2.find((a) => a.id === activeRow2Agent) || agentRow2[0];
+                  const otherAgent = agentRow2.find((a) => a.id !== activeRow2Agent) || agentRow2[1];
+                  return (
+                    <div>
+                      {/* Active Agent Expanded Landscape Card */}
+                      <div className="bg-white rounded-3xl border-2 border-[#2D8CFF] p-6 sm:p-8 shadow-2xl transition-all duration-500 ease-out">
+                        <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-6 sm:gap-8">
+                          {/* Agent Photo */}
+                          <div className="w-44 sm:w-52 h-52 sm:h-60 rounded-2xl overflow-hidden border-2 border-[#2D8CFF] shadow-lg shrink-0 bg-slate-50">
+                            <img
+                              src={activeAgent.photo}
+                              alt={activeAgent.name}
+                              className="w-full h-full object-cover object-top"
+                              width="208"
+                              height="240"
+                            />
+                          </div>
+
+                          {/* Agent Expanded Details */}
+                          <div className="flex-1 flex flex-col justify-between text-left">
+                            <div>
+                              <div className="flex items-center justify-between gap-3 mb-2">
+                                <span className="inline-block px-3 py-1 rounded-full bg-blue-50 text-[#2D8CFF] border border-blue-200 text-xs font-bold uppercase tracking-wider">
+                                  {activeAgent.departmentBadge}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveRow2Agent(null);
+                                  }}
+                                  className="text-xs text-slate-400 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition-colors"
+                                  title="Collapse details"
+                                >
+                                  ✕ Close View
+                                </button>
+                              </div>
+
+                              <h4 className="text-2xl sm:text-3xl font-black text-[#0C225E] tracking-tight">
+                                {activeAgent.name}
+                              </h4>
+                              <div className="text-sm font-semibold text-slate-600 mb-2">
+                                {activeAgent.role}
+                              </div>
+
+                              <div className="mb-3">
+                                <a
+                                  href={`mailto:${activeAgent.email}`}
+                                  className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-sky-700 bg-sky-50 hover:bg-sky-100 px-3 py-1 rounded-lg border border-sky-200 transition-colors"
+                                >
+                                  <span>✉️ {activeAgent.email}</span>
+                                </a>
+                              </div>
+
+                              <div className="text-xs sm:text-sm text-slate-700 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 leading-relaxed mb-4">
+                                <span className="font-bold text-slate-900 block mb-1">Department Focus &amp; Responsibilities:</span>
+                                {activeAgent.whatTheyDo}
+                              </div>
+                            </div>
+
+                            {/* Direct Actions */}
+                            <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-100">
+                              <a
+                                href={activeAgent.directAction}
+                                target={activeAgent.directAction.startsWith('http') ? '_blank' : '_self'}
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#0C225E] hover:bg-[#142A68] text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+                              >
+                                <span>{activeAgent.actionLabel}</span>
+                                <span>&rarr;</span>
+                              </a>
+                              {activeAgent.emailAction && (
+                                <a
+                                  href={activeAgent.emailAction}
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-all"
+                                >
+                                  <span>✉️ Direct Email</span>
+                                </a>
+                              )}
+                              {activeAgent.waAction && (
+                                <a
+                                  href={activeAgent.waAction}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs transition-all"
+                                >
+                                  <span>🟢 WhatsApp Desk</span>
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Sibling Member moved below */}
+                      <div
+                        onClick={() => setActiveRow2Agent(otherAgent.id)}
+                        onMouseEnter={() => setActiveRow2Agent(otherAgent.id)}
+                        className="mt-4 w-full bg-white hover:bg-blue-50/50 rounded-2xl border border-slate-200 hover:border-[#2D8CFF] p-4 flex items-center justify-between cursor-pointer transition-all shadow-sm group"
+                      >
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={otherAgent.photo}
+                            alt={otherAgent.name}
+                            className="w-12 h-12 rounded-xl object-cover object-top border border-slate-200 group-hover:border-[#2D8CFF]"
+                            width="48"
+                            height="48"
+                          />
+                          <div className="text-left">
+                            <span className="text-[10px] font-bold text-[#0C225E] uppercase tracking-wider block">
+                              {otherAgent.departmentBadge}
+                            </span>
+                            <strong className="text-sm text-slate-900 group-hover:text-[#2D8CFF] transition-colors">
+                              {otherAgent.name}
+                            </strong>
+                            <span className="text-xs text-slate-500 ml-2">({otherAgent.role})</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs font-bold text-[#2D8CFF]">
+                          <span>Switch to {otherAgent.name}</span>
+                          <span>&rarr;</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()
+              )}
+            </div>
+
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

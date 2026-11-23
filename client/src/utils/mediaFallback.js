@@ -8,7 +8,7 @@ export const CATEGORY_FALLBACK_MAP = {
   'sanitary-pipes': '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg',
   'sanitary-fittings': '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg',
   'tri-clamp': '/assets/images/products/accessories/pipe-holders/ss-sanitary-pipe-hanger-clamp-005.jpg',
-  'gaskets': '/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
+  'gaskets': '/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg',
   'manual-valves': '/assets/images/products/valves/ball-valves/ss-316l-sanitary-ball-valve-001.jpg',
   'pneumatic-valves': '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg',
   'tank-cleaning': '/assets/images/products/valves/check-valves/ss-sanitary-check-non-return-valve-001.jpg',

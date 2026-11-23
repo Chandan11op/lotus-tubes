@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { CATEGORIES, PRODUCTS } from '../data/siteData';
+import { CATEGORIES_MANIFEST } from '../data/categoriesManifest';
 import { useLanguage } from '../context/LanguageContext';
 import ProductCard from '../components/common/ProductCard';
 import PageHero from '../components/common/PageHero';
@@ -113,7 +114,7 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           </button>,
           <a
             key="whatsapp"
-            href="https://wa.me/919820525200?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20catalogue%20ready%20stock."
+            href="https://wa.me/919867304316?text=Hello%20Lotus%20Tubes%2C%20I%20would%20like%20to%20enquire%20about%20catalogue%20ready%20stock."
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn--whatsapp"
@@ -122,6 +123,58 @@ export const ProductsView = ({ onOpenEnquiry }) => {
           </a>
         ]}
       />
+
+      {/* 11 Product Categories Visual Showcase */}
+      <section className="bg-slate-50/80 border-b border-slate-200/80 py-8 px-4 sm:px-6 lg:px-8" id="all-categories-grid">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <div>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[#E93984] font-bold">
+                11 Manufacturing &amp; Sourcing Lines
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-[#0C225E] tracking-tight">
+                All 11 Product Categories
+              </h2>
+            </div>
+            <p className="text-xs text-slate-500 max-w-md">
+              Explore complete sanitary stainless steel product families, specifications, and certified mill stocks.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+            {CATEGORIES_MANIFEST.map((cat) => {
+              const productDetailHref = localizePath(cat.primaryProductLink || cat.products?.[0]?.link || '/product/ss-316l-ep-pipe', currentLang);
+              return (
+                <a
+                  key={cat.id}
+                  href={productDetailHref}
+                  title={`View ${cat.title} Specifications & Details`}
+                  className="group p-3 rounded-2xl bg-white border border-slate-200 hover:border-[#E93984] shadow-sm hover:shadow-md transition-all flex flex-col justify-between text-left cursor-pointer"
+                >
+                  <div className="w-full aspect-square rounded-xl bg-slate-50 border border-slate-100 p-2 flex items-center justify-center overflow-hidden mb-2 group-hover:scale-105 transition-transform">
+                    <img
+                      src={cat.heroImage}
+                      alt={cat.title}
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                      width="120"
+                      height="120"
+                    />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-mono text-[#E93984] font-bold">
+                      {cat.countBadge}
+                    </div>
+                    <h3 className="text-xs font-bold text-slate-900 group-hover:text-[#E93984] transition-colors line-clamp-2 leading-snug">
+                      {cat.title}
+                    </h3>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Main Catalogue Container */}
       <div className="site-container catalogue-layout">

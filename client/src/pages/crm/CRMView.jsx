@@ -23,6 +23,7 @@ import { CRMSeoView } from './views/CRMSeoView';
 import { CRMAiOperationsView } from './views/CRMAiOperationsView';
 import { CRMEmailCommunicationsView } from './views/CRMEmailCommunicationsView';
 import { CRMWhatsAppView } from './views/CRMWhatsAppView';
+import { CRMNewsSocialView } from './views/CRMNewsSocialView';
 import { NewStaffModal } from './components/NewStaffModal';
 import { PasswordResetModal } from '../../components/modals/PasswordResetModal';
 
@@ -126,7 +127,8 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         'reports': 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
         'seo': 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
         'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes',
-        'agent-ananya': 'Ananya Mehta | Quotations & Sales Coordination | Staff CRM',
+        'agent-anjali': 'Anjali Pandey | Quotations & Sales Coordination | Staff CRM',
+        'agent-ananya': 'Anjali Pandey | Quotations & Sales Coordination | Staff CRM',
         'agent-riya': 'Riya Shah | Commercial Billing & Invoicing | Staff CRM',
         'agent-neha': 'Neha Desai | Client Resolution & Inquiries | Staff CRM',
         'agent-arjun': 'Arjun Yadav | Operations & Live Concierge | Staff CRM'
@@ -873,12 +875,14 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const renderActiveView = () => {
     switch (activeTab) {
       case 'ai-operations':
+      case 'agent-anjali':
       case 'agent-ananya':
       case 'agent-riya':
       case 'agent-neha':
       case 'agent-arjun':
         const agentIdMap = {
-          'agent-ananya': 'ananya-mehta',
+          'agent-anjali': 'anjali-pandey',
+          'agent-ananya': 'anjali-pandey',
           'agent-riya': 'riya-shah',
           'agent-neha': 'neha-desai',
           'agent-arjun': 'arjun-yadav'
@@ -985,6 +989,12 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           <CRMProductsView
             products={productsList}
             searchQuery={searchQuery}
+          />
+        );
+      case 'news-social':
+        return (
+          <CRMNewsSocialView
+            isSuperAdmin={isSuperAdmin}
           />
         );
       case 'videos':
@@ -1528,7 +1538,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                     <strong>LOTUS TUBES (LOTUS IMPEX)</strong><br />
                     Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane<br />
                     Khetwadi, Girgaon, Mumbai - 400004, Maharashtra, India<br />
-                    Phone / WhatsApp: +91 98205 25200 | Email: sales@lotustubes.com
+                    Phone / WhatsApp: +91 9867304316 | Email: sales@lotustubes.com
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>

@@ -1,11 +1,11 @@
 import React from 'react';
 import PageHero from '../components/common/PageHero';
-import { CONFIG, LEADERSHIP, AI_TEAM_MEMBERS } from '../data/siteData';
+import { CONFIG } from '../data/siteData';
 import { useLanguage } from '../context/LanguageContext';
 
 export const AboutView = ({ onOpenEnquiry }) => {
   const { t, currentLang, localizePath } = useLanguage();
-  const rawPhone = (CONFIG.primaryPhone || '+91 98205 25200').replace(/\s+/g, '');
+  const rawPhone = (CONFIG.primaryPhone || '+91 9867304316').replace(/\s+/g, '');
 
   return (
     <div className="about-page-view">
@@ -256,121 +256,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
         </div>
       </section>
 
-      {/* 5. Business Leadership & Autonomous Operations Team */}
-      <section className="site-container py-12 border-t border-slate-200">
-        <div className="max-w-3xl mb-8">
-          <span className="text-xs font-mono font-bold tracking-widest text-sky-600 uppercase">
-            Corporate Leadership &amp; AI Team
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-2">
-            Executive Direction &amp; Autonomous Operations
-          </h2>
-          <p className="text-sm text-slate-600 mt-2">
-            Meet the leadership and specialized AI workflow agents delivering rapid quotations, billing precision, and verified support to signed-in customers.
-          </p>
-        </div>
-
-        {/* Owner Profile Card */}
-        <div className="lt-owner-card-panel">
-          <div className="lt-owner-media">
-            <img
-              src={LEADERSHIP.photo || '/assets/images/team/owner.jpeg'}
-              alt={`${LEADERSHIP.name} - ${LEADERSHIP.title || LEADERSHIP.designation}`}
-              className="lt-owner-img"
-              width="140"
-              height="140"
-              loading="lazy"
-            />
-            <span className="lt-owner-status-badge">
-              <span className="lt-status-dot"></span> Executive Leadership
-            </span>
-          </div>
-          <div className="lt-owner-copy">
-            <div className="lt-owner-header-row">
-              <div>
-                <span className="lt-person-label">{LEADERSHIP.title || 'Managing Director'}</span>
-                <h3 className="lt-owner-name">{LEADERSHIP.name}</h3>
-              </div>
-              <div className="lt-owner-location-pill">
-                <span className="lt-loc-icon">📍</span>
-                <span>{LEADERSHIP.location}</span>
-              </div>
-            </div>
-            <p className="lt-owner-summary">{LEADERSHIP.summary}</p>
-            <div className="lt-owner-pillars">
-              <span className="lt-pill-tag">✓ Multi-Generational Family Enterprise (Est. 1989)</span>
-              <span className="lt-pill-tag">✓ ASTM A270 &amp; ASME BPE Quality Oversight</span>
-              <span className="lt-pill-tag">✓ Mandatory Super Admin Dispatch Review</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Our Team Subsection */}
-        <div className="lt-team-heading">
-          <div>
-            <span className="editorial-kicker">Our Team</span>
-            <h3>Dedicated Operations Specialists Supporting Every Client Account</h3>
-          </div>
-          <p>
-            Our experienced team of procurement, billing, engineering, and client operations professionals works in close coordination with Managing Director Chirag Shah to guarantee rapid technical quotations, exact ASME/ASTM compliance, and seamless customer service.
-          </p>
-        </div>
-
-        {/* Team Members in Responsive Grid */}
-        <div className="lt-team-2x2-grid">
-          {AI_TEAM_MEMBERS.map((member) => (
-            <article className="lt-team-card" key={member.id}>
-              <div className="lt-team-card__image-container">
-                <img
-                  src={member.photo}
-                  alt={`${member.name} - ${member.role}`}
-                  className="lt-team-card__img"
-                  width="400"
-                  height="400"
-                  loading="lazy"
-                />
-                <div className="lt-team-card__dept-pill">
-                  {member.department || 'Operations'}
-                </div>
-              </div>
-
-              <div className="lt-team-card__sheet">
-                <div className="lt-team-card__top">
-                  <div className="lt-team-card__name-row">
-                    <h4 className="lt-team-card__name">{member.name}</h4>
-                    <span className="lt-team-card__status">
-                      <span className="lt-pulse-dot" /> {member.status || 'Available'}
-                    </span>
-                  </div>
-                  <span className="lt-team-card__role">{member.role}</span>
-                  <a href={`mailto:${member.email}`} className="lt-team-card__email" title={`Email ${member.name}`}>
-                    ✉️ {member.email}
-                  </a>
-                </div>
-
-                <div className="lt-team-card__body">
-                  <p className="lt-team-card__summary">{member.summary}</p>
-                  {member.value && (
-                    <div className="lt-team-card__value">
-                      <strong>Client Value:</strong> {member.value}
-                    </div>
-                  )}
-                </div>
-
-                <div className="lt-team-card__footer">
-                  <div className="lt-team-card__channels">
-                    {member.channels?.map((ch, idx) => (
-                      <span key={idx} className="lt-team-card__tag">{ch}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* 6. Authentic Sourcing Guarantee Notice */}
+      {/* 5. Authentic Sourcing Guarantee Notice */}
       <section className="site-container pb-16 sm:pb-20">
         <div className="bg-slate-900 rounded-2xl p-8 sm:p-10 text-white shadow-xl relative overflow-hidden">
           <div className="relative z-10 max-w-3xl">

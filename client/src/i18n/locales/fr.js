@@ -247,5 +247,27 @@ export default {
   seo_quote_title: 'Demande de Devis B2B & Chiffrage de Bordereau BOQ | Lotus Tubes',
   seo_quote_desc: 'Transmettez votre bordereau de tubes et raccords sanitaires pour un chiffrage rapide garanti avec certificats EN 10204 3.1 MTR et prix d\'usine.',
   seo_industries_title: 'Secteurs d\'Application | Pharma, Agroalimentaire, Laiterie & Biotech | Lotus Tubes',
-  seo_industries_desc: 'Solutions de tuyauterie et vannes sanitaires en inox spécialement conçues pour la pharmacie, les laiteries, l\'agroalimentaire et les boucles d\'eau PPI.'
+  seo_industries_desc: 'Solutions de tuyauterie et vannes sanitaires en inox spécialement conçues pour la pharmacie, les laiteries, l\'agroalimentaire et les boucles d\'eau PPI.',
+
+  // Home Redesign & Dynamic Components
+  nav_news_social: 'Actualités & Activités',
+  hero_badge: 'Plateforme centrale d\'approvisionnement à Mumbai • Export mondial (12 pays)',
+  hero_h1_line1: 'ACIER INOXYDABLE',
+  hero_h1_line2: 'VANNES SANITAIRES',
+  hero_h1_line3: 'SOLUTIONS',
+  hero_lead: 'Lotus Tubes est un fournisseur de confiance de tuyaux, raccords et vannes sanitaires en acier inoxydable SS 304 et SS 316L pour les lignes de procédés pharmaceutiques, laitiers et alimentaires.',
+  btn_explore_our_products: 'Découvrir nos produits',
+  btn_contact_sales_team: 'Contacter l\'équipe commerciale',
+  ticker_title: 'PRODUITS SANITAIRES LES PLUS VENDUS',
+  ticker_badge: 'STOCK EN DIRECT CONTINU',
+  ticker_view_all: 'Voir tous les produits',
+  our_products_title: 'Nos Produits',
+  our_products_badge: '★ Meilleures ventes • Catalogue certifié',
+  our_products_sub: 'Vannes, tuyaux et raccords sanitaires de précision en inox 304 et 316L avec finitions de surface certifiées (électropolissage Ra ≤ 0,38 µm et polissage mécanique).',
+  btn_view_specs: 'Voir les spécifications',
+  btn_explore_all_categories: 'Voir tous les produits (Parcourir les 11 catégories)',
+  about_title: 'À propos de Lotus Tubes',
+  about_heading: 'Spécialiste dédié à l\'acier inoxydable sanitaire haute pureté',
+  news_social_title: 'Actualités & Activités',
+  contact_team_title: 'Contactez notre équipe opérationnelle'
 };
