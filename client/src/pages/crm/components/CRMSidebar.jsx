@@ -129,11 +129,11 @@ export const CRMSidebar = ({
       badge: { count: 'All', color: 'slate' }
     },
     {
-      id: 'agent-ananya',
-      agentId: 'ananya-mehta',
-      label: 'Ananya Mehta',
+      id: 'agent-anjali',
+      agentId: 'anjali-pandey',
+      label: 'Anjali Pandey',
       sub: 'Quotations & Sizing',
-      photo: '/assets/images/team/agent-1.jpeg',
+      photo: '/assets/images/team/anjali-pandey.png',
       badge: { count: 'Agent 1', color: 'blue' }
     },
     {

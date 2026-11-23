@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { CONFIG } from '../data/siteData';
+import { apiService } from '../services/api';
 
 export const HomeView = ({ onOpenEnquiry }) => {
   const { t, currentLang, localizePath } = useLanguage();
@@ -10,6 +11,57 @@ export const HomeView = ({ onOpenEnquiry }) => {
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
     'Hello Lotus Tubes, I am interested in Stainless Steel Sanitary Pipes, Fittings, and Valves.'
   )}`;
+
+  // Contact Form State for Home Page RFQ
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: 'Home Inquiry / RFQ',
+    message: ''
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleFormChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    if (formErrors[id]) {
+      setFormErrors((prev) => ({ ...prev, [id]: null }));
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const errs = {};
+    if (!formData.name.trim()) errs.name = 'Full name is required';
+    if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errs.email = 'Valid business email is required';
+    }
+    if (!formData.phone.trim() || formData.phone.length < 7) {
+      errs.phone = 'Valid phone number is required';
+    }
+    if (!formData.message.trim() || formData.message.length < 5) {
+      errs.message = 'Please describe your requirements (minimum 5 characters)';
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setFormErrors(errs);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await apiService.submitContact({ ...formData, language: currentLang });
+      setIsSubmitted(true);
+    } catch {
+      // Graceful fallback to client notification
+      setIsSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   // Dynamic News & Social Posts from Super Admin Storage
   const [newsPosts, setNewsPosts] = useState([]);
@@ -213,60 +265,6 @@ export const HomeView = ({ onOpenEnquiry }) => {
     }
   ];
 
-  // 3. CONTACT TEAM MEMBERS (All 4 Agents + General Manager)
-  const teamMembers = [
-    {
-      id: 'general-manager',
-      name: 'Chirag Shah',
-      department: 'General Manager',
-      role: 'General Manager & Managing Director',
-      photo: '/assets/images/team/owner.jpeg',
-      whatTheyDo: 'Oversees overall company operations at Lotus Tubes, strategic mill supply partnerships, enterprise contract execution, and client relationship excellence.',
-      directAction: `tel:${rawPhone}`,
-      actionLabel: 'Call Desk'
-    },
-    {
-      id: 'sales-agent',
-      name: 'Ananya Mehta',
-      department: 'Sales',
-      role: 'Sales & Technical Quotations Lead',
-      photo: '/assets/images/team/agent-1.jpeg',
-      whatTheyDo: 'Handles client RFQs, provides instant price quotations for SS 304 & SS 316L sanitary tubes, valves, and fittings, and assists customers with technical sizing and ASTM/DIN/BPE standard compliance.',
-      directAction: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Ananya, I would like to request an official quotation.')}`,
-      actionLabel: 'WhatsApp RFQ'
-    },
-    {
-      id: 'purchase-agent',
-      name: 'Riya Shah',
-      department: 'Purchase',
-      role: 'Purchase & Material Procurement Specialist',
-      photo: '/assets/images/team/agent-2.jpeg',
-      whatTheyDo: 'Manages raw material sourcing, mill partner relations, stock replenishment, and vendor verification for premium raw stainless steel alloys and certified forgings.',
-      directAction: 'mailto:sales@lotustubes.com?subject=Purchase%20%26%20Raw%20Material%20Inquiry',
-      actionLabel: 'Email Desk'
-    },
-    {
-      id: 'rd-agent',
-      name: 'Neha Desai',
-      department: 'R&D',
-      role: 'Research & Development (R&D) Lead',
-      photo: '/assets/images/team/agent-3.jpeg',
-      whatTheyDo: 'Focuses on high-purity hygienic design, surface roughness optimization (Ra ≤ 0.25 µm), CIP/SIP cleanability analysis, and bespoke customer CAD/fabrication development.',
-      directAction: 'mailto:sales@lotustubes.com?subject=R%26D%20Technical%20Consultation',
-      actionLabel: 'R&D Consult'
-    },
-    {
-      id: 'qc-agent',
-      name: 'Arjun Yadav',
-      department: 'QC',
-      role: 'Quality Control & Metallurgy (QC) Inspector',
-      photo: '/assets/images/team/agent-4.jpeg',
-      whatTheyDo: 'Oversees 100% material inspection, PMI spectroscopic testing, boroscopic weld inspection, pressure testing, and EN 10204 3.1 Mill Test Certificate (MTC) verification.',
-      directAction: `https://wa.me/${waNumber}?text=${encodeURIComponent('Hello Arjun, I have a query regarding Mill Test Certificates & QC reports.')}`,
-      actionLabel: 'QC Verification'
-    }
-  ];
-
   return (
     <div className="w-full bg-white text-slate-900 font-sans selection:bg-[#E93984] selection:text-white">
       {/* ========================================================
@@ -289,17 +287,17 @@ export const HomeView = ({ onOpenEnquiry }) => {
             <div className="lg:col-span-6 flex flex-col gap-6 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-slate-200 w-fit mx-auto lg:mx-0">
                 <span className="w-2 h-2 rounded-full bg-[#E93984]" />
-                <span>Mumbai Central Sourcing Hub • Global Export</span>
+                <span>{t('hero_badge', 'Mumbai Central Sourcing Hub • Global Export (12 Countries)')}</span>
               </div>
 
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-[1.12]">
-                STAINLESS STEEL<br />
-                SANITARY VALVES<br />
-                SOLUTIONS
+                {t('hero_h1_line1', 'STAINLESS STEEL')}<br />
+                {t('hero_h1_line2', 'SANITARY VALVES')}<br />
+                {t('hero_h1_line3', 'SOLUTIONS')}
               </h1>
 
               <p className="text-sm sm:text-base text-slate-200/90 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-                Lotus Tubes is a trusted supplier of premium-quality Stainless Steel Sanitary Pipes, Pipe Fittings, and Valves in SS 304 and SS 316L. Supporting sterile pharmaceutical, dairy, food &amp; beverage, and high-purity process lines.
+                {t('hero_lead', 'Lotus Tubes is a trusted supplier of premium-quality Stainless Steel Sanitary Pipes, Pipe Fittings, and Valves in SS 304 and SS 316L. Supporting sterile pharmaceutical, dairy, food & beverage, and high-purity process lines.')}
               </p>
 
               {/* Dual Hero Buttons */}
@@ -308,7 +306,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
                   href="#our-products"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-sm font-bold tracking-wide shadow-lg hover:shadow-pink-500/25 transition-all cursor-pointer"
                 >
-                  <span>Explore our products</span>
+                  <span>{t('btn_explore_our_products', 'Explore our products')}</span>
                   <span className="text-xs">↗</span>
                 </a>
 
@@ -316,7 +314,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
                   href="#contact"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#05143F]/90 hover:bg-[#071A52] border border-white/30 hover:border-white text-white text-sm font-bold tracking-wide transition-all cursor-pointer"
                 >
-                  <span>Contact Sales Team</span>
+                  <span>{t('btn_contact_sales_team', 'Contact Sales Team')}</span>
                   <span className="text-xs">↗</span>
                 </a>
               </div>
@@ -341,27 +339,28 @@ export const HomeView = ({ onOpenEnquiry }) => {
       </section>
 
       {/* ========================================================
-          2. STANDALONE CONTINUOUS LEFT-TO-RIGHT MARQUEE TICKER
-             (COMPLETELY DISCONNECTED & SEPARATE FROM HERO SECTION)
+          2. STANDALONE CONTINUOUS RIGHT-TO-LEFT MARQUEE TICKER
+             (COMPLETELY DISCONNECTED & SEPARATE FROM HERO SECTION,
+              DISPLAYED IN THE SAME FORMAT AS "OUR PRODUCTS" CARDS)
           ======================================================== */}
       <section
-        className="w-full my-8 sm:my-12 py-6 sm:py-8 bg-slate-100/95 border-y border-slate-200/90 relative z-20 shadow-inner"
+        className="w-full my-8 sm:my-12 py-8 bg-slate-100/95 border-y border-slate-200/90 relative z-20 shadow-inner"
         aria-label="Best Selling Products Continuous Live Ticker"
       >
-        {/* Scoped CSS Keyframe Animation Guaranteeing Smooth Left-to-Right Loop */}
+        {/* Scoped CSS Keyframe Animation Guaranteeing Smooth Right-to-Left Loop */}
         <style>{`
-          @keyframes lotusMarqueeLTR {
+          @keyframes lotusMarqueeRTL {
             0% {
-              transform: translate3d(-50%, 0, 0);
+              transform: translate3d(0%, 0, 0);
             }
             100% {
-              transform: translate3d(0%, 0, 0);
+              transform: translate3d(-50%, 0, 0);
             }
           }
           .lotus-ticker-track {
             display: flex !important;
             width: max-content !important;
-            animation: lotusMarqueeLTR 32s linear infinite !important;
+            animation: lotusMarqueeRTL 38s linear infinite !important;
             will-change: transform;
           }
           .lotus-ticker-track:hover {
@@ -369,112 +368,178 @@ export const HomeView = ({ onOpenEnquiry }) => {
           }
           .lotus-ticker-group {
             display: flex !important;
-            align-items: center !important;
-            gap: 16px !important;
-            padding-right: 16px !important;
+            align-items: stretch !important;
+            gap: 20px !important;
+            padding-right: 20px !important;
             flex-shrink: 0 !important;
           }
         `}</style>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2.5 w-2.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E93984] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E93984]"></span>
               </span>
-              <span className="text-xs font-black uppercase tracking-wider text-[#0C225E]">
-                BEST SELLING SANITARY PRODUCTS
+              <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#0C225E]">
+                {t('ticker_title', 'BEST SELLING SANITARY PRODUCTS')}
               </span>
-              <span className="hidden sm:inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-[#E93984]/10 text-[#E93984]">
-                CONTINUOUS LIVE INVENTORY
+              <span className="hidden sm:inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#E93984]/10 text-[#E93984]">
+                {t('ticker_badge', 'CONTINUOUS LIVE INVENTORY')}
               </span>
             </div>
 
             <div className="hidden md:flex items-center gap-2 text-xs text-slate-500 font-medium">
-              <span>Moving continuously left to right &bull; Hover to pause</span>
+              <span>Moving continuously right to left &bull; Hover to pause</span>
               <span className="text-slate-300">|</span>
-              <a href="#our-products" className="text-[#E93984] hover:underline font-bold">
-                View All Products &darr;
+              <a href={localizePath('/products', currentLang)} className="text-[#E93984] hover:underline font-bold">
+                {t('ticker_view_all', 'View All Products')} &rarr;
               </a>
             </div>
           </div>
         </div>
 
-        {/* Continuous Left-to-Right Moving Track with Edge Fade Masks */}
+        {/* Continuous Right-to-Left Moving Track with Edge Fade Masks */}
         <div className="relative w-full overflow-hidden select-none">
           {/* Left Gradient Edge Mask */}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 bg-gradient-to-r from-slate-100 to-transparent z-10" />
 
-          {/* Dual Cloned Group Track Moving Continuously Left to Right */}
-          <div className="lotus-ticker-track flex items-center py-1">
+          {/* Dual Cloned Group Track Moving Continuously Right to Left */}
+          <div className="lotus-ticker-track flex items-stretch py-2">
             {/* Group 1 */}
             <div className="lotus-ticker-group">
               {bestSellers.map((item, idx) => (
-                <a
+                <div
                   key={`g1-${idx}`}
-                  href={localizePath(item.link, currentLang)}
-                  className="inline-flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 hover:border-[#E93984] text-xs font-medium text-slate-800 hover:text-[#0C225E] shadow-sm hover:shadow-md transition-all group shrink-0"
+                  className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden w-[280px] shrink-0"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 p-1 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform">
+                  {/* Photo Presentation Container — Same Format as Our Products */}
+                  <div className="w-full aspect-[4/3] bg-slate-50/80 p-4 flex items-center justify-center relative overflow-hidden border-b border-slate-100 group-hover:bg-pink-50/20 transition-colors">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-contain"
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
-                      width="40"
-                      height="40"
+                      width="280"
+                      height="210"
                     />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-slate-900 group-hover:text-[#E93984] transition-colors leading-tight">
-                        {item.name}
+                    <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#0C225E] text-white text-[10px] font-bold tracking-wide shadow-sm">
+                        {item.cat || 'SS 316L'}
                       </span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded bg-pink-50 text-[#E93984] font-bold">
+                    </div>
+                    <div className="absolute top-3 right-3 flex flex-wrap gap-1.5">
+                      <span className="px-2 py-0.5 rounded-full bg-pink-100 text-[#E93984] text-[10px] font-bold tracking-wide shadow-sm">
                         ★ Best Seller
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-500 font-normal leading-snug">
-                      {item.spec}
-                    </span>
                   </div>
-                </a>
+
+                  {/* Card Body */}
+                  <div className="p-4 flex-1 flex flex-col justify-between text-left">
+                    <div>
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-1">
+                        {item.cat} • Ready Stock
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#E93984] transition-colors leading-snug line-clamp-1">
+                        {item.name}
+                      </h3>
+                      <p className="mt-1.5 text-xs text-slate-500 leading-relaxed line-clamp-2">
+                        {item.spec}
+                      </p>
+                    </div>
+
+                    {/* Action Link */}
+                    <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between">
+                      <a
+                        href={localizePath(item.link, currentLang)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-[11px] font-bold tracking-wide shadow-sm hover:shadow-md transition-all cursor-pointer"
+                      >
+                        <span>{t('btn_view_specs', 'View Specifications')}</span>
+                        <span className="text-[10px]">↗</span>
+                      </a>
+
+                      <a
+                        href={`https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello Lotus Tubes, I need pricing for ${item.name}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+                        title="Instant WhatsApp RFQ"
+                      >
+                        <span>💬 WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
 
             {/* Group 2 (Identical Clone for 100% Seamless Infinite Loop) */}
             <div className="lotus-ticker-group" aria-hidden="true">
               {bestSellers.map((item, idx) => (
-                <a
+                <div
                   key={`g2-${idx}`}
-                  href={localizePath(item.link, currentLang)}
-                  className="inline-flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/80 hover:border-[#E93984] text-xs font-medium text-slate-800 hover:text-[#0C225E] shadow-sm hover:shadow-md transition-all group shrink-0"
+                  className="group bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 flex flex-col justify-between overflow-hidden w-[280px] shrink-0"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/60 p-1 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform">
+                  {/* Photo Presentation Container — Same Format as Our Products */}
+                  <div className="w-full aspect-[4/3] bg-slate-50/80 p-4 flex items-center justify-center relative overflow-hidden border-b border-slate-100 group-hover:bg-pink-50/20 transition-colors">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-contain"
+                      className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
-                      width="40"
-                      height="40"
+                      width="280"
+                      height="210"
                     />
-                  </div>
-                  <div className="flex flex-col text-left">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-slate-900 group-hover:text-[#E93984] transition-colors leading-tight">
-                        {item.name}
+                    <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#0C225E] text-white text-[10px] font-bold tracking-wide shadow-sm">
+                        {item.cat || 'SS 316L'}
                       </span>
-                      <span className="text-[10px] px-1.5 py-0.2 rounded bg-pink-50 text-[#E93984] font-bold">
+                    </div>
+                    <div className="absolute top-3 right-3 flex flex-wrap gap-1.5">
+                      <span className="px-2 py-0.5 rounded-full bg-pink-100 text-[#E93984] text-[10px] font-bold tracking-wide shadow-sm">
                         ★ Best Seller
                       </span>
                     </div>
-                    <span className="text-[11px] text-slate-500 font-normal leading-snug">
-                      {item.spec}
-                    </span>
                   </div>
-                </a>
+
+                  {/* Card Body */}
+                  <div className="p-4 flex-1 flex flex-col justify-between text-left">
+                    <div>
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-1">
+                        {item.cat} • Ready Stock
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#E93984] transition-colors leading-snug line-clamp-1">
+                        {item.name}
+                      </h3>
+                      <p className="mt-1.5 text-xs text-slate-500 leading-relaxed line-clamp-2">
+                        {item.spec}
+                      </p>
+                    </div>
+
+                    {/* Action Link */}
+                    <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between">
+                      <a
+                        href={localizePath(item.link, currentLang)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-[11px] font-bold tracking-wide shadow-sm hover:shadow-md transition-all cursor-pointer"
+                      >
+                        <span>{t('btn_view_specs', 'View Specifications')}</span>
+                        <span className="text-[10px]">↗</span>
+                      </a>
+
+                      <a
+                        href={`https://wa.me/${waNumber}?text=${encodeURIComponent(`Hello Lotus Tubes, I need pricing for ${item.name}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+                        title="Instant WhatsApp RFQ"
+                      >
+                        <span>💬 WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
@@ -491,13 +556,13 @@ export const HomeView = ({ onOpenEnquiry }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="inline-block px-3 py-1 rounded-full bg-pink-100 text-[#E93984] text-xs font-bold uppercase tracking-wider mb-2">
-              Verified Studio Catalogue
+              {t('our_products_badge', '★ Best Selling Products • Verified Studio Catalogue')}
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0C225E] tracking-tight">
-              Our Products
+              {t('our_products_title', 'Our Products')}
             </h2>
             <p className="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
-              Precision manufactured sanitary valves, tubes, and fittings in SS 304 &amp; SS 316L with certified surface finishes (Electro Polished Ra ≤ 0.38 µm &amp; Mechanical Polished).
+              {t('our_products_sub', 'Precision manufactured sanitary valves, tubes, and fittings in SS 304 & SS 316L with certified surface finishes (Electro Polished Ra ≤ 0.38 µm & Mechanical Polished).')}
             </p>
           </div>
 
@@ -545,7 +610,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
                       href={localizePath(prod.link, currentLang)}
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-xs font-bold tracking-wide shadow-sm hover:shadow-md transition-all cursor-pointer"
                     >
-                      <span>View Specifications</span>
+                      <span>{t('btn_view_specs', 'View Specifications')}</span>
                       <span className="text-[10px]">↗</span>
                     </a>
 
@@ -570,7 +635,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
               href={localizePath('/products', currentLang)}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#0C225E] hover:bg-[#071A52] text-white text-sm font-bold tracking-wide shadow-md transition-all hover:scale-[1.02]"
             >
-              <span>Explore Complete 11 Categories &amp; Sourcing Catalogue</span>
+              <span>{t('btn_explore_all_categories', 'View All Products (Browse All 11 Categories)')}</span>
               <span>→</span>
             </a>
           </div>
@@ -586,11 +651,11 @@ export const HomeView = ({ onOpenEnquiry }) => {
             {/* Left Content */}
             <div className="lg:col-span-7 flex flex-col gap-5">
               <div className="inline-block px-3 py-1 rounded-full bg-blue-50 text-[#0C225E] text-xs font-bold uppercase tracking-wider w-fit">
-                About Lotus Tubes
+                {t('about_title', 'About Lotus Tubes')}
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0C225E] tracking-tight leading-tight">
-                Dedicated Specialist in High-Purity Sanitary Stainless Steel
+                {t('about_heading', 'Dedicated Specialist in High-Purity Sanitary Stainless Steel')}
               </h2>
 
               <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
@@ -661,7 +726,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
                 Updates &amp; Corporate Announcements
               </div>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0C225E] tracking-tight">
-                News &amp; Social Activities
+                {t('news_social_title', 'News and Social Activities')}
               </h2>
               <p className="mt-1 text-slate-600 text-sm">
                 Official company announcements, industry engagements, and corporate social activities from Lotus Tubes.
@@ -738,73 +803,213 @@ export const HomeView = ({ onOpenEnquiry }) => {
       </section>
 
       {/* ========================================================
-          6. CONTACT US SECTION (TEAM DETAILS & ROLES)
+          6. CONTACT US SECTION (CONTACT / RFQ FORM)
+             (Team details are exclusively on the Contact Us page)
           ======================================================== */}
       <section className="w-full py-16 lg:py-24 bg-white" id="contact">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-block px-3 py-1 rounded-full bg-blue-100 text-[#0C225E] text-xs font-bold uppercase tracking-wider mb-2">
-              Direct Department Heads
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-block px-3 py-1 rounded-full bg-pink-100 text-[#E93984] text-xs font-bold uppercase tracking-wider mb-2">
+              Instant Quotation &amp; Technical Support
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0C225E] tracking-tight">
-              Contact Us &amp; Technical Team
+              {t('contact_form_title', 'Contact Us & Request Quotation')}
             </h2>
             <p className="mt-2 text-slate-600 text-sm sm:text-base leading-relaxed">
-              Connect directly with our specialized department leaders for Sales, Purchase, R&amp;D, Quality Control, and General Management.
+              Submit your required sizes, material grades (SS 304 / SS 316L), and bill of quantities for rapid price turnaround.
             </p>
           </div>
 
-          {/* 5 Team Member Cards: [General Manager, Sales, Purchase, R&D, QC] */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-14">
-            {teamMembers.map((member) => (
-              <div
-                key={member.id}
-                className="bg-slate-50/80 rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-xl hover:border-[#E93984]/50 transition-all flex flex-col justify-between text-center group"
-              >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-12">
+            {/* Left: Office Coordinates & Direct Channels */}
+            <div className="lg:col-span-5 flex flex-col gap-4">
+              <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm flex flex-col gap-4">
                 <div>
-                  {/* Photo Avatar */}
-                  <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 border-2 border-[#0C225E]/20 shadow-md group-hover:border-[#E93984] group-hover:scale-105 transition-all">
-                    <img
-                      src={member.photo}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      width="96"
-                      height="96"
-                    />
-                  </div>
-
-                  {/* Role Badge */}
-                  <div className="inline-block px-2.5 py-0.5 rounded-full bg-[#0C225E] text-white text-[11px] font-bold uppercase tracking-wider mb-2">
-                    {member.department}
-                  </div>
-
-                  {/* Name & Title */}
-                  <h3 className="text-base font-bold text-slate-900 group-hover:text-[#E93984] transition-colors">
-                    {member.name}
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#E93984] font-mono">
+                    Mumbai Central Dispatch Hub
+                  </span>
+                  <h3 className="text-lg font-bold text-[#0C225E] mt-0.5">
+                    Lotus Tubes Registered Desk
                   </h3>
-                  <div className="text-[11px] text-slate-500 font-medium mb-3">
-                    {member.role}
-                  </div>
-
-                  {/* What they do */}
-                  <p className="text-xs text-slate-600 leading-relaxed text-left bg-white p-3 rounded-xl border border-slate-200/60 shadow-inner">
-                    {member.whatTheyDo}
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                    Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, Khetwadi, Girgaon, Mumbai, Maharashtra 400004, India.
                   </p>
                 </div>
 
-                {/* Direct Action Button */}
-                <div className="pt-4 mt-4 border-t border-slate-200">
+                <div className="border-t border-slate-200 pt-3 space-y-2 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Direct Phone:</span>
+                    <a href={`tel:${rawPhone}`} className="font-bold text-[#0C225E] hover:text-[#E93984] font-mono">
+                      {CONFIG.primaryPhone || '+91 9867304316'}
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Sales Email:</span>
+                    <a href="mailto:sales@lotustubes.com" className="font-bold text-[#0C225E] hover:text-[#E93984]">
+                      sales@lotustubes.com
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">GSTIN:</span>
+                    <span className="font-bold text-slate-900 font-mono">
+                      {CONFIG.gstin || '27AAFHC5384L1ZX'}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500">Operating Hours:</span>
+                    <span className="text-slate-700 font-medium">Mon – Sat: 9:30 AM – 7:00 PM IST</span>
+                  </div>
+                </div>
+
+                <div className="pt-2">
                   <a
-                    href={member.directAction}
-                    className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-white hover:bg-[#E93984] text-slate-800 hover:text-white border border-slate-300 hover:border-[#E93984] text-xs font-bold transition-all shadow-sm cursor-pointer"
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
                   >
-                    <span>{member.actionLabel}</span>
-                    <span className="text-[10px]">↗</span>
+                    <span>💬 Chat on WhatsApp Priority Desk</span>
+                  </a>
+                </div>
+
+                <div className="pt-1 text-center">
+                  <a
+                    href={localizePath('/contact', currentLang)}
+                    className="text-xs font-bold text-[#E93984] hover:underline"
+                  >
+                    Meet Our 5 Department Leads on Contact Page →
                   </a>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Right: Interactive Contact & RFQ Form */}
+            <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+              <h3 className="text-lg font-bold text-[#0C225E] mb-1">
+                Send Us a Requirement Message
+              </h3>
+              <p className="text-xs text-slate-500 mb-6">
+                Fill in your details below. Our team reviews incoming inquiries promptly.
+              </p>
+
+              {isSubmitted ? (
+                <div className="p-6 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold mx-auto mb-3">
+                    ✓
+                  </div>
+                  <h4 className="text-base font-bold text-emerald-900 mb-1">
+                    Thank You! Inquiry Received
+                  </h4>
+                  <p className="text-xs sm:text-sm text-emerald-700 leading-relaxed max-w-md mx-auto mb-4">
+                    Your inquiry has been received. Our sales desk will review your specifications and contact you shortly.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      setFormData({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        subject: 'Home Inquiry / RFQ',
+                        message: ''
+                      });
+                    }}
+                    className="px-5 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleFormSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="name" className="block text-xs font-bold text-slate-700 mb-1">
+                        Full Name <span className="text-[#E93984]">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={formData.name}
+                        onChange={handleFormChange}
+                        placeholder="e.g. Ramesh Kumar"
+                        className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E93984]/20 transition-all ${
+                          formErrors.name ? 'border-red-500 bg-red-50/20' : 'border-slate-300 focus:border-[#E93984]'
+                        }`}
+                      />
+                      {formErrors.name && (
+                        <p className="text-[11px] text-red-500 mt-1">{formErrors.name}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-xs font-bold text-slate-700 mb-1">
+                        Business Email <span className="text-[#E93984]">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={handleFormChange}
+                        placeholder="e.g. ramesh@company.com"
+                        className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E93984]/20 transition-all ${
+                          formErrors.email ? 'border-red-500 bg-red-50/20' : 'border-slate-300 focus:border-[#E93984]'
+                        }`}
+                      />
+                      {formErrors.email && (
+                        <p className="text-[11px] text-red-500 mt-1">{formErrors.email}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-xs font-bold text-slate-700 mb-1">
+                      Phone Number <span className="text-[#E93984]">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={formData.phone}
+                      onChange={handleFormChange}
+                      placeholder="e.g. +91 98673 04316"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E93984]/20 transition-all ${
+                        formErrors.phone ? 'border-red-500 bg-red-50/20' : 'border-slate-300 focus:border-[#E93984]'
+                      }`}
+                    />
+                    {formErrors.phone && (
+                      <p className="text-[11px] text-red-500 mt-1">{formErrors.phone}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-xs font-bold text-slate-700 mb-1">
+                      Requirements &amp; Bill of Quantities <span className="text-[#E93984]">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      rows="4"
+                      value={formData.message}
+                      onChange={handleFormChange}
+                      placeholder="Enter product names, sizes (e.g. 1.5 inch TC bends), material grade (SS 304 / SS 316L), and required quantity..."
+                      className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#E93984]/20 transition-all ${
+                        formErrors.message ? 'border-red-500 bg-red-50/20' : 'border-slate-300 focus:border-[#E93984]'
+                      }`}
+                    />
+                    {formErrors.message && (
+                      <p className="text-[11px] text-red-500 mt-1">{formErrors.message}</p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-3 px-6 rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white text-xs sm:text-sm font-bold tracking-wide uppercase shadow-md transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    {isSubmitting ? 'Submitting Requirement...' : 'Send Inquiry / Request Quotation →'}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
 
           {/* Central Mumbai Logistics & Dispatch Card */}

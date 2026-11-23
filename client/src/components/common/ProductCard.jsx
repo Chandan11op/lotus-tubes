@@ -84,7 +84,18 @@ export const ProductCard = ({
   const productPath = localizePath(`/product/${slug || id}`, currentLang);
 
   return (
-    <article className={`product-card group flex flex-col h-full bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 ${className}`}>
+    <article
+      onClick={(e) => {
+        if (e.target.closest('button') || e.target.closest('.rfq-action-btn')) return;
+        if (window.history && window.history.pushState) {
+          window.history.pushState({}, '', productPath);
+          window.dispatchEvent(new PopStateEvent('popstate'));
+        } else {
+          window.location.href = productPath;
+        }
+      }}
+      className={`product-card group flex flex-col h-full bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-[#E93984]/50 transition-all duration-300 cursor-pointer ${className}`}
+    >
       
       {/* 1. Static Product Photograph Stage */}
       <div className="product-card__img-wrap aspect-[4/3] bg-slate-50 relative overflow-hidden border-b border-slate-100 p-4 flex items-center justify-center">
@@ -193,8 +204,11 @@ export const ProductCard = ({
 
           <button
             type="button"
-            className="flex-1 py-2 px-3 text-xs font-bold rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white shadow-sm hover:shadow transition-all cursor-pointer"
-            onClick={() => onOpenEnquiry && onOpenEnquiry(id, name)}
+            className="rfq-action-btn flex-1 py-2 px-3 text-xs font-bold rounded-full bg-gradient-to-r from-[#E93984] to-[#FC63A7] hover:from-[#D81B60] hover:to-[#E93984] text-white shadow-sm hover:shadow transition-all cursor-pointer z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenEnquiry && onOpenEnquiry(id, name);
+            }}
           >
             {t('btn_request_rfq', 'Request RFQ')}
           </button>

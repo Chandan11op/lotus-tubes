@@ -247,5 +247,27 @@ export default {
   seo_quote_title: 'Yêu Cầu Báo Giá B2B & Dự Toán Danh Mục Khối Lượng BOQ | Lotus Tubes',
   seo_quote_desc: 'Gửi bảng dự toán khối lượng ống và phụ kiện vi sinh để nhận báo giá dự án cạnh tranh nhất cùng cam kết chứng chỉ kiểm định chất lượng xuất xưởng.',
   seo_industries_title: 'Ứng Dụng Ngành Nghề | Dược Phẩm, Sữa, Thực Phẩm & Đồ Uống | Lotus Tubes',
-  seo_industries_desc: 'Giải pháp đường ống và van inox vi sinh chuyên biệt cho ngành dược phẩm, chế biến sữa tươi, sản xuất bia rượu và hệ thống tuần hoàn nước pha tiêm WFI.'
+  seo_industries_desc: 'Giải pháp đường ống và van inox vi sinh chuyên biệt cho ngành dược phẩm, chế biến sữa tươi, sản xuất bia rượu và hệ thống tuần hoàn nước pha tiêm WFI.',
+
+  // Home Redesign & Dynamic Components
+  nav_news_social: 'Tin tức & Hoạt động',
+  hero_badge: 'Trung tâm cung ứng Mumbai • Xuất khẩu toàn cầu (12 quốc gia)',
+  hero_h1_line1: 'THÉP KHÔNG GỈ',
+  hero_h1_line2: 'VAN VỆ SINH',
+  hero_h1_line3: 'GIẢI PHÁP',
+  hero_lead: 'Lotus Tubes là nhà cung cấp uy tín về ống, phụ kiện và van vệ sinh bằng thép không gỉ SS 304 và SS 316L chất lượng cao phục vụ các dây chuyền chế biến dược phẩm, sữa và thực phẩm.',
+  btn_explore_our_products: 'Khám phá sản phẩm',
+  btn_contact_sales_team: 'Liên hệ đội ngũ bán hàng',
+  ticker_title: 'SẢN PHẨM VỆ SINH BÁN CHẠY NHẤT',
+  ticker_badge: 'KHO HÀNG TRỰC TIẾP',
+  ticker_view_all: 'Xem tất cả sản phẩm',
+  our_products_title: 'Sản phẩm của chúng tôi',
+  our_products_badge: '★ Sản phẩm bán chạy nhất • Danh mục kiểm định',
+  our_products_sub: 'Van, ống và phụ kiện vệ sinh chế tạo chính xác bằng thép không gỉ SS 304 & SS 316L với độ bóng bề mặt được chứng nhận (Đánh bóng điện hóa Ra ≤ 0.38 µm & Đánh bóng cơ học).',
+  btn_view_specs: 'Xem thông số kỹ thuật',
+  btn_explore_all_categories: 'Xem tất cả sản phẩm (Duyệt tất cả 11 danh mục)',
+  about_title: 'Về Lotus Tubes',
+  about_heading: 'Chuyên gia hàng đầu về thép không gỉ vệ sinh độ tinh khiết cao',
+  news_social_title: 'Tin tức & Hoạt động',
+  contact_team_title: 'Liên hệ đội ngũ vận hành của chúng tôi'
 };

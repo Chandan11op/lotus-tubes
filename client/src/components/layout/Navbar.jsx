@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { CATEGORIES_MANIFEST } from '../../data/categoriesManifest';
+import { PRODUCTS } from '../../data/siteData';
 
-export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
+export const Navbar = ({ onToggleMobile }) => {
   const { t, currentLang, localizePath } = useLanguage();
   const { user, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const [hoveredCategoryId, setHoveredCategoryId] = useState(CATEGORIES_MANIFEST[0].id);
+
+  // Products Mega Dropdown State
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [hoveredCategoryId, setHoveredCategoryId] = useState(null);
+  const productsTimeoutRef = useRef(null);
+
+  // Direct Inline Search Bar State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchContainerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,8 +27,60 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const activeCategory =
-    CATEGORIES_MANIFEST.find((cat) => cat.id === hoveredCategoryId) || CATEGORIES_MANIFEST[0];
+  // Close search dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Filter products for inline live search
+  const searchResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return PRODUCTS.filter((p) => {
+      const name = (p.name || '').toLowerCase();
+      const cat = (p.category || '').toLowerCase();
+      const std = (p.standard || '').toLowerCase();
+      const mat = (p.material || '').toLowerCase();
+      const desc = (p.shortDescription || '').toLowerCase();
+      return name.includes(q) || cat.includes(q) || std.includes(q) || mat.includes(q) || desc.includes(q);
+    }).slice(0, 5);
+  }, [searchQuery]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (!q) return;
+    setIsSearchFocused(false);
+    const targetUrl = localizePath(`/products?search=${encodeURIComponent(q)}`, currentLang);
+    if (window.history && window.history.pushState) {
+      window.history.pushState({}, '', targetUrl);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    } else {
+      window.location.href = targetUrl;
+    }
+  };
+
+  const handleProductHoverOpen = () => {
+    if (productsTimeoutRef.current) clearTimeout(productsTimeoutRef.current);
+    setIsProductsOpen(true);
+  };
+
+  const handleProductHoverClose = () => {
+    productsTimeoutRef.current = setTimeout(() => {
+      setIsProductsOpen(false);
+      setHoveredCategoryId(null);
+    }, 150);
+  };
+
+  const activeCategory = hoveredCategoryId
+    ? CATEGORIES_MANIFEST.find((cat) => cat.id === hoveredCategoryId)
+    : null;
 
   return (
     <header
@@ -31,7 +92,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
       id="site-header"
     >
       <div className="max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between gap-4">
-        {/* Brand Logo */}
+        {/* 1. Brand Logo (Left) */}
         <a
           href={localizePath('/', currentLang)}
           className="flex items-center gap-3 shrink-0 group focus:outline-none"
@@ -50,9 +111,12 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           <span className="sr-only">Lotus Tubes</span>
         </a>
 
-        {/* Primary Desktop Navigation: Logo on left, Navigation in center, Controls on right */}
-        <nav className="hidden xl:flex items-center justify-center flex-1 mx-4 gap-1.5 text-sm font-semibold tracking-normal text-slate-700" aria-label="Primary Navigation">
-          {/* 1. Home */}
+        {/* 2. Desktop Navigation (Center): [Home, Products, About Us, News and Social Activities, Contact Us] */}
+        <nav
+          className="hidden xl:flex items-center justify-center flex-1 mx-4 gap-1 text-sm font-semibold tracking-normal text-slate-700"
+          aria-label="Primary Navigation"
+        >
+          {/* Home */}
           <a
             href={localizePath('/', currentLang)}
             className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
@@ -60,71 +124,91 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             {t('nav_home', 'Home')}
           </a>
 
-          {/* 2. Products (Interactive Mega-Menu with 11 Categories & Real Photos on Hover) */}
+          {/* Products (Interactive Cascading Flyout Menu: Categories on Left, Products on Right) */}
           <div
             className="relative"
-            onMouseEnter={() => setActiveDropdown('products')}
-            onMouseLeave={() => setActiveDropdown(null)}
+            onMouseEnter={handleProductHoverOpen}
+            onMouseLeave={handleProductHoverClose}
           >
             <a
               href={localizePath('/products', currentLang)}
+              onClick={(e) => {
+                // If user clicks, toggle dropdown
+                if (window.innerWidth >= 1280) {
+                  e.preventDefault();
+                  setIsProductsOpen((prev) => !prev);
+                }
+              }}
               className={`px-3.5 py-1.5 rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer ${
-                activeDropdown === 'products'
-                  ? 'text-[#E93984] bg-pink-50/70'
+                isProductsOpen
+                  ? 'text-[#E93984] bg-pink-50/70 font-bold'
                   : 'text-slate-800 hover:text-[#E93984] hover:bg-slate-50'
               }`}
               aria-haspopup="true"
-              aria-expanded={activeDropdown === 'products'}
+              aria-expanded={isProductsOpen}
             >
               <span>{t('nav_products', 'Products')}</span>
               <svg
                 className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                  activeDropdown === 'products' ? 'rotate-180 text-[#E93984]' : 'text-slate-400'
+                  isProductsOpen ? 'rotate-180 text-[#E93984]' : 'text-slate-400'
                 }`}
                 viewBox="0 0 10 6"
                 fill="none"
               >
-                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path
+                  d="M1 1L5 5L9 1"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </a>
 
-            {/* Interactive Mega Menu Overlay */}
-            {activeDropdown === 'products' && (
+            {/* Cascading Flyout Menu — Shows ONLY categories until a category is hovered/clicked */}
+            {isProductsOpen && (
               <div
-                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[920px] transition-all z-50"
+                className={`absolute top-full left-0 pt-2 transition-all duration-200 z-50 animate-fadeIn ${
+                  hoveredCategoryId ? 'w-[680px]' : 'w-[300px]'
+                } max-w-[95vw]`}
                 role="region"
                 aria-label="Product Catalogue Categories"
               >
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden divide-y divide-slate-100 font-sans">
-                  {/* Top Header of Mega Menu */}
-                  <div className="px-6 py-3.5 bg-gradient-to-r from-[#061A5A] to-[#0D225E] text-white flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                <div className="bg-white border border-slate-200/90 rounded-2xl shadow-2xl overflow-hidden font-sans border-t-2 border-t-[#E93984]">
+                  {/* Subtle Sub-header */}
+                  <div className="px-4 py-2.5 bg-slate-900 text-white flex items-center justify-between text-xs">
+                    <span className="font-bold tracking-wider uppercase text-[11px] text-slate-200 flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#E93984]" />
-                      <span className="text-xs uppercase font-extrabold tracking-wider">
-                        11 PRODUCT CATEGORIES &amp; REAL SOURCING CATALOGUE
-                      </span>
-                    </div>
+                      11 Product Categories
+                    </span>
                     <a
                       href={localizePath('/products', currentLang)}
-                      className="text-xs text-[#FC63A7] hover:text-white font-bold transition-colors flex items-center gap-1"
+                      onClick={() => setIsProductsOpen(false)}
+                      className="text-[#FC63A7] hover:text-white font-semibold text-[11px] flex items-center gap-1 transition-colors"
                     >
-                      <span>BROWSE COMPLETE CATALOGUE</span>
+                      <span>Catalogue</span>
                       <span>→</span>
                     </a>
                   </div>
 
-                  {/* 2-Column Split: Left 11 Categories List | Right Real Products & Images */}
-                  <div className="grid grid-cols-12 min-h-[440px]">
-                    {/* Left: 11 Categories Sidebar */}
-                    <div className="col-span-4 bg-slate-50/80 border-r border-slate-200/80 p-2.5 space-y-1 overflow-y-auto max-h-[480px]">
+                  {/* Layout: Single Column (Categories Only) OR Two Columns (Categories + Products when category hovered) */}
+                  <div className="flex min-h-[380px] max-h-[460px]">
+                    {/* Categories Column */}
+                    <div
+                      className={`${
+                        hoveredCategoryId ? 'w-[280px] border-r border-slate-200/80' : 'w-full'
+                      } bg-slate-50/90 p-2 space-y-0.5 overflow-y-auto shrink-0 transition-all`}
+                    >
                       {CATEGORIES_MANIFEST.map((cat, idx) => {
-                        const isSelected = cat.id === activeCategory.id;
+                        const isSelected = cat.id === hoveredCategoryId;
                         return (
                           <button
                             key={cat.id}
                             type="button"
                             onMouseEnter={() => setHoveredCategoryId(cat.id)}
-                            onFocus={() => setHoveredCategoryId(cat.id)}
+                            onClick={() => {
+                              setHoveredCategoryId(cat.id);
+                            }}
                             className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between cursor-pointer group ${
                               isSelected
                                 ? 'bg-white text-[#E93984] font-bold shadow-sm border border-pink-200/80'
@@ -133,7 +217,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                           >
                             <span className="flex items-center gap-2 truncate">
                               <span
-                                className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono shrink-0 ${
+                                className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-mono shrink-0 ${
                                   isSelected
                                     ? 'bg-[#E93984] text-white font-bold'
                                     : 'bg-slate-200 text-slate-600 group-hover:bg-slate-300'
@@ -144,8 +228,10 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                               <span className="truncate">{cat.title}</span>
                             </span>
                             <span
-                              className={`text-[10px] shrink-0 font-mono transition-transform ${
-                                isSelected ? 'text-[#E93984] translate-x-0.5' : 'text-slate-400 group-hover:text-slate-600'
+                              className={`text-[11px] font-mono transition-transform ${
+                                isSelected
+                                  ? 'text-[#E93984] translate-x-0.5 font-bold'
+                                  : 'text-slate-400 group-hover:text-slate-600'
                               }`}
                             >
                               ›
@@ -155,84 +241,84 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
                       })}
                     </div>
 
-                    {/* Right: Active Category Showcase with Real Photographs */}
-                    <div className="col-span-8 p-5 flex flex-col justify-between max-h-[480px] overflow-y-auto">
-                      <div>
-                        {/* Category Heading & Meta */}
-                        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-                          <div>
-                            <div className="text-[11px] font-mono uppercase tracking-wider text-[#E93984] font-bold">
-                              {activeCategory.countBadge} Available
+                    {/* Right: Products of the Currently Hovered Category ONLY when a category is hovered */}
+                    {hoveredCategoryId && activeCategory && (
+                      <div className="flex-1 p-4 bg-white flex flex-col justify-between overflow-y-auto animate-fadeIn">
+                        <div>
+                          {/* Category Title & Quick Link */}
+                          <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
+                            <div>
+                              <span className="text-[10px] uppercase font-mono font-bold text-[#E93984]">
+                                {activeCategory.countBadge}
+                              </span>
+                              <h3 className="text-sm font-extrabold text-[#0C225E] leading-tight">
+                                {activeCategory.title}
+                              </h3>
                             </div>
-                            <h3 className="text-base font-extrabold text-[#0C225E] mt-0.5">
-                              {activeCategory.title}
-                            </h3>
+                            <a
+                              href={localizePath(activeCategory.viewAllLink, currentLang)}
+                              onClick={() => setIsProductsOpen(false)}
+                              className="text-[11px] font-semibold text-[#0C225E] hover:text-[#E93984] transition-colors"
+                            >
+                              View All →
+                            </a>
                           </div>
+
+                          {/* Category Products List */}
+                          <div className="space-y-1.5 max-h-[320px] overflow-y-auto pr-1">
+                            {activeCategory.products.map((prod, pIdx) => (
+                              <a
+                                key={pIdx}
+                                href={localizePath(prod.link, currentLang)}
+                                onClick={() => setIsProductsOpen(false)}
+                                className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-slate-50 border border-transparent hover:border-slate-200 transition-all group"
+                              >
+                                {/* Real Product Thumbnail Image */}
+                                <div className="w-10 h-10 rounded-md bg-slate-50 border border-slate-200 p-0.5 flex items-center justify-center shrink-0 overflow-hidden group-hover:scale-105 transition-transform">
+                                  <img
+                                    src={prod.image}
+                                    alt={prod.name}
+                                    className="w-full h-full object-contain"
+                                    loading="lazy"
+                                    width="40"
+                                    height="40"
+                                  />
+                                </div>
+
+                                {/* Product Info */}
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="text-xs font-semibold text-slate-800 group-hover:text-[#E93984] truncate transition-colors leading-tight">
+                                    {prod.name}
+                                  </h4>
+                                  <p className="text-[10px] text-slate-400 truncate mt-0.5 font-normal">
+                                    {prod.spec}
+                                  </p>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Bottom Footer Note */}
+                        <div className="pt-2 mt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+                          <span>SS 304 &amp; SS 316L • EN 10204 3.1</span>
                           <a
-                            href={localizePath(activeCategory.viewAllLink, currentLang)}
-                            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-100 hover:bg-[#E93984] hover:text-white text-slate-700 text-xs font-semibold transition-all"
+                            href={localizePath('/products', currentLang)}
+                            onClick={() => setIsProductsOpen(false)}
+                            className="text-[#E93984] font-bold hover:underline"
                           >
-                            <span>Explore Category</span>
-                            <span className="text-[10px]">↗</span>
+                            All Categories →
                           </a>
                         </div>
-
-                        <p className="text-xs text-slate-500 mb-4 leading-relaxed">
-                          {activeCategory.description}
-                        </p>
-
-                        {/* Real Product Cards Grid */}
-                        <div className="grid grid-cols-2 gap-2.5">
-                          {activeCategory.products.map((prod, pIdx) => (
-                            <a
-                              key={pIdx}
-                              href={localizePath(prod.link, currentLang)}
-                              className="group flex items-center gap-3 p-2 rounded-xl border border-slate-100 bg-white hover:border-pink-200 hover:shadow-md transition-all"
-                            >
-                              {/* Real Product Photo Thumbnail */}
-                              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-lg bg-slate-50 border border-slate-200/70 p-1 flex items-center justify-center shrink-0 overflow-hidden group-hover:border-[#E93984]/50">
-                                <img
-                                  src={prod.image}
-                                  alt={prod.name}
-                                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
-                                  loading="lazy"
-                                  width="56"
-                                  height="56"
-                                />
-                              </div>
-
-                              {/* Title & Spec */}
-                              <div className="min-w-0 flex-1">
-                                <h4 className="text-xs font-bold text-slate-800 group-hover:text-[#E93984] truncate transition-colors leading-snug">
-                                  {prod.name}
-                                </h4>
-                                <p className="text-[11px] text-slate-500 truncate mt-0.5 font-normal">
-                                  {prod.spec}
-                                </p>
-                              </div>
-                            </a>
-                          ))}
-                        </div>
                       </div>
-
-                      {/* Bottom Footer Notice */}
-                      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                        <span>SS 304 &amp; SS 316L • Mill Test Certified (EN 10204 3.1)</span>
-                        <a
-                          href="#get-quotation"
-                          className="text-[#E93984] hover:underline font-bold"
-                        >
-                          Request Custom Quotation →
-                        </a>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* 3. About Us */}
+          {/* About Us */}
           <a
             href="#about"
             className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
@@ -240,7 +326,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             {t('nav_about', 'About Us')}
           </a>
 
-          {/* 4. News and Social Activities */}
+          {/* News and Social Activities */}
           <a
             href="#news-social"
             className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors whitespace-nowrap"
@@ -248,7 +334,7 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
             {t('nav_news_social', 'News and Social Activities')}
           </a>
 
-          {/* 5. Contact Us */}
+          {/* Contact Us */}
           <a
             href="#contact"
             className="px-3.5 py-1.5 rounded-lg text-slate-800 hover:text-[#E93984] hover:bg-slate-50 transition-colors"
@@ -257,42 +343,110 @@ export const Navbar = ({ onOpenSearch, onToggleMobile }) => {
           </a>
         </nav>
 
-        {/* Action Controls: Expanded Search Bar + CRM Profile Button + Mobile Drawer Toggle */}
+        {/* 3. Action Controls (Right): Direct Input Search Bar + Profile Icon + Mobile Toggle */}
         <div className="flex items-center gap-3">
-          {/* Expanded Search Bar */}
-          <button
-            type="button"
-            className="w-36 sm:w-56 md:w-64 h-9 px-3 rounded-full bg-slate-100 hover:bg-slate-200/90 text-slate-500 hover:text-slate-800 flex items-center justify-between text-xs transition-all border border-slate-200/80 cursor-pointer shadow-inner group"
-            onClick={(e) => {
-              e.preventDefault();
-              if (typeof onOpenSearch === 'function') onOpenSearch();
-            }}
-            title="Search products, sizes, ASTM standards..."
-            aria-label="Search product catalogue"
-            id="nav-search-btn"
-          >
-            <span className="flex items-center gap-2 truncate">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                className="text-slate-400 group-hover:text-[#E93984] shrink-0 transition-colors"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              <span className="truncate text-slate-500 text-xs hidden sm:inline">Search products, sizes...</span>
-              <span className="truncate text-slate-500 text-xs sm:hidden">Search...</span>
-            </span>
-            <kbd className="hidden md:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-white border border-slate-200 rounded">
-              ⌘K
-            </kbd>
-          </button>
+          {/* Direct Search Bar in Navbar (NO ⌘K, NO Search Icon, Real Typing Input) */}
+          <div className="relative w-44 sm:w-60 md:w-72" ref={searchContainerRef}>
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchFocused(true);
+                }}
+                onFocus={() => {
+                  if (searchQuery.trim()) setIsSearchFocused(true);
+                }}
+                placeholder={t('search_placeholder_short', 'Search products, sizes...')}
+                className="w-full h-9 px-4 rounded-full bg-slate-100 hover:bg-slate-200/80 focus:bg-white text-xs text-slate-800 placeholder:text-slate-400 border border-slate-200 focus:border-[#E93984] focus:ring-2 focus:ring-[#E93984]/20 outline-none transition-all shadow-inner"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setIsSearchFocused(false);
+                  }}
+                  className="absolute right-3 text-slate-400 hover:text-slate-600 text-xs cursor-pointer p-0.5"
+                  title="Clear search"
+                >
+                  ✕
+                </button>
+              )}
+            </form>
 
-          {/* Clean User Profile Button (Icon Only — Zero Text Like CRM or Portal) */}
+            {/* Live Search Results Dropdown Anchored Directly Under Navbar Search Bar */}
+            {isSearchFocused && searchQuery.trim() && (
+              <div
+                className="absolute right-0 mt-2 w-72 sm:w-88 md:w-96 bg-white border border-slate-200 rounded-2xl shadow-2xl py-2 z-50 overflow-hidden divide-y divide-slate-100"
+                role="listbox"
+              >
+                <div className="px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
+                  <span>Matching Products ({searchResults.length})</span>
+                  <span className="text-[9px] text-slate-400">Press Enter to view all</span>
+                </div>
+
+                {searchResults.length > 0 ? (
+                  <div className="py-1 max-h-72 overflow-y-auto">
+                    {searchResults.map((item) => (
+                      <a
+                        key={item.id}
+                        href={localizePath(`/product/${item.slug}`, currentLang)}
+                        onClick={() => {
+                          setIsSearchFocused(false);
+                          setSearchQuery('');
+                        }}
+                        className="px-3 py-2 flex items-center gap-3 hover:bg-pink-50/50 transition-colors cursor-pointer group"
+                      >
+                        <div className="w-9 h-9 rounded-lg bg-slate-50 border border-slate-200 p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-contain"
+                            loading="lazy"
+                            width="36"
+                            height="36"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1 text-left">
+                          <div className="text-xs font-bold text-slate-800 group-hover:text-[#E93984] truncate transition-colors">
+                            {item.name}
+                          </div>
+                          <div className="text-[10px] text-slate-400 truncate">
+                            {item.category} • {item.material}
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-slate-300 group-hover:text-[#E93984] transition-colors">
+                          ↗
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="px-4 py-4 text-center text-xs text-slate-500">
+                    No products found for "{searchQuery}".
+                  </div>
+                )}
+
+                <div className="p-2 bg-slate-50 text-center">
+                  <a
+                    href={localizePath(`/products?search=${encodeURIComponent(searchQuery.trim())}`, currentLang)}
+                    onClick={() => {
+                      setIsSearchFocused(false);
+                      setSearchQuery('');
+                    }}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E93984] hover:underline"
+                  >
+                    <span>View all results in Catalogue</span>
+                    <span>→</span>
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Clean User Profile Button (Icon Only — Zero Text) */}
           <a
             href={
               isAuthenticated

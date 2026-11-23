@@ -100,7 +100,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Sanitary Gaskets',
       desc: 'FDA & USP Class VI compliant sealing gaskets in Silicone, EPDM, PTFE, Viton (FKM), and NBR for leak-free hygienic pipe joints.',
       icon: '⭕',
-      image: '/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg',
+      image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg',
       subcategories: ['Silicone Gaskets', 'EPDM Gaskets', 'PTFE Gaskets', 'Viton Gaskets', 'Manhole Gaskets']
     },
     {
@@ -127,7 +127,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tank Cleaning Accessories',
       desc: 'Fixed and 360° rotary spray balls, sanitary manhole covers (round/oval/pressure), CIP tank vent filter housings, and vessel sight glasses.',
       icon: '🚿',
-      image: '/assets/images/products/accessories/ss-sanitary-spray-ball.svg',
+      image: '/assets/images/products images/SS SPRAY BALL VALVE/TPM-310.jpg',
       subcategories: ['Rotary Spray Balls', 'Static Spray Balls', 'Pressure Manholes', 'Tank Sight Glass']
     },
     {
@@ -1136,12 +1136,12 @@ export const LEADERSHIP = {
 
 export const AI_TEAM_MEMBERS = [
   {
-    id: 'ananya-mehta',
+    id: 'anjali-pandey',
     department: 'Technical Quotations',
-    name: 'Ananya Mehta',
-    email: 'ananyamehta@lotustubes.com',
-    initial: 'AM',
-    photo: '/assets/images/team/agent-1.jpeg',
+    name: 'Anjali Pandey',
+    email: 'anjalipandey@lotustubes.com',
+    initial: 'AP',
+    photo: '/assets/images/team/anjali-pandey.png',
     focalPoint: 'center 7%',
     role: 'Lead Quotation & Sales Coordinator',
     channels: ['Official Quotations', 'WhatsApp Desk', 'ASME/ASTM Sizing'],

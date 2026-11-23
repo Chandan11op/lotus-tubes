@@ -247,5 +247,27 @@ export default {
   seo_quote_title: 'B2B-Angebot & Stücklisten-Kalkulation anfordern | Lotus Tubes',
   seo_quote_desc: 'Senden Sie Ihre Stückliste für Edelstahl-Sanitärrohre und -Formstücke für eine schnelle Angebotserstellung mit EN 10204 3.1 MTC-Garantie ein.',
   seo_industries_title: 'Branchenlösungen | Pharma, Molkerei, Food & Biotech | Lotus Tubes',
-  seo_industries_desc: 'Spezialisierte Sanitärrohr- und Ventillösungen aus Edelstahl für Pharmazie, Biotechnologie, Molkereien und Reinstwasser-Kreisläufe (WFI).'
+  seo_industries_desc: 'Spezialisierte Sanitärrohr- und Ventillösungen aus Edelstahl für Pharmazie, Biotechnologie, Molkereien und Reinstwasser-Kreisläufe (WFI).',
+
+  // Home Redesign & Dynamic Components
+  nav_news_social: 'Nachrichten & Aktivitäten',
+  hero_badge: 'Zentraler Export-Hub Mumbai • Weltweiter Versand (12 Länder)',
+  hero_h1_line1: 'EDELSTAHL',
+  hero_h1_line2: 'SANITÄRVENTILE',
+  hero_h1_line3: 'PROZESSLÖSUNGEN',
+  hero_lead: 'Lotus Tubes ist ein zuverlässiger Lieferant von hochwertigen Sanitärrohren, Formstücken und Ventilen aus Edelstahl 1.4301 (304) und 1.4404 (316L) für sterile Pharma-, Molkerei-, Lebensmittel- und Reinstprozesslinien.',
+  btn_explore_our_products: 'Unsere Produkte entdecken',
+  btn_contact_sales_team: 'Vertriebsteam kontaktieren',
+  ticker_title: 'MEISTVERKAUFTE SANITÄRPRODUKTE',
+  ticker_badge: 'KONTINUIERLICHES LIVE-LAGER',
+  ticker_view_all: 'Alle Produkte ansehen',
+  our_products_title: 'Unsere Produkte',
+  our_products_badge: '★ Bestseller-Produkte • Geprüfter Studiokatalog',
+  our_products_sub: 'Präzisionsgefertigte Sanitärventile, Rohre und Formstücke aus 1.4301 und 1.4404 mit zertifizierter Oberflächenrauheit (Elektropoliert Ra ≤ 0,38 µm und mechanisch poliert).',
+  btn_view_specs: 'Spezifikationen anzeigen',
+  btn_explore_all_categories: 'Alle Produkte ansehen (Alle 11 Kategorien durchsuchen)',
+  about_title: 'Über Lotus Tubes',
+  about_heading: 'Spezialisierter Anbieter für hochreinen hygienischen Edelstahl',
+  news_social_title: 'Nachrichten & Aktivitäten',
+  contact_team_title: 'Kontaktieren Sie unser Betriebsteam'
 };

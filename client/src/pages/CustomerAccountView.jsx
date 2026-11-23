@@ -77,7 +77,7 @@ export const CustomerAccountView = ({ onNotify }) => {
       grade: e.grade || 'SS 316L',
       date: new Date(e.createdAt || Date.now()).toLocaleDateString(),
       status: e.status || 'New Lead',
-      assignedAgent: 'Ananya Mehta',
+      assignedAgent: 'Anjali Pandey',
       samplePdfUrl: e.samplePdfUrl || '/sample-quotation.pdf'
     })),
     ...(quotesData.quotes || []).map((q) => ({
@@ -89,7 +89,7 @@ export const CustomerAccountView = ({ onNotify }) => {
       grade: q.materialGrade || 'SS 316L',
       date: new Date(q.createdAt || Date.now()).toLocaleDateString(),
       status: q.status || 'Received',
-      assignedAgent: 'Ananya Mehta',
+      assignedAgent: 'Anjali Pandey',
       samplePdfUrl: q.samplePdfUrl || '/sample-quotation.pdf'
     }))
   ];
@@ -436,7 +436,7 @@ export const CustomerAccountView = ({ onNotify }) => {
               marginBottom: '-2px'
             }}
           >
-            📊 Quotations &amp; RFQs (Ananya Mehta)
+            📊 Quotations &amp; RFQs (Anjali Pandey)
             <span style={{ marginLeft: '6px', fontSize: '0.72rem', background: '#EFF6FF', color: '#0284C7', padding: '2px 6px', borderRadius: '10px' }}>
               {quotationItems.length}
             </span>
@@ -489,7 +489,7 @@ export const CustomerAccountView = ({ onNotify }) => {
               <div>
                 <h3 style={{ margin: 0, color: '#0F172A', fontSize: '1.15rem' }}>Submitted Quotation Requests</h3>
                 <p style={{ margin: '4px 0 0 0', color: '#64748B', fontSize: '13px' }}>
-                  Handled by <strong>Ananya Mehta</strong>. Quotations are dispatched via email and WhatsApp upon Super Admin confirmation.
+                  Handled by <strong>Anjali Pandey</strong>. Quotations are dispatched via email and WhatsApp upon Super Admin confirmation.
                 </p>
               </div>
             </div>
@@ -542,13 +542,13 @@ export const CustomerAccountView = ({ onNotify }) => {
                           <div style={{ display: 'inline-flex', gap: '6px' }}>
                             <a
                               href={`https://wa.me/919930430789?text=${encodeURIComponent(
-                                `Hello Ananya Mehta, I would like an update on my quotation request ${item.id} for ${item.product}.`
+                                `Hello Anjali Pandey, I would like an update on my quotation request ${item.id} for ${item.product}.`
                               )}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="btn btn--sm"
                               style={{ padding: '4px 8px', fontSize: '11px', background: '#25D366', color: '#FFFFFF', border: 'none' }}
-                              title="Chat with Ananya Mehta on WhatsApp"
+                              title="Chat with Anjali Pandey on WhatsApp"
                             >
                               💬 WhatsApp
                             </a>

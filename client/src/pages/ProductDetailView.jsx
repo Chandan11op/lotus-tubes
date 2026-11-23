@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { PRODUCTS, CONFIG } from '../data/siteData';
 import { useLanguage } from '../context/LanguageContext';
 import { getCategoryFallbackImage, UNIVERSAL_FALLBACK_IMAGE, INLINE_SVG_FAILSAFE } from '../utils/mediaFallback';
+import { getTransparentProductImage } from '../utils/removeBackground';
 import { updatePageSEO } from '../utils/seo';
 
 /**
@@ -22,7 +23,9 @@ import { updatePageSEO } from '../utils/seo';
  */
 export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
   const { t, currentLang, localizePath } = useLanguage();
-  const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) || PRODUCTS[0];
+  const prod = PRODUCTS.find((p) => p.slug === slug || p.id === slug) ||
+               PRODUCTS.find((p) => (slug && p.slug.includes(slug)) || (slug && slug.includes(p.slug))) ||
+               PRODUCTS[0];
   const related = PRODUCTS.filter((p) => p.categorySlug === prod.categorySlug && p.id !== prod.id).slice(0, 4);
 
   // Gallery State: active static photograph index (0..n)
@@ -77,6 +80,150 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
     `main-${activePhotoIndex}`
   );
 
+  // Background-removed studio photograph state
+  const [transparentImageSrc, setTransparentImageSrc] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+    if (currentImageSrc) {
+      getTransparentProductImage(currentImageSrc).then((transSrc) => {
+        if (isMounted) setTransparentImageSrc(transSrc);
+      });
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [currentImageSrc]);
+
+  // Zero-Latency Amazon-Style Interactive Product Hover Lens Zoom (Direct Ref DOM updates, 0 React re-renders)
+  const stageRef = useRef(null);
+  const lensRef = useRef(null);
+  const zoomWindowRef = useRef(null);
+
+  const handleStageMouseMove = (e) => {
+    if (!stageRef.current || !lensRef.current || !zoomWindowRef.current) return;
+    const rect = stageRef.current.getBoundingClientRect();
+    const lensW = 140;
+    const lensH = 140;
+
+    // Cursor position within the product stage
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    // Center lens on cursor
+    let lensX = mouseX - lensW / 2;
+    let lensY = mouseY - lensH / 2;
+
+    const maxLensX = rect.width - lensW;
+    const maxLensY = rect.height - lensH;
+
+    if (lensX < 0) lensX = 0;
+    if (lensY < 0) lensY = 0;
+    if (lensX > maxLensX) lensX = maxLensX;
+    if (lensY > maxLensY) lensY = maxLensY;
+
+    const xPercent = maxLensX > 0 ? (lensX / maxLensX) * 100 : 50;
+    const yPercent = maxLensY > 0 ? (lensY / maxLensY) * 100 : 50;
+
+    // Direct hardware-accelerated transform without React component re-rendering
+    lensRef.current.style.transform = `translate3d(${lensX}px, ${lensY}px, 0)`;
+    zoomWindowRef.current.style.backgroundPosition = `${xPercent}% ${yPercent}%`;
+  };
+
+  const handleStageMouseEnter = () => {
+    if (lensRef.current) lensRef.current.style.display = 'block';
+    if (zoomWindowRef.current) zoomWindowRef.current.style.display = 'block';
+  };
+
+  const handleStageMouseLeave = () => {
+    if (lensRef.current) lensRef.current.style.display = 'none';
+    if (zoomWindowRef.current) zoomWindowRef.current.style.display = 'none';
+  };
+
+  // Industries Where This Product Is Highly Used Data
+  const industriesList = [
+    {
+      id: 'pharmaceutical',
+      name: 'Pharmaceutical & Biotechnology',
+      shortName: 'Pharma & Biotech',
+      icon: '💊',
+      badge: 'High-Purity Sterile',
+      image: '/assets/images/industries/pharmaceutical.jpg',
+      usage: 'Sterile WFI loops, injectable fill-finish lines, bioreactor manifolds, chromatography skids.',
+      specs: 'ASME BPE SF4 • Ra ≤ 0.38 µm EP • SS 316L • 100% Boroscopic Weld Traceability'
+    },
+    {
+      id: 'dairy',
+      name: 'Dairy & Milk Processing',
+      shortName: 'Dairy Processing',
+      icon: '🥛',
+      badge: 'Aseptic & CIP/SIP',
+      image: '/assets/images/industries/dairy.jpg',
+      usage: 'Raw milk reception manifolds, HTST pasteurization skids, sterile curd/yogurt tanks, and automatic CIP/SIP cleanability.',
+      specs: '3-A Sanitary Standards • FDA CFR 177.2600 EPDM/Silicone • SMS 1145 Unions'
+    },
+    {
+      id: 'food-beverage',
+      name: 'Food & Beverage Bottling',
+      shortName: 'Food & Beverage',
+      icon: '🥤',
+      badge: 'Food Grade Contact',
+      image: '/assets/images/industries/food-beverage.jpg',
+      usage: 'Carbonated beverage blending pipelines, hot-fill juice preparation, aseptic syrup dosing, and sterile process lines.',
+      specs: 'DIN 11850 Series • EHEDG Hygienic Geometry • Mirror Satin Polish'
+    },
+    {
+      id: 'breweries',
+      name: 'Breweries & Distilleries',
+      shortName: 'Breweries & Distilleries',
+      icon: '🍺',
+      badge: 'Sanitary Fermentation',
+      image: '/assets/images/industries/breweries.jpg',
+      usage: 'Brewhouse hot wort transfer, fermentation and conditioning cellars, yeast propagation loops, and bright beer filtration.',
+      specs: 'Non-Retention TC Clamping • Sight Glass Monitoring • Pressure Relief & Tank Bottom Flush'
+    },
+    {
+      id: 'chemical',
+      name: 'High-Purity Chemical & Specialty Fluids',
+      shortName: 'Specialty Chemical',
+      icon: '🧪',
+      badge: 'Corrosion Resistant',
+      image: '/assets/images/industries/chemical.jpg',
+      usage: 'Aggressive organic chemical batching, acid/alkali transfer, high-purity solvent distribution, and cleanroom reagent piping.',
+      specs: 'SS 316L (UNS S31603) • Cavity-Filled PTFE Sealing • EN 10204 3.1 Traceable Metallurgy'
+    },
+    {
+      id: 'data-cooling',
+      name: 'Data Centre Liquid Cooling',
+      shortName: 'Data Centre Cooling',
+      icon: '❄️',
+      badge: 'Mission Critical',
+      image: '/assets/images/industries/biotechnology.jpg',
+      usage: 'Direct-to-chip server liquid cooling headers, high-density AI immersion cooling loops, and high-flow manifold distribution lines.',
+      specs: '100% Leak-Free TC Pipe Clamps • Low Pressure Drop • Non-Magnetic SS 304/316L'
+    },
+    {
+      id: 'water-treatment',
+      name: 'Water Treatment & Purified Water (PW/WFI)',
+      shortName: 'Water Treatment & WFI',
+      icon: '💧',
+      badge: 'Zero Dead-Leg',
+      image: '/assets/images/industries/water-treatment.jpg',
+      usage: 'Multi-effect distillation stills, pure steam generation loops, reverse osmosis (RO) systems, and electro-deionization (EDI) skids.',
+      specs: 'Zero Dead-Leg Full Drainability • Orbitally Welded SS 316L • ASTM A270 SF1/SF4'
+    },
+    {
+      id: 'cosmetics',
+      name: 'Cosmetics & Personal Care Processing',
+      shortName: 'Cosmetics & Personal Care',
+      icon: '🧴',
+      badge: 'Viscous Fluid Transfer',
+      image: '/assets/images/industries/food-processing.jpg',
+      usage: 'Viscous lotion & cream compounding tanks, perfume and alcohol blending lines, and sterile packaging delivery skids.',
+      specs: 'High-Viscosity Flow Clearance • Smooth Ra ≤ 0.4 µm • Quick-Disassembly Tri-Clamps'
+    }
+  ];
+
   // Lightbox keyboard navigation
   const handleKeyDown = useCallback(
     (e) => {
@@ -116,9 +263,9 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         
         {/* ========================================================================= */}
-        {/* LEFT COLUMN: STATIC PRODUCT PHOTOGRAPHY GALLERY & FULLSCREEN LIGHTBOX     */}
+        {/* LEFT COLUMN: STATIC PRODUCT PHOTOGRAPHY GALLERY & AMAZON HOVER ZOOM       */}
         {/* ========================================================================= */}
-        <div className="lg:col-span-6 flex flex-col-reverse lg:flex-row gap-4 items-start w-full">
+        <div className="lg:col-span-6 flex flex-col-reverse lg:flex-row gap-4 items-start w-full relative">
           
           {/* Static Thumbnail Selector (Vertical on Desktop, Horizontal on Mobile) */}
           {productImages.length > 1 && (
@@ -150,39 +297,97 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             </div>
           )}
 
-          {/* Main Static Photograph Stage */}
-          <div className="relative flex-1 w-full bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-sm flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] p-6 group">
+          {/* Main Stage & Industries Column Wrapper */}
+          <div className="flex-1 flex flex-col w-full min-w-0">
+            {/* Main Static Photograph Stage with Zero-Latency Amazon-Style Lens Zoom & Cutout Product */}
             <div
-              className="relative w-full h-full flex items-center justify-center cursor-zoom-in"
-              onClick={() => setIsLightboxOpen(true)}
-              title="Click to expand high-resolution photograph"
+              ref={stageRef}
+              onMouseEnter={handleStageMouseEnter}
+              onMouseLeave={handleStageMouseLeave}
+              onMouseMove={handleStageMouseMove}
+              className="relative w-full border border-slate-200/90 rounded-3xl overflow-hidden shadow-lg flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] p-6 group bg-cover bg-center cursor-crosshair select-none"
+              style={{
+                backgroundImage: 'url(/product-image-cover.png)',
+                backgroundSize: '100% 100%',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
             >
-              <img
-                src={currentImageSrc}
-                alt={prod.name}
-                className="max-h-[400px] max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                onError={() => handleImageError(`main-${activePhotoIndex}`)}
-              />
-
-              {/* Floating Fullscreen Zoom Action */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsLightboxOpen(true);
-                }}
-                className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 hover:text-[#E93984] p-2.5 rounded-xl border border-slate-200 shadow-md text-xs font-semibold flex items-center gap-1.5 transition-colors"
-                aria-label="Open Fullscreen Image View"
+              <div
+                className="relative w-full h-full flex items-center justify-center"
+                onClick={() => setIsLightboxOpen(true)}
+                title="Click to expand high-resolution photograph"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                </svg>
-                <span>Zoom</span>
-              </button>
+                <img
+                  src={transparentImageSrc || currentImageSrc}
+                  alt={prod.name}
+                  className="max-h-[360px] sm:max-h-[420px] max-w-full object-contain transition-transform duration-200 drop-shadow-2xl"
+                  style={{
+                    mixBlendMode: 'multiply'
+                  }}
+                  onError={() => handleImageError(`main-${activePhotoIndex}`)}
+                />
 
-              {/* Static Photo Counter Badge */}
-              <div className="absolute top-2 left-2 bg-[#081D5B]/90 text-white text-[11px] font-sans px-2.5 py-1 rounded-md backdrop-blur-sm pointer-events-none">
-                Photo {activePhotoIndex + 1} of {productImages.length}
+                {/* Zero-Latency Amazon-style Semi-Transparent Zoom Lens Following Cursor (Direct Ref Update) */}
+                <div
+                  ref={lensRef}
+                  className="absolute top-0 left-0 pointer-events-none border-2 border-[#2D8CFF] bg-[#2D8CFF]/25 shadow-[0_0_14px_rgba(45,140,255,0.45)] rounded-xl z-20"
+                  style={{
+                    display: 'none',
+                    width: '140px',
+                    height: '140px',
+                    willChange: 'transform'
+                  }}
+                >
+                  <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-white" />
+                  <div className="absolute top-1 right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-white" />
+                  <div className="absolute bottom-1 left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-white" />
+                  <div className="absolute bottom-1 right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-white" />
+                </div>
+
+                {/* Floating Fullscreen Zoom Action */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLightboxOpen(true);
+                  }}
+                  className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-slate-700 hover:text-[#E93984] p-2.5 rounded-xl border border-slate-200 shadow-md text-xs font-semibold flex items-center gap-1.5 transition-colors z-10 cursor-pointer"
+                  aria-label="Open Fullscreen Image View"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                  </svg>
+                  <span>Full View</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Highly Used in These Industries Cluster (Placed Directly Down To Image to Fill Space) */}
+            <div className="w-full mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0C225E] font-mono flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#E93984]" />
+                  Highly Used in These Industries:
+                </span>
+                <a
+                  href="#industries-section"
+                  className="text-[10px] text-[#E93984] hover:underline font-bold"
+                >
+                  View Detailed Specs ↓
+                </a>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {industriesList.map((ind) => (
+                  <a
+                    key={ind.id}
+                    href="#industries-section"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-[11px] font-medium text-slate-700 shadow-xs hover:border-[#E93984] hover:text-[#0C225E] transition-colors"
+                  >
+                    <span>{ind.icon}</span>
+                    <span>{ind.shortName}</span>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
@@ -455,6 +660,94 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
         </div>
       </div>
 
+      {/* ========================================================================= */}
+      {/* INDUSTRIES WHERE THIS PRODUCT IS HIGHLY USED                              */}
+      {/* ========================================================================= */}
+      <section className="mt-14 border-t border-slate-200 pt-10" id="industries-section">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+          <div>
+            <div className="inline-block px-3 py-1 rounded-full bg-pink-100 text-[#E93984] text-xs font-bold uppercase tracking-wider mb-2">
+              Industrial Applications &amp; Sourcing Sectors
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0C225E] tracking-tight">
+              Industries Where {prod.name} Is Highly Used
+            </h2>
+            <p className="mt-1.5 text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
+              Precision manufactured to meet stringent sanitary codes, surface roughness requirements, and zero-contamination fluid transfer across critical global industries.
+            </p>
+          </div>
+          <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 shrink-0">
+            8 Certified Sectors
+          </span>
+        </div>
+
+        {/* 8 Industry Cards Grid with Real Photographs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {industriesList.map((ind) => (
+            <div
+              key={ind.id}
+              className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs hover:shadow-xl hover:border-[#E93984]/50 transition-all flex flex-col justify-between group"
+            >
+              <div>
+                {/* Real Photographic Header Image */}
+                <div className="h-40 w-full overflow-hidden relative bg-slate-100">
+                  <img
+                    src={ind.image}
+                    alt={ind.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+                  <div className="absolute top-3 left-3">
+                    <span className="px-2.5 py-0.5 rounded-full bg-white/95 text-slate-900 text-[10px] font-bold tracking-wide shadow-sm backdrop-blur-sm">
+                      {ind.badge}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-2.5 left-3 right-3 text-white flex items-center gap-2">
+                    <span className="text-base">{ind.icon}</span>
+                    <h3 className="text-xs font-bold truncate leading-tight drop-shadow-sm text-white">
+                      {ind.name}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div className="p-4 space-y-3">
+                  <div>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 font-mono">
+                      High Usage in {prod.name}:
+                    </span>
+                    <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                      {ind.usage}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100">
+                    <span className="text-[10px] uppercase font-bold text-[#E93984] font-mono">
+                      Compliance Standards:
+                    </span>
+                    <p className="text-[11px] text-slate-500 mt-0.5 font-medium leading-snug">
+                      {ind.specs}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Footer CTA */}
+              <div className="p-4 pt-0">
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(prod, `${prod.name} for ${ind.name}`)}
+                  className="w-full py-2 px-3 rounded-xl bg-slate-50 hover:bg-[#E93984] text-slate-700 hover:text-white border border-slate-200 hover:border-[#E93984] text-xs font-bold transition-all text-center cursor-pointer shadow-xs"
+                >
+                  Inquire for {ind.shortName} →
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Related Products */}
       {related.length > 0 && (
         <div className="mt-14 border-t border-slate-200 pt-10">
@@ -545,21 +838,27 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             </>
           )}
 
-          {/* Lightbox Image Stage */}
+          {/* Lightbox Image Stage with Lotus Tubes Cover Background */}
           <div
-            className="relative max-w-4xl max-h-[85vh] flex flex-col items-center justify-center"
+            className="relative max-w-4xl max-h-[85vh] w-full flex flex-col items-center justify-center p-8 rounded-3xl shadow-2xl border border-white/20 bg-cover bg-center overflow-hidden"
+            style={{
+              backgroundImage: 'url(/product-image-cover.png)',
+              backgroundSize: '100% 100%',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={currentImageSrc}
+              src={transparentImageSrc || currentImageSrc}
               alt={`${prod.name} high resolution static photograph`}
-              className="max-w-full max-h-[75vh] object-contain rounded-2xl shadow-2xl"
+              className="max-w-full max-h-[70vh] object-contain drop-shadow-2xl"
+              style={{
+                mixBlendMode: 'multiply'
+              }}
             />
-            <div className="mt-4 text-center text-white text-xs sm:text-sm">
-              <span className="font-bold">{prod.name}</span>
-              <span className="text-slate-400 ml-2">
-                (Photo {activePhotoIndex + 1} of {productImages.length})
-              </span>
+            <div className="mt-4 text-center text-slate-800 text-xs sm:text-sm bg-white/90 px-4 py-1.5 rounded-full shadow-md font-sans">
+              <span className="font-bold text-[#0C225E]">{prod.name}</span>
             </div>
           </div>
         </div>

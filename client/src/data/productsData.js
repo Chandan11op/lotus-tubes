@@ -72,11 +72,11 @@ const RAW_PRODUCTS = [
     mtc: "EN 10204 3.1 Material Test Certificate supplied upon dispatch",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch from Mumbai warehouse for standard sizes",
-    image: "/assets/images/products/pipes/ss-304-ep-pipe.svg",
+    image: "/assets/images/products images/SS EP PIPE/TPM-10.jpg",
     images: [
-      "/assets/images/products/pipes/ss-304-ep-pipe.svg",
-      "/assets/images/products/details/ss-304-ep-pipe-bore.svg",
-      "/assets/images/products/details/ss-304-ep-pipe-pack.svg"
+      "/assets/images/products images/SS EP PIPE/TPM-10.jpg",
+      "/assets/images/products images/SS EP PIPE/TPM-11.jpg",
+      "/assets/images/products images/SS EP PIPE/TPM-12.jpg"
     ],
     overview: "SS 304 Electro Polished (EP) Sanitary Pipes provide an ultra-smooth internal electropolished bore (Ra ≤ 0.4 µm) conforming to ASTM A270 and 3-A standards. Specifically engineered for food, dairy, brewery, and beverage fluid processing loops requiring superior cleanability, residue-free CIP drainage, and high corrosion resistance at cost-efficient operating economics.",
     applications: [
@@ -301,11 +301,11 @@ const RAW_PRODUCTS = [
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch for standard reductions",
-    image: "/assets/images/products/fittings/ss-sanitary-reducing-tee.svg",
+    image: "/assets/images/products images/SS BUTWELDED TEE/TPM-132.jpg",
     images: [
-      "/assets/images/products/fittings/ss-sanitary-reducing-tee.svg",
-      "/assets/images/products/details/ss-sanitary-reducing-tee-bore.svg",
-      "/assets/images/products/details/ss-sanitary-reducing-tee-pack.svg"
+      "/assets/images/products images/SS BUTWELDED TEE/TPM-132.jpg",
+      "/assets/images/products images/SS BUTWELDED TEE/TPM-133.jpg",
+      "/assets/images/products images/SS EQUAL TEE/TPM-103.jpg"
     ],
     overview: "Sanitary reducing tee providing high-purity branch takeoff to a smaller pipe diameter while maintaining full hydraulic efficiency and sanitary washdown capabilities.",
     applications: [
@@ -342,7 +342,7 @@ const RAW_PRODUCTS = [
     images: [
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-001.jpg",
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-002.jpg",
-      "/assets/images/products/fittings/ss-sanitary-concentric-reducer.svg"
+      "/assets/images/products images/SS CONCENTRIC REDUCER/TPM-121.jpg"
     ],
     overview: "Hygienic concentric reducer engineered for vertical pipeline sections, delivering smooth fluid acceleration/deceleration between differing pipe sizes with zero pooling pockets.",
     applications: [
@@ -379,7 +379,7 @@ const RAW_PRODUCTS = [
     images: [
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-005.jpg",
       "/assets/images/products/fittings/reducers/ss-sanitary-reducer-concentric-eccentric-006.jpg",
-      "/assets/images/products/fittings/ss-sanitary-eccentric-reducer.svg"
+      "/assets/images/products images/SS CONCENTRIC REDUCER/TPM-122.jpg"
     ],
     overview: "Flat-on-bottom eccentric reducer critical for horizontal sanitary pipe runs, preventing liquid accumulation and air pockets during draining and CIP cleaning.",
     applications: [
@@ -417,7 +417,7 @@ const RAW_PRODUCTS = [
       "/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg",
       "/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-002.jpg",
       "/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-003.jpg",
-      "/assets/images/products/accessories/ss-tri-clamp-ferrule.svg"
+      "/assets/images/products images/SS HOSE NIPPLE/TPM-403.jpg"
     ],
     overview: "High-precision CNC machined Tri-Clamp ferrules featuring mirror-polished gasket faces and precision weld necks designed for smooth orbital welding without distortion.",
     applications: [
@@ -450,12 +450,11 @@ const RAW_PRODUCTS = [
     mtc: "Material Composition Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch",
-    image: "/assets/images/products/accessories/ss-tri-clamp-clamp.svg",
+    image: "/assets/images/products images/PIPEHOLDING CLAMP/TPM-374.jpg",
     video: "/assets/videos/products/ss-tri-clamp-clamp/showcase.mp4",
     images: [
-      "/assets/images/products/accessories/ss-tri-clamp-clamp.svg",
-      "/assets/images/products/details/ss-tri-clamp-clamp-bore.svg",
-      "/assets/images/products/details/ss-tri-clamp-clamp-pack.svg"
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-374.jpg",
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-375.jpg"
     ],
     overview: "Robust investment cast SS 304 sanitary Tri-Clamps engineered to exert balanced circumferential compression across gasket faces for leak-free, tool-free joint closure.",
     applications: [
@@ -486,11 +485,11 @@ const RAW_PRODUCTS = [
     length: "Temperature range: -50°C to +200°C",
     mtc: "FDA Compliance Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
-    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
+    leadTime: "Immediate dispatch from Mumbai",    image: "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg",
     images: [
-      "/assets/images/products/gaskets/silicone-tri-clamp-gasket.svg",
-      "/assets/images/products/details/silicone-tri-clamp-gasket-pack.svg",
-      "/assets/images/products/details/silicone-tri-clamp-gasket-bore.svg"
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg",
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-376.jpg",
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg"
     ],
     overview: "Platinum-cured medical grade silicone TC gaskets ensuring zero extractables, superior low-temperature flexibility, and tight hygienic joint sealing without intrusion into the pipe bore.",
     applications: [
@@ -525,7 +524,7 @@ const RAW_PRODUCTS = [
     images: [
       "/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-001.jpg",
       "/assets/images/products/unions/sms-unions/ss-sms-sanitary-union-assembly-002.jpg",
-      "/assets/images/products/accessories/ss-sms-union.svg"
+      "/assets/images/products images/ss sms union/TPM-26.jpg"
     ],
     overview: "Complete SMS 1145 hygienic unions comprising slotted round nut, weld male part, weld liner, and food-grade gasket, offering durable threaded connections for food and beverage lines.",
     applications: [
@@ -562,7 +561,7 @@ const RAW_PRODUCTS = [
     images: [
       "/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg",
       "/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-002.jpg",
-      "/assets/images/products/valves/ss-sanitary-butterfly-valve.svg"
+      "/assets/images/products images/SS BUTTERFLY VALVE/TPM-225.jpg"
     ],
     overview: "Precision-forged sanitary butterfly valve featuring a polished streamlined disc and food-grade silicone/EPDM seal, delivering full bidirectional leak-tight shutoff with low operating torque.",
     applications: [
@@ -700,11 +699,11 @@ const RAW_PRODUCTS = [
     mtc: "EN 10204 3.1 Supplied",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch",
-    image: "/assets/images/products/valves/ss-sanitary-sampling-valve.svg",
+    image: "/assets/images/products images/mini hex ball valve/TPM-318.jpg",
     images: [
-      "/assets/images/products/valves/ss-sanitary-sampling-valve.svg",
-      "/assets/images/products/details/ss-sanitary-sampling-valve-bore.svg",
-      "/assets/images/products/details/ss-sanitary-sampling-valve-pack.svg"
+      "/assets/images/products images/mini hex ball valve/TPM-318.jpg",
+      "/assets/images/products images/SS BALL VALVE BAR STOCK/TPM-412.jpg",
+      "/assets/images/products images/mini hex ball valve/TPM-318.jpg"
     ],
     overview: "Specially engineered for aseptic extraction of representative liquid samples from sterile bioreactors, fermenters, or piping lines without exposing the interior system to external contamination.",
     applications: [
@@ -736,11 +735,11 @@ const RAW_PRODUCTS = [
     mtc: "EN 10204 3.1 Material Certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch from Mumbai",
-    image: "/assets/images/products/accessories/ss-sanitary-spray-ball.svg",
+    image: "/assets/images/products images/SS SPRAY BALL VALVE/TPM-310.jpg",
     images: [
-      "/assets/images/products/accessories/ss-sanitary-spray-ball.svg",
-      "/assets/images/products/details/ss-sanitary-spray-ball-bore.svg",
-      "/assets/images/products/details/ss-sanitary-spray-ball-pack.svg"
+      "/assets/images/products images/SS SPRAY BALL VALVE/TPM-310.jpg",
+      "/assets/images/products images/SS SPRAY BALL VALVE/TPM-311.jpg",
+      "/assets/images/products images/SS SPRAY BALL VALVE/TPM-310.jpg"
     ],
     overview: "Self-lubricating, fluid-driven 360-degree rotating and static spray balls delivering high-impact cleaning jet coverage across tank interior walls for automated Clean-In-Place (CIP) cycles.",
     applications: [
@@ -779,7 +778,7 @@ const RAW_PRODUCTS = [
     images: [
       "/assets/images/products/pipes/ss-304/ss-304-sanitary-pipe-001.jpg",
       "/assets/images/products/pipes/ss-304/ss-304-sanitary-pipe-002.jpg",
-      "/assets/images/products/pipes/ss-304-ep-pipe.svg"
+      "/assets/images/products images/SS EP PIPE/TPM-10.jpg"
     ],
     overview: "Standard hygienic finish SS 304 stainless steel pipe providing dependable corrosion resistance and easy CIP washdown in commercial food and beverage plants.",
     applications: ["Food plant piping", "Dairy process transfer", "Water purification lines"]
@@ -810,7 +809,7 @@ const RAW_PRODUCTS = [
     images: [
       "/assets/images/products/pipes/ss-316l/ss-316l-sanitary-pipe-001.jpg",
       "/assets/images/products/pipes/ss-316l/ss-316l-sanitary-pipe-002.jpg",
-      "/assets/images/products/pipes/ss-316l-ep-pipe.svg"
+      "/assets/images/products images/SS EP PIPE/TPM-10.jpg"
     ],
     overview: "Corrosion-resistant SS 316L sanitary pipe offering enhanced molybdenum protection against pitting and aggressive CIP sterilizing wash routines.",
     applications: ["Active pharmaceutical ingredients", "Injectables processing", "Acidic food transfer"]
@@ -927,9 +926,9 @@ const RAW_PRODUCTS = [
     mtc: "Food grade certificate",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Ex-stock",
-    image: "/assets/images/products/gaskets/epdm-tri-clamp-gasket.svg",
+    image: "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg",
     images: [
-      "/assets/images/products/gaskets/epdm-tri-clamp-gasket.svg",
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg",
       "/assets/images/products/gaskets/epdm-tri-clamp-gasket.png"
     ],
     overview: "Food-grade EPDM sanitary gaskets offering outstanding resistance to hot alkaline CIP washings, steam sterilization, and animal fats in dairy and brewery facilities.",
@@ -957,9 +956,9 @@ const RAW_PRODUCTS = [
     mtc: "Supplied with compliance statement",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "Immediate dispatch",
-    image: "/assets/images/products/gaskets/ptfe-tri-clamp-gasket.svg",
+    image: "/assets/images/products images/PIPEHOLDING CLAMP/TPM-376.jpg",
     images: [
-      "/assets/images/products/gaskets/ptfe-tri-clamp-gasket.svg",
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-376.jpg",
       "/assets/images/products/gaskets/ptfe-tri-clamp-gasket.png"
     ],
     overview: "Chemically inert virgin PTFE Tri-Clamp gaskets providing universal resistance against aggressive solvents, acids, and ultra-high temperature continuous sterilization.",
@@ -987,9 +986,9 @@ const RAW_PRODUCTS = [
     mtc: "Available",
     availability: "Ready Stock (Dispatch in 24-48h)",
     leadTime: "1-2 days dispatch",
-    image: "/assets/images/products/gaskets/viton-tri-clamp-gasket.svg",
+    image: "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg",
     images: [
-      "/assets/images/products/gaskets/viton-tri-clamp-gasket.svg",
+      "/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg",
       "/assets/images/products/gaskets/viton-tri-clamp-gasket.png"
     ],
     overview: "High-performance Viton (FKM) gaskets resistant to oils, organic acids, aromatic hydrocarbons, and elevated operating temperatures in edible oil and fragrance plants.",

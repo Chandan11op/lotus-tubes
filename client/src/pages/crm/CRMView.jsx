@@ -127,7 +127,8 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
         'reports': 'Sales Analytics & Reports | Staff CRM | Lotus Tubes',
         'seo': 'Technical SEO Audit & Search Console | Staff CRM | Lotus Tubes',
         'ai-operations': 'AI Operations & Dispatch Approvals | Staff CRM | Lotus Tubes',
-        'agent-ananya': 'Ananya Mehta | Quotations & Sales Coordination | Staff CRM',
+        'agent-anjali': 'Anjali Pandey | Quotations & Sales Coordination | Staff CRM',
+        'agent-ananya': 'Anjali Pandey | Quotations & Sales Coordination | Staff CRM',
         'agent-riya': 'Riya Shah | Commercial Billing & Invoicing | Staff CRM',
         'agent-neha': 'Neha Desai | Client Resolution & Inquiries | Staff CRM',
         'agent-arjun': 'Arjun Yadav | Operations & Live Concierge | Staff CRM'
@@ -874,12 +875,14 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const renderActiveView = () => {
     switch (activeTab) {
       case 'ai-operations':
+      case 'agent-anjali':
       case 'agent-ananya':
       case 'agent-riya':
       case 'agent-neha':
       case 'agent-arjun':
         const agentIdMap = {
-          'agent-ananya': 'ananya-mehta',
+          'agent-anjali': 'anjali-pandey',
+          'agent-ananya': 'anjali-pandey',
           'agent-riya': 'riya-shah',
           'agent-neha': 'neha-desai',
           'agent-arjun': 'arjun-yadav'

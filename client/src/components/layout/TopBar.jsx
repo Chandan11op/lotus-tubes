@@ -108,12 +108,17 @@ export const TopBar = () => {
 
           <span className="text-white/20 hidden sm:inline" aria-hidden="true">|</span>
 
-          {/* 12 Countries / Multilingual Switcher */}
-          <div className="relative inline-block" ref={dropdownRef}>
+          {/* 12 Countries / Multilingual Switcher (Opens on Hover or Click) */}
+          <div
+            className="relative inline-block"
+            ref={dropdownRef}
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
             <button
               type="button"
               className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-white/10 hover:bg-white/15 text-slate-100 hover:text-white transition-colors cursor-pointer border border-white/20 text-[11px] font-medium focus:outline-none focus:ring-1 focus:ring-[#2D8CFF]"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
+              onClick={() => setDropdownOpen((prev) => !prev)}
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
               title={t('select_preferred_country', 'Select Destination Country & Language')}

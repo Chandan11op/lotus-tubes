@@ -11,7 +11,8 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Valves',
     countBadge: '10 Products',
     description: 'High-purity hygienic valves for flow regulation, aseptic shutoff, and CIP/SIP sterilization.',
-    viewAllLink: '/category/manual-valves',
+    viewAllLink: '/product/ss-sanitary-butterfly-valve',
+    primaryProductLink: '/product/ss-sanitary-butterfly-valve',
     heroImage: '/assets/images/products images/SS BUTTERFLY VALVE/TPM-225.jpg',
     products: [
       {
@@ -24,13 +25,13 @@ export const CATEGORIES_MANIFEST = [
         name: 'Sanitary Ball Valve',
         spec: '2-Piece / 3-Piece Encapsulated PTFE Seats',
         image: '/assets/images/products images/SS BALL VALVE 2PCS/TPM-275.jpg',
-        link: '/product/ss-3-piece-ball-valve-tc-end'
+        link: '/product/ss-3-piece-ball-valve-tc'
       },
       {
         name: 'Sanitary Check Valve or NRV (Non Returnable Valve)',
         spec: 'Spring Check • Tri-Clamp / Welded Ends',
         image: '/assets/images/products images/ss nrv tc end/TPM-238 - Copy.jpg',
-        link: '/product/ss-sanitary-check-valve-nrv'
+        link: '/product/ss-sanitary-non-return-valve'
       },
       {
         name: 'Sanitary Diaphragm Valve',
@@ -42,7 +43,7 @@ export const CATEGORIES_MANIFEST = [
         name: 'Sanitary Pneumatic Valve',
         spec: 'Air-Actuated Butterfly Valve with C-Top Controller',
         image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
-        link: '/product/pneumatic-sanitary-butterfly-valve'
+        link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Sanitary Pneumatic Actuated Valve',
@@ -60,7 +61,7 @@ export const CATEGORIES_MANIFEST = [
         name: 'Tank Bottom Valve',
         spec: 'Zero Dead-Leg Flush Bottom Discharge Valve',
         image: '/assets/images/products images/SS FLUSH BOTTOM VALVE/TPM-246.jpg',
-        link: '/product/ss-sanitary-tank-bottom-valve'
+        link: '/product/ss-316l-diaphragm-valve'
       },
       {
         name: 'Flow Diverter Valve',
@@ -72,7 +73,7 @@ export const CATEGORIES_MANIFEST = [
         name: 'Pressure Relief Standard',
         spec: 'Calibrated Sanitary Safety & Pressure Relief Valve',
         image: '/assets/images/products images/mini hex ball valve/TPM-318.jpg',
-        link: '/product/ss-3-piece-ball-valve-tc-end'
+        link: '/product/ss-3-piece-ball-valve-tc'
       }
     ]
   },
@@ -81,7 +82,8 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Fittings',
     countBadge: '7 Products',
     description: 'Precision dimensioned hygienic fittings complying with 3A, DIN, SMS, and ASME BPE standards.',
-    viewAllLink: '/category/sanitary-fittings',
+    viewAllLink: '/product/ss-sanitary-90-bend',
+    primaryProductLink: '/product/ss-sanitary-90-bend',
     heroImage: '/assets/images/products images/SS SHORT ELBOW/TPM-118.jpg',
     products: [
       {
@@ -112,13 +114,13 @@ export const CATEGORIES_MANIFEST = [
         name: 'Tri Clovers Clamps (Clamps Clover Tubes holder)',
         spec: 'Single Pin, 2-Segment & Heavy Duty 3-Segment Clamps',
         image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-374.jpg',
-        link: '/product/ss-tri-clamp-ferrule'
+        link: '/product/ss-tri-clamp-clamp'
       },
       {
         name: 'Vacuum Components',
         spec: 'KF/ISO Sanitary Reducers, Flanges & High Vacuum Clamps',
         image: '/assets/images/products images/SS CONCENTRIC REDUCER/TPM-121.jpg',
-        link: '/product/ss-concentric-reducer'
+        link: '/product/ss-sanitary-concentric-reducer'
       },
       {
         name: 'Pipe Adapter',
@@ -133,7 +135,8 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Hose Fittings',
     countBadge: '5 Products',
     description: 'Hygienic hose barb adaptors, crimp collars, and flexible transfer assemblies.',
-    viewAllLink: '/category/sanitary-fittings',
+    viewAllLink: '/product/ss-tri-clamp-ferrule',
+    primaryProductLink: '/product/ss-tri-clamp-ferrule',
     heroImage: '/assets/images/products images/SS HOSE NIPPLE/TPM-403.jpg',
     products: [
       {
@@ -173,38 +176,39 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Tank Accessories',
     countBadge: '5 Products',
     description: 'Aseptic vessel hardware including sight glasses, spray balls, strainers, and pressure manways.',
-    viewAllLink: '/category/tank-cleaning',
+    viewAllLink: '/product/ss-sanitary-spray-ball',
+    primaryProductLink: '/product/ss-sanitary-spray-ball',
     heroImage: '/assets/images/products images/SS SLIGHT GLASS TC END/TPM-322.jpg',
     products: [
       {
         name: 'Sanitary Sight Glass',
         spec: 'Borosilicate Glass 360° In-Line & Union Sight Glasses',
         image: '/assets/images/products images/SS SLIGHT GLASS TC END/TPM-322.jpg',
-        link: '/product/ss-sight-glass-tc-end'
+        link: '/product/ss-sanitary-pipe-spool'
       },
       {
         name: 'Sanitary Spray Ball',
         spec: 'Rotary 360° CIP Tank Cleaning Spray Balls (SS 316L)',
         image: '/assets/images/products images/SS SPRAY BALL VALVE/TPM-310.jpg',
-        link: '/product/ss-rotary-spray-ball'
+        link: '/product/ss-sanitary-spray-ball'
       },
       {
         name: 'Sanitary Filters & Strainers',
         spec: 'In-Line Y-Filter & Angle Strainers (20–200 Mesh)',
         image: '/assets/images/products images/SS SLIGHT GLASS TC END/TPM-323.jpg',
-        link: '/product/ss-sanitary-filter-strainer'
+        link: '/product/ss-sanitary-spray-ball'
       },
       {
         name: 'Stainless Steel Manway / Manholes',
         spec: 'Round Pressure, Oval Inward & Non-Pressure Atmospheric Manways',
         image: '/assets/images/products images/SS MANHOLE/TPM-416.jpg',
-        link: '/product/ss-sanitary-manhole-cover'
+        link: '/product/ss-sanitary-pipe-spool'
       },
       {
         name: 'Tank Bottom Flush Valves',
         spec: 'Diaphragm & Piston Bottom Drainage Valves for Bio-Reactors',
         image: '/assets/images/products images/SS FLUSH BOTTOM VALVE/TPM-247.jpg',
-        link: '/product/ss-sanitary-tank-bottom-valve'
+        link: '/product/ss-316l-diaphragm-valve'
       }
     ]
   },
@@ -213,7 +217,8 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Tubes',
     countBadge: '7 Products',
     description: 'Precision sanitary tubing manufactured to ASTM A270, DIN 11866, ASME BPE, and ISO standards.',
-    viewAllLink: '/category/sanitary-pipes',
+    viewAllLink: '/product/ss-316l-ep-pipe',
+    primaryProductLink: '/product/ss-316l-ep-pipe',
     heroImage: '/assets/images/products images/SS EP PIPE/TPM-10.jpg',
     products: [
       {
@@ -265,14 +270,15 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Pumps',
     countBadge: '4 Products',
     description: 'Hygienic centrifugal and positive displacement fluid transfer pumps for food, beverage, and dairy.',
-    viewAllLink: '/category/pneumatic-valves',
+    viewAllLink: '/product/pneumatic-sanitary-ball-valve',
+    primaryProductLink: '/product/pneumatic-sanitary-ball-valve',
     heroImage: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
     products: [
       {
         name: 'Food Grade Centrifugal Pumps',
         spec: 'Open Impeller CIP Cleanable Design (SS 316L Contact Parts)',
         image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
-        link: '/product/pneumatic-sanitary-butterfly-valve'
+        link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Dairy Grade Centrifugal Pumps',
@@ -284,7 +290,7 @@ export const CATEGORIES_MANIFEST = [
         name: 'Water/ Fluid Grade Centrifugal Pumps',
         spec: 'WFI & Purified Water Circulation Sanitary Booster Pumps',
         image: '/assets/images/products images/SS BALL VALVE BAR STOCK/TPM-412.jpg',
-        link: '/product/ss-3-piece-ball-valve-tc-end'
+        link: '/product/ss-3-piece-ball-valve-tc'
       },
       {
         name: 'Food & Beverage, Wine Vertical Centrifugal Pumps',
@@ -299,7 +305,8 @@ export const CATEGORIES_MANIFEST = [
     title: 'Sanitary Gasket',
     countBadge: '2 Products',
     description: 'FDA 21 CFR 177.2600 and USP Class VI certified high-temperature elastomer seals.',
-    viewAllLink: '/category/gaskets',
+    viewAllLink: '/product/silicone-tri-clamp-gasket',
+    primaryProductLink: '/product/silicone-tri-clamp-gasket',
     heroImage: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-377.jpg',
     products: [
       {
@@ -312,7 +319,7 @@ export const CATEGORIES_MANIFEST = [
         name: 'Flange Gasket & Envelope Seals',
         spec: 'PTFE Envelope Gaskets for SMS, DIN & ANSI Flanged Pipe Lines',
         image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-376.jpg',
-        link: '/product/ptfe-envelope-gasket'
+        link: '/product/ptfe-tri-clamp-gasket'
       }
     ]
   },
@@ -321,14 +328,15 @@ export const CATEGORIES_MANIFEST = [
     title: 'Customized Product',
     countBadge: '1 Product',
     description: 'Tailored sanitary fabrications engineered to client drawings and bespoke vessel requirements.',
-    viewAllLink: '/products',
+    viewAllLink: '/product/ss-sanitary-pipe-spool',
+    primaryProductLink: '/product/ss-sanitary-pipe-spool',
     heroImage: '/assets/images/products images/SS SLIGHT GLASS TC END/TPM-324.jpg',
     products: [
       {
         name: 'Large & Customized Size Sight Glass',
         spec: 'Custom Borosilicate & Toughened Sight Ports up to 16" Diameter',
         image: '/assets/images/products images/SS SLIGHT GLASS TC END/TPM-324.jpg',
-        link: '/product/ss-sight-glass-tc-end'
+        link: '/product/ss-sanitary-pipe-spool'
       }
     ]
   },
@@ -337,14 +345,15 @@ export const CATEGORIES_MANIFEST = [
     title: 'Data Cooling Centre',
     countBadge: '7 Products',
     description: 'Ultra-reliable stainless sanitary components engineered for server immersion & liquid cooling loops.',
-    viewAllLink: '/products',
+    viewAllLink: '/product/ss-sanitary-equal-tee',
+    primaryProductLink: '/product/ss-sanitary-equal-tee',
     heroImage: '/assets/images/products images/SS 3PCS BALL VALVE TC END/TPM-370.jpg',
     products: [
       {
         name: 'TC Wing Clamp',
         spec: 'High-Torque Stainless Steel Quick-Release Clamps for Data Racks',
         image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-375.jpg',
-        link: '/product/ss-tri-clamp-ferrule'
+        link: '/product/ss-tri-clamp-clamp'
       },
       {
         name: 'Equal Tee',
@@ -368,19 +377,19 @@ export const CATEGORIES_MANIFEST = [
         name: 'TC Reducers',
         spec: 'Concentric & Eccentric Diameter Step-Down Coolant Reducers',
         image: '/assets/images/products images/SS CONCENTRIC REDUCER/TPM-122.jpg',
-        link: '/product/ss-concentric-reducer'
+        link: '/product/ss-sanitary-concentric-reducer'
       },
       {
         name: 'Check Valve TC',
         spec: 'Zero Reverse Flow Non-Return Check Valves for Pump Loops',
         image: '/assets/images/products images/ss nrv tc end/TPM-238 - Copy.jpg',
-        link: '/product/ss-sanitary-check-valve-nrv'
+        link: '/product/ss-sanitary-non-return-valve'
       },
       {
         name: '3 PCS Ball Valve TC',
         spec: 'In-Line Maintainable Full-Port Ball Valves for Server Immersion',
         image: '/assets/images/products images/SS 3PCS BALL VALVE TC END/TPM-370.jpg',
-        link: '/product/ss-3-piece-ball-valve-tc-end'
+        link: '/product/ss-3-piece-ball-valve-tc'
       }
     ]
   },
@@ -389,14 +398,15 @@ export const CATEGORIES_MANIFEST = [
     title: 'Semi Conductor',
     countBadge: '1 Product',
     description: 'Ultra-high purity (UHP) fluid handling components for cleanroom and microelectronics fabrication.',
-    viewAllLink: '/products',
+    viewAllLink: '/product/ss-316l-seamless-sanitary-tube',
+    primaryProductLink: '/product/ss-316l-seamless-sanitary-tube',
     heroImage: '/assets/images/products images/SS CONCENTRIC REDUCER/TPM-123.jpg',
     products: [
       {
         name: 'Semi Conductor - Product Adapt',
         spec: 'High-Purity Electropolished Micro-Fitting Adapters (Ra < 0.25 µm)',
         image: '/assets/images/products images/SS CONCENTRIC REDUCER/TPM-123.jpg',
-        link: '/product/ss-concentric-reducer'
+        link: '/product/ss-316l-seamless-sanitary-tube'
       }
     ]
   },
@@ -405,7 +415,8 @@ export const CATEGORIES_MANIFEST = [
     title: 'BA/EP Tubes & Fittings',
     countBadge: '4 Products',
     description: 'Bright Annealed (BA) & Electro Polished (EP) ultra-clean sanitary tubing and fittings.',
-    viewAllLink: '/category/sanitary-pipes',
+    viewAllLink: '/product/ss-316l-ep-pipe',
+    primaryProductLink: '/product/ss-316l-ep-pipe',
     heroImage: '/assets/images/products images/SS EP PIPE/TPM-10.jpg',
     products: [
       {
@@ -430,7 +441,7 @@ export const CATEGORIES_MANIFEST = [
         name: 'Ultra-Clean Tri-Clamp Valve Assemblies',
         spec: 'Electropolished 3-Piece Ball & Diaphragm Control Assemblies',
         image: '/assets/images/products images/SS 3PCS BALL VALVE TC END/TPM-371.jpg',
-        link: '/product/ss-3-piece-ball-valve-tc-end'
+        link: '/product/ss-3-piece-ball-valve-tc'
       }
     ]
   }
