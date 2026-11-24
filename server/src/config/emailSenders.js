@@ -11,16 +11,27 @@ export const BUSINESS_MAILBOX = 'sales@lotustubes.com';
 export const BUSINESS_NAME = 'Lotus Tubes';
 
 export const AI_AGENT_SENDERS = {
+  'anjali-pandey': {
+    id: 'anjali-pandey',
+    botNumber: 1,
+    name: 'Anjali Pandey',
+    email: 'anjalipandey@lotustubes.com',
+    role: 'quotation_specialist',
+    title: 'Sales & Technical Quotations Lead',
+    department: 'Sales & Commercial Proposals',
+    defaultReplyTo: BUSINESS_MAILBOX,
+    photoUrl: '/assets/images/team/anjali-pandey.png'
+  },
   'ananya-mehta': {
     id: 'ananya-mehta',
     botNumber: 1,
-    name: 'Ananya Mehta',
-    email: 'ananyamehta@lotustubes.com',
+    name: 'Anjali Pandey',
+    email: 'anjalipandey@lotustubes.com',
     role: 'quotation_specialist',
-    title: 'AI Quotation & Commercial RFQ Specialist',
+    title: 'Sales & Technical Quotations Lead',
     department: 'Sales & Commercial Proposals',
     defaultReplyTo: BUSINESS_MAILBOX,
-    photoUrl: '/assets/images/team/agent-1.jpeg'
+    photoUrl: '/assets/images/team/anjali-pandey.png'
   },
   'riya-shah': {
     id: 'riya-shah',

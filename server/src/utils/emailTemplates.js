@@ -18,21 +18,27 @@
 import { getSenderById, BUSINESS_MAILBOX, BUSINESS_NAME } from '../config/emailSenders.js';
 import { escapeHtml } from './security.js';
 
-export const BRAND_NAVY = '#0B1B3A';
-export const BRAND_BLUE = '#1769AA';
-export const BRAND_CYAN = '#00BCEB';
+export const BRAND_NAVY = '#0C225E';
+export const BRAND_NAVY_DARK = '#081D5B';
+export const BRAND_PINK = '#E93984';
+export const BRAND_PINK_LIGHT = '#FC63A7';
+export const BRAND_PINK_BG = '#FDF2F8';
+export const BRAND_PINK_BORDER = '#FBCFE8';
+export const BRAND_BLUE = '#E93984';
+export const BRAND_CYAN = '#FC63A7';
 export const BRAND_WHITE = '#FFFFFF';
-export const BRAND_LIGHT_BG = '#F4F7FB';
+export const BRAND_LIGHT_BG = '#F8FAFC';
 export const BRAND_BORDER = '#E2E8F0';
-export const BRAND_TEXT = '#172033';
-export const BRAND_MUTED = '#667085';
+export const BRAND_TEXT = '#0F172A';
+export const BRAND_MUTED = '#475569';
 export const BRAND_SUCCESS = '#15803D';
 export const BRAND_SUCCESS_BG = '#F0FDF4';
 export const BRAND_SUCCESS_BORDER = '#BBF7D0';
 
-export const COMPANY_ADDRESS = 'C-4, C-11, 1st Floor, Sindhu House, Nanabhai Lane, Flora Fountain, Fort, Mumbai 400001, Maharashtra, India';
-export const COMPANY_PHONE = '+91 99304 30789 / +91 93247 18035';
+export const COMPANY_ADDRESS = 'Shop No. 9, Jain Bhavan CHSL, Dr Bhajekar Lane, opp. to 11th Lane, Charni Road East, Khetwadi, Girgaon, Mumbai 400004, Maharashtra, India';
+export const COMPANY_PHONE = '+91 9867304316';
 export const COMPANY_WEBSITE = 'https://lotustubes.com/';
+export const COMPANY_GSTIN = '27AAFHC5384L1ZX';
 
 /**
  * PHASE 8 — Professional Consistent Agent Email Signatures
@@ -46,21 +52,21 @@ export const buildAgentSignatureHtml = (agentId = 'sales') => {
           <table role="presentation" border="0" cellpadding="0" cellspacing="0">
             <tr>
               <td style="vertical-align: top; padding-right: 14px;">
-                <div style="width: 44px; height: 44px; border-radius: 8px; background-color: ${BRAND_NAVY}; color: ${BRAND_CYAN}; text-align: center; line-height: 44px; font-weight: 800; font-size: 16px; border: 1.5px solid ${BRAND_CYAN}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                <div style="width: 48px; height: 48px; border-radius: 10px; background-color: ${BRAND_NAVY}; color: #FFFFFF; text-align: center; line-height: 48px; font-weight: 800; font-size: 16px; border: 2px solid ${BRAND_PINK}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                   LT
                 </div>
               </td>
               <td style="vertical-align: top; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-                <p style="margin: 0; font-size: 14px; font-weight: 700; color: ${BRAND_NAVY};">${escapeHtml(sender.name)}</p>
-                <p style="margin: 2px 0 0 0; font-size: 12px; color: ${BRAND_BLUE}; font-weight: 600;">${escapeHtml(sender.title)}</p>
-                <p style="margin: 2px 0 0 0; font-size: 11px; color: ${BRAND_MUTED};">Department: ${escapeHtml(sender.department)}</p>
-                <p style="margin: 6px 0 0 0; font-size: 12px; color: ${BRAND_TEXT};">
-                  <strong>LOTUS TUBES</strong> • SS Sanitary Pipes, Tubes, Fittings &amp; Valves<br/>
-                  Email: <a href="mailto:${escapeHtml(sender.email)}" style="color: ${BRAND_BLUE}; text-decoration: none; font-weight: 600;">${escapeHtml(sender.email)}</a><br/>
-                  Website: <a href="${COMPANY_WEBSITE}" style="color: ${BRAND_BLUE}; text-decoration: none;">${COMPANY_WEBSITE}</a> | Tel: ${COMPANY_PHONE}
+                <p style="margin: 0; font-size: 15px; font-weight: 800; color: ${BRAND_NAVY};">${escapeHtml(sender.name)}</p>
+                <p style="margin: 2px 0 0 0; font-size: 12.5px; color: ${BRAND_PINK}; font-weight: 700;">${escapeHtml(sender.title)}</p>
+                <p style="margin: 2px 0 0 0; font-size: 11.5px; color: ${BRAND_MUTED};">Department: ${escapeHtml(sender.department)}</p>
+                <p style="margin: 6px 0 0 0; font-size: 12px; color: ${BRAND_TEXT}; line-height: 1.5;">
+                  <strong style="color: ${BRAND_NAVY};">LOTUS TUBES</strong> • SS 304 &amp; SS 316L Sanitary Pipes, Tubes, Fittings &amp; Valves<br/>
+                  Email: <a href="mailto:${escapeHtml(sender.email)}" style="color: ${BRAND_PINK}; text-decoration: none; font-weight: 700;">${escapeHtml(sender.email)}</a><br/>
+                  Website: <a href="${COMPANY_WEBSITE}" style="color: ${BRAND_NAVY}; text-decoration: none; font-weight: 600;">${COMPANY_WEBSITE}</a> | Desk: <strong style="color: ${BRAND_TEXT};">${COMPANY_PHONE}</strong>
                 </p>
-                <div style="margin-top: 8px; display: inline-block; padding: 4px 10px; background-color: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 4px; font-size: 10.5px; color: #475569;">
-                  🛡️ AI Operations Representative • Supervised by Chirag Shah (Owner &amp; Managing Director)
+                <div style="margin-top: 8px; display: inline-block; padding: 4px 10px; background-color: ${BRAND_PINK_BG}; border: 1px solid ${BRAND_PINK_BORDER}; border-radius: 6px; font-size: 11px; color: ${BRAND_NAVY}; font-weight: 600;">
+                  🛡️ Verified Lotus Tubes Representative • Supervised by Chirag Shah (Owner &amp; Managing Director)
                 </div>
               </td>
             </tr>
@@ -76,7 +82,7 @@ export const buildAgentSignatureHtml = (agentId = 'sales') => {
  */
 export const wrapCorporateEmail = ({
   title = 'Lotus Tubes',
-  subtitle = 'High Purity Sanitary Piping Systems & Components',
+  subtitle = 'High Purity Sanitary Stainless Steel Piping Systems',
   preheader = '',
   contentHtml,
   agentId = 'sales',
@@ -101,22 +107,27 @@ export const wrapCorporateEmail = ({
 <body style="margin: 0; padding: 24px 12px; background-color: ${BRAND_LIGHT_BG}; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: ${BRAND_TEXT}; line-height: 1.6; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
   ${preheader ? `<div style="display: none; max-height: 0px; overflow: hidden; mso-hide: all; font-size: 1px; color: ${BRAND_LIGHT_BG};">${escapeHtml(preheader)}</div>` : ''}
 
-  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 640px; margin: 0 auto; background-color: ${BRAND_WHITE}; border: 1px solid ${BRAND_BORDER}; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(11, 27, 58, 0.06);">
-    <!-- Corporate Header -->
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 640px; margin: 0 auto; background-color: ${BRAND_WHITE}; border: 1px solid ${BRAND_BORDER}; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(12, 34, 94, 0.08);">
+    <!-- Top Accent Bar -->
     <tr>
-      <td style="background-color: ${BRAND_NAVY}; padding: 26px 32px; text-align: left; border-bottom: 3px solid ${BRAND_CYAN};">
+      <td height="4" style="background-color: ${BRAND_PINK}; line-height: 4px; font-size: 4px;">&nbsp;</td>
+    </tr>
+
+    <!-- Corporate Header with Lotus Tubes Logo Image -->
+    <tr>
+      <td style="background: linear-gradient(135deg, #081D5B 0%, #0C225E 100%); background-color: #081D5B; padding: 24px 32px; text-align: left; border-bottom: 2px solid ${BRAND_BORDER};">
         <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td style="vertical-align: middle;">
-              <h1 style="color: ${BRAND_WHITE}; margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">
-                LOTUS TUBES
-              </h1>
-              <p style="color: ${BRAND_CYAN}; margin: 4px 0 0 0; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;">
+              <a href="${COMPANY_WEBSITE}" target="_blank" style="text-decoration: none; display: inline-block;">
+                <img src="https://lotustubes.com/banner-image.png" alt="Lotus Tubes - High Purity Sanitary Stainless Steel" width="210" height="48" style="display: block; max-width: 210px; height: auto; border: 0;" />
+              </a>
+              <p style="color: ${BRAND_PINK_LIGHT}; margin: 6px 0 0 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.5px;">
                 ${escapeHtml(subtitle)}
               </p>
             </td>
             <td style="text-align: right; vertical-align: middle;">
-              <span style="display: inline-block; padding: 4px 10px; background-color: rgba(0, 188, 235, 0.15); border: 1px solid rgba(0, 188, 235, 0.4); border-radius: 9999px; font-size: 10.5px; font-weight: 700; color: ${BRAND_CYAN}; text-transform: uppercase; letter-spacing: 0.05em;">
+              <span style="display: inline-block; padding: 5px 12px; background-color: rgba(233, 57, 132, 0.18); border: 1.5px solid ${BRAND_PINK}; border-radius: 9999px; font-size: 10px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.06em;">
                 ASME BPE • ASTM A270
               </span>
             </td>
@@ -135,24 +146,26 @@ export const wrapCorporateEmail = ({
 
     <!-- Corporate Footer -->
     <tr>
-      <td style="background-color: ${BRAND_LIGHT_BG}; padding: 22px 32px; border-top: 1px solid ${BRAND_BORDER}; text-align: center; font-size: 11.5px; color: ${BRAND_MUTED}; line-height: 1.6;">
-        <p style="margin: 0 0 6px 0; font-weight: 700; color: ${BRAND_NAVY};">
+      <td style="background-color: ${BRAND_LIGHT_BG}; padding: 24px 32px; border-top: 1px solid ${BRAND_BORDER}; text-align: center; font-size: 11.5px; color: ${BRAND_MUTED}; line-height: 1.6;">
+        <p style="margin: 0 0 6px 0; font-weight: 800; font-size: 12.5px; color: ${BRAND_NAVY};">
           Lotus Tubes (Engineering Division of Lotus Impex) — Established 1989
         </p>
-        <p style="margin: 0 0 6px 0;">
+        <p style="margin: 0 0 6px 0; color: #334155;">
           ${COMPANY_ADDRESS}
         </p>
-        <p style="margin: 0 0 6px 0;">
-          Manufacturer &amp; Stockist of Stainless Steel 304 &amp; 316L Sanitary Pipes, Fittings, Valves &amp; Custom Spools
+        <p style="margin: 0 0 8px 0; color: #475569;">
+          GSTIN: <strong>${COMPANY_GSTIN}</strong> • Direct Sales Desk: <strong style="color: ${BRAND_NAVY};">${COMPANY_PHONE}</strong>
         </p>
         <p style="margin: 0; color: #94A3B8; font-size: 10.5px;">
-          Replies to this transmission are routed directly to our commercial desk: <a href="mailto:${BUSINESS_MAILBOX}" style="color: ${BRAND_BLUE}; text-decoration: none;">${BUSINESS_MAILBOX}</a>
+          Replies to this message route directly to our commercial sales desk: <a href="mailto:${BUSINESS_MAILBOX}" style="color: ${BRAND_PINK}; text-decoration: none; font-weight: 600;">${BUSINESS_MAILBOX}</a>
         </p>
       </td>
     </tr>
   </table>
 </body>
 </html>
+  `.trim();
+};
   `.trim();
 };
 

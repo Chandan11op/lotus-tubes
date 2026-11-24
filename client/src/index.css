@@ -3134,22 +3134,34 @@ ol {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--border-color);
+  padding: 12px 14px;
+  border: 1.5px solid #CBD5E1;
   border-radius: var(--radius-md);
-  font-size: 0.92rem;
-  color: var(--text-main);
-  background-color: #FAFAFC;
+  font-size: 0.95rem;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  font-weight: 600 !important;
+  background-color: #FFFFFF !important;
   transition: all var(--transition-fast);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #64748B !important;
+  -webkit-text-fill-color: #64748B !important;
+  opacity: 1 !important;
+  font-weight: 400 !important;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--primary-blue);
-  background-color: var(--pure-white);
-  box-shadow: 0 0 0 3px rgba(240, 0, 120, 0.12);
+  border-color: #E93984 !important;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  background-color: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(233, 57, 132, 0.15) !important;
 }
 
 .form-group input.has-error,

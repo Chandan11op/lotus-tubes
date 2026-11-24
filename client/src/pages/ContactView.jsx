@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CONFIG } from '../data/siteData';
 import { apiService } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
@@ -89,6 +89,42 @@ export const ContactView = ({ onNotify }) => {
   // Interactive Hover/Click state for Line 1 and Line 2
   const [activeRow1Agent, setActiveRow1Agent] = useState(null);
   const [activeRow2Agent, setActiveRow2Agent] = useState(null);
+
+  // 3-second minimum cooldown on close view to prevent immediate hover re-expansion
+  const row1CooldownRef = useRef(0);
+  const row2CooldownRef = useRef(0);
+
+  const handleCloseRow1 = (e) => {
+    e.stopPropagation();
+    row1CooldownRef.current = Date.now() + 3000; // Keep closed for at least 3 seconds
+    setActiveRow1Agent(null);
+  };
+
+  const handleHoverRow1 = (agentId) => {
+    if (Date.now() < row1CooldownRef.current) return;
+    setActiveRow1Agent(agentId);
+  };
+
+  const handleClickRow1 = (agentId) => {
+    row1CooldownRef.current = 0; // Explicit user click overrides cooldown
+    setActiveRow1Agent(agentId);
+  };
+
+  const handleCloseRow2 = (e) => {
+    e.stopPropagation();
+    row2CooldownRef.current = Date.now() + 3000; // Keep closed for at least 3 seconds
+    setActiveRow2Agent(null);
+  };
+
+  const handleHoverRow2 = (agentId) => {
+    if (Date.now() < row2CooldownRef.current) return;
+    setActiveRow2Agent(agentId);
+  };
+
+  const handleClickRow2 = (agentId) => {
+    row2CooldownRef.current = 0; // Explicit user click overrides cooldown
+    setActiveRow2Agent(agentId);
+  };
 
   const [formData, setFormData] = useState({
     name: '',
@@ -331,6 +367,8 @@ export const ContactView = ({ onNotify }) => {
                     onChange={handleChange}
                     required
                     placeholder="Your full name"
+                    className="text-black font-semibold placeholder:text-slate-500 bg-white border-2 border-slate-300 focus:border-[#E93984] focus:ring-2 focus:ring-[#E93984]/20"
+                    style={{ color: '#000000', backgroundColor: '#FFFFFF', WebkitTextFillColor: '#000000' }}
                   />
                   {errors.name && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.name}</span>}
                 </div>
@@ -347,6 +385,8 @@ export const ContactView = ({ onNotify }) => {
                       onChange={handleChange}
                       required
                       placeholder="name@company.com"
+                      className="text-black font-semibold placeholder:text-slate-500 bg-white border-2 border-slate-300 focus:border-[#E93984] focus:ring-2 focus:ring-[#E93984]/20"
+                      style={{ color: '#000000', backgroundColor: '#FFFFFF', WebkitTextFillColor: '#000000' }}
                     />
                     {errors.email && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.email}</span>}
                   </div>
@@ -361,6 +401,8 @@ export const ContactView = ({ onNotify }) => {
                       onChange={handleChange}
                       required
                       placeholder="+91 99999 99999"
+                      className="text-black font-semibold placeholder:text-slate-500 bg-white border-2 border-slate-300 focus:border-[#E93984] focus:ring-2 focus:ring-[#E93984]/20"
+                      style={{ color: '#000000', backgroundColor: '#FFFFFF', WebkitTextFillColor: '#000000' }}
                     />
                     {errors.phone && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.phone}</span>}
                   </div>
@@ -372,6 +414,8 @@ export const ContactView = ({ onNotify }) => {
                     id="contact-subject"
                     value={formData.subject}
                     onChange={handleChange}
+                    className="text-black font-semibold bg-white border-2 border-slate-300 focus:border-[#E93984] focus:ring-2 focus:ring-[#E93984]/20"
+                    style={{ color: '#000000', backgroundColor: '#FFFFFF', WebkitTextFillColor: '#000000' }}
                   >
                     <option value="Quotation Request">Product Quotation Request</option>
                     <option value="Technical Documentation">Technical Specification / MTC Query</option>
@@ -391,6 +435,8 @@ export const ContactView = ({ onNotify }) => {
                     onChange={handleChange}
                     required
                     placeholder="Specify sizes, quantities, delivery destination..."
+                    className="text-black font-semibold placeholder:text-slate-500 bg-white border-2 border-slate-300 focus:border-[#E93984] focus:ring-2 focus:ring-[#E93984]/20"
+                    style={{ color: '#000000', backgroundColor: '#FFFFFF', WebkitTextFillColor: '#000000' }}
                   ></textarea>
                   {errors.message && <span className="field-error" style={{ color: '#EF4444', fontSize: '12px' }}>{errors.message}</span>}
                 </div>
@@ -440,20 +486,20 @@ export const ContactView = ({ onNotify }) => {
               <div className="absolute top-0 right-0 w-96 h-96 bg-[#E93984]/10 rounded-full blur-3xl pointer-events-none" />
               
               <div className="flex flex-col lg:flex-row items-center lg:items-stretch gap-8 relative z-10">
-                {/* Owner Photo Stage */}
-                <div className="w-full sm:w-64 lg:w-72 shrink-0 flex flex-col items-center">
-                  <div className="relative w-52 sm:w-60 lg:w-full aspect-[4/5] rounded-2xl overflow-hidden border-2 border-[#E93984]/60 shadow-2xl bg-slate-900 group-hover:border-[#E93984] transition-all duration-300">
+                {/* Owner Photo Stage - Prominent Landscape Presentation */}
+                <div className="w-full sm:w-80 lg:w-96 shrink-0 flex flex-col items-center">
+                  <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-3xl overflow-hidden border-2 border-[#E93984] shadow-2xl bg-slate-900 group-hover:border-pink-300 transition-all duration-300">
                     <img
                       src={owner.photo}
                       alt={`${owner.name} - ${owner.role}`}
                       className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                      width="288"
-                      height="360"
+                      width="340"
+                      height="425"
                       loading="lazy"
                     />
-                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-3 text-center">
-                      <span className="inline-block px-3.5 py-1 rounded-full bg-[#E93984] text-white text-[11px] font-bold uppercase tracking-wider shadow-sm">
-                        OWNER
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-3 text-center">
+                      <span className="inline-block px-4 py-1.5 rounded-full bg-[#E93984] text-white text-xs font-bold uppercase tracking-wider shadow-md">
+                        OWNER &amp; MANAGING DIRECTOR
                       </span>
                     </div>
                   </div>
@@ -548,14 +594,14 @@ export const ContactView = ({ onNotify }) => {
               </div>
 
               {!activeRow1Agent ? (
-                /* Default 2-in-a-line view */
+                /* Default 2-in-a-line view with distinct high-visibility borders */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {agentRow1.map((agent) => (
                     <div
                       key={agent.id}
-                      onClick={() => setActiveRow1Agent(agent.id)}
-                      onMouseEnter={() => setActiveRow1Agent(agent.id)}
-                      className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-xl hover:border-[#E93984] transition-all duration-300 cursor-pointer group flex flex-col justify-between text-center"
+                      onClick={() => handleClickRow1(agent.id)}
+                      onMouseEnter={() => handleHoverRow1(agent.id)}
+                      className="bg-white rounded-3xl border-2 border-slate-300 hover:border-[#E93984] p-6 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between text-center relative"
                     >
                       <div>
                         <div className="relative w-36 h-36 rounded-2xl overflow-hidden mx-auto mb-4 border-2 border-slate-200 group-hover:border-[#E93984] group-hover:scale-105 transition-all shadow-md bg-slate-50">
@@ -581,9 +627,9 @@ export const ContactView = ({ onNotify }) => {
                           {agent.whatTheyDo}
                         </p>
                       </div>
-                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-xs font-bold text-[#E93984]">
-                        <span>View Details &amp; Touchpoints</span>
-                        <span>&rarr;</span>
+                      <div className="pt-3 mt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-[#E93984]">
+                        <span>Click or hover to expand full profile</span>
+                        <span className="w-6 h-6 rounded-full bg-pink-50 border border-pink-200 flex items-center justify-center font-bold">→</span>
                       </div>
                     </div>
                   ))}
@@ -618,12 +664,9 @@ export const ContactView = ({ onNotify }) => {
                                 </span>
                                 <button
                                   type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setActiveRow1Agent(null);
-                                  }}
-                                  className="text-xs text-slate-400 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition-colors"
-                                  title="Collapse details"
+                                  onClick={handleCloseRow1}
+                                  className="text-xs text-slate-600 hover:text-white hover:bg-[#E93984] font-bold px-3 py-1.5 rounded-full border border-slate-300 hover:border-[#E93984] transition-all cursor-pointer shadow-xs"
+                                  title="Collapse profile (stays closed for at least 3 seconds on hover)"
                                 >
                                   ✕ Close View
                                 </button>
@@ -736,14 +779,14 @@ export const ContactView = ({ onNotify }) => {
               </div>
 
               {!activeRow2Agent ? (
-                /* Default 2-in-a-line view */
+                /* Default 2-in-a-line view with distinct high-visibility borders */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {agentRow2.map((agent) => (
                     <div
                       key={agent.id}
-                      onClick={() => setActiveRow2Agent(agent.id)}
-                      onMouseEnter={() => setActiveRow2Agent(agent.id)}
-                      className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-xl hover:border-[#2D8CFF] transition-all duration-300 cursor-pointer group flex flex-col justify-between text-center"
+                      onClick={() => handleClickRow2(agent.id)}
+                      onMouseEnter={() => handleHoverRow2(agent.id)}
+                      className="bg-white rounded-3xl border-2 border-slate-300 hover:border-[#2D8CFF] p-6 shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between text-center relative"
                     >
                       <div>
                         <div className="relative w-36 h-36 rounded-2xl overflow-hidden mx-auto mb-4 border-2 border-slate-200 group-hover:border-[#2D8CFF] group-hover:scale-105 transition-all shadow-md bg-slate-50">
@@ -769,9 +812,9 @@ export const ContactView = ({ onNotify }) => {
                           {agent.whatTheyDo}
                         </p>
                       </div>
-                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-xs font-bold text-[#2D8CFF]">
-                        <span>View Details &amp; Touchpoints</span>
-                        <span>&rarr;</span>
+                      <div className="pt-3 mt-3 border-t border-slate-200 flex items-center justify-between text-xs font-bold text-[#2D8CFF]">
+                        <span>Click or hover to expand full profile</span>
+                        <span className="w-6 h-6 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center font-bold">→</span>
                       </div>
                     </div>
                   ))}
@@ -806,12 +849,9 @@ export const ContactView = ({ onNotify }) => {
                                 </span>
                                 <button
                                   type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setActiveRow2Agent(null);
-                                  }}
-                                  className="text-xs text-slate-400 hover:text-slate-700 font-medium px-2 py-1 rounded hover:bg-slate-100 transition-colors"
-                                  title="Collapse details"
+                                  onClick={handleCloseRow2}
+                                  className="text-xs text-slate-600 hover:text-white hover:bg-[#2D8CFF] font-bold px-3 py-1.5 rounded-full border border-slate-300 hover:border-[#2D8CFF] transition-all cursor-pointer shadow-xs"
+                                  title="Collapse profile (stays closed for at least 3 seconds on hover)"
                                 >
                                   ✕ Close View
                                 </button>

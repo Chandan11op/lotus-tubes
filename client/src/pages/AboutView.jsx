@@ -11,7 +11,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
     <div className="about-page-view">
       {/* 1. Cinematic Architectural Hero */}
       <PageHero
-        image="/assets/images/hero/hero-about-commercial-factory.jpg"
+        image="/assets/images/hero/lotus-tubes-factory-hero.jpg"
         badge="Lotus Impex Division • Mumbai Central Stockhub"
         title="Engineered for Sterile Purity. Built for Industrial Trust."
         subtitle="Premier Stockist, Fabricator & Global Exporter of Stainless Steel Sanitary Piping Systems"
@@ -94,7 +94,7 @@ export const AboutView = ({ onOpenEnquiry }) => {
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-slate-900">
               <img
-                src="/assets/images/company/lotus-tubes-facility.jpg"
+                src="/assets/images/company/lotus-tubes-godown-storage.jpg"
                 alt="Lotus Tubes Mumbai Distribution and Warehousing Facility"
                 className="w-full h-80 sm:h-96 object-cover object-center"
                 loading="lazy"
@@ -133,57 +133,65 @@ export const AboutView = ({ onOpenEnquiry }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pillar 1 */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-2xl font-bold mb-4">
-                🔬
+            <div className="group bg-white p-6 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-[#E93984] hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-pink-50/30 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-3xl font-bold mb-4 shadow-sm group-hover:scale-110 group-hover:rotate-3 group-hover:bg-sky-100 group-hover:shadow-md transition-all duration-300">
+                  🔬
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#E93984] transition-colors duration-200 mb-2">Verified Metallurgy</h3>
+                <p className="text-xs text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">
+                  Positive Material Identification (PMI) spectrometer checks confirm precise Chromium (16-18%), Nickel (10-14%), and Molybdenum (2.0-3.0%) content in every SS 316L heat.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Verified Metallurgy</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Positive Material Identification (PMI) spectrometer checks confirm precise Chromium (16-18%), Nickel (10-14%), and Molybdenum (2.0-3.0%) content in every SS 316L heat.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-sky-700 font-semibold">
+              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-sky-700 font-semibold group-hover:text-[#E93984] transition-colors">
                 ASTM A270 • ASME BPE
               </div>
             </div>
 
             {/* Pillar 2 */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl font-bold mb-4">
-                ✨
+            <div className="group bg-white p-6 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-emerald-500 hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-emerald-50/30 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-3xl font-bold mb-4 shadow-sm group-hover:scale-110 group-hover:-rotate-3 group-hover:bg-emerald-100 group-hover:shadow-md transition-all duration-300">
+                  ✨
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors duration-200 mb-2">Ra Profilometry</h3>
+                <p className="text-xs text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">
+                  Contact stylus profilometer testing verifies internal roughness Ra ≤ 0.38 µm (15 µin) for EP mirror lines, eliminating microscopic crevices where biofilms could incubate.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Ra Profilometry</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Contact stylus profilometer testing verifies internal roughness Ra ≤ 0.38 µm (15 µin) for EP mirror lines, eliminating microscopic crevices where biofilms could incubate.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-emerald-700 font-semibold">
+              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-emerald-700 font-semibold group-hover:text-emerald-800 transition-colors">
                 Clean-In-Place (CIP) Ready
               </div>
             </div>
 
             {/* Pillar 3 */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl font-bold mb-4">
-                📋
+            <div className="group bg-white p-6 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-amber-500 hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-amber-50/30 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-3xl font-bold mb-4 shadow-sm group-hover:scale-110 group-hover:rotate-3 group-hover:bg-amber-100 group-hover:shadow-md transition-all duration-300">
+                  📋
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-amber-700 transition-colors duration-200 mb-2">100% Heat Traceability</h3>
+                <p className="text-xs text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">
+                  Every length of tube and forged fitting carries distinct laser-etched heat codes matched 1:1 with manufacturer EN 10204 3.1 chemical and tensile test certificates.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">100% Heat Traceability</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Every length of tube and forged fitting carries distinct laser-etched heat codes matched 1:1 with manufacturer EN 10204 3.1 chemical and tensile test certificates.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-amber-700 font-semibold">
+              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-amber-700 font-semibold group-hover:text-amber-800 transition-colors">
                 Audit-Ready Documentation
               </div>
             </div>
 
             {/* Pillar 4 */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-bold mb-4">
-                🚀
+            <div className="group bg-white p-6 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-purple-500 hover:-translate-y-2 hover:bg-gradient-to-b hover:from-white hover:to-purple-50/30 transition-all duration-300 ease-out cursor-pointer flex flex-col justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-3xl font-bold mb-4 shadow-sm group-hover:scale-110 group-hover:-rotate-3 group-hover:bg-purple-100 group-hover:shadow-md transition-all duration-300">
+                  🚀
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition-colors duration-200 mb-2">Rapid Dispatch</h3>
+                <p className="text-xs text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">
+                  Centralized stocking in South Mumbai enables rapid ground dispatch across major manufacturing clusters (Gujarat, Maharashtra, Telangana, Karnataka) and international sea ports.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">Rapid Dispatch</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Centralized stocking in South Mumbai enables rapid ground dispatch across major manufacturing clusters (Gujarat, Maharashtra, Telangana, Karnataka) and international sea ports.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-purple-700 font-semibold">
+              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-mono text-purple-700 font-semibold group-hover:text-purple-800 transition-colors">
                 Pan-India &amp; Global Air/Sea
               </div>
             </div>

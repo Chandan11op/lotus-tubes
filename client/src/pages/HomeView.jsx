@@ -728,7 +728,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
             <div className="lg:col-span-5 flex justify-center">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-slate-100 max-w-[460px]">
                 <img
-                  src="/assets/images/products images/cover page/TPM-200.jpg"
+                  src="/assets/images/company/lotus-tubes-cover.png"
                   alt="Lotus Tubes High Purity Sanitary Valves & Pipes Warehousing"
                   className="w-full h-auto object-cover rounded-2xl"
                   width="460"

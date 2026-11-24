@@ -109,18 +109,25 @@ export const submitContact = async (req, res, next) => {
         // 2. Customer acknowledgement dispatched via Agent 3 (Neha Desai)
         const ackHtml = wrapEmailTemplate({
           title: `Inquiry Received - ${reference}`,
-          subtitle: 'Client Inquiries & Support Desk',
+          subtitle: 'Client Inquiries & Support Desk • High Purity Sanitary Stainless Steel',
           contentHtml: `
-            <p>Dear <strong>${escapeHtml(safeName)}</strong>,</p>
-            <p>Thank you for reaching out to Lotus Tubes. Your message regarding <strong>${escapeHtml(safeSubject)}</strong> has been registered with reference <strong>${escapeHtml(reference)}</strong>.</p>
-            <p>Our technical team and Super Admin Chirag Shah are reviewing your requirements. We will provide our verified response shortly.</p>
-            <div style="background:#F8FAFC;padding:12px;border-left:4px solid #0284C7;margin:12px 0;font-size:12px;">
-              <strong>Submitted Summary:</strong><br/>
-              Company: ${escapeHtml(safeCompany)}<br/>
-              Phone: ${escapeHtml(safePhone || 'N/A')}<br/>
-              Subject: ${escapeHtml(safeSubject)}
+            <p style="font-size: 15px; color: #0C225E; margin: 0 0 12px 0;">Dear <strong>${escapeHtml(safeName)}</strong>,</p>
+            <p style="font-size: 14px; color: #334155; line-height: 1.6; margin: 0 0 14px 0;">
+              Thank you for reaching out to <strong>Lotus Tubes</strong>. Your inquiry regarding <strong>${escapeHtml(safeSubject)}</strong> has been registered under official reference <strong style="color: #E93984; font-family: monospace;">${escapeHtml(reference)}</strong>.
+            </p>
+            <p style="font-size: 14px; color: #334155; line-height: 1.6; margin: 0 0 16px 0;">
+              Our sales engineering desk and Managing Director Chirag Shah are reviewing your requirements. We will provide our verified technical specification and pricing response promptly.
+            </p>
+            <div style="background-color: #FDF2F8; padding: 16px 20px; border-left: 4px solid #E93984; border-radius: 6px; margin: 18px 0; font-size: 13px; line-height: 1.7; color: #0F172A;">
+              <strong style="color: #0C225E; font-size: 13.5px; display: block; margin-bottom: 6px;">📋 Submitted Requirement Summary:</strong>
+              <strong>Company / Client:</strong> ${escapeHtml(safeCompany)}<br/>
+              <strong>Phone / WhatsApp:</strong> ${escapeHtml(safePhone || 'N/A')}<br/>
+              <strong>Inquiry Subject:</strong> ${escapeHtml(safeSubject)}<br/>
+              <strong>Tracking Reference:</strong> <span style="font-family: monospace; font-weight: 700; color: #E93984;">${escapeHtml(reference)}</span>
             </div>
-            <p style="font-size: 12px; color: #64748B;">For urgent assistance, reach our Mumbai desk on WhatsApp at +91 99304 30789.</p>
+            <p style="font-size: 12.5px; color: #475569; line-height: 1.6; margin: 16px 0 0 0;">
+              For urgent material requirements or instant WhatsApp quotation, reach our Mumbai sales desk directly on WhatsApp at <a href="https://wa.me/919867304316?text=${encodeURIComponent(`Hello Lotus Tubes, checking status for inquiry ${reference}`)}" style="color: #E93984; font-weight: 700; text-decoration: none;">+91 9867304316</a>.
+            </p>
           `,
           agentId: 'neha-desai'
         });
