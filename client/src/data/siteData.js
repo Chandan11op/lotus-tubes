@@ -1092,7 +1092,7 @@ export const LEADERSHIP = {
     designation: 'Managing Director',
     location: 'Mumbai, Maharashtra, India',
     summary: 'Guiding our family enterprise established in 1989 with a steadfast commitment to customer trust, metallurgical precision, and verified stainless steel sourcing. Chirag Shah advances the multi-generational family legacy, personally overseeing high-purity supply contracts, EN 10204 3.1 mill test traceability, and dedicated quotation service.',
-    photo: '/assets/images/team/owner.jpeg'
+    photo: '/assets/images/team/Owner.png'
   };
 
 export const AI_TEAM_MEMBERS = [
