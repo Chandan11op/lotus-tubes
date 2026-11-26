@@ -19,48 +19,9 @@ import { MASTER_PRODUCTS } from './productsData.js';
     sourcingHub: 'Girgaon, Mumbai - 400004, Maharashtra, India'
   };
 
-  /* Helper to generate reliable inline SVG product images as fallback/crisp imagery */
+  /* Helper to generate reliable real product image as fallback */
   function createProductSVG(title, category, colorHex) {
-    const safeTitle = (title || 'Sanitary Component').replace(/"/g, '&quot;');
-    const accent = colorHex || '#0284C7';
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
-      <defs>
-        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#F8FAFC"/>
-          <stop offset="100%" stop-color="#E2E8F0"/>
-        </linearGradient>
-        <linearGradient id="metal" x1="0%" y1="0%" x2="100%" y2="80%">
-          <stop offset="0%" stop-color="#94A3B8"/>
-          <stop offset="35%" stop-color="#FFFFFF"/>
-          <stop offset="65%" stop-color="#CBD5E1"/>
-          <stop offset="100%" stop-color="#64748B"/>
-        </linearGradient>
-        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-          <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#10263D" flood-opacity="0.15"/>
-        </filter>
-      </defs>
-      <rect width="600" height="450" fill="url(#bg)"/>
-      <circle cx="520" cy="80" r="140" fill="${accent}" opacity="0.04"/>
-      <g filter="url(#shadow)">
-        <rect x="150" y="160" width="300" height="90" rx="14" fill="url(#metal)"/>
-        <ellipse cx="150" cy="205" rx="28" ry="45" fill="#475569"/>
-        <ellipse cx="150" cy="205" rx="20" ry="35" fill="#1E293B"/>
-        <circle cx="150" cy="205" r="12" fill="#020617"/>
-        <rect x="420" y="152" width="28" height="106" rx="6" fill="#64748B"/>
-        <line x1="220" y1="160" x2="220" y2="250" stroke="#FFFFFF" stroke-width="2" opacity="0.6"/>
-        <line x1="340" y1="160" x2="340" y2="250" stroke="#FFFFFF" stroke-width="2" opacity="0.6"/>
-        <ellipse cx="450" cy="205" rx="28" ry="45" fill="url(#metal)"/>
-        <line x1="160" y1="180" x2="440" y2="180" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
-        <line x1="180" y1="192" x2="420" y2="192" stroke="#FFFFFF" stroke-width="2" opacity="0.6"/>
-        <rect x="430" y="145" width="22" height="120" rx="6" fill="url(#metal)" stroke="#334155" stroke-width="1.5"/>
-        <rect x="138" y="145" width="22" height="120" rx="6" fill="url(#metal)" stroke="#334155" stroke-width="1.5"/>
-      </g>
-      <rect x="230" y="360" width="140" height="28" rx="6" fill="#10263D"/>
-      <text x="300" y="379" font-family="sans-serif" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">LOTUS TUBES</text>
-      <text x="300" y="325" font-family="sans-serif" font-size="18" font-weight="bold" fill="#10263D" text-anchor="middle">${safeTitle}</text>
-      <text x="300" y="344" font-family="sans-serif" font-size="12" fill="#64748B" text-anchor="middle">${category || ''}</text>
-    </svg>`;
-    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    return '/assets/images/products images/cover page/TPM-195.jpg';
   }
 
   /* --------------------------------------------------------------------------
@@ -73,7 +34,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Sanitary Pipes & Tubes',
       desc: 'SS 304 and SS 316L high-purity sanitary tubing with Electro Polished (EP) and Mechanical Polished (MP) finishes conforming to ASTM A270 & A269.',
       icon: '📏',
-      image: '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg',
+      image: '/assets/images/products images/SS EP PIPE/TPM-10.jpg',
       subcategories: ['EP Sanitary Pipe', 'MP Sanitary Pipe', 'Seamless Tube', 'Welded Tube']
     },
     {
@@ -82,7 +43,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Sanitary Pipe Fittings',
       desc: 'Hygienic 90° and 45° bends, equal tees, reducing tees, concentric & eccentric reducers engineered with smooth internal radiuses for fluid cleanliness.',
       icon: '🔀',
-      image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg',
+      image: '/assets/images/products images/SS SHORT ELBOW/TPM-118.jpg',
       subcategories: ['Sanitary Bends', 'Equal Tees', 'Reducing Tees', 'Concentric Reducers', 'Eccentric Reducers']
     },
     {
@@ -91,7 +52,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Tri-Clamp Fittings & Components',
       desc: 'Sanitary Tri-Clamp ferrules, heavy-duty single/double pin clamps, SMS unions, DIN unions, and blind end caps for rapid hygienic disassembly.',
       icon: '🔗',
-      image: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg',
+      image: '/assets/images/products images/SS MP PIPE/TC CLAMP/TPM-394.jpg',
       subcategories: ['TC Ferrules', 'TC Clamps', 'SMS Unions', 'DIN Unions', 'TC End Caps']
     },
     {
@@ -109,7 +70,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Manual Sanitary Valves',
       desc: 'Hygienic sanitary butterfly valves, multi-position pull/gripper handles, 3-piece ball valves with TC ends, non-return valves, and diaphragm valves.',
       icon: '🚰',
-      image: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg',
+      image: '/assets/images/products images/SS BUTTERFLY VALVE/TPM-225.jpg',
       subcategories: ['Butterfly Valves', 'Diaphragm Valves', '3-Piece Ball Valves', 'Sampling Valves', 'Check Valves']
     },
     {
@@ -118,7 +79,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Pneumatic & Automated Valves',
       desc: 'Pneumatically actuated sanitary ball valves, automated diaphragm valves with control heads, safety switches, and process automation accessories.',
       icon: '⚡',
-      image: '/assets/images/products/valves/pneumatic-valves/ss-pneumatic-actuated-sanitary-ball-valve-023.jpg',
+      image: '/assets/images/products images/SS 3PCS BALL VALVE TC END/pneumatic-sanitary-ball-valve-tc.jpg',
       subcategories: ['Pneumatic Diaphragm', 'Pneumatic Ball Valve', 'Control Tops', 'Actuator Accessories']
     },
     {
@@ -136,7 +97,7 @@ import { MASTER_PRODUCTS } from './productsData.js';
       name: 'Custom Hygienic Assemblies',
       desc: 'Drawing-based sanitary pipe spools, fabricated manifolds, instrument tees, and specialized stainless steel transfer panels.',
       icon: '⚙️',
-      image: '/assets/images/products/custom-products/hero-showcases/lotus-tubes-master-product-line-hero-001.jpg',
+      image: '/assets/images/products images/cover page/TPM-195.jpg',
       subcategories: ['Sanitary Spools', 'Custom Manifolds', 'Instrument Connections', 'Transition Fittings']
     }
   ];

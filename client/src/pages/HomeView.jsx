@@ -132,7 +132,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
     {
       name: 'SMS Hygienic Unions',
       cat: 'Sanitary Fittings',
-      image: '/assets/images/products images/ss sms union/TPM-26.jpg',
+      image: '/assets/images/products images/ss sms union/TPM-378.jpg',
       spec: 'Complete 4-Piece SMS 1145 Union',
       link: '/product/ss-sms-union'
     },
@@ -174,7 +174,7 @@ export const HomeView = ({ onOpenEnquiry }) => {
     {
       name: 'Sanitary Centrifugal Pumps',
       cat: 'Sanitary Pumps',
-      image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
+      image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/sanitary-centrifugal-pump.jpg',
       spec: 'Food & Dairy Grade Stainless Impeller',
       link: '/product/pneumatic-sanitary-butterfly-valve'
     }
@@ -241,17 +241,17 @@ export const HomeView = ({ onOpenEnquiry }) => {
       category: 'Sanitary Fittings',
       grade: 'SS 304 / SS 316L',
       standard: 'SMS 1145 Swedish Std',
-      image: '/assets/images/products images/ss sms union/TPM-26.jpg',
+      image: '/assets/images/products images/ss sms union/TPM-378.jpg',
       spec: 'Complete 4-Piece Hygienic Union (Nut, Welding Male, Liner, EPDM Seal)',
       link: '/product/ss-sms-union'
     },
     {
-      name: 'Tri-Clover Pipe Holding Clamp',
-      category: 'Sanitary Fittings',
-      grade: 'SS 304 Heavy Duty',
-      standard: 'DIN / Imperial Tube Fit',
-      image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-374.jpg',
-      spec: 'Hygienic Pipe Hanger with EPDM / Silicone Anti-Vibration Grommet',
+      name: 'SS Tri-Clamp Ferrule (Long & Short)',
+      category: 'Tri-Clamp Fittings',
+      grade: 'SS 304 / SS 316L',
+      standard: 'BS 4825 Part 3 / 3A',
+      image: '/assets/images/products images/SS MP PIPE/TC CLAMP/TPM-394.jpg',
+      spec: 'CNC Machined Orbital Weld Ferrule, Ra ≤ 0.38 µm Gasket Face',
       link: '/product/ss-tri-clamp-ferrule'
     },
     {

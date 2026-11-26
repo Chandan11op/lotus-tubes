@@ -42,25 +42,25 @@ export const CATEGORIES_MANIFEST = [
       {
         name: 'Sanitary Pneumatic Valve',
         spec: 'Air-Actuated Butterfly Valve with C-Top Controller',
-        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
+        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/pneumatic-sanitary-butterfly-valve.jpg',
         link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Sanitary Pneumatic Actuated Valve',
         spec: 'Stainless Steel Actuated Diaphragm Valve',
-        image: '/assets/images/products images/SS PNUEMATIC DIAPHGRAM VALVE/stainless-steel-high-precision-casting-diaphragm-valve-1--!j.webp',
+        image: '/assets/images/products images/SS PNUEMATIC DIAPHGRAM VALVE/pneumatic-sanitary-diaphragm-valve.jpg',
         link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Angle Seat Valve',
         spec: 'Y-Type High-Flow Steam & Liquid Control Valve',
-        image: '/assets/images/products images/SS BLOCK VALVE TC END/stainless-steel-sanitary-3-way-diaphragm-valve-1--!j.webp',
+        image: '/assets/images/products images/SS BLOCK VALVE TC END/sanitary-3-way-block-valve.jpg',
         link: '/product/ss-316l-diaphragm-valve'
       },
       {
         name: 'Tank Bottom Valve',
         spec: 'Zero Dead-Leg Flush Bottom Discharge Valve',
-        image: '/assets/images/products images/SS FLUSH BOTTOM VALVE/TPM-246.jpg',
+        image: '/assets/images/products images/SS FLUSH BOTTOM DIAPHGRAM VALVE/sanitary-flush-bottom-diaphragm-valve.jpg',
         link: '/product/ss-316l-diaphragm-valve'
       },
       {
@@ -113,7 +113,7 @@ export const CATEGORIES_MANIFEST = [
       {
         name: 'Tri Clovers Clamps (Clamps Clover Tubes holder)',
         spec: 'Single Pin, 2-Segment & Heavy Duty 3-Segment Clamps',
-        image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-374.jpg',
+        image: '/assets/images/products images/SS MP PIPE/TC CLAMP/TPM-396.jpg',
         link: '/product/ss-tri-clamp-clamp'
       },
       {
@@ -125,7 +125,7 @@ export const CATEGORIES_MANIFEST = [
       {
         name: 'Pipe Adapter',
         spec: 'SMS, DIN & Male/Female Threaded Process Adapters',
-        image: '/assets/images/products images/ss sms union/TPM-26.jpg',
+        image: '/assets/images/products images/ss sms union/TPM-378.jpg',
         link: '/product/ss-sms-union'
       }
     ]
@@ -143,31 +143,31 @@ export const CATEGORIES_MANIFEST = [
         name: 'TRI Clover Hose - 3A',
         spec: '3A Certified Tri-Clamp Sanitary Hose Barb Adapter',
         image: '/assets/images/products images/SS HOSE NIPPLE/TPM-403.jpg',
-        link: '/product/ss-tri-clamp-ferrule'
+        link: '/product/ss-sanitary-pipe-spool'
       },
       {
         name: 'Sanitary Stainless Steel Long Hose',
         spec: 'Flexible SS 316 Braided & Corrugated Transfer Hoses',
         image: '/assets/images/products images/SS LONG BEND/TPM-100.jpg',
-        link: '/product/ss-sanitary-90-bend'
+        link: '/product/ss-sanitary-pipe-spool'
       },
       {
         name: 'Sanitary Hose Adapter',
         spec: 'Machined Hose Menders & Quick-Connect Couplers',
         image: '/assets/images/products images/SS HOSE NIPPLE/TPM-404.jpg',
-        link: '/product/ss-sms-union'
+        link: '/product/ss-sanitary-pipe-spool'
       },
       {
         name: 'SMS Sanitary Hose Nipple',
         spec: 'SMS 1145 Standard Hygienic Threaded Hose Tailpiece',
         image: '/assets/images/products images/SS HOSE NIPPLE/TPM-405.jpg',
-        link: '/product/ss-sms-union'
+        link: '/product/ss-sanitary-pipe-spool'
       },
       {
         name: 'Flexible Hose Pipe (TC / Flange / SMS / Food Grade)',
         spec: 'TC Hose Pipe, Flange Hose Pipe, SMS Union, Food Hose & Crimp Collars',
         image: '/assets/images/products images/SS HOSE NIPPLE/TPM-403.jpg',
-        link: '/product/ss-tri-clamp-ferrule'
+        link: '/product/ss-sanitary-pipe-spool'
       }
     ]
   },
@@ -272,30 +272,30 @@ export const CATEGORIES_MANIFEST = [
     description: 'Hygienic centrifugal and positive displacement fluid transfer pumps for food, beverage, and dairy.',
     viewAllLink: '/product/pneumatic-sanitary-ball-valve',
     primaryProductLink: '/product/pneumatic-sanitary-ball-valve',
-    heroImage: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
+    heroImage: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/sanitary-centrifugal-pump.jpg',
     products: [
       {
         name: 'Food Grade Centrifugal Pumps',
         spec: 'Open Impeller CIP Cleanable Design (SS 316L Contact Parts)',
-        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/c1b0348e-e78c-4fff-92c9-c1f2f5c37db0.png',
+        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/sanitary-centrifugal-pump.jpg',
         link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Dairy Grade Centrifugal Pumps',
         spec: 'Gentle Product Handling with Mechanical Silicon Carbide Seals',
-        image: '/assets/images/products images/SS PNUEMATIC DIAPHGRAM VALVE/f7ad6d08-8f8e-4044-a1fb-99046bb1cae1.png',
+        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/sanitary-centrifugal-pump.jpg',
         link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Water/ Fluid Grade Centrifugal Pumps',
         spec: 'WFI & Purified Water Circulation Sanitary Booster Pumps',
-        image: '/assets/images/products images/SS BALL VALVE BAR STOCK/TPM-412.jpg',
-        link: '/product/ss-3-piece-ball-valve-tc'
+        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/sanitary-centrifugal-pump.jpg',
+        link: '/product/pneumatic-sanitary-ball-valve'
       },
       {
         name: 'Food & Beverage, Wine Vertical Centrifugal Pumps',
         spec: 'Multi-Stage Vertical High Pressure Sanitary Delivery Pumps',
-        image: '/assets/images/products images/SS PNUEMATIC DIAPHGRAM VALVE/3fuben-1--!j.webp',
+        image: '/assets/images/products images/SS PNUEMATIC BUTTERFLY VALVE/sanitary-centrifugal-pump.jpg',
         link: '/product/pneumatic-sanitary-ball-valve'
       }
     ]
@@ -352,7 +352,7 @@ export const CATEGORIES_MANIFEST = [
       {
         name: 'TC Wing Clamp',
         spec: 'High-Torque Stainless Steel Quick-Release Clamps for Data Racks',
-        image: '/assets/images/products images/PIPEHOLDING CLAMP/TPM-375.jpg',
+        image: '/assets/images/products images/SS MP PIPE/TC CLAMP/TPM-396.jpg',
         link: '/product/ss-tri-clamp-clamp'
       },
       {

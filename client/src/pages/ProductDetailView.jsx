@@ -305,7 +305,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
               onMouseEnter={handleStageMouseEnter}
               onMouseLeave={handleStageMouseLeave}
               onMouseMove={handleStageMouseMove}
-              className="relative w-full border border-slate-200/90 rounded-3xl overflow-hidden shadow-lg flex items-center justify-center min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] p-6 group bg-cover bg-center cursor-crosshair select-none"
+              className="relative w-full aspect-[4/3] border border-slate-200/90 rounded-3xl overflow-hidden shadow-lg group bg-cover bg-center cursor-crosshair select-none"
               style={{
                 backgroundImage: 'url(/product-image-cover.png)',
                 backgroundSize: '100% 100%',
@@ -313,20 +313,22 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                 backgroundRepeat: 'no-repeat'
               }}
             >
+              {/* Strictly Safe Product Stage: Perfectly Confined Between Header Logo and Footer Details */}
               <div
-                className="relative w-full h-full flex items-center justify-center"
+                className="absolute inset-x-[8%] top-[23%] bottom-[19%] flex items-center justify-center pointer-events-auto"
                 onClick={() => setIsLightboxOpen(true)}
                 title="Click to expand high-resolution photograph"
               >
                 <img
                   src={transparentImageSrc || currentImageSrc}
                   alt={prod.name}
-                  className="max-h-[360px] sm:max-h-[420px] max-w-full object-contain transition-transform duration-200 drop-shadow-2xl"
+                  className="w-full h-full max-h-full max-w-full object-contain transition-transform duration-200 drop-shadow-2xl"
                   style={{
                     mixBlendMode: 'multiply'
                   }}
                   onError={() => handleImageError(`main-${activePhotoIndex}`)}
                 />
+              </div>
 
                 {/* Zero-Latency Amazon-style Semi-Transparent Zoom Lens Following Cursor (Direct Ref Update) */}
                 <div
@@ -361,7 +363,6 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
                   <span>Full View</span>
                 </button>
               </div>
-            </div>
 
             {/* Highly Used in These Industries Cluster (Placed Directly Down To Image to Fill Space) */}
             <div className="w-full mt-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs">
@@ -863,7 +864,7 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
 
           {/* Lightbox Image Stage with Lotus Tubes Cover Background */}
           <div
-            className="relative max-w-4xl max-h-[85vh] w-full flex flex-col items-center justify-center p-8 rounded-3xl shadow-2xl border border-white/20 bg-cover bg-center overflow-hidden"
+            className="relative max-w-4xl aspect-[4/3] w-full max-h-[85vh] flex items-center justify-center rounded-3xl shadow-2xl border border-white/20 bg-cover bg-center overflow-hidden"
             style={{
               backgroundImage: 'url(/product-image-cover.png)',
               backgroundSize: '100% 100%',
@@ -872,15 +873,17 @@ export const ProductDetailView = ({ slug, onOpenEnquiry }) => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <img
-              src={transparentImageSrc || currentImageSrc}
-              alt={`${prod.name} high resolution static photograph`}
-              className="max-w-full max-h-[70vh] object-contain drop-shadow-2xl"
-              style={{
-                mixBlendMode: 'multiply'
-              }}
-            />
-            <div className="mt-4 text-center text-slate-800 text-xs sm:text-sm bg-white/90 px-4 py-1.5 rounded-full shadow-md font-sans">
+            <div className="absolute inset-x-[8%] top-[23%] bottom-[19%] flex items-center justify-center">
+              <img
+                src={transparentImageSrc || currentImageSrc}
+                alt={`${prod.name} high resolution static photograph`}
+                className="w-full h-full max-h-full max-w-full object-contain drop-shadow-2xl"
+                style={{
+                  mixBlendMode: 'multiply'
+                }}
+              />
+            </div>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-center text-slate-800 text-xs sm:text-sm bg-white/90 px-4 py-1.5 rounded-full shadow-md font-sans z-10">
               <span className="font-bold text-[#0C225E]">{prod.name}</span>
             </div>
           </div>

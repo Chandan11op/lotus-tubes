@@ -199,7 +199,7 @@ export const SearchModal = ({ isOpen, onClose }) => {
 
             {/* Matched Products */}
             {matchedProducts.map((p) => {
-              const imageSrc = p.image?.startsWith('assets/') ? `/${p.image}` : (p.image || '/assets/images/products/pipes/electro-polished/ss-316l-electropolished-sanitary-tube-001.jpg');
+              const imageSrc = p.image?.startsWith('assets/') ? `/${p.image}` : (p.image || '/assets/images/products images/SS EP PIPE/TPM-10.jpg');
               const is316 = p.material?.includes('316');
 
               return (

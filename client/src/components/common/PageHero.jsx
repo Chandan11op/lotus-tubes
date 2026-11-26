@@ -32,33 +32,17 @@ export const PageHero = ({
     return () => clearTimeout(t);
   }, []);
 
-  // Normalize slides - prioritize single image prop if supplied
-  const activeSlides = image
-    ? [{ image, title, subtitle, description, badge }]
-    : (slides.length > 0
-        ? slides
-        : [
-            {
-              image: '/assets/images/hero/hero-about-commercial-factory.jpg',
-              title,
-              subtitle,
-              description
-            }
-          ]);
-
-  const total = activeSlides.length;
-  const slide = activeSlides[currentSlide] || activeSlides[0];
-
-  // Auto-advance slides every 6 seconds if multiple slides provided
-  useEffect(() => {
-    if (total <= 1 || isPaused) return;
-
-    timerRef.current = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % total);
-    }, 6000);
-
-    return () => clearInterval(timerRef.current);
-  }, [total, isPaused]);
+  // Strictly Single Image Mode: All hero sections and category sections use single images (no sliders)
+  const singleImage = image || (slides.length > 0 ? (slides[0].image || slides[0]) : '/assets/images/hero/hero-about-commercial-factory.jpg');
+  const slide = {
+    image: singleImage,
+    title: (slides.length > 0 && slides[0].title) || title,
+    subtitle: (slides.length > 0 && slides[0].subtitle) || subtitle,
+    description: (slides.length > 0 && slides[0].description) || description,
+    badge: (slides.length > 0 && slides[0].badge) || badge
+  };
+  const activeSlides = [slide];
+  const total = 1;
 
   return (
     <section
@@ -158,55 +142,7 @@ export const PageHero = ({
         </div>
       </div>
 
-      {/* Multi-Slide Navigation Controls (Rendered when multiple visuals provided) */}
-      {total > 1 && (
-        <div className="absolute bottom-6 right-6 sm:right-12 z-20 flex items-center gap-3 bg-slate-900/80 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-700/80 shadow-xl">
-          {/* Slide counter */}
-          <div className="text-xs font-mono font-bold text-slate-300 tracking-wider">
-            0{currentSlide + 1} <span className="text-slate-600">/</span> 0{total}
-          </div>
-
-          <div className="h-3 w-[1px] bg-slate-700" />
-
-          {/* Interactive Slide Progress Dots / Pills */}
-          <div className="flex items-center gap-1.5">
-            {activeSlides.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setCurrentSlide(idx)}
-                className={`transition-all rounded-full ${
-                  currentSlide === idx
-                    ? 'w-6 h-2 bg-sky-500 shadow-sm shadow-sky-500/50'
-                    : 'w-2 h-2 bg-slate-600 hover:bg-slate-400'
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Next / Prev Controls */}
-          <div className="flex items-center gap-1 ml-1">
-            <button
-              type="button"
-              onClick={() => setCurrentSlide((prev) => (prev - 1 + total) % total)}
-              className="p-1 text-slate-400 hover:text-white transition-colors"
-              aria-label="Previous slide"
-            >
-              &#8249;
-            </button>
-            <button
-              type="button"
-              onClick={() => setCurrentSlide((prev) => (prev + 1) % total)}
-              className="p-1 text-slate-400 hover:text-white transition-colors"
-              aria-label="Next slide"
-            >
-              &#8250;
-            </button>
-          </div>
-        </div>
-      )}
-    </section>
+      </section>
   );
 };
 

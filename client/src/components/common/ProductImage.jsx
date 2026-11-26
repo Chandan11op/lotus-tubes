@@ -82,14 +82,7 @@ export default function ProductImage({
         } ${imgClassName}`}
       />
 
-      {/* Fallback Badge if fallback is active */}
-      {errorCount > 0 && (
-        <div className="absolute bottom-2 left-2 right-2 text-center pointer-events-none z-20">
-          <span className="inline-block px-2 py-0.5 text-[10px] font-semibold text-slate-500 bg-white/90 backdrop-blur-sm rounded border border-slate-200 shadow-sm">
-            Hygienic Component Visual
-          </span>
-        </div>
-      )}
+      {/* Fallback indicator omitted to preserve clean catalog imagery */}
     </div>
   );
 }

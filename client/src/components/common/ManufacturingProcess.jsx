@@ -25,7 +25,7 @@ export const ManufacturingProcess = () => {
       stat: 'Weld Factor 1.0',
       productName: 'Formed Sanitary Tube',
       material: 'SS 316L Welded',
-      image: '/assets/images/products/pipes/welded/ss-sanitary-welded-tube-001.jpg'
+      image: '/assets/images/products images/SS MP PIPE/TPM-1.jpg'
     },
     {
       id: 'bending',
@@ -36,7 +36,7 @@ export const ManufacturingProcess = () => {
       stat: 'Ovality < 1.5%',
       productName: 'Cold-Bent Sanitary 90° Bend',
       material: 'SS 316L',
-      image: '/assets/images/products/fittings/bends-and-elbows/ss-sanitary-bend-elbow-010.jpg'
+      image: '/assets/images/products images/SS LONG BEND/TPM-100.jpg'
     },
     {
       id: 'branching',
@@ -47,7 +47,7 @@ export const ManufacturingProcess = () => {
       stat: 'Crevice-Free Geometry',
       productName: 'Pulled Sanitary Equal Tee',
       material: 'SS 316L',
-      image: '/assets/images/products/fittings/tees/ss-sanitary-tee-fitting-010.jpg'
+      image: '/assets/images/products images/SS EQUAL TEE/TPM-103.jpg'
     },
     {
       id: 'electropolish',
@@ -58,7 +58,7 @@ export const ManufacturingProcess = () => {
       stat: 'Cr/Fe Ratio > 1.5',
       productName: 'Electro Polished Tri-Clamp Ferrule',
       material: 'SS 316L EP',
-      image: '/assets/images/products/tri-clamp/ferrules/ss-tri-clamp-ferrule-001.jpg'
+      image: '/assets/images/products images/SS MP PIPE/TC CLAMP/TPM-394.jpg'
     },
     {
       id: 'quality',
@@ -69,7 +69,7 @@ export const ManufacturingProcess = () => {
       stat: 'Zero-Defect Standard',
       productName: 'Assembled Sanitary Butterfly Valve',
       material: 'SS 316L Tested',
-      image: '/assets/images/products/valves/butterfly-valves/ss-sanitary-butterfly-valve-001.jpg'
+      image: '/assets/images/products images/SS BUTTERFLY VALVE/TPM-225.jpg'
     }
   ];
 
