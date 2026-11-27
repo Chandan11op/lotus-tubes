@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
-import { Loader } from '../../../components/common/Loader';
+import { CRMSkeletonTable, CRMLoaderSpinner } from '../components/CRMLoader';
 
 export const CRMCustomersView = ({
   customers = [],
@@ -107,7 +107,7 @@ export const CRMCustomersView = ({
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
                 title="Syncing records in background"
               >
-                <Loader variant="inline" size="sm" color="#0284C7" />
+                <CRMLoaderSpinner size={14} color="#0284C7" />
                 <span>Syncing</span>
               </span>
             )}
@@ -195,11 +195,7 @@ export const CRMCustomersView = ({
           {/* 1. Loading State: Shimmer Table Skeleton */}
           {loading ? (
             <div style={{ padding: '16px' }}>
-              <Loader
-                variant="skeleton-table"
-                rows={6}
-                label="Retrieving customer directory records..."
-              />
+              <CRMSkeletonTable rows={6} cols={6} />
             </div>
           ) : filteredCustomers.length === 0 ? (
             /* 2. Empty State */
@@ -447,7 +443,10 @@ export const CRMCustomersView = ({
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    <Loader variant="button" size="sm" color="#FFFFFF" label="Saving Customer..." />
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <CRMLoaderSpinner size={16} color="#FFFFFF" />
+                      <span>Saving Customer...</span>
+                    </span>
                   ) : (
                     'Save Customer Record'
                   )}

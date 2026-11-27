@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CRMIcon } from './CRMIcon';
-import { Loader } from '../../../components/common/Loader';
+import { CRMLoaderSpinner } from './CRMLoader';
 
 export const NewStaffModal = ({ isOpen, onClose, onStaffCreated }) => {
   const [formData, setFormData] = useState({
@@ -309,7 +309,10 @@ export const NewStaffModal = ({ isOpen, onClose, onStaffCreated }) => {
               style={{ minWidth: '160px' }}
             >
               {loading ? (
-                <Loader variant="button" size="sm" color="#FFFFFF" label="Appointing Staff..." />
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <CRMLoaderSpinner size={16} color="#FFFFFF" />
+                  <span>Appointing Staff...</span>
+                </span>
               ) : (
                 '+ Confirm Appointment'
               )}

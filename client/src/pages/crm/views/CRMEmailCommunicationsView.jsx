@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { apiService } from '../../../services/api';
-import { Loader } from '../../../components/common/Loader';
+import { CRMSkeletonTable, CRMLoaderSpinner } from '../components/CRMLoader';
 import { CRMIcon } from '../components/CRMIcon';
 
 const AGENT_META = {
@@ -405,8 +405,8 @@ export const CRMEmailCommunicationsView = ({
       {/* Communications Table */}
       <div className="crm-card" style={{ padding: 0, overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '60px 20px', textAlign: 'center' }}>
-            <Loader message="Loading communication logs..." />
+          <div style={{ padding: '20px' }}>
+            <CRMSkeletonTable rows={6} cols={6} />
           </div>
         ) : emails.length === 0 ? (
           <div style={{ padding: '60px 20px', textAlign: 'center', color: '#64748B' }}>
@@ -598,7 +598,8 @@ export const CRMEmailCommunicationsView = ({
             <div className="crm-modal__body" style={{ overflowY: 'auto', flex: 1, padding: '18px 24px' }}>
               {detailLoading || !selectedEmail ? (
                 <div style={{ padding: '60px 0', textAlign: 'center' }}>
-                  <Loader message="Loading full message payload..." />
+                  <CRMLoaderSpinner size={28} color="#0284C7" />
+                  <div style={{ marginTop: '12px', fontSize: '13px', color: '#64748B' }}>Loading full message payload...</div>
                 </div>
               ) : (
                 <>

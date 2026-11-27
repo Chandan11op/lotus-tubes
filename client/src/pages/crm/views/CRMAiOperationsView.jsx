@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { apiService } from '../../../services/api';
-import { Loader } from '../../../components/common/Loader';
+import { CRMSkeletonTable } from '../components/CRMLoader';
 import { AI_TEAM_MEMBERS } from '../../../data/siteData';
 
 export const CRMAiOperationsView = ({
@@ -597,8 +597,8 @@ export const CRMAiOperationsView = ({
 
         {/* Task Table */}
         {loading ? (
-          <div style={{ padding: '40px 20px' }}>
-            <Loader variant="skeleton-table" rows={6} label="Loading AI tasks &amp; approval queue..." />
+          <div style={{ padding: '20px' }}>
+            <CRMSkeletonTable rows={6} cols={6} />
           </div>
         ) : filteredTasks.length > 0 ? (
           <div style={{ overflowX: 'auto' }}>

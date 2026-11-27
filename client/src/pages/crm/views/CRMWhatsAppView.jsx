@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { apiService } from '../../../services/api';
-import { Loader } from '../../../components/common/Loader';
+import { CRMLoaderSpinner } from '../components/CRMLoader';
 import { CRMIcon } from '../components/CRMIcon';
 
 const AGENT_META = {
@@ -300,7 +300,7 @@ export const CRMWhatsAppView = ({ user, isSuperAdmin = false, onNotify }) => {
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {loading ? (
               <div style={{ padding: '24px', textAlign: 'center' }}>
-                <Loader size="small" />
+                <CRMLoaderSpinner size={20} color="#059669" />
               </div>
             ) : conversations.length === 0 ? (
               <div style={{ padding: '32px 16px', textAlign: 'center', color: '#94A3B8', fontSize: '13px' }}>
@@ -371,7 +371,7 @@ export const CRMWhatsAppView = ({ user, isSuperAdmin = false, onNotify }) => {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#FFF' }}>
           {threadLoading && !activeConversationData ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Loader />
+              <CRMLoaderSpinner size={28} color="#059669" />
             </div>
           ) : !activeConversationData ? (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94A3B8' }}>

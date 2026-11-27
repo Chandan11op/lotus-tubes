@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
-import { Loader } from '../../../components/common/Loader';
+import { CRMSkeletonKpi } from '../components/CRMLoader';
 import { runSEOAudit, CANONICAL_ORIGIN, GOOGLE_VERIFICATION_FILE } from '../../../utils/seoAudit';
 
 export const CRMDashboardView = ({
@@ -197,7 +197,7 @@ export const CRMDashboardView = ({
 
       {/* Primary Actionable KPI Grid */}
       {loading ? (
-        <Loader variant="skeleton-kpi" label="Loading real-time operational metrics..." />
+        <CRMSkeletonKpi count={4} />
       ) : (
         <div className="crm-kpi-grid">
         {/* KPI 1: Inbound Leads */}

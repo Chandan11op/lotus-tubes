@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
-import { Loader } from '../../../components/common/Loader';
+import { CRMSkeletonTable } from '../components/CRMLoader';
 
 export const CRMQuotationsView = ({
   quotations = [],
@@ -211,11 +211,7 @@ export const CRMQuotationsView = ({
         <div className="crm-card__body" style={{ padding: 0 }}>
           {loading ? (
             <div style={{ padding: '16px' }}>
-              <Loader
-                variant="skeleton-table"
-                rows={6}
-                label="Retrieving formal quotations and commercial BOQ records..."
-              />
+              <CRMSkeletonTable rows={6} cols={7} />
             </div>
           ) : filteredQuotes.length === 0 ? (
             <div className="crm-empty-state" style={{ padding: '48px 24px' }}>

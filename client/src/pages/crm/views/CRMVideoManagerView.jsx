@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
-import { Loader } from '../../../components/common/Loader';
+import { CRMLoaderSpinner } from '../components/CRMLoader';
 import { Product360Viewer } from '../../../components/common/Product360Viewer';
 import manifestData from '../../../data/productVideosManifest.js';
 import { MASTER_PRODUCTS } from '../../../data/productsData.js';
@@ -235,7 +235,7 @@ export const CRMVideoManagerView = ({
         <div className="crm-card" style={{ marginBottom: '16px', padding: '16px 20px', background: '#F0F9FF', border: '1px solid #BAE6FD' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px', fontWeight: 600, color: '#0369A1' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Loader variant="inline" size="sm" color="#0284C7" />
+              <CRMLoaderSpinner size={14} color="#0284C7" />
               <span>Bulk video synthesis in progress...</span>
             </span>
             <span>{progressPercent}% Complete</span>
@@ -298,7 +298,10 @@ export const CRMVideoManagerView = ({
               style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
               {isBulkGenerating ? (
-                <Loader variant="button" size="sm" color="#FFFFFF" label="Processing..." />
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <CRMLoaderSpinner size={14} color="#FFFFFF" />
+                  <span>Processing...</span>
+                </span>
               ) : (
                 <>
                   <CRMIcon name="plus" size={13} />
@@ -463,7 +466,7 @@ export const CRMVideoManagerView = ({
                             title="Synthesize / regenerate video asset"
                           >
                             {isItemGenerating ? (
-                              <Loader variant="inline" size="sm" color="#0284C7" />
+                              <CRMLoaderSpinner size={14} color="#0284C7" />
                             ) : (
                               'Synthesize'
                             )}

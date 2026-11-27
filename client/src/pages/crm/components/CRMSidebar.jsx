@@ -246,6 +246,7 @@ export const CRMSidebar = ({
               <img
                 src="/banner-image-opt.png"
                 alt="Lotus Tubes"
+                onError={(e) => { e.currentTarget.src = '/banner-image.png'; }}
               />
             </div>
             {!isCurrentlyCollapsed && (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { apiService } from '../../services/api';
-import { Loader } from '../../components/common/Loader';
+import { CRMLoaderSpinner, CRMPageLoading } from './components/CRMLoader';
 import './crm.css';
 
 // CRM Components
@@ -41,6 +41,7 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState('');
   const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Operational CRM State
   const [enquiries, setEnquiries] = useState([]);
@@ -670,201 +671,319 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
   // Login view only if unauthenticated as staff or admin
   if (!isStaff) {
     return (
-      <div className="crm-login-wrapper">
-        <div className="crm-login-box">
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <img src="/banner-image-opt.png" alt="Lotus Tubes" style={{ maxHeight: '44px', margin: '0 auto 12px auto' }} />
-            <h3 style={{ color: 'var(--crm-navy-dark)', fontSize: '1.35rem', marginBottom: '4px' }}>
-              Lotus Tubes Secure Portal
-            </h3>
-            <p style={{ color: 'var(--crm-text-muted)', fontSize: '13px' }}>
-              Select your role to access your account or internal sales workspace
-            </p>
-          </div>
+      <div className="crm-auth-split-wrapper">
+        {/* Left Visual Brand Panel */}
+        <div className="crm-auth-hero-panel">
+          <img
+            src="/assets/images/hero/hero-about-commercial-factory.jpg"
+            alt="Lotus Tubes Industrial Facility"
+            className="crm-auth-hero-bg"
+          />
+          <div className="crm-auth-hero-overlay" />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '24px', background: '#F1F5F9', padding: '4px', borderRadius: '8px' }}>
-            <button
-              type="button"
-              onClick={() => { setAuthMode('customer'); setAuthError(''); }}
-              style={{
-                padding: '8px 12px',
-                border: 'none',
-                borderRadius: '6px',
-                background: authMode === 'customer' ? '#FFFFFF' : 'transparent',
-                color: authMode === 'customer' ? 'var(--crm-navy-dark)' : '#64748B',
-                fontWeight: 600,
-                fontSize: '13px',
-                cursor: 'pointer'
-              }}
-            >
-              👤 Customer Account
-            </button>
-            <button
-              type="button"
-              onClick={() => { setAuthMode('staff'); setAuthError(''); }}
-              style={{
-                padding: '8px 12px',
-                border: 'none',
-                borderRadius: '6px',
-                background: authMode === 'staff' ? '#FFFFFF' : 'transparent',
-                color: authMode === 'staff' ? 'var(--crm-navy-dark)' : '#64748B',
-                fontWeight: 600,
-                fontSize: '13px',
-                cursor: 'pointer'
-              }}
-            >
-              🔒 Staff Workspace
-            </button>
-          </div>
-
-          {authError && (
-            <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', color: '#B91C1C', padding: '10px 12px', borderRadius: '6px', fontSize: '13px', marginBottom: '16px' }}>
-              ⚠️ {authError}
+          <div className="crm-auth-hero-content">
+            {/* Top Brand Header */}
+            <div className="crm-auth-hero-header">
+              <img
+                src="/banner-image-opt.png"
+                alt="Lotus Tubes Logo"
+                className="crm-auth-hero-logo"
+                onError={(e) => { e.currentTarget.src = '/banner-image.png'; }}
+              />
+              <span className="crm-auth-hero-badge">
+                <CRMIcon name="shield" size={13} color="#38BDF8" />
+                ENTERPRISE B2B CRM
+              </span>
             </div>
-          )}
 
-          <form onSubmit={handleAuthSubmit}>
-            {authMode === 'customer' && customerIsRegistering && (
-              <>
-                <div className="crm-form-group">
-                  <label>Full Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={authName}
-                    onChange={(e) => setAuthName(e.target.value)}
-                    placeholder="e.g. Ramesh Patel"
-                  />
+            {/* Middle Value Proposition */}
+            <div className="crm-auth-hero-body">
+              <div className="crm-auth-hero-tagline">Hygienic Process Engineering</div>
+              <h2 className="crm-auth-hero-headline">
+                High-Purity Stainless Steel <span>Operations Portal</span>
+              </h2>
+              <p className="crm-auth-hero-desc">
+                Integrated commercial operations, ASME BPE & 3-A quotation generation, real-time client RFQ dispatch, and AI-assisted sales coordination for pharmaceutical and process industries.
+              </p>
+
+              {/* Trust Metric Counters */}
+              <div className="crm-auth-stats-grid">
+                <div className="crm-auth-stat-item">
+                  <span className="crm-auth-stat-val">1,000+</span>
+                  <span className="crm-auth-stat-lbl">Ready Stock Variants</span>
                 </div>
-                <div className="crm-form-group">
-                  <label>Company Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={authCompany}
-                    onChange={(e) => setAuthCompany(e.target.value)}
-                    placeholder="e.g. BioPharma Process Ltd"
-                  />
+                <div className="crm-auth-stat-item">
+                  <span className="crm-auth-stat-val">EN 10204 3.1</span>
+                  <span className="crm-auth-stat-lbl">Traceable Metallurgy</span>
                 </div>
-                <div className="crm-form-group">
-                  <label>Phone / WhatsApp Number *</label>
-                  <input
-                    type="tel"
-                    required
-                    value={authPhone}
-                    onChange={(e) => setAuthPhone(e.target.value)}
-                    placeholder="+91 98765 43210"
-                  />
+                <div className="crm-auth-stat-item">
+                  <span className="crm-auth-stat-val">Girgaon Hub</span>
+                  <span className="crm-auth-stat-lbl">Central Mumbai Stock</span>
                 </div>
-              </>
+              </div>
+            </div>
+
+            {/* Bottom Security Compliance */}
+            <div className="crm-auth-hero-footer">
+              <div className="crm-auth-hero-footer-trust">
+                <CRMIcon name="lock" size={13} color="#64748B" />
+                <span>256-Bit SSL Encrypted • Role-Based Access Control</span>
+              </div>
+              <div>© {new Date().getFullYear()} Lotus Tubes</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Authentication Form Panel */}
+        <div className="crm-auth-form-panel">
+          <div className="crm-auth-card">
+            {/* Card Header & Logo */}
+            <div className="crm-auth-card-header">
+              <div className="crm-auth-logo-badge">
+                <img
+                  src="/banner-image-opt.png"
+                  alt="Lotus Tubes"
+                  className="crm-auth-logo-img"
+                  onError={(e) => { e.currentTarget.src = '/banner-image.png'; }}
+                />
+              </div>
+              <h1 className="crm-auth-card-title">
+                {authMode === 'staff'
+                  ? 'Staff Workspace Login'
+                  : customerIsRegistering
+                  ? 'Create Customer Account'
+                  : 'Customer Account Sign In'}
+              </h1>
+              <p className="crm-auth-card-subtitle">
+                {authMode === 'staff'
+                  ? 'Enter your authorized credentials to access internal sales and inventory operations.'
+                  : customerIsRegistering
+                  ? 'Register to access quotation history, mill test certificates & fast RFQ tracking.'
+                  : 'Access your saved proforma quotations and technical documentation.'}
+              </p>
+            </div>
+
+            {/* Segmented Role Switcher */}
+            <div className="crm-auth-role-tabs">
+              <button
+                type="button"
+                className={`crm-auth-role-tab ${authMode === 'customer' ? 'active' : ''}`}
+                onClick={() => {
+                  setAuthMode('customer');
+                  setAuthError('');
+                }}
+              >
+                <span className="role-dot" />
+                <span>👤 Customer Portal</span>
+              </button>
+              <button
+                type="button"
+                className={`crm-auth-role-tab ${authMode === 'staff' ? 'active' : ''}`}
+                onClick={() => {
+                  setAuthMode('staff');
+                  setAuthError('');
+                }}
+              >
+                <span className="role-dot" />
+                <span>🔒 Staff Workspace</span>
+              </button>
+            </div>
+
+            {/* Error Alert Banner */}
+            {authError && (
+              <div className="crm-auth-alert crm-auth-alert--error" role="alert">
+                <CRMIcon name="alertCircle" size={16} color="#B91C1C" />
+                <div>{authError}</div>
+              </div>
             )}
 
-            <div className="crm-form-group">
-              <label>
-                {authMode === 'staff' ? 'Staff Email ID *' : 'Business Email *'}
-              </label>
-              <input
-                type="email"
-                required
-                value={authEmail}
-                onChange={(e) => setAuthEmail(e.target.value)}
-                placeholder={authMode === 'staff' ? 'staff@lotustubes.com' : 'purchasing@company.com'}
-              />
-            </div>
+            {/* Authentication Form */}
+            <form onSubmit={handleAuthSubmit}>
+              {authMode === 'customer' && customerIsRegistering && (
+                <>
+                  <div className="crm-auth-field">
+                    <label className="crm-auth-label">Full Name *</label>
+                    <div className="crm-auth-input-wrap">
+                      <CRMIcon name="user" size={16} className="crm-auth-input-icon" />
+                      <input
+                        type="text"
+                        required
+                        className="crm-auth-input"
+                        value={authName}
+                        onChange={(e) => setAuthName(e.target.value)}
+                        placeholder="e.g. Ramesh Patel"
+                        autoComplete="name"
+                      />
+                    </div>
+                  </div>
 
-            <div className="crm-form-group">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <label style={{ margin: 0 }}>Password *</label>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthError('');
-                    setShowPasswordResetModal(true);
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--crm-blue, #0284C7)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                >
-                  Forgot Password?
-                </button>
+                  <div className="crm-auth-field">
+                    <label className="crm-auth-label">Company Name *</label>
+                    <div className="crm-auth-input-wrap">
+                      <CRMIcon name="building" size={16} className="crm-auth-input-icon" />
+                      <input
+                        type="text"
+                        required
+                        className="crm-auth-input"
+                        value={authCompany}
+                        onChange={(e) => setAuthCompany(e.target.value)}
+                        placeholder="e.g. BioPharma Process Ltd"
+                        autoComplete="organization"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="crm-auth-field">
+                    <label className="crm-auth-label">Phone / WhatsApp Number *</label>
+                    <div className="crm-auth-input-wrap">
+                      <CRMIcon name="phone" size={16} className="crm-auth-input-icon" />
+                      <input
+                        type="tel"
+                        required
+                        className="crm-auth-input"
+                        value={authPhone}
+                        onChange={(e) => setAuthPhone(e.target.value)}
+                        placeholder="+91 98765 43210"
+                        autoComplete="tel"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Email Address */}
+              <div className="crm-auth-field">
+                <label className="crm-auth-label">
+                  {authMode === 'staff' ? 'Staff Work Email *' : 'Business Email *'}
+                </label>
+                <div className="crm-auth-input-wrap">
+                  <CRMIcon name="mail" size={16} className="crm-auth-input-icon" />
+                  <input
+                    type="email"
+                    required
+                    className="crm-auth-input"
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    placeholder={authMode === 'staff' ? 'staff@lotustubes.com' : 'purchasing@company.com'}
+                    autoComplete="email"
+                  />
+                </div>
               </div>
-              <input
-                type="password"
-                required
-                value={authPassword}
-                onChange={(e) => setAuthPassword(e.target.value)}
-                placeholder="••••••••••••"
-              />
-            </div>
 
-            <button
-              type="submit"
-              className="crm-btn crm-btn-primary"
-              style={{ width: '100%', padding: '12px', marginTop: '12px', justifyContent: 'center' }}
-              disabled={authLoading}
-            >
-              {authLoading ? (
-                <Loader variant="button" size="sm" color="#FFFFFF" label="Verifying credentials..." />
-              ) : authMode === 'staff' ? (
-                'Sign In to Staff Workspace →'
-              ) : customerIsRegistering ? (
-                'Create Customer Account →'
-              ) : (
-                'Sign In to Customer Account →'
-              )}
-            </button>
-          </form>
-
-          <PasswordResetModal
-            isOpen={showPasswordResetModal}
-            onClose={() => setShowPasswordResetModal(false)}
-            portalMode={authMode === 'staff' ? 'staff' : 'customer'}
-            initialEmail={authEmail}
-            onNotify={onNotify}
-            onSuccess={(resetEmail) => {
-              setAuthEmail(resetEmail);
-              setShowPasswordResetModal(false);
-            }}
-          />
-
-          {authMode === 'customer' && (
-            <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: '#64748B' }}>
-              {customerIsRegistering ? (
-                <>
-                  Already registered?{' '}
+              {/* Password */}
+              <div className="crm-auth-field">
+                <div className="crm-auth-label-row">
+                  <label className="crm-auth-label">Password *</label>
                   <button
                     type="button"
-                    onClick={() => { setCustomerIsRegistering(false); setAuthError(''); }}
-                    style={{ background: 'none', border: 'none', color: 'var(--crm-blue)', fontWeight: 600, cursor: 'pointer' }}
+                    className="crm-auth-link-btn"
+                    onClick={() => {
+                      setAuthError('');
+                      setShowPasswordResetModal(true);
+                    }}
                   >
-                    Sign In
+                    Forgot Password?
                   </button>
-                </>
-              ) : (
-                <>
-                  New customer?{' '}
+                </div>
+                <div className="crm-auth-input-wrap">
+                  <CRMIcon name="lock" size={16} className="crm-auth-input-icon" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    className="crm-auth-input"
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    autoComplete={customerIsRegistering ? 'new-password' : 'current-password'}
+                    style={{ paddingRight: '42px' }}
+                  />
                   <button
                     type="button"
-                    onClick={() => { setCustomerIsRegistering(true); setAuthError(''); }}
-                    style={{ background: 'none', border: 'none', color: 'var(--crm-blue)', fontWeight: 600, cursor: 'pointer' }}
+                    className="crm-auth-eye-btn"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    Create Account
+                    <CRMIcon name={showPassword ? 'eyeOff' : 'eye'} size={17} />
                   </button>
-                </>
-              )}
-            </div>
-          )}
+                </div>
+              </div>
 
-          <div style={{ textAlign: 'center', marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #E3E8EF' }}>
-            <a href="#home" style={{ fontSize: '13px', color: '#667085', textDecoration: 'none' }}>
-              ← Return to Public Website
-            </a>
+              {/* Submit CTA */}
+              <button
+                type="submit"
+                className="crm-auth-submit-btn"
+                disabled={authLoading}
+              >
+                {authLoading ? (
+                  <>
+                    <CRMLoaderSpinner size={18} color="#FFFFFF" />
+                    <span>Verifying credentials...</span>
+                  </>
+                ) : authMode === 'staff' ? (
+                  'Sign In to Staff Workspace →'
+                ) : customerIsRegistering ? (
+                  'Create Customer Account →'
+                ) : (
+                  'Sign In to Customer Account →'
+                )}
+              </button>
+            </form>
+
+            {/* Modal for Password Reset */}
+            <PasswordResetModal
+              isOpen={showPasswordResetModal}
+              onClose={() => setShowPasswordResetModal(false)}
+              portalMode={authMode === 'staff' ? 'staff' : 'customer'}
+              initialEmail={authEmail}
+              onNotify={onNotify}
+              onSuccess={(resetEmail) => {
+                setAuthEmail(resetEmail);
+                setShowPasswordResetModal(false);
+              }}
+            />
+
+            {/* Switch between Login and Register for Customers */}
+            {authMode === 'customer' && (
+              <div className="crm-auth-switch-footer">
+                {customerIsRegistering ? (
+                  <>
+                    Already registered?{' '}
+                    <button
+                      type="button"
+                      className="crm-auth-link-btn"
+                      onClick={() => {
+                        setCustomerIsRegistering(false);
+                        setAuthError('');
+                      }}
+                    >
+                      Sign In
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    New customer?{' '}
+                    <button
+                      type="button"
+                      className="crm-auth-link-btn"
+                      onClick={() => {
+                        setCustomerIsRegistering(true);
+                        setAuthError('');
+                      }}
+                    >
+                      Create Account
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Back to Public Website */}
+            <div className="crm-auth-back-link">
+              <a href="#home">
+                <span>← Return to Public Website</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1109,21 +1228,19 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
           onOpenStaffAppointment={() => setShowStaffModal(true)}
           onExportCSV={handleExportCSV}
           onToggleMobile={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+          onRefresh={() => loadOperationalData({ isInitial: false })}
+          onLogout={handleLogout}
           user={user}
         />
 
         {/* Content Body */}
         <main className="crm-content crm-body-scroll" role="main">
           {dataLoading && !initialLoaded ? (
-            <div className="crm-loading-container">
-              <Loader
-                variant="branded"
-                size="lg"
-                label="Connecting to Lotus Tubes Database..."
-                sublabel="Syncing enquiries, quotation pipeline & customer directory"
-                onRetry={() => loadOperationalData({ isInitial: true })}
-              />
-            </div>
+            <CRMPageLoading
+              label="Connecting to Lotus Tubes Database..."
+              sublabel="Syncing enquiries, quotation pipeline & customer directory"
+              onRetry={() => loadOperationalData({ isInitial: true })}
+            />
           ) : (
             renderActiveView()
           )}
@@ -1834,7 +1951,10 @@ export const CRMView = ({ subroute = 'dashboard', onNotify, onOpenQuickEnquiry }
                   disabled={isSavingQuote}
                 >
                   {isSavingQuote ? (
-                    <Loader variant="button" size="sm" color="#FFFFFF" label="Saving Quotation..." />
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                      <CRMLoaderSpinner size={16} color="#FFFFFF" />
+                      <span>Saving Quotation...</span>
+                    </span>
                   ) : (
                     '💾 Save Formal Quotation'
                   )}

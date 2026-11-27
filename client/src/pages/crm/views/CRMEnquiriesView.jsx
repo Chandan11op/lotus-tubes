@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CRMIcon } from '../components/CRMIcon';
-import { Loader } from '../../../components/common/Loader';
+import { CRMSkeletonTable } from '../components/CRMLoader';
 
 export const CRMEnquiriesView = ({
   enquiries = [],
@@ -170,11 +170,7 @@ export const CRMEnquiriesView = ({
         <div className="crm-card__body" style={{ padding: 0 }}>
           {loading ? (
             <div style={{ padding: '16px' }}>
-              <Loader
-                variant="skeleton-table"
-                rows={6}
-                label="Retrieving inbound enquiries and RFQs..."
-              />
+              <CRMSkeletonTable rows={6} cols={7} />
             </div>
           ) : filteredEnquiries.length === 0 ? (
             <div className="crm-empty-state" style={{ padding: '48px 24px' }}>

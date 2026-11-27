@@ -63,7 +63,7 @@ export const LotusTubesLoader = ({
       <div className={`lotus-loader-stage lotus-loader-stage--${resolvedSize}`}>
         {/* Layer 1: Background Silhouette Base */}
         <img
-          src="/loader-image-opt.png"
+          src="/loader-image.png"
           alt=""
           aria-hidden="true"
           className="lotus-loader-base-silhouette"
@@ -72,7 +72,6 @@ export const LotusTubesLoader = ({
         {/* Layer 2: Progressive Bottom-to-Top Revealed Image */}
         <img
           src="/loader-image.png"
-          srcSet="/loader-image-opt.png 1x, /loader-image.png 2x"
           alt="Lotus Tubes Brand Icon"
           className={`lotus-loader-fill-layer ${!isDeterminate ? 'lotus-loader-fill-layer--animated' : ''}`}
           style={fillStyle}
